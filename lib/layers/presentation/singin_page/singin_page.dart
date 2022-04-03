@@ -2,6 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:wot_statistic/layers/presentation/singin_page/widgets/animated_background.dart';
 import 'package:wot_statistic/layers/presentation/singin_page/widgets/region_picker.dart';
 import 'package:wot_statistic/layers/presentation/singin_page/widgets/user_picker.dart';
+import 'package:wot_statistic/injection_container.dart' as di;
+
+
+
+import '../../../injection_container.dart';
+import 'bloc/theme_cubit.dart';
+
 
 class SingInPage extends StatefulWidget {
   const SingInPage({Key? key}) : super(key: key);
@@ -15,8 +22,15 @@ class SingInPage extends StatefulWidget {
 class _SingInPageState extends State<SingInPage> {
 
   //todo move here sizes (mediaquery)
+  bool switchValue = di.inj<ThemeCubit>().isDarkTheme;
 
+  @override
+  void initState() {
+    super.initState();
 
+  }
+
+  //todo listener errors from theme cubit
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,8 +45,13 @@ class _SingInPageState extends State<SingInPage> {
           ),
           const RegionPicker(),
           Switch(
-            value: false,
+            value: switchValue,
             onChanged: (value) {
+
+              setState(() {
+                di.inj<ThemeCubit>().switchTheme();
+                switchValue = !switchValue;
+              });
               //todo theme change (use cubit?)
             },
           ),
