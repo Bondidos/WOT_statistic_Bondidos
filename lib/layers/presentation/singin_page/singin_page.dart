@@ -1,24 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wot_statistic/layers/presentation/singin_page/widgets/animated_background.dart';
 import 'package:wot_statistic/layers/presentation/singin_page/widgets/region_picker.dart';
 import 'package:wot_statistic/layers/presentation/singin_page/widgets/user_picker.dart';
 
+import 'bloc/theme_cubit.dart';
+
 class SingInPage extends StatefulWidget {
   const SingInPage({Key? key}) : super(key: key);
 
-  static const String id = "Sing In";
+  static const String id = "WOT Statistic";
 
   @override
   State<SingInPage> createState() => _SingInPageState();
 }
 
 class _SingInPageState extends State<SingInPage> {
-
   //todo move here sizes (mediaquery)
-
 
   @override
   Widget build(BuildContext context) {
+
+    bool _switchState = context.read<ThemeCubit>().isDarkTheme;
+    ThemeCubit themeCubit = context.read<ThemeCubit>();
+    ThemeState state = themeCubit.state;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(SingInPage.id),
@@ -31,9 +37,17 @@ class _SingInPageState extends State<SingInPage> {
           ),
           const RegionPicker(),
           Switch(
-            value: false,
+            value: _switchState,
             onChanged: (value) {
-              //todo theme change (use cubit?)
+              themeCubit.switchTheme();
+              if(state is ThemeError){
+                ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text(state.message)));
+              } else {
+                setState(() {
+                  _switchState = !value;
+                });
+              }
             },
           ),
         ],
