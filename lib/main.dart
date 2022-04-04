@@ -26,7 +26,9 @@ class MyApp extends StatelessWidget {
           return const CircularProgressIndicator();
         }
         return MaterialApp(
-          theme: (state is ThemeDark) ? ThemeData.dark() : ThemeData.light(),
+          theme: (state is ThemeDark)
+              ? ThemeData.dark()
+              : ThemeData.light(),
           routes: {
             SingInPage.id: (ctx) => const SingInPage(),
           },

@@ -20,9 +20,9 @@ class RepositoryImpl extends Repository {
       final String? pref = await localSource.getThemePreference();
       return (pref != null)
           ? Right(pref)
-          : const Left(Failure("No such preference"));
+          : const Left(Failure());
     } catch (e) {
-      return const Left(Failure("Unable to read preference"));
+      return const Left(Failure());
     }
   }
 
@@ -31,7 +31,7 @@ class RepositoryImpl extends Repository {
       await localSource.saveThemePreference(pref);
       return Right(pref);
     } catch (e){
-      return const Left(Failure("Unable to save preference"));
+      return const Left(Failure());
     }
   }
 
