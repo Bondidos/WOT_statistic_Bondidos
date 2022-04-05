@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wot_statistic/layers/presentation/singin_page/widgets/animated_background.dart';
 import 'package:wot_statistic/layers/presentation/singin_page/widgets/region_picker.dart';
+import 'package:wot_statistic/layers/presentation/singin_page/widgets/themed_button.dart';
 import 'package:wot_statistic/layers/presentation/singin_page/widgets/user_picker.dart';
 
 import 'bloc/theme_cubit.dart';
@@ -21,9 +22,6 @@ class _SingInPageState extends State<SingInPage> {
   @override
   Widget build(BuildContext context) {
 
-    bool _switchState = context.read<ThemeCubit>().isDarkTheme;
-    ThemeCubit themeCubit = context.read<ThemeCubit>();
-    ThemeState state = themeCubit.state;
 
     return Scaffold(
       appBar: AppBar(
@@ -35,21 +33,10 @@ class _SingInPageState extends State<SingInPage> {
             },
             icon: const Icon(Icons.search),
           ),
-          const RegionPicker(),
-          Switch(
-            value: _switchState,
-            onChanged: (value) {
-              themeCubit.switchTheme();
-              if(state is ThemeError){
-                ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text(state.message)));
-              } else {
-                setState(() {
-                  _switchState = !value;
-                });
-              }
-            },
-          ),
+          IconButton(
+              onPressed: (){},
+              icon: const Icon(Icons.settings)
+          )
         ],
       ),
       body: Stack(
@@ -59,25 +46,32 @@ class _SingInPageState extends State<SingInPage> {
           SingleChildScrollView(
             child: Column(
               children: [
-                SizedBox(height: MediaQuery.of(context).size.height / 2),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height / 2,
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: Padding(
+                      padding: const EdgeInsets.all(15.0),
+                      child: Wrap(
+                        children: const [Text("Region"), RegionPicker()],
+                      ),
+                    ),
+                  ),
+                ),
                 const UserPicker(),
                 const SizedBox(height: 20),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width / 3,
-                  child: ElevatedButton(
-                      onPressed: () {
-                        //todo navigate statisticScreen
-                      },
-                      child: const Text('Sign In')),
+                ThemedButton(
+                    title: "Sing In",
+                    onTap: () {
+                      //todo navigate statisticScreen
+                    },
                 ),
                 const SizedBox(height: 20),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width / 3,
-                  child: ElevatedButton(
-                      onPressed: () {
-                        //todo navigate to SingUpScreen
-                      },
-                      child: const Text('Sign Up')),
+                 ThemedButton(
+                  title: "Sing Up",
+                  onTap: () {
+                    //todo navigate webView SingUp
+                  }
                 ),
                 const SizedBox(height: 20),
               ],
@@ -88,3 +82,5 @@ class _SingInPageState extends State<SingInPage> {
     );
   }
 }
+
+

@@ -28,7 +28,7 @@ class _AnimatedBackgroundState extends State<AnimatedBackground> {
                 Orientation.portrait
                 ? Image.asset(
               "assets/background/main_background_portrait.jpg",
-              fit: BoxFit.fitHeight,
+              fit: BoxFit.cover,
               height: MediaQuery.of(context).size.height,
               width: MediaQuery.of(context).size.width,
             )
