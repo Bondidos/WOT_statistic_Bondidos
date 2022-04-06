@@ -5,12 +5,12 @@ import 'package:wot_statistic/layers/domain/usecases/sync_theme_usecase.dart';
 
 import '../../../../common/constants/constants.dart';
 
-part 'theme_state.dart';
+part 'settings_state.dart';
 
-class ThemeCubit extends Cubit<ThemeState> {
+class SettingsCubit extends Cubit<SettingsState> {
   final SyncThemeUseCase sync;
 
-  ThemeCubit({required this.sync}) : super(ThemeInit()) {
+  SettingsCubit({required this.sync}) : super(SettingsInit()) {
     _syncTheme();
   }
 
@@ -18,7 +18,7 @@ class ThemeCubit extends Cubit<ThemeState> {
     // theme from android platform
     final platformTheme = (theme == null)
         ? await getPlatformTheme()
-        : const ThemeError(message: "Storage Error");
+        : const SettingsError(message: "Storage Error");
 
     final result = await sync.execute(theme);
     final themeState = result.fold((l) {
@@ -43,13 +43,14 @@ class ThemeCubit extends Cubit<ThemeState> {
 
   bool get isDarkTheme => (state is ThemeDark) ? true : false;
 
-  Future<ThemeState> getPlatformTheme() async {
+  // todo test this method !!! and/or move to useCase
+  Future<SettingsState> getPlatformTheme() async {
     var platform = const MethodChannel(CHANNEL);
     final String platformTheme;
     try {
       platformTheme = await platform.invokeMethod(GET_THEME);
     } on PlatformException catch (e) {
-      return const ThemeError(message: "Error while sync theme");
+      return const SettingsError(message: "Error while sync theme");
     }
     if (platformTheme == DARK_THEME) {
       return const ThemeDark();

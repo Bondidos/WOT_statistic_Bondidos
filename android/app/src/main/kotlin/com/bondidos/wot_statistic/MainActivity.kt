@@ -1,4 +1,4 @@
-package com.example.wot_statistic
+package com.bondidos.wot_statistic
 
 import android.content.res.Configuration
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
@@ -28,7 +28,7 @@ class MainActivity: FlutterActivity() {
     }
 
     companion object{
-       private const val CHANNEL = "com.example.wot_statistic/theme"
+       private const val CHANNEL = "com.bondidos.wot_statistic/theme"
         const val DARK_THEME = "Dark"
         const val LIGHT_THEME = "Light"
         const val GET_THEME = "getTheme"

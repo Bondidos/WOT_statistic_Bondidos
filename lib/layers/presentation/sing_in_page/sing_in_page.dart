@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:wot_statistic/layers/presentation/singin_page/widgets/animated_background.dart';
-import 'package:wot_statistic/layers/presentation/singin_page/widgets/region_picker.dart';
-import 'package:wot_statistic/layers/presentation/singin_page/widgets/themed_button.dart';
-import 'package:wot_statistic/layers/presentation/singin_page/widgets/user_picker.dart';
+import 'package:wot_statistic/layers/presentation/settings_page/settings_page.dart';
+import 'package:wot_statistic/layers/presentation/sing_in_page/widgets/animated_background.dart';
+import 'package:wot_statistic/layers/presentation/sing_in_page/widgets/region_picker.dart';
+import 'package:wot_statistic/layers/presentation/sing_in_page/widgets/themed_button.dart';
+import 'package:wot_statistic/layers/presentation/sing_in_page/widgets/user_picker.dart';
 
-import 'bloc/theme_cubit.dart';
+
 
 class SingInPage extends StatefulWidget {
   const SingInPage({Key? key}) : super(key: key);
@@ -34,7 +34,9 @@ class _SingInPageState extends State<SingInPage> {
             icon: const Icon(Icons.search),
           ),
           IconButton(
-              onPressed: (){},
+              onPressed: (){
+                Navigator.of(context).pushNamed(SettingsPage.id);
+              },
               icon: const Icon(Icons.settings)
           )
         ],

@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.wot_statistic">
+    package="com.bondidos.wot_statistic">
    <application
         android:label="wot_statistic"
         android:name="${applicationName}"

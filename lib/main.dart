@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:wot_statistic/layers/presentation/settings_page/settings_page.dart';
 import 'injection_container.dart' as di;
-import 'layers/presentation/singin_page/bloc/theme_cubit.dart';
-import 'layers/presentation/singin_page/singin_page.dart';
+import 'layers/presentation/settings_page/bloc/settings_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'layers/presentation/sing_in_page/sing_in_page.dart';
 
 void main() async {
   await di.init();
   runApp(MultiBlocProvider(
     providers: [
-      BlocProvider<ThemeCubit>(create: (ctx) => di.inj<ThemeCubit>()),
+      BlocProvider<SettingsCubit>(create: (ctx) => di.inj<SettingsCubit>()),
     ],
     child: const MyApp(),
   ));
@@ -19,10 +21,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ThemeCubit, ThemeState>(
+    return BlocBuilder<SettingsCubit, SettingsState>(
       buildWhen: (prevState, currentState) => (currentState != prevState),
       builder: (ctx, state) {
-        if (state is ThemeInit) {
+        if (state is SettingsInit) {
           return const CircularProgressIndicator();
         }
         return MaterialApp(
@@ -31,6 +33,7 @@ class MyApp extends StatelessWidget {
               : ThemeData.light(),
           routes: {
             SingInPage.id: (ctx) => const SingInPage(),
+            SettingsPage.id: (ctx) => const SettingsPage(),
           },
           initialRoute: SingInPage.id,
         );
