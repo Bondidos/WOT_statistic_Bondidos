@@ -4,6 +4,8 @@ import 'package:wot_statistic/layers/data/sources/local_data_source.dart';
 import 'package:wot_statistic/layers/domain/entities/user.dart';
 import 'package:wot_statistic/layers/domain/repositories/repository.dart';
 
+import '../models/UserData.dart';
+
 class RepositoryImpl extends Repository {
   final LocalDataSource localSource;
 
@@ -37,12 +39,11 @@ class RepositoryImpl extends Repository {
   }
 
   @override
-  Future<bool> saveUser(User user) async {
+  Future<Either<Failure, int>> saveUser(User user,String realm) async {
     try{
-      await localSource.saveUser(user);
-      return true;
+      return Right(await localSource.saveUser(user as UserData,realm));
     } catch(e){
-      return false;
+      return const Left(Failure("Can't save User"));
     }
   }
 

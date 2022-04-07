@@ -1,9 +1,9 @@
 
-import '../../domain/entities/user.dart';
+import '../models/UserData.dart';
 
 abstract class LocalDataSource{
   Future<String?> getThemePreference();
   Future<void> saveThemePreference(String pref);
-  Future<void> saveUser(User user);
-  Future<List<User>> getSavedUsersByRealm(String realm);
+  Future<int> saveUser(UserData user,String realm);
+  Future<List<UserData>> getSavedUsersByRealm(String realm);
 }

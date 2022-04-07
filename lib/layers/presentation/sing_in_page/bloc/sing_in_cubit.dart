@@ -1,6 +1,10 @@
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:wot_statistic/common/constants/constants.dart';
+
+import '../../../domain/entities/user.dart';
+import '../../../domain/usecases/save_user_usecase.dart';
 
 part 'sing_in_state.dart';
 
@@ -17,9 +21,18 @@ part 'sing_in_state.dart';
 ///
 /// */
 class SingInCubit extends Cubit<SingInState>{
+  final SaveUserUseCase saveUser;
 
+  SingInCubit({required this.saveUser})
+      : super(const InitSingInState()){
+    User user = const User(
+        nickname: 'balda',
+        accessToken: 'takoy sebe',
+        expiresAt: 1161213214,
+        id: '161151'
+    );
+    saveUser.execute(user, EU);
+  }
 
-
-  SingInCubit(SingInState initialState) : super(initialState);
 
 }

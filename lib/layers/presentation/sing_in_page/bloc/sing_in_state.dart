@@ -4,14 +4,14 @@ abstract class SingInState extends Equatable {
   const SingInState();
 }
 
-class InitSingInState extends Equatable {
+class InitSingInState extends SingInState {
   const InitSingInState();
 
   @override
   List<Object?> get props => [];
 }
 
-class CisSingInState extends Equatable {
+class CisSingInState extends SingInState {
   const CisSingInState();
 
 
@@ -19,7 +19,7 @@ class CisSingInState extends Equatable {
   List<Object?> get props => [];
 }
 
-class EuSingInState extends Equatable {
+class EuSingInState extends SingInState {
   const EuSingInState();
 
   @override

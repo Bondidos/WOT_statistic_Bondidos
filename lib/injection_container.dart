@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:wot_statistic/layers/local/datasources/sqflite/sqflite.dart';
 
 import 'layers/data/repositories/repository_impl.dart';
 import 'layers/data/sources/local_data_source.dart';
@@ -18,11 +19,15 @@ Future<void> init() async {
 
   inj.registerFactory(() => SyncThemeUseCase(repository: inj()));
 
-  inj.registerLazySingleton<Repository>(() => RepositoryImpl(localSource: inj()));
+  inj.registerLazySingleton<Repository>(
+      () => RepositoryImpl(localSource: inj()));
 
-  inj.registerFactory<LocalDataSource>(
-      () => LocalDataSourceImpl(sharedPreferences: inj()));
+  inj.registerFactory<LocalDataSource>(() => LocalDataSourceImpl(
+        sharedPreferences: inj(),
+        sqfLite: inj(),
+      ));
 
   final sharedPref = await SharedPreferences.getInstance();
+  final sqfLite = DatabaseHelper.instance;
   inj.registerFactory(() => sharedPref);
 }

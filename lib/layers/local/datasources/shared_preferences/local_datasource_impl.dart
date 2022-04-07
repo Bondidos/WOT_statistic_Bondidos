@@ -1,13 +1,18 @@
+import 'package:dartz/dartz.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:wot_statistic/layers/data/models/UserData.dart';
 import 'package:wot_statistic/layers/data/sources/local_data_source.dart';
 import 'package:wot_statistic/layers/domain/entities/user.dart';
+import 'package:wot_statistic/layers/local/datasources/sqflite/sqflite.dart';
 
 import '../../../../common/constants/constants.dart';
+import '../../../../common/errors/failure.dart';
 
 class LocalDataSourceImpl extends LocalDataSource {
   final SharedPreferences sharedPreferences;
+  final DatabaseHelper sqfLite;
 
-  LocalDataSourceImpl({required this.sharedPreferences});
+  LocalDataSourceImpl({required this.sharedPreferences, required this.sqfLite});
 
   @override
   Future<String?> getThemePreference() {
@@ -22,14 +27,13 @@ class LocalDataSourceImpl extends LocalDataSource {
   }
 
   @override
-  Future<void> saveUser(User user) {
-    // TODO: implement saveUser
-    throw UnimplementedError();
-  }
+  Future<int> saveUser(UserData user, String realm) =>
+      sqfLite.insertUserByRealm(user.toMap(), realm);
 
   @override
-  Future<List<User>> getSavedUsersByRealm(String realm) {
-    // TODO: implement getSavedUsersByRealm
-    throw UnimplementedError();
+  Future<List<UserData>> getSavedUsersByRealm(String realm) async {
+    var list = await sqfLite.getSavedUsersByRealm(realm);
+    List<UserData> result = list.map((e) => UserData.fromMap(e)).toList();
+    return Future.value(result);
   }
 }
