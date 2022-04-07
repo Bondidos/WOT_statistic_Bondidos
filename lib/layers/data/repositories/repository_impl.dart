@@ -13,17 +13,13 @@ class RepositoryImpl extends Repository {
 
   @override
   Future<Either<Failure, String>> syncThemeWithCache(String? pref) async {
-    return (pref != null)
-        ? _setThemePref(pref)
-        : _getThemePref();
+    return (pref != null) ? _setThemePref(pref) : _getThemePref();
   }
 
   Future<Either<Failure, String>> _getThemePref() async {
-    try{
+    try {
       final String? pref = await localSource.getThemePreference();
-      return (pref != null)
-          ? Right(pref)
-          : const Left(Failure());
+      return (pref != null) ? Right(pref) : const Left(Failure());
     } catch (e) {
       return const Left(Failure());
     }
@@ -33,27 +29,46 @@ class RepositoryImpl extends Repository {
     try {
       await localSource.saveThemePreference(pref);
       return Right(pref);
-    } catch (e){
+    } catch (e) {
       return const Left(Failure());
     }
   }
 
   @override
-  Future<Either<Failure, int>> saveUser(User user,String realm) async {
-    try{
-      return Right(await localSource.saveUser(user as UserData,realm));
-    } catch(e){
-      return const Left(Failure("Can't save User"));
+  Future<bool> saveUser(User user, String realm) async {
+    try {
+      int result = await localSource.saveUser(UserData.fromUser(user), realm);
+      return (result != 0) ? Future.value(true) : Future.value(false);
+    } catch (e) {
+      return Future.value(false);
     }
   }
 
   @override
-  Future<Either<Failure, List<User>>> getSavedUsersByRealm(String realm) async{
-    try{
+  Future<Either<Failure, List<User>>> getSavedUsersByRealm(String realm) async {
+    try {
       List<User> userList = await localSource.getSavedUsersByRealm(realm);
       return Right(userList);
-    } catch (e){
-      return const Left(Failure("Can't find Users"));
+    } catch (e) {
+      return const Left(Failure("Some unexpected Error"));
+    }
+  }
+
+  @override
+  Future<Either<Failure, String>> syncRealmPreference() async {
+    try {
+      return Right(await localSource.syncRealmPreference());
+    } catch (e) {
+      return const Left(Failure());
+    }
+  }
+
+  @override
+  Future<bool> setRealm(String realm) async {
+    try {
+      return localSource.setRealm(realm);
+    } catch (e) {
+      return false;
     }
   }
 }

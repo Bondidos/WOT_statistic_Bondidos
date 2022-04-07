@@ -8,7 +8,7 @@ class SaveUserUseCase {
   final Repository repository;
   SaveUserUseCase({required this.repository});
 
-  Future<Either<Failure, int>> execute(User user,String realm) async {
+  Future<bool> execute(User user,String realm) async {
     return repository.saveUser(user,realm);
   }
 }

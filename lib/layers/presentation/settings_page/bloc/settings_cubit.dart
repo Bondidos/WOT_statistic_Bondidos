@@ -1,9 +1,11 @@
+import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/services.dart';
 import 'package:wot_statistic/layers/domain/usecases/sync_theme_usecase.dart';
 
 import '../../../../common/constants/constants.dart';
+import '../../../../common/errors/failure.dart';
 
 part 'settings_state.dart';
 
@@ -20,8 +22,8 @@ class SettingsCubit extends Cubit<SettingsState> {
         ? await getPlatformTheme()
         : const SettingsError(message: "Storage Error");
 
-    final result = await sync.execute(theme);
-    final themeState = result.fold((l) {
+    final Either<Failure, String> result = await sync.execute(theme);
+    final SettingsState themeState = result.fold((l) {
       return platformTheme;
     }, (r) {
       if (r == DARK_THEME) {
@@ -45,7 +47,7 @@ class SettingsCubit extends Cubit<SettingsState> {
 
   // todo test this method !!! and/or move to useCase
   Future<SettingsState> getPlatformTheme() async {
-    var platform = const MethodChannel(CHANNEL);
+    const MethodChannel platform = MethodChannel(CHANNEL);
     final String platformTheme;
     try {
       platformTheme = await platform.invokeMethod(GET_THEME);

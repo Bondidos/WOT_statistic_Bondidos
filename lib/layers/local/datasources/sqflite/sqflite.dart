@@ -46,13 +46,17 @@ class DatabaseHelper {
       $nickname TEXT NOT NULL,
       $accessToken TEXT NOT NULL,
       $expiresAt INTEGER NOT NULL
+      )
+      """
       );
+    await db.execute(
+      """
       CREATE TABLE $cisTable(
       $columnId INTEGER PRIMARY KEY,
       $nickname TEXT NOT NULL,
       $accessToken TEXT NOT NULL,
       $expiresAt INTEGER NOT NULL
-      );
+      )
       """
     );
   }
@@ -60,10 +64,18 @@ class DatabaseHelper {
   Future<int> insertUserByRealm(Map<String, dynamic> user,String realm) async{
     Database? db = await instance.database;
     if(realm == EU && db != null){
-      return db.insert(euTable, user);
+      return db.insert(
+          euTable,
+          user,
+          conflictAlgorithm: ConflictAlgorithm.replace
+      );
     }
     if (realm == CIS && db != null){
-      return db.insert(cisTable, user);
+      return db.insert(
+          cisTable,
+          user,
+          conflictAlgorithm: ConflictAlgorithm.replace
+      );
     }
     return 0;
   }
@@ -71,7 +83,7 @@ class DatabaseHelper {
   Future<List<Map<String, dynamic>>> getSavedUsersByRealm(String realm) async {
     Database? db = await instance.database;
     if(realm == EU && db != null){
-       db.query(euTable);
+       return db.query(euTable);
     }
     if (realm == CIS && db != null){
       return db.query(cisTable);

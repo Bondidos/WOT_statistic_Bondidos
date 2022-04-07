@@ -4,6 +4,7 @@ import 'injection_container.dart' as di;
 import 'layers/presentation/settings_page/bloc/settings_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'layers/presentation/sing_in_page/bloc/sing_in_cubit.dart';
 import 'layers/presentation/sing_in_page/sing_in_page.dart';
 
 void main() async {
@@ -11,6 +12,7 @@ void main() async {
   runApp(MultiBlocProvider(
     providers: [
       BlocProvider<SettingsCubit>(create: (ctx) => di.inj<SettingsCubit>()),
+      BlocProvider<SingInCubit>(create: (ctx) => di.inj<SingInCubit>()),
     ],
     child: const MyApp(),
   ));

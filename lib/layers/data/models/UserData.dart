@@ -25,6 +25,15 @@ class UserData extends User{
     );
   }
 
+  factory UserData.fromUser(User user){
+    return UserData(
+        id: user.id,
+        nickname: user.nickname,
+        accessToken: user.accessToken,
+        expiresAt: user.expiresAt
+    );
+  }
+
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       DatabaseHelper.columnId : id,

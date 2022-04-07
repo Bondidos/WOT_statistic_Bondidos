@@ -16,7 +16,7 @@ class LocalDataSourceImpl extends LocalDataSource {
 
   @override
   Future<String?> getThemePreference() {
-    var pref = sharedPreferences.getString(THEME_KEY);
+    String? pref = sharedPreferences.getString(THEME_KEY);
     return Future.value(pref);
   }
 
@@ -34,6 +34,18 @@ class LocalDataSourceImpl extends LocalDataSource {
   Future<List<UserData>> getSavedUsersByRealm(String realm) async {
     var list = await sqfLite.getSavedUsersByRealm(realm);
     List<UserData> result = list.map((e) => UserData.fromMap(e)).toList();
+    return Future.value(result);
+  }
+
+  @override
+  Future<String> syncRealmPreference() {
+    String? pref = sharedPreferences.getString(REALM_KEY);
+    return Future.value(pref);
+  }
+
+  @override
+  Future<bool> setRealm(String realm) {
+    Future<bool> result = sharedPreferences.setString(REALM_KEY, realm);
     return Future.value(result);
   }
 }
