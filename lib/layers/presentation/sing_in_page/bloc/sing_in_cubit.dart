@@ -75,19 +75,25 @@ class SingInCubit extends Cubit<SingInState> {
     if (result) {
       currentRealm = realm;
       emit(state.copyWith(status: SingInStatus.realmSynced));
-    }else {
+    } else {
       emit(state.copyWith(
           status: SingInStatus.error, errorMessage: "Some storage error"));
     }
   }
 
+  // todo add remove user option
+
+
   //todo move it to the sing up cubit/page
-  /*void saveUserInToDataBase(User user) async {
+  void saveUserInToDataBase(User user) async {
     emit(state.copyWith(status: SingInStatus.loading));
 
     final bool result = await saveUser.execute(user, currentRealm);
     result
-        ? emit(const LoadedState())
-        : emit(const ErrorState(message: "User do not saved"));
-  }*/
+        ? emit(await _syncUsersByRealm())
+        : emit(
+            state.copyWith(
+                status: SingInStatus.error, errorMessage: "Some storage error"),
+          );
+  }
 }

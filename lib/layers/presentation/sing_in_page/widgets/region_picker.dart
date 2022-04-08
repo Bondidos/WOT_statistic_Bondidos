@@ -7,18 +7,20 @@ import '../../../../common/constants/constants.dart';
 class RegionPicker extends StatelessWidget {
   const RegionPicker({Key? key}) : super(key: key);
 
-
   @override
   Widget build(BuildContext context) {
+
+    // todo stream builder looks like better idea ?
+
     return BlocBuilder<SingInCubit, SingInState>(
       buildWhen: (prevState, currentState) =>
-          (currentState.status == SingInStatus.realmSynced &&
-              currentState != prevState),
+          (currentState.status == SingInStatus.realmSynced ||
+              currentState.status == SingInStatus.initialized &&
+                  currentState != prevState),
       builder: (ctx, state) {
-
-        if (state.status == SingInStatus.realmSynced) {
-
-          String currentRealm = context.read<SingInCubit>().currentRealm;
+        if (state.status == SingInStatus.realmSynced ||
+            state.status == SingInStatus.initialized) {
+          final String currentRealm = context.read<SingInCubit>().currentRealm;
 
           return Row(
             children: [
@@ -67,9 +69,8 @@ class RegionPicker extends StatelessWidget {
               ),
             ],
           );
-        } else {
-          return const Text(NOT_PICKED);
         }
+        return const Text(NOT_PICKED);
       },
     );
   }
