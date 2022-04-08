@@ -71,13 +71,14 @@ class SingInCubit extends Cubit<SingInState> {
   void setRealmPreference(String realm) async {
     emit(state.copyWith(status: SingInStatus.loading));
 
-    bool result = await setRealm.execute(EU);
+    bool result = await setRealm.execute(realm);
     if (result) {
       currentRealm = realm;
       emit(state.copyWith(status: SingInStatus.realmSynced));
+    }else {
+      emit(state.copyWith(
+          status: SingInStatus.error, errorMessage: "Some storage error"));
     }
-    emit(state.copyWith(
-        status: SingInStatus.error, errorMessage: "Some storage error"));
   }
 
   //todo move it to the sing up cubit/page

@@ -4,35 +4,22 @@ import 'package:wot_statistic/layers/presentation/sing_in_page/bloc/sing_in_cubi
 
 import '../../../../common/constants/constants.dart';
 
-class RegionPicker extends StatefulWidget {
+class RegionPicker extends StatelessWidget {
   const RegionPicker({Key? key}) : super(key: key);
 
-  @override
-  State<RegionPicker> createState() => _RegionPickerState();
-}
 
-enum MenuOption { ue, cis, none }
-
-class _RegionPickerState extends State<RegionPicker> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<SingInCubit, SingInState>(
-      // todo optimize this method. trigger only when initializing and realmSynced
-      buildWhen: (prevState, currentState) => (currentState != prevState),
+      buildWhen: (prevState, currentState) =>
+          (currentState.status == SingInStatus.realmSynced &&
+              currentState != prevState),
       builder: (ctx, state) {
-        String currentRealm = context.read<SingInCubit>().currentRealm;
-        MenuOption picked;
-        switch (currentRealm) {
-          case EU:
-            picked = MenuOption.ue;
-            break;
-          case CIS:
-            picked = MenuOption.cis;
-            break;
-          default:
-            picked = MenuOption.none;
-        }
-        if(state.status == SingInStatus.realmSynced){
+
+        if (state.status == SingInStatus.realmSynced) {
+
+          String currentRealm = context.read<SingInCubit>().currentRealm;
+
           return Row(
             children: [
               //todo font bigger
@@ -40,10 +27,12 @@ class _RegionPickerState extends State<RegionPicker> {
               PopupMenuButton(
                 icon: const Icon(Icons.language),
                 itemBuilder: (ctx) {
-                  return <PopupMenuEntry<MenuOption>>[
+                  return <PopupMenuEntry>[
                     PopupMenuItem(
                       onTap: () {
-                        context.read<SingInCubit>().setRealmPreference(EU);
+                        if (currentRealm != EU) {
+                          context.read<SingInCubit>().setRealmPreference(EU);
+                        }
                       },
                       child: Wrap(
                         children: [
@@ -58,7 +47,9 @@ class _RegionPickerState extends State<RegionPicker> {
                     ),
                     PopupMenuItem(
                       onTap: () {
-                        context.read<SingInCubit>().setRealmPreference(CIS);
+                        if (currentRealm != CIS) {
+                          context.read<SingInCubit>().setRealmPreference(CIS);
+                        }
                       },
                       child: Wrap(
                         children: [
@@ -76,8 +67,9 @@ class _RegionPickerState extends State<RegionPicker> {
               ),
             ],
           );
+        } else {
+          return const Text(NOT_PICKED);
         }
-         return Container();
       },
     );
   }
