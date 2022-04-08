@@ -38,7 +38,7 @@ class LocalDataSourceImpl extends LocalDataSource {
   }
 
   @override
-  Future<String> syncRealmPreference() {
+  Future<String?> syncRealmPreference() {
     String? pref = sharedPreferences.getString(REALM_KEY);
     return Future.value(pref);
   }

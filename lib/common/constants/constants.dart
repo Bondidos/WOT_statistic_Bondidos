@@ -13,3 +13,4 @@ const GET_THEME = 'getTheme';
 // realm constants
 const EU = "EU";
 const CIS = "CIS";
+const NOT_PICKED = "Not Picked";

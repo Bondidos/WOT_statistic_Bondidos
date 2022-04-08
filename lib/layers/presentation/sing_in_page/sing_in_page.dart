@@ -62,17 +62,13 @@ class _SingInPageState extends State<SingInPage> {
                     ),
                   ),
                 ),
-                BlocBuilder<SingInCubit,SingInState>(
-                    builder: (BuildContext context, state) {
-                      return const UserPicker();
-                    },
-                ),
+                const UserPicker(),
                 const SizedBox(height: 20),
                 ThemedButton(
                     title: "Sing In",
                     onTap: () {
                       //todo navigate statisticScreen
-                      context.read<SingInCubit>().listUsers();
+                     // context.read<SingInCubit>().listUsers();
                     },
                 ),
                 const SizedBox(height: 20),

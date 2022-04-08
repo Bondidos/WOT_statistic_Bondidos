@@ -12,17 +12,6 @@ import '../../../domain/usecases/sync_realm_usecase.dart';
 
 part 'sing_in_state.dart';
 
-/// This states read/save user's data into prefs
-/// Init state, reads, previous state from SP:
-/// if (null) todo use default realm (eu)
-///     also todo dropping list displays: No saved Users
-///     "Please Sing Up" (disable Sing In Button)
-///     todo emit singing... -> await User from WebPAge
-///     todo emit initState -> choose user and continue
-/// else todo retrieve List<User> and display in Dropping list
-///
-///
-/// */
 class SingInCubit extends Cubit<SingInState> {
   final SaveUserUseCase saveUser;
   final GetSavedUsersByRealm getUsersByRealm;
@@ -34,47 +23,70 @@ class SingInCubit extends Cubit<SingInState> {
     required this.saveUser,
     required this.getUsersByRealm,
     required this.syncRealm,
-  }) : super(const SingInState(prevUsers: [], status: SingInStatus.initial)) {
-    _init();
+  }) : super(const SingInState(
+            prevUsers: [], status: SingInStatus.initial, errorMessage: null)) {
+    _initialize();
   }
 
-  late String _realm;
+  late String currentRealm;
 
-  void _init() async {
+  void _initialize() async {
     emit(state.copyWith(status: SingInStatus.initializing));
+    SingInState realmSyncResult = await _syncRealmPref();
+    emit(realmSyncResult);
 
+    SingInState syncUserResult = await _syncUsersByRealm();
+    emit(syncUserResult);
+
+    if (realmSyncResult.status == SingInStatus.realmSynced &&
+        syncUserResult.status == SingInStatus.usersSynced) {
+      emit(state.copyWith(status: SingInStatus.initialized));
+    }
+  }
+
+  Future<SingInState> _syncRealmPref() async {
     final Either<Failure, String> result = await syncRealm.execute();
-    _realm = result.fold((l) {
-      // EU Realm by Default
-      setRealmPreference(EU);
-      return EU;
-    }, (r) => r);
+    return result.fold((l) {
+      currentRealm = NOT_PICKED;
+      return state.copyWith(
+        status: SingInStatus.error,
+        errorMessage: "Some storage error",
+      );
+    }, (realm) {
+      currentRealm = realm;
+      return state.copyWith(status: SingInStatus.realmSynced);
+    });
+  }
 
-    emit(state.copyWith(status: SingInStatus.initialized));
+  Future<SingInState> _syncUsersByRealm() async {
+    final Either<Failure, List<User>> result =
+        await getUsersByRealm.execute(currentRealm);
+    return result.fold(
+        (l) => state.copyWith(
+            status: SingInStatus.error, errorMessage: "Some storage error"),
+        (users) =>
+            state.copyWith(status: SingInStatus.usersSynced, prevUsers: users));
   }
 
   void setRealmPreference(String realm) async {
+    emit(state.copyWith(status: SingInStatus.loading));
+
     bool result = await setRealm.execute(EU);
-    result
-        ? emit( state.copyWith(status: SingInStatus.initialized) )
-        : emit(const ErrorState(message: "DataBase Error"));
+    if (result) {
+      currentRealm = realm;
+      emit(state.copyWith(status: SingInStatus.realmSynced));
+    }
+    emit(state.copyWith(
+        status: SingInStatus.error, errorMessage: "Some storage error"));
   }
 
-  void saveUserInToDataBase(User user) async {
-    emit(const LoadingState());
+  //todo move it to the sing up cubit/page
+  /*void saveUserInToDataBase(User user) async {
+    emit(state.copyWith(status: SingInStatus.loading));
 
-    final bool result = await saveUser.execute(user, _realm);
+    final bool result = await saveUser.execute(user, currentRealm);
     result
         ? emit(const LoadedState())
         : emit(const ErrorState(message: "User do not saved"));
-  }
-
-  void getSavedUsersByRealm() async {
-    final Either<Failure, List<User>> result =
-        await getUsersByRealm.execute(_realm);
-    final SingInState themeState = result.fold(
-            (l) => ErrorState(message: l.message!),
-            (r) => null
-    );
-  }
+  }*/
 }

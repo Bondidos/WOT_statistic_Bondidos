@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:wot_statistic/common/constants/constants.dart';
 import 'package:wot_statistic/common/errors/failure.dart';
 import 'package:wot_statistic/layers/data/sources/local_data_source.dart';
 import 'package:wot_statistic/layers/domain/entities/user.dart';
@@ -57,7 +58,14 @@ class RepositoryImpl extends Repository {
   @override
   Future<Either<Failure, String>> syncRealmPreference() async {
     try {
-      return Right(await localSource.syncRealmPreference());
+      //if the first launch? result will be null
+      String? result = await localSource.syncRealmPreference();
+      // default realm is EU
+      if (result == null) {
+        bool result = await setRealm(EU);
+        return result ? const Right(EU) : const Left(Failure());
+      }
+      return Right(result);
     } catch (e) {
       return const Left(Failure());
     }
