@@ -9,6 +9,9 @@ import 'package:wot_statistic/layers/presentation/sing_in_page/widgets/animated_
 import 'package:wot_statistic/layers/presentation/sing_in_page/widgets/region_picker.dart';
 import 'package:wot_statistic/layers/presentation/sing_in_page/widgets/themed_button.dart';
 import 'package:wot_statistic/layers/presentation/sing_in_page/widgets/user_picker.dart';
+import 'package:wot_statistic/layers/presentation/singup_user/singup_user_page.dart';
+
+import '../../../common/constants/constants.dart';
 
 class SingInPage extends StatelessWidget {
   const SingInPage({Key? key}) : super(key: key);
@@ -85,11 +88,11 @@ class _SingInPageState extends State<SingInPage> {
                       const SizedBox(height: 20),
                       ThemedButton(
                           title: "Sing Up",
-                          onTap: () {
+                          onTap: () async {
                             /**
                              * Testing save user in to DB
                              * */
-                            Random rd = Random();
+                            /*Random rd = Random();
                             var rand = rd.nextInt(10000);
                             context.read<SingInCubit>().saveUserInToDataBase(
                                 User(
@@ -98,9 +101,18 @@ class _SingInPageState extends State<SingInPage> {
                                   accessToken: "accessToken",
                                   expiresAt: rand+1,
                                 )
-                            );
+                            );*/
+
 
                             //todo navigate webView SingUp, await result, save into repo
+                            String realm = context.read<SingInCubit>().currentRealm;
+                            // String url = (realm == EU) ? EU_LOGIN_URL : CIS_LOGIN_URL;
+
+                            User user = await Navigator.of(context)
+                                .pushNamed(SingUpPage.id, arguments: realm) as User;
+                            context.read<SingInCubit>().saveUserInToDataBase(user);
+
+
 
                           }),
                       const SizedBox(height: 20),

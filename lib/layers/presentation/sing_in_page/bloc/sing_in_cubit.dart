@@ -79,6 +79,7 @@ class SingInCubit extends Cubit<SingInState> {
       emit(state.copyWith(
           status: SingInStatus.error, errorMessage: "Some storage error"));
     }
+    emit(await _syncUsersByRealm());
   }
 
   // todo add remove user option
