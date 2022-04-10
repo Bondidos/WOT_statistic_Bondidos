@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:wot_statistic/common/theme/text_styles.dart';
 import 'package:wot_statistic/layers/presentation/sing_in_page/bloc/sing_in_cubit.dart';
 
 import '../../../domain/entities/user.dart';
@@ -9,9 +10,6 @@ class UserPicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    // todo stream builder looks like better idea ?
-
     return BlocBuilder<SingInCubit, SingInState>(
       buildWhen: (prevState, currentState) =>
           (currentState.status == SingInStatus.usersSynced ||
@@ -22,39 +20,57 @@ class UserPicker extends StatelessWidget {
             state.status == SingInStatus.initialized) {
           final List<User> previousUsers = state.prevUsers;
 
-          List<String> usersInCache =
+          final List<String> usersInCache =
               previousUsers.map((e) => e.nickname).toList();
+
+          final Color _onPrimary = Theme.of(context).colorScheme.onPrimary;
+          final Color _secondary = Theme.of(context).colorScheme.secondary;
 
           String? currentUser = (usersInCache.isEmpty) ? null : usersInCache[0];
 
           return currentUser != null
-              ? Column(
-                  children: [
-                    const Text("Login as..."),
-                    DropdownButton<String>(
-                      value: currentUser,
-                      icon: const Icon(Icons.arrow_drop_down),
-                      iconSize: 24,
-                      elevation: 16,
-                      style: Theme.of(context).textTheme.bodyMedium,
-                      underline: Container(
-                        height: 2,
-                        color: Theme.of(context).colorScheme.secondary,
-                      ),
-                      onChanged: (data) {
-                        if (data != null) {
-                          currentUser = data;
-                        }
-                      },
-                      items:
-                          usersInCache.map<DropdownMenuItem<String>>((value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
+              ? Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: _secondary,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: Column(
+                      children: [
+                        DropdownButton<String>(
+                          dropdownColor: _secondary,
+                          value: currentUser,
+                          icon: Icon(
+                            Icons.arrow_drop_down,
+                            color: _onPrimary,
+                          ),
+                          iconSize: 24,
+                          elevation: 16,
+                          underline: Container(
+                            height: 2,
+                            color: _secondary,
+                          ),
+                          onChanged: (data) {
+                            if (data != null) {
+                              currentUser = data;
+                            }
+                          },
+                          items: usersInCache
+                              .map<DropdownMenuItem<String>>((value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(
+                                value,
+                                maxLines: 1,
+                                style: onPrimaryTitle(context),
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 )
               : Container();
         }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wot_statistic/common/theme/text_styles.dart';
 import 'package:wot_statistic/layers/presentation/settings_page/settings_page.dart';
 import 'package:wot_statistic/layers/presentation/singup_user/singup_user_page.dart';
 import 'injection_container.dart' as di;
@@ -32,8 +33,25 @@ class MyApp extends StatelessWidget {
         }
         return MaterialApp(
           theme: (state is ThemeDark)
-              ? ThemeData.dark()
-              : ThemeData.light(),
+              ? ThemeData(
+                  colorScheme: const ColorScheme.dark().copyWith(
+                    primary: const Color(0xff14213d),
+                    secondary: const Color(0xff003566),
+                    onPrimary: const Color(0xfffca311),
+                    onSurface: const Color(0xff98c1d9),
+                  ),
+                  fontFamily: "Krona One",
+                )
+              : ThemeData(
+                  primaryColor: const Color(0xfff3dca2),
+                  colorScheme: const ColorScheme.light().copyWith(
+                    primary: const Color(0xfff4845f),
+                    secondary: const Color(0xff8d99ae),
+                    onPrimary: const Color(0xff2b2d42),
+                    onSurface: const Color(0xfff3dca2), //0xff1f1f2d
+                  ),
+                  fontFamily: "Krona One",
+                ),
           routes: {
             SingInPage.id: (ctx) => const SingInPage(),
             SettingsPage.id: (ctx) => const SettingsPage(),

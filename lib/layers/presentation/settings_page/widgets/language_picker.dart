@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../../common/theme/text_styles.dart';
+
 enum MenuOption { eng, ru }
 //todo lang realm to shared prefs
 class LanguagePicker extends StatefulWidget {
@@ -21,8 +23,8 @@ class _LanguagePickerState extends State<LanguagePicker> {
       children: [
         //todo font bigger
         (picked == MenuOption.eng)
-            ? const Text("English")
-            : const Text("Russian"),
+            ? Text("English", style: onSurfaceSubtitle(context),)
+            : Text("Russian", style: onSurfaceSubtitle(context),),
         PopupMenuButton(
           icon: const Icon(Icons.arrow_drop_down_sharp),
           itemBuilder: (ctx) {
@@ -34,7 +36,7 @@ class _LanguagePickerState extends State<LanguagePicker> {
                   });
                   //todo set lang (ThemeCubit)
                 },
-                child: const Text("English"),
+                child: Text("English", style: onSurfaceSubtitle(context),),
                 ),
               PopupMenuItem(
                 onTap: () {
@@ -43,7 +45,7 @@ class _LanguagePickerState extends State<LanguagePicker> {
                   });
                   //todo set lang (cubit)
                 },
-                child: const Text("Russian"),
+                child: Text("Russian", style: onSurfaceSubtitle(context),),
                 ),
             ];
           },

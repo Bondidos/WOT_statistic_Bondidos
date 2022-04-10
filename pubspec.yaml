@@ -50,3 +50,12 @@ flutter:
   assets:
     - assets/realm/
     - assets/background/
+
+  fonts:
+    - family: Lobster
+      fonts:
+        - asset: fonts/Lobster-Regular.ttf
+
+    - family: Krona One
+      fonts:
+        - asset: fonts/KronaOne-Regular.ttf

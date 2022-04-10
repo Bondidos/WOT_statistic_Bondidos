@@ -5,6 +5,10 @@ import 'package:webview_flutter/webview_flutter.dart';
 import 'package:wot_statistic/layers/domain/entities/user.dart';
 
 import '../../../common/constants/constants.dart';
+import '../../../common/theme/text_styles.dart';
+
+const String status = "status";
+
 
 class SingUpPage extends StatefulWidget {
   const SingUpPage({Key? key}) : super(key: key);
@@ -29,7 +33,7 @@ class _SingUpPageState extends State<SingUpPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(SingUpPage.id),
+        title: Text(SingUpPage.id,style: appBarTitle(context)),
         actions: [
           IconButton(
             onPressed: () {

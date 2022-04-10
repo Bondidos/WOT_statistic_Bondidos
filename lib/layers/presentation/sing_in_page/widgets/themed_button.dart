@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wot_statistic/common/theme/text_styles.dart';
 
 class ThemedButton extends StatelessWidget {
   const ThemedButton({
@@ -15,9 +16,16 @@ class ThemedButton extends StatelessWidget {
     return SizedBox(
       width: MediaQuery.of(context).size.width / 3,
       child: ElevatedButton(
-          style: ElevatedButton.styleFrom(),
-          onPressed: () => onTap(),
-          child: Text(title)),
+        style: ButtonStyle(
+          backgroundColor:
+              MaterialStateProperty.all<Color?>(Theme.of(context).colorScheme.primary),
+        ),
+        onPressed: () => onTap(),
+        child: Text(
+          title,
+          style: onSurfaceSubtitle(context),
+        ),
+      ),
     );
   }
 }
