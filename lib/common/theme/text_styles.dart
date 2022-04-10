@@ -16,6 +16,14 @@ TextStyle onSurfaceSubtitle(BuildContext context) {
   );
 }
 
+TextStyle onSecondarySubtitle(BuildContext context) {
+  return TextStyle(
+    fontSize: Theme.of(context).textTheme.titleMedium?.fontSize,
+    fontStyle: FontStyle.normal,
+    color: Theme.of(context).colorScheme.onSecondary,
+  );
+}
+
 TextStyle appBarTitle(BuildContext context) {
   return TextStyle(
     fontSize: Theme.of(context).textTheme.headline5?.fontSize,

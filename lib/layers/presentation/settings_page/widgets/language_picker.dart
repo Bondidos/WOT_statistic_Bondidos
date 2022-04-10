@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../common/theme/text_styles.dart';
 
 enum MenuOption { eng, ru }
+
 //todo lang realm to shared prefs
 class LanguagePicker extends StatefulWidget {
   const LanguagePicker({Key? key}) : super(key: key);
@@ -12,19 +13,23 @@ class LanguagePicker extends StatefulWidget {
 }
 
 class _LanguagePickerState extends State<LanguagePicker> {
-
   // todo sync with native? / set from prefs
   MenuOption picked = MenuOption.eng;
 
   @override
   Widget build(BuildContext context) {
-
     return Row(
       children: [
         //todo font bigger
         (picked == MenuOption.eng)
-            ? Text("English", style: onSurfaceSubtitle(context),)
-            : Text("Russian", style: onSurfaceSubtitle(context),),
+            ? Text(
+                "English",
+                style: onSecondarySubtitle(context),
+              )
+            : Text(
+                "Russian",
+                style: onSecondarySubtitle(context),
+              ),
         PopupMenuButton(
           icon: const Icon(Icons.arrow_drop_down_sharp),
           itemBuilder: (ctx) {
@@ -36,8 +41,11 @@ class _LanguagePickerState extends State<LanguagePicker> {
                   });
                   //todo set lang (ThemeCubit)
                 },
-                child: Text("English", style: onSurfaceSubtitle(context),),
+                child: Text(
+                  "English",
+                  style: onSecondarySubtitle(context),
                 ),
+              ),
               PopupMenuItem(
                 onTap: () {
                   setState(() {
@@ -45,13 +53,15 @@ class _LanguagePickerState extends State<LanguagePicker> {
                   });
                   //todo set lang (cubit)
                 },
-                child: Text("Russian", style: onSurfaceSubtitle(context),),
+                child: Text(
+                  "Russian",
+                  style: onSecondarySubtitle(context),
                 ),
+              ),
             ];
           },
         ),
       ],
     );
   }
-
 }

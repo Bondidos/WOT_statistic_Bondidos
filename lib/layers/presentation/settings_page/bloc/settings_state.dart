@@ -19,13 +19,13 @@ class ThemeLight extends SettingsState {
 }
 
 class SettingsInit extends SettingsState {
-
   @override
   List<Object?> get props => [];
 }
 
 class SettingsError extends SettingsState {
   final String message;
+
   const SettingsError({required this.message});
 
   @override

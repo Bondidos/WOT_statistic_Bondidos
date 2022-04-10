@@ -34,35 +34,3 @@ class SingInState extends Equatable {
   }
 }
 
-/*abstract class SingInState extends Equatable {
-  const SingInState();
-}
-
-class InitSingInState extends SingInState {
-  const InitSingInState();
-
-  @override
-  List<Object?> get props => [];
-}
-
-class LoadingState extends SingInState {
-  const LoadingState();
-
-  @override
-  List<Object?> get props => [];
-}
-
-class LoadedState extends SingInState {
-  const LoadedState();
-
-  @override
-  List<Object?> get props => [];
-}
-
-class ErrorState extends SingInState {
-  final String message;
-  const ErrorState({required this.message});
-
-  @override
-  List<Object?> get props => [];
-}*/

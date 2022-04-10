@@ -36,10 +36,23 @@ class SingInPage extends StatelessWidget {
           )
         ],
       ),
-      body: BlocBuilder<SingInCubit, SingInState>(
+      body: BlocConsumer<SingInCubit, SingInState>(
+        listener: (prevState, currentState) {
+          if (currentState.status == SingInStatus.error) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  currentState.errorMessage!,
+                  style: onSecondarySubtitle(context),
+                ),
+                duration: const Duration(seconds: 2),
+              ),
+            );
+          }
+        },
         buildWhen: (prevState, currentState) =>
-            (currentState.status == SingInStatus.initialized &&
-                currentState != prevState),
+            (currentState.status == SingInStatus.initialized ||
+                currentState.status == SingInStatus.initializing),
         builder: (ctx, state) {
           if (state.status == SingInStatus.initialized) {
             return Stack(
@@ -72,6 +85,17 @@ class SingInPage extends StatelessWidget {
                       ThemedButton(
                         title: "Sing In",
                         onTap: () {
+                          if (state.prevUsers.isEmpty) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  "Please, sing up first",
+                                  style: onSecondarySubtitle(context),
+                                ),
+                                duration: const Duration(seconds: 2),
+                              ),
+                            );
+                          }
                           //todo validate user token
                           //todo navigate statisticScreen
                         },
@@ -84,7 +108,8 @@ class SingInPage extends StatelessWidget {
                                 context.read<SingInCubit>().currentRealm;
 
                             User? user = await Navigator.of(context)
-                                .pushNamed(SingUpPage.id, arguments: realm) as User?;
+                                    .pushNamed(SingUpPage.id, arguments: realm)
+                                as User?;
 
                             if (user != null) {
                               context
@@ -96,7 +121,7 @@ class SingInPage extends StatelessWidget {
                       ThemedButton(
                           title: "Delete",
                           onTap: () {
-                            //todo delete current user from app
+                            context.read<SingInCubit>().removeUser();
                           }),
                       const SizedBox(height: 20),
                     ],

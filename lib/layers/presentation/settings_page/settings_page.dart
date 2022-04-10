@@ -22,26 +22,36 @@ class _SettingsPageState extends State<SettingsPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(SettingsPage.id, style: appBarTitle(context),),
+        title: Text(
+          SettingsPage.id,
+          style: appBarTitle(context),
+        ),
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
             const SizedBox(height: 25),
-            Center(child: Text("Theme Settings", style: onPrimarySubtitle(context),)),
+            Center(
+                child: Text(
+              "Theme Settings",
+              style: onPrimarySubtitle(context),
+            )),
             Divider(
               thickness: 3,
-              color: Theme.of(context).dividerColor,
+              color: Theme.of(context).colorScheme.secondary
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                 Flexible(
+                Flexible(
                     flex: 5,
                     child: Padding(
                       padding: const EdgeInsets.only(left: 10.0),
-                      child: Text("Enable Dark Theme", style: onSurfaceSubtitle(context),),
+                      child: Text(
+                        "Enable Dark Theme",
+                        style: onSecondarySubtitle(context),
+                      ),
                     )),
                 Flexible(
                   flex: 2,
@@ -52,8 +62,11 @@ class _SettingsPageState extends State<SettingsPage> {
                       onChanged: (value) {
                         themeCubit.switchTheme();
                         if (state is SettingsError) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text(state.message, style: onSurfaceSubtitle(context),)));
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text(
+                            state.message,
+                            style: onSurfaceSubtitle(context),
+                          )));
                         } else {
                           setState(() {
                             _switchState = !value;
@@ -66,10 +79,14 @@ class _SettingsPageState extends State<SettingsPage> {
               ],
             ),
             const SizedBox(height: 25),
-            Center(child: Text("Localization Settings",style: onPrimarySubtitle(context),)),
+            Center(
+                child: Text(
+              "Localization Settings",
+              style: onPrimarySubtitle(context),
+            )),
             Divider(
               thickness: 3,
-              color: Theme.of(context).dividerColor,
+              color: Theme.of(context).colorScheme.secondary,
             ),
             Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -79,7 +96,10 @@ class _SettingsPageState extends State<SettingsPage> {
                     flex: 3,
                     child: Padding(
                       padding: const EdgeInsets.only(left: 10.0),
-                      child: Text("Language", style: onSurfaceSubtitle(context),),
+                      child: Text(
+                        "Language",
+                        style: onSecondarySubtitle(context),
+                      ),
                     ),
                   ),
                   const Flexible(
@@ -91,10 +111,14 @@ class _SettingsPageState extends State<SettingsPage> {
                   ),
                 ]),
             const SizedBox(height: 25),
-            Center(child: Text("About App", style: onPrimarySubtitle(context),)),
+            Center(
+                child: Text(
+              "About App",
+              style: onPrimarySubtitle(context),
+            )),
             Divider(
               thickness: 3,
-              color: Theme.of(context).dividerColor,
+              color: Theme.of(context).colorScheme.secondary,
             ),
           ],
         ),
@@ -102,7 +126,3 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 }
-
-
-
-

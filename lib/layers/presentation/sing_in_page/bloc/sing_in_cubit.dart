@@ -2,13 +2,14 @@ import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:wot_statistic/common/constants/constants.dart';
-import 'package:wot_statistic/layers/domain/usecases/saved_users_by_realm.dart';
 
 import '../../../../common/errors/failure.dart';
 import '../../../domain/entities/user.dart';
-import '../../../domain/usecases/save_user_usecase.dart';
-import '../../../domain/usecases/set_realm_pref_usecase.dart';
-import '../../../domain/usecases/sync_realm_usecase.dart';
+import '../../../domain/use_cases/remove_user_use_case.dart';
+import '../../../domain/use_cases/save_user_use_case.dart';
+import '../../../domain/use_cases/saved_users_by_realm.dart';
+import '../../../domain/use_cases/set_realm_pref_use_case.dart';
+import '../../../domain/use_cases/sync_realm_use_case.dart';
 
 part 'sing_in_state.dart';
 
@@ -17,18 +18,25 @@ class SingInCubit extends Cubit<SingInState> {
   final GetSavedUsersByRealm getUsersByRealm;
   final SyncRealmUseCase syncRealm;
   final SetRealmPrefUseCase setRealm;
+  final RemoveUserUseCase removeUserUseCase;
 
   SingInCubit({
     required this.setRealm,
     required this.saveUser,
     required this.getUsersByRealm,
     required this.syncRealm,
+    required this.removeUserUseCase,
   }) : super(const SingInState(
             prevUsers: [], status: SingInStatus.initial, errorMessage: null)) {
     _initialize();
   }
 
-  late String currentRealm;
+  String _currentRealm = NOT_PICKED;
+  String _currentUser = NOT_PICKED;
+
+  String get currentUser => _currentUser;
+
+  String get currentRealm => _currentRealm;
 
   void _initialize() async {
     emit(state.copyWith(status: SingInStatus.initializing));
@@ -47,13 +55,13 @@ class SingInCubit extends Cubit<SingInState> {
   Future<SingInState> _syncRealmPref() async {
     final Either<Failure, String> result = await syncRealm.execute();
     return result.fold((l) {
-      currentRealm = NOT_PICKED;
+      _currentRealm = NOT_PICKED;
       return state.copyWith(
         status: SingInStatus.error,
         errorMessage: "Some storage error",
       );
     }, (realm) {
-      currentRealm = realm;
+      _currentRealm = realm;
       return state.copyWith(status: SingInStatus.realmSynced);
     });
   }
@@ -73,7 +81,7 @@ class SingInCubit extends Cubit<SingInState> {
 
     bool result = await setRealm.execute(realm);
     if (result) {
-      currentRealm = realm;
+      _currentRealm = realm;
       emit(state.copyWith(status: SingInStatus.realmSynced));
     } else {
       emit(state.copyWith(
@@ -82,10 +90,34 @@ class SingInCubit extends Cubit<SingInState> {
     emit(await _syncUsersByRealm());
   }
 
-  // todo add remove user option
+  void removeUser() async {
+    emit(state.copyWith(status: SingInStatus.loading));
+    if (_currentUser == NOT_PICKED) {
+      emit(
+        state.copyWith(
+            status: SingInStatus.error, errorMessage: "Nothing to delete"),
+      );
+      return;
+    }
+    final User userToRemove =
+        state.prevUsers.firstWhere((user) => user.nickname == _currentUser);
+    _currentUser = NOT_PICKED;
+    final bool result =
+        await removeUserUseCase.execute(userToRemove, currentRealm);
+    result
+        ? emit(await _syncUsersByRealm())
+        : emit(
+            state.copyWith(
+                status: SingInStatus.error, errorMessage: "Some storage error"),
+          );
+  }
 
+  void setCurrentUser(String user) {
+    emit(state.copyWith(status: SingInStatus.loading));
+    _currentUser = user;
+    emit(state.copyWith(status: SingInStatus.usersSynced));
+  }
 
-  //todo move it to the sing up cubit/page
   void saveUserInToDataBase(User user) async {
     emit(state.copyWith(status: SingInStatus.loading));
 

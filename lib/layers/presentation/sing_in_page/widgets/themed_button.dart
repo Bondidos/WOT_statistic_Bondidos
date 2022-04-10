@@ -17,8 +17,8 @@ class ThemedButton extends StatelessWidget {
       width: MediaQuery.of(context).size.width / 3,
       child: ElevatedButton(
         style: ButtonStyle(
-          backgroundColor:
-              MaterialStateProperty.all<Color?>(Theme.of(context).colorScheme.primary),
+          backgroundColor: MaterialStateProperty.all<Color?>(
+              Theme.of(context).colorScheme.primary),
         ),
         onPressed: () => onTap(),
         child: Text(

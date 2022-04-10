@@ -12,9 +12,7 @@ class RegionPicker extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<SingInCubit, SingInState>(
       buildWhen: (prevState, currentState) =>
-          (currentState.status == SingInStatus.realmSynced ||
-              currentState.status == SingInStatus.initialized &&
-                  currentState != prevState),
+          (currentState.status == SingInStatus.realmSynced),
       builder: (ctx, state) {
         if (state.status == SingInStatus.realmSynced ||
             state.status == SingInStatus.initialized) {

@@ -2,10 +2,10 @@ import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/services.dart';
-import 'package:wot_statistic/layers/domain/usecases/sync_theme_usecase.dart';
 
 import '../../../../common/constants/constants.dart';
 import '../../../../common/errors/failure.dart';
+import '../../../domain/use_cases/sync_theme_use_case.dart';
 
 part 'settings_state.dart';
 
@@ -45,13 +45,12 @@ class SettingsCubit extends Cubit<SettingsState> {
 
   bool get isDarkTheme => (state is ThemeDark) ? true : false;
 
-  // todo test this method !!! and/or move to useCase
   Future<SettingsState> getPlatformTheme() async {
     const MethodChannel platform = MethodChannel(CHANNEL);
     final String platformTheme;
     try {
       platformTheme = await platform.invokeMethod(GET_THEME);
-    } on PlatformException catch (e) {
+    } on PlatformException catch (_) {
       return const SettingsError(message: "Error while sync theme");
     }
     if (platformTheme == DARK_THEME) {

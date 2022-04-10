@@ -1,12 +1,8 @@
-import 'package:dartz/dartz.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:wot_statistic/layers/data/models/UserData.dart';
+import 'package:wot_statistic/layers/data/models/user_data.dart';
 import 'package:wot_statistic/layers/data/sources/local_data_source.dart';
-import 'package:wot_statistic/layers/domain/entities/user.dart';
-import 'package:wot_statistic/layers/local/datasources/sqflite/sqflite.dart';
-
 import '../../../../common/constants/constants.dart';
-import '../../../../common/errors/failure.dart';
+import '../sources/sqf_lite.dart';
 
 class LocalDataSourceImpl extends LocalDataSource {
   final SharedPreferences sharedPreferences;
@@ -32,20 +28,25 @@ class LocalDataSourceImpl extends LocalDataSource {
 
   @override
   Future<List<UserData>> getSavedUsersByRealm(String realm) async {
-    var list = await sqfLite.getSavedUsersByRealm(realm);
-    List<UserData> result = list.map((e) => UserData.fromMap(e)).toList();
+    final list = await sqfLite.getSavedUsersByRealm(realm);
+    final List<UserData> result = list.map((e) => UserData.fromMap(e)).toList();
     return Future.value(result);
   }
 
   @override
   Future<String?> syncRealmPreference() {
-    String? pref = sharedPreferences.getString(REALM_KEY);
+    final String? pref = sharedPreferences.getString(REALM_KEY);
     return Future.value(pref);
   }
 
   @override
   Future<bool> setRealm(String realm) {
-    Future<bool> result = sharedPreferences.setString(REALM_KEY, realm);
+    final Future<bool> result = sharedPreferences.setString(REALM_KEY, realm);
     return Future.value(result);
+  }
+
+  @override
+  Future<int> removeUser(UserData user, String realm) {
+    return sqfLite.removeUserByRealm(user.toMap(), realm);
   }
 }

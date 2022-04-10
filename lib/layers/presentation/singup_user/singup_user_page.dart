@@ -9,7 +9,6 @@ import '../../../common/theme/text_styles.dart';
 
 const String status = "status";
 
-
 class SingUpPage extends StatefulWidget {
   const SingUpPage({Key? key}) : super(key: key);
   static const id = "OpenId login";
@@ -33,7 +32,7 @@ class _SingUpPageState extends State<SingUpPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(SingUpPage.id,style: appBarTitle(context)),
+        title: Text(SingUpPage.id, style: appBarTitle(context)),
         actions: [
           IconButton(
             onPressed: () {

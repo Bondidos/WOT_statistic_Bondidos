@@ -5,7 +5,7 @@ import 'package:wot_statistic/layers/data/sources/local_data_source.dart';
 import 'package:wot_statistic/layers/domain/entities/user.dart';
 import 'package:wot_statistic/layers/domain/repositories/repository.dart';
 
-import '../models/UserData.dart';
+import '../models/user_data.dart';
 
 class RepositoryImpl extends Repository {
   final LocalDataSource localSource;
@@ -58,7 +58,7 @@ class RepositoryImpl extends Repository {
   @override
   Future<Either<Failure, String>> syncRealmPreference() async {
     try {
-      //if the first launch? result will be null
+      //is the first launch? result will be null
       String? result = await localSource.syncRealmPreference();
       // default realm is EU
       if (result == null) {
@@ -75,6 +75,17 @@ class RepositoryImpl extends Repository {
   Future<bool> setRealm(String realm) async {
     try {
       return localSource.setRealm(realm);
+    } catch (e) {
+      return false;
+    }
+  }
+
+  @override
+  Future<bool> removeUserUseCase(User user, String realm) async {
+    try {
+      final int result =
+          await localSource.removeUser(UserData.fromUser(user), realm);
+      return result != 0 ? true : false;
     } catch (e) {
       return false;
     }

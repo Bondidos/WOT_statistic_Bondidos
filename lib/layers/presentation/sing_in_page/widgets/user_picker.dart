@@ -3,32 +3,32 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wot_statistic/common/theme/text_styles.dart';
 import 'package:wot_statistic/layers/presentation/sing_in_page/bloc/sing_in_cubit.dart';
 
-import '../../../domain/entities/user.dart';
+import '../../../../common/constants/constants.dart';
 
 class UserPicker extends StatelessWidget {
   const UserPicker({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final Color _onPrimary = Theme.of(context).colorScheme.onPrimary;
+    final Color _secondary = Theme.of(context).colorScheme.secondary;
+
     return BlocBuilder<SingInCubit, SingInState>(
       buildWhen: (prevState, currentState) =>
-          (currentState.status == SingInStatus.usersSynced ||
-              currentState.status == SingInStatus.initialized &&
-                  currentState != prevState),
+          (currentState.status == SingInStatus.usersSynced),
       builder: (ctx, state) {
         if (state.status == SingInStatus.usersSynced ||
             state.status == SingInStatus.initialized) {
-          final List<User> previousUsers = state.prevUsers;
-
           final List<String> usersInCache =
-              previousUsers.map((e) => e.nickname).toList();
+              state.prevUsers.map((e) => e.nickname).toList();
+          final String currentUser = context.read<SingInCubit>().currentUser;
 
-          final Color _onPrimary = Theme.of(context).colorScheme.onPrimary;
-          final Color _secondary = Theme.of(context).colorScheme.secondary;
+          String userNameToDisplay =
+              (usersInCache.isNotEmpty && currentUser == NOT_PICKED)
+                  ? usersInCache.first
+                  : currentUser;
 
-          String? currentUser = (usersInCache.isEmpty) ? null : usersInCache[0];
-
-          return currentUser != null
+          return userNameToDisplay != NOT_PICKED
               ? Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
@@ -40,7 +40,7 @@ class UserPicker extends StatelessWidget {
                       children: [
                         DropdownButton<String>(
                           dropdownColor: _secondary,
-                          value: currentUser,
+                          value: userNameToDisplay,
                           icon: Icon(
                             Icons.arrow_drop_down,
                             color: _onPrimary,
@@ -53,7 +53,7 @@ class UserPicker extends StatelessWidget {
                           ),
                           onChanged: (data) {
                             if (data != null) {
-                              currentUser = data;
+                              context.read<SingInCubit>().setCurrentUser(data);
                             }
                           },
                           items: usersInCache

@@ -1,8 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import '../../local/datasources/sqflite/sqflite.dart';
-
-class User extends Equatable{
+class User extends Equatable {
   final int id;
   final String nickname;
   final String accessToken;
@@ -16,5 +14,5 @@ class User extends Equatable{
   });
 
   @override
-  List<Object?> get props => [id,nickname,accessToken,expiresAt];
+  List<Object?> get props => [id, nickname, accessToken, expiresAt];
 }
