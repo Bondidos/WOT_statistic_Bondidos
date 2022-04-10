@@ -52,9 +52,11 @@ class SingInPage extends StatelessWidget {
         },
         buildWhen: (prevState, currentState) =>
             (currentState.status == SingInStatus.initialized ||
-                currentState.status == SingInStatus.initializing),
+                currentState.status == SingInStatus.initializing ||
+                currentState.status == SingInStatus.usersSynced),
         builder: (ctx, state) {
-          if (state.status == SingInStatus.initialized) {
+          if (state.status == SingInStatus.initialized ||
+              state.status == SingInStatus.usersSynced) {
             return Stack(
               alignment: Alignment.topCenter,
               children: [

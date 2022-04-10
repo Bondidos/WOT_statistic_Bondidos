@@ -71,9 +71,13 @@ class SingInCubit extends Cubit<SingInState> {
         await getUsersByRealm.execute(currentRealm);
     return result.fold(
         (l) => state.copyWith(
-            status: SingInStatus.error, errorMessage: "Some storage error"),
-        (users) =>
-            state.copyWith(status: SingInStatus.usersSynced, prevUsers: users));
+            status: SingInStatus.error,
+            errorMessage: "Some storage error"), (users) {
+      _currentUser = users.isNotEmpty
+          ? users.first.nickname
+          : NOT_PICKED;
+      return state.copyWith(status: SingInStatus.usersSynced, prevUsers: users);
+    });
   }
 
   void setRealmPreference(String realm) async {
@@ -101,7 +105,9 @@ class SingInCubit extends Cubit<SingInState> {
     }
     final User userToRemove =
         state.prevUsers.firstWhere((user) => user.nickname == _currentUser);
-    _currentUser = NOT_PICKED;
+    _currentUser = state.prevUsers.isNotEmpty
+        ? state.prevUsers.first.nickname
+        : NOT_PICKED;
     final bool result =
         await removeUserUseCase.execute(userToRemove, currentRealm);
     result
