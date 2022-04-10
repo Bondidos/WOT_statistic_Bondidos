@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -16,8 +15,7 @@ class SingUpPage extends StatefulWidget {
 }
 
 class _SingUpPageState extends State<SingUpPage> {
-  final Completer<WebViewController> _controller =
-      Completer<WebViewController>();
+  late final WebViewController _controller;
 
   @override
   void initState() {
@@ -34,17 +32,23 @@ class _SingUpPageState extends State<SingUpPage> {
         title: const Text(SingUpPage.id),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              _controller.reload();
+            },
             icon: const Icon(Icons.refresh),
           )
         ],
       ),
       body: WebView(
-        initialCookies: [],
         javascriptMode: JavascriptMode.unrestricted,
-        onWebViewCreated: (WebViewController webViewController) {
-          _controller.complete(webViewController);
+        onWebViewCreated: (webViewController) {
+          _controller = webViewController;
+          _controller.clearCache();
+
+          final cookieManager = CookieManager();
+          cookieManager.clearCookies();
         },
+        userAgent: 'random',
         initialUrl: (realm == EU) ? EU_LOGIN_URL : CIS_LOGIN_URL,
         onPageStarted: (url) {
           if (url.contains(REDIRECT_URL)) {
