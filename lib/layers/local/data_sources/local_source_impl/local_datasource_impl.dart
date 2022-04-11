@@ -1,14 +1,15 @@
+import 'package:drift/drift.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wot_statistic/layers/data/models/user_data.dart';
 import 'package:wot_statistic/layers/data/sources/local_data_source.dart';
+import 'package:wot_statistic/layers/local/data_sources/sources/database.dart';
 import '../../../../common/constants/constants.dart';
-import '../sources/sqf_lite.dart';
 
 class LocalDataSourceImpl extends LocalDataSource {
   final SharedPreferences sharedPreferences;
-  final DatabaseHelper sqfLite;
+  final WotStatDatabase driftDatabase;
 
-  LocalDataSourceImpl({required this.sharedPreferences, required this.sqfLite});
+  LocalDataSourceImpl({required this.sharedPreferences, required this.driftDatabase});
 
   @override
   Future<String?> getThemePreference() {
@@ -23,8 +24,18 @@ class LocalDataSourceImpl extends LocalDataSource {
   }
 
   @override
-  Future<int> saveUser(UserData user, String realm) =>
-      sqfLite.insertUserByRealm(user.toMap(), realm);
+  Future<int> saveUser(UserData user, String realm) {
+    UserTableCompanion userTable = UserTableCompanion(
+        id: Value(user.id),
+        nickname: Value(user.nickname),
+        token: Value(user.accessToken),
+        expiresAt: Value(user.expiresAt),
+        realm: Value(realm),
+    );
+  return driftDatabase.into(driftDatabase.userTable).insert(userTable, mode: InsertMode.replace);
+}
+  //    sqfLite.insertUserByRealm(user.toMap(), realm);
+
 
   @override
   Future<List<UserData>> getSavedUsersByRealm(String realm) async {

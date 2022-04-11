@@ -45,6 +45,7 @@ class SettingsCubit extends Cubit<SettingsState> {
 
   bool get isDarkTheme => (state is ThemeDark) ? true : false;
 
+  // todo theme from web browser (?)
   Future<SettingsState> getPlatformTheme() async {
     const MethodChannel platform = MethodChannel(CHANNEL);
     final String platformTheme;

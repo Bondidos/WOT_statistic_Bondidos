@@ -1,5 +1,4 @@
 import '../../domain/entities/user.dart';
-import '../../local/data_sources/sources/sqf_lite.dart';
 
 class UserData extends User {
   const UserData({
@@ -14,7 +13,7 @@ class UserData extends User {
           expiresAt: expiresAt,
         );
 
-  factory UserData.fromMap(Map<String, dynamic> sqlUser) {
+  /*factory UserData.fromMap(Map<String, dynamic> sqlUser) {
     return UserData(
       id: sqlUser[DatabaseHelper.columnId],
       nickname: sqlUser[DatabaseHelper.nickname],
@@ -38,7 +37,7 @@ class UserData extends User {
       DatabaseHelper.accessToken: accessToken,
       DatabaseHelper.expiresAt: expiresAt,
     };
-  }
+  }*/
 
   @override
   List<Object?> get props => [id, nickname, accessToken, expiresAt];
