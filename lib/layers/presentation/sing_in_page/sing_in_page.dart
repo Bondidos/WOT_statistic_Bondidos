@@ -8,6 +8,7 @@ import 'package:wot_statistic/layers/presentation/sing_in_page/widgets/region_pi
 import 'package:wot_statistic/layers/presentation/sing_in_page/widgets/themed_button.dart';
 import 'package:wot_statistic/layers/presentation/sing_in_page/widgets/user_picker.dart';
 import 'package:wot_statistic/layers/presentation/singup_user/singup_user_page.dart';
+import 'package:wot_statistic/layers/presentation/statistic_page/statistic_page.dart';
 
 import '../../../common/theme/text_styles.dart';
 
@@ -87,17 +88,12 @@ class SingInPage extends StatelessWidget {
                       ThemedButton(
                         title: "Sing In",
                         onTap: () {
-                          if (state.prevUsers.isEmpty) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                  "Please, sing up first",
-                                  style: onSecondarySubtitle(context),
-                                ),
-                                duration: const Duration(seconds: 2),
-                              ),
-                            );
-                          }
+                          User? logInEdUser =
+                              context.read<SingInCubit>().currentUser;
+                          if (logInEdUser == null) return;
+                          Navigator.of(context).pushReplacementNamed(
+                              StatisticPage.id,
+                              arguments: logInEdUser);
                           //todo validate user token
                           //todo navigate statisticScreen
                         },

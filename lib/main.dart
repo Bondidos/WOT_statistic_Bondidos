@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wot_statistic/layers/presentation/settings_page/settings_page.dart';
 import 'package:wot_statistic/layers/presentation/singup_user/singup_user_page.dart';
+import 'package:wot_statistic/layers/presentation/statistic_page/statistic_page.dart';
 import 'injection_container.dart' as di;
 import 'layers/presentation/settings_page/bloc/settings_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -58,6 +59,7 @@ class MyApp extends StatelessWidget {
             SingInPage.id: (ctx) => const SingInPage(),
             SettingsPage.id: (ctx) => const SettingsPage(),
             SingUpPage.id: (ctx) => const SingUpPage(),
+            StatisticPage.id: (ctx) => const StatisticPage(),
           },
           initialRoute: SingInPage.id,
         );

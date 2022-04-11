@@ -21,7 +21,7 @@ class UserPicker extends StatelessWidget {
             state.status == SingInStatus.initialized) {
           final List<String> usersInCache =
               state.prevUsers.map((e) => e.nickname).toList();
-          final String currentUser = context.read<SingInCubit>().currentUser;
+          final String currentUser = context.read<SingInCubit>().currentUserName;
 
           String userNameToDisplay =
               (usersInCache.isNotEmpty && currentUser == NOT_PICKED)

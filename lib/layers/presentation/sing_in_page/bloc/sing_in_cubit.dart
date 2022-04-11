@@ -32,11 +32,24 @@ class SingInCubit extends Cubit<SingInState> {
   }
 
   String _currentRealm = NOT_PICKED;
-  String _currentUser = NOT_PICKED;
+  String _currentUserName = NOT_PICKED;
 
-  String get currentUser => _currentUser;
+  String get currentUserName => _currentUserName;
 
   String get currentRealm => _currentRealm;
+
+  User? get currentUser {
+    emit(state.copyWith(status: SingInStatus.loading));
+
+    if (_currentUserName == NOT_PICKED || state.prevUsers.isEmpty) {
+      emit(
+        state.copyWith(
+            status: SingInStatus.error, errorMessage: "Please, sing up first"),
+      );
+      return null;
+    }
+    return state.prevUsers.firstWhere((user) => user.nickname == _currentUserName);
+  }
 
   void _initialize() async {
     emit(state.copyWith(status: SingInStatus.initializing));
@@ -73,7 +86,7 @@ class SingInCubit extends Cubit<SingInState> {
         (l) => state.copyWith(
             status: SingInStatus.error,
             errorMessage: "Some storage error"), (users) {
-      _currentUser = users.isNotEmpty
+      _currentUserName = users.isNotEmpty
           ? users.first.nickname
           : NOT_PICKED;
       return state.copyWith(status: SingInStatus.usersSynced, prevUsers: users);
@@ -95,17 +108,10 @@ class SingInCubit extends Cubit<SingInState> {
   }
 
   void removeUser() async {
-    emit(state.copyWith(status: SingInStatus.loading));
-    if (_currentUser == NOT_PICKED) {
-      emit(
-        state.copyWith(
-            status: SingInStatus.error, errorMessage: "Nothing to delete"),
-      );
-      return;
-    }
-    final User userToRemove =
-        state.prevUsers.firstWhere((user) => user.nickname == _currentUser);
-    _currentUser = state.prevUsers.isNotEmpty
+
+    final User? userToRemove = currentUser;
+    if(userToRemove == null) return;
+    _currentUserName = state.prevUsers.isNotEmpty
         ? state.prevUsers.first.nickname
         : NOT_PICKED;
     final bool result =
@@ -118,9 +124,10 @@ class SingInCubit extends Cubit<SingInState> {
           );
   }
 
+
   void setCurrentUser(String user) {
     emit(state.copyWith(status: SingInStatus.loading));
-    _currentUser = user;
+    _currentUserName = user;
     emit(state.copyWith(status: SingInStatus.usersSynced));
   }
 
