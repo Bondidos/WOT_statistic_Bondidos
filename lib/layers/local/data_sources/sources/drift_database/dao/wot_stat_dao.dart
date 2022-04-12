@@ -13,13 +13,11 @@ class WotStatDao extends DatabaseAccessor<WotStatDatabase>
   WotStatDao(this.wotStatDatabase) : super(wotStatDatabase);
 
   Future<int> saveUser(UserData user) async {
-    return await _saveUser(UserTableCompanion(
-      id: Value(user.id),
-      nickname: Value(user.nickname),
-      token: Value(user.accessToken),
-      expiresAt: Value(user.expiresAt),
-      realm: Value(user.realm),
-    ));
+    return await _saveUser(user.toTableCompanion());
+  }
+
+  Future<int> removeUser(UserData user) async {
+    return await delete(userTable).delete(user.toTableCompanion());
   }
 
   Future<int> _saveUser(UserTableCompanion entry) {

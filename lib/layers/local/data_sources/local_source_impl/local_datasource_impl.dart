@@ -12,10 +12,8 @@ class LocalDataSourceImpl extends LocalDataSource {
   final SharedPreferences sharedPreferences;
   final WotStatDao wotStatDao;
 
-  LocalDataSourceImpl({required this.sharedPreferences, required this.wotStatDao});
-  //todo realm stream from SP
-  // todo init state add to realmStreamer init realm
-  PublishSubject<String> realmStream = PublishSubject();
+  LocalDataSourceImpl(
+      {required this.sharedPreferences, required this.wotStatDao});
 
   @override
   Future<String?> getThemePreference() {
@@ -29,41 +27,47 @@ class LocalDataSourceImpl extends LocalDataSource {
     return Future.value();
   }
 
-  @override
-  Future<int> saveUser(UserData user) {
-  return wotStatDao.saveUser(user);
-}
-  //    sqfLite.insertUserByRealm(user.toMap(), realm);
-
-
-  @override
-  Stream<List<User>> getSavedUsersByRealm(String realm) {
-    //final list = await sqfLite.getSavedUsersByRealm(realm);
-   // final List<UserData> result = list.map((e) => UserData.fromMap(e)).toList();
-    return wotStatDao.getUsersByRealm(realm);
-  }
-
+/*
   @override
   Future<String?> syncRealmPreference() {
     final String? pref = sharedPreferences.getString(REALM_KEY);
     return Future.value(pref);
-  }
+  }*/
+  BehaviorSubject<String> realmStream = BehaviorSubject.seeded(NOT_PICKED);
+
+  // todo init state add to realmStreamer init realm
+
+  //todo realm stream from SP
 
   @override
-  Future<bool> setRealm(String realm) {
-    final Future<bool> result = sharedPreferences.setString(REALM_KEY, realm);
-    realmStream.add(realm);
+  Future<int> saveUser(UserData user) => wotStatDao.saveUser(user);
+
+  @override
+  Future<int> removeUser(UserData user) => wotStatDao.removeUser(user);
+
+  @override
+  Future<bool> setRealm(String realm) async {
+    final bool result = await sharedPreferences.setString(REALM_KEY, realm);
+    if (result) realmStream.add(realm);
     return Future.value(result);
   }
 
-  @override
-  Future<int> removeUser(UserData user) {
-    return Future.value(0);//sqfLite.removeUserByRealm(user.toMap(), realm);
+  String _readRealm() {
+    final String? result = sharedPreferences.getString(REALM_KEY);
+    if (result == null) return NOT_PICKED;
+    return result;
   }
 
   @override
-  Stream<List<User>> getUsersByRealm() {
-    //todo watch realm stream and switch userByrealm
-    return wotStatDao.getUsersByRealm(CIS);
+  Stream<List<User>> subscribeUsers() {
+    String realm = _readRealm();
+    return wotStatDao.getUsersByRealm(realm);
+  }
+
+  @override
+  Stream<String> subscribeRealm() {
+    //todo no need???
+    //_readRealm();
+    return realmStream;
   }
 }

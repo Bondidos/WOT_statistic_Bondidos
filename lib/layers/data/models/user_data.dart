@@ -1,6 +1,8 @@
+import 'package:drift/drift.dart';
 import 'package:equatable/equatable.dart';
 
 import '../../domain/entities/user.dart';
+import '../../local/data_sources/sources/drift_database/database/database.dart';
 
 class UserData extends Equatable {
   final int id;
@@ -27,14 +29,20 @@ class UserData extends Equatable {
     );
   }
 
-  User createUser() =>
-      User(id: id,
-          nickname: nickname,
-          accessToken: accessToken,
-          expiresAt: expiresAt
+  UserTableCompanion toTableCompanion() => UserTableCompanion(
+        id: Value(id),
+        nickname: Value(nickname),
+        token: Value(accessToken),
+        expiresAt: Value(expiresAt),
+        realm: Value(realm),
       );
+
+  User createUser() => User(
+      id: id,
+      nickname: nickname,
+      accessToken: accessToken,
+      expiresAt: expiresAt);
 
   @override
   List<Object?> get props => [id, nickname, accessToken, expiresAt, realm];
-
 }

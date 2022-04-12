@@ -7,6 +7,6 @@ class RemoveUserUseCase {
   RemoveUserUseCase({required this.repository});
 
   Future<bool> execute(User user, String realm) async {
-    return repository.removeUserUseCase(user, realm);
+    return repository.removeUser(user, realm);
   }
 }

@@ -9,9 +9,9 @@ import 'layers/data/sources/local_data_source.dart';
 import 'layers/domain/repositories/repository.dart';
 import 'layers/domain/use_cases/remove_user_use_case.dart';
 import 'layers/domain/use_cases/save_user_use_case.dart';
-import 'layers/domain/use_cases/saved_users_by_realm.dart';
+import 'layers/domain/use_cases/subscribe_users_use_case.dart';
 import 'layers/domain/use_cases/set_realm_pref_use_case.dart';
-import 'layers/domain/use_cases/sync_realm_use_case.dart';
+import 'layers/domain/use_cases/subscribe_realm_use_case.dart';
 import 'layers/domain/use_cases/sync_theme_use_case.dart';
 import 'layers/local/data_sources/local_source_impl/local_datasource_impl.dart';
 import 'layers/local/data_sources/sources/drift_database/construct_db/mobile.dart';
@@ -34,9 +34,9 @@ Future<void> init() async {
 
   inj.registerFactory(() => SyncThemeUseCase(repository: inj()));
   inj.registerFactory(() => SaveUserUseCase(repository: inj()));
-  inj.registerFactory(() => GetSavedUsersByRealm(repository: inj()));
-  inj.registerFactory(() => SyncRealmUseCase(repository: inj()));
-  inj.registerFactory(() => SetRealmPrefUseCase(repository: inj()));
+  inj.registerFactory(() => SubscribeUsers(repository: inj()));
+  inj.registerFactory(() => SubscribeRealm(repository: inj()));
+  inj.registerFactory(() => SetRealmUseCase(repository: inj()));
   inj.registerFactory(() => RemoveUserUseCase(repository: inj()));
 
   inj.registerLazySingleton<Repository>(

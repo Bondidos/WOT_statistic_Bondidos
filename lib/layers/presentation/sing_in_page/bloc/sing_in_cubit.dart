@@ -9,20 +9,21 @@ import '../../../../common/errors/failure.dart';
 import '../../../domain/entities/user.dart';
 import '../../../domain/use_cases/remove_user_use_case.dart';
 import '../../../domain/use_cases/save_user_use_case.dart';
-import '../../../domain/use_cases/saved_users_by_realm.dart';
+import '../../../domain/use_cases/subscribe_users_use_case.dart';
 import '../../../domain/use_cases/set_realm_pref_use_case.dart';
-import '../../../domain/use_cases/sync_realm_use_case.dart';
+import '../../../domain/use_cases/subscribe_realm_use_case.dart';
 
 part 'sing_in_state.dart';
 
 class SingInCubit extends Cubit<SingInState> {
   final SaveUserUseCase saveUser;
-  final GetSavedUsersByRealm subscribeUsers;
-  final SyncRealmUseCase subscribeRealm;
-  final SetRealmPrefUseCase setRealm;
+  final SubscribeUsers subscribeUsers;
+  final SubscribeRealm subscribeRealm;
+  final SetRealmUseCase setRealm;
   final RemoveUserUseCase removeUserUseCase;
 
   StreamSubscription? _subscriptionUsers;
+  StreamSubscription? _subscriptionRealm;
 
   SingInCubit({
     required this.setRealm,
@@ -32,12 +33,32 @@ class SingInCubit extends Cubit<SingInState> {
     required this.removeUserUseCase,
   }) : super(const SingInState(
             prevUsers: [], status: SingInStatus.initial, errorMessage: null)) {
-    //_initialize();
+    _initialize();
+
+  }
+  void _initialize() {
     _subscriptionUsers = subscribeUsers.execute()
         .listen((event) {
-          emit(  state.copyWith(
-              status: SingInStatus.usersSynced, prevUsers: event),
-          );
+
+      emit(  state.copyWith(
+          status: SingInStatus.usersSynced, prevUsers: event),
+      );
+    });
+
+    _subscriptionRealm = subscribeRealm.execute()
+        .listen((event) {
+      if(event == NOT_PICKED){
+        setRealm.execute(EU);
+      }
+      _currentRealm = event;
+      /**
+          if(_currentRealm != event){
+
+          }
+       * */
+      emit(  state.copyWith(
+          status: SingInStatus.realmSynced),
+      );
     });
   }
 
@@ -61,6 +82,24 @@ class SingInCubit extends Cubit<SingInState> {
     }
     return state.prevUsers.firstWhere((user) => user.nickname == _currentUserName);
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   /*void _initialize() async {
     emit(state.copyWith(status: SingInStatus.initializing));
@@ -153,4 +192,15 @@ class SingInCubit extends Cubit<SingInState> {
                 status: SingInStatus.error, errorMessage: "Some storage error"),
           );*/
   }
+
+  @override
+  Future<void> close(){
+    //todo close all streams
+    //todo repository close
+    _subscriptionUsers?.cancel();
+    _subscriptionRealm?.cancel();
+    return super.close();
+  }
+
 }
+

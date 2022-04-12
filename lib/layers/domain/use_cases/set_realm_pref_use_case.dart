@@ -1,9 +1,9 @@
 import '../repositories/repository.dart';
 
-class SetRealmPrefUseCase {
+class SetRealmUseCase {
   final Repository repository;
 
-  SetRealmPrefUseCase({required this.repository});
+  SetRealmUseCase({required this.repository});
 
   Future<bool> execute(String pref) async {
     return repository.setRealm(pref);
