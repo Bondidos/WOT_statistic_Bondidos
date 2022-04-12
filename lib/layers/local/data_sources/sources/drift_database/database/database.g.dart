@@ -8,13 +8,15 @@ part of 'database.dart';
 
 // ignore_for_file: unnecessary_brace_in_string_interps, unnecessary_this
 class UserTableData extends DataClass implements Insertable<UserTableData> {
+  final int tableId;
   final int id;
   final String nickname;
   final String token;
   final int expiresAt;
   final String realm;
   UserTableData(
-      {required this.id,
+      {required this.tableId,
+      required this.id,
       required this.nickname,
       required this.token,
       required this.expiresAt,
@@ -22,6 +24,8 @@ class UserTableData extends DataClass implements Insertable<UserTableData> {
   factory UserTableData.fromData(Map<String, dynamic> data, {String? prefix}) {
     final effectivePrefix = prefix ?? '';
     return UserTableData(
+      tableId: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}table_id'])!,
       id: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
       nickname: const StringType()
@@ -37,6 +41,7 @@ class UserTableData extends DataClass implements Insertable<UserTableData> {
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
+    map['table_id'] = Variable<int>(tableId);
     map['id'] = Variable<int>(id);
     map['nickname'] = Variable<String>(nickname);
     map['token'] = Variable<String>(token);
@@ -47,6 +52,7 @@ class UserTableData extends DataClass implements Insertable<UserTableData> {
 
   UserTableCompanion toCompanion(bool nullToAbsent) {
     return UserTableCompanion(
+      tableId: Value(tableId),
       id: Value(id),
       nickname: Value(nickname),
       token: Value(token),
@@ -59,6 +65,7 @@ class UserTableData extends DataClass implements Insertable<UserTableData> {
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return UserTableData(
+      tableId: serializer.fromJson<int>(json['tableId']),
       id: serializer.fromJson<int>(json['id']),
       nickname: serializer.fromJson<String>(json['nickname']),
       token: serializer.fromJson<String>(json['token']),
@@ -70,6 +77,7 @@ class UserTableData extends DataClass implements Insertable<UserTableData> {
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
+      'tableId': serializer.toJson<int>(tableId),
       'id': serializer.toJson<int>(id),
       'nickname': serializer.toJson<String>(nickname),
       'token': serializer.toJson<String>(token),
@@ -79,12 +87,14 @@ class UserTableData extends DataClass implements Insertable<UserTableData> {
   }
 
   UserTableData copyWith(
-          {int? id,
+          {int? tableId,
+          int? id,
           String? nickname,
           String? token,
           int? expiresAt,
           String? realm}) =>
       UserTableData(
+        tableId: tableId ?? this.tableId,
         id: id ?? this.id,
         nickname: nickname ?? this.nickname,
         token: token ?? this.token,
@@ -94,6 +104,7 @@ class UserTableData extends DataClass implements Insertable<UserTableData> {
   @override
   String toString() {
     return (StringBuffer('UserTableData(')
+          ..write('tableId: $tableId, ')
           ..write('id: $id, ')
           ..write('nickname: $nickname, ')
           ..write('token: $token, ')
@@ -104,11 +115,13 @@ class UserTableData extends DataClass implements Insertable<UserTableData> {
   }
 
   @override
-  int get hashCode => Object.hash(id, nickname, token, expiresAt, realm);
+  int get hashCode =>
+      Object.hash(tableId, id, nickname, token, expiresAt, realm);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is UserTableData &&
+          other.tableId == this.tableId &&
           other.id == this.id &&
           other.nickname == this.nickname &&
           other.token == this.token &&
@@ -117,12 +130,14 @@ class UserTableData extends DataClass implements Insertable<UserTableData> {
 }
 
 class UserTableCompanion extends UpdateCompanion<UserTableData> {
+  final Value<int> tableId;
   final Value<int> id;
   final Value<String> nickname;
   final Value<String> token;
   final Value<int> expiresAt;
   final Value<String> realm;
   const UserTableCompanion({
+    this.tableId = const Value.absent(),
     this.id = const Value.absent(),
     this.nickname = const Value.absent(),
     this.token = const Value.absent(),
@@ -130,6 +145,7 @@ class UserTableCompanion extends UpdateCompanion<UserTableData> {
     this.realm = const Value.absent(),
   });
   UserTableCompanion.insert({
+    this.tableId = const Value.absent(),
     required int id,
     required String nickname,
     required String token,
@@ -141,6 +157,7 @@ class UserTableCompanion extends UpdateCompanion<UserTableData> {
         expiresAt = Value(expiresAt),
         realm = Value(realm);
   static Insertable<UserTableData> custom({
+    Expression<int>? tableId,
     Expression<int>? id,
     Expression<String>? nickname,
     Expression<String>? token,
@@ -148,6 +165,7 @@ class UserTableCompanion extends UpdateCompanion<UserTableData> {
     Expression<String>? realm,
   }) {
     return RawValuesInsertable({
+      if (tableId != null) 'table_id': tableId,
       if (id != null) 'id': id,
       if (nickname != null) 'nickname': nickname,
       if (token != null) 'token': token,
@@ -157,12 +175,14 @@ class UserTableCompanion extends UpdateCompanion<UserTableData> {
   }
 
   UserTableCompanion copyWith(
-      {Value<int>? id,
+      {Value<int>? tableId,
+      Value<int>? id,
       Value<String>? nickname,
       Value<String>? token,
       Value<int>? expiresAt,
       Value<String>? realm}) {
     return UserTableCompanion(
+      tableId: tableId ?? this.tableId,
       id: id ?? this.id,
       nickname: nickname ?? this.nickname,
       token: token ?? this.token,
@@ -174,6 +194,9 @@ class UserTableCompanion extends UpdateCompanion<UserTableData> {
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
+    if (tableId.present) {
+      map['table_id'] = Variable<int>(tableId.value);
+    }
     if (id.present) {
       map['id'] = Variable<int>(id.value);
     }
@@ -195,6 +218,7 @@ class UserTableCompanion extends UpdateCompanion<UserTableData> {
   @override
   String toString() {
     return (StringBuffer('UserTableCompanion(')
+          ..write('tableId: $tableId, ')
           ..write('id: $id, ')
           ..write('nickname: $nickname, ')
           ..write('token: $token, ')
@@ -211,6 +235,13 @@ class $UserTableTable extends UserTable
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   $UserTableTable(this.attachedDatabase, [this._alias]);
+  final VerificationMeta _tableIdMeta = const VerificationMeta('tableId');
+  @override
+  late final GeneratedColumn<int?> tableId = GeneratedColumn<int?>(
+      'table_id', aliasedName, false,
+      type: const IntType(),
+      requiredDuringInsert: false,
+      defaultConstraints: 'PRIMARY KEY AUTOINCREMENT');
   final VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int?> id = GeneratedColumn<int?>(
@@ -237,7 +268,8 @@ class $UserTableTable extends UserTable
       'realm', aliasedName, false,
       type: const StringType(), requiredDuringInsert: true);
   @override
-  List<GeneratedColumn> get $columns => [id, nickname, token, expiresAt, realm];
+  List<GeneratedColumn> get $columns =>
+      [tableId, id, nickname, token, expiresAt, realm];
   @override
   String get aliasedName => _alias ?? 'user_table';
   @override
@@ -247,6 +279,10 @@ class $UserTableTable extends UserTable
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
+    if (data.containsKey('table_id')) {
+      context.handle(_tableIdMeta,
+          tableId.isAcceptableOrUnknown(data['table_id']!, _tableIdMeta));
+    }
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
     } else if (isInserting) {
@@ -280,7 +316,7 @@ class $UserTableTable extends UserTable
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => <GeneratedColumn>{};
+  Set<GeneratedColumn> get $primaryKey => {tableId};
   @override
   UserTableData map(Map<String, dynamic> data, {String? tablePrefix}) {
     return UserTableData.fromData(data,

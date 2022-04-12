@@ -37,34 +37,6 @@ class RepositoryImpl extends Repository {
     }
   }
 
-/*
-  @override
-  Future<Either<Failure, String>> syncRealmPreference() async {
-    try {
-      //is the first launch? result will be null
-      String? result = await localSource.syncRealmPreference();
-      // default realm is EU
-      if (result == null) {
-        bool result = await setRealm(EU);
-        return result ? const Right(EU) : const Left(Failure());
-      }
-      return Right(result);
-    } catch (e) {
-      return const Left(Failure());
-    }
-  }*/
-
-  /*@override
-  Future<Either<Failure, List<User>>> getSavedUsersByRealm(String realm) async {
-    try {
-      Stream<List<User>> userList = localSource.getSavedUsersByRealm(realm);
-      //_usersByRealm.add(userList);
-      return Right([]);
-    } catch (e) {
-      return const Left(Failure("Some unexpected Error"));
-    }
-  }*/
-
   @override
   Future<bool> saveUser(User user, String realm) async {
     try {

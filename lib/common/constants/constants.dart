@@ -14,6 +14,7 @@ const GET_THEME = 'getTheme';
 const EU = "EU";
 const CIS = "CIS";
 const NOT_PICKED = "Not Picked";
+const INITIAL = "initial";
 
 // network
 const CIS_LOGIN_URL =

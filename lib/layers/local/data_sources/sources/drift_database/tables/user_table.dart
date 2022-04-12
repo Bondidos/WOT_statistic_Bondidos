@@ -1,7 +1,9 @@
 import 'package:drift/drift.dart';
 
+
 //https://github.com/Sproute777/flutter_drift_explore.git
 class UserTable extends Table {
+  IntColumn get tableId => integer().autoIncrement()();
   IntColumn get id => integer()();
   TextColumn get nickname => text()();
   TextColumn get token => text()();

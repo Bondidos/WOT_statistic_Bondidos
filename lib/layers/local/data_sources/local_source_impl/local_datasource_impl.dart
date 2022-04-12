@@ -1,4 +1,3 @@
-import 'package:drift/drift.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wot_statistic/layers/data/models/user_data.dart';
@@ -6,11 +5,12 @@ import 'package:wot_statistic/layers/data/sources/local_data_source.dart';
 import '../../../../common/constants/constants.dart';
 import '../../../domain/entities/user.dart';
 import '../sources/drift_database/dao/wot_stat_dao.dart';
-import '../sources/drift_database/database/database.dart';
 
 class LocalDataSourceImpl extends LocalDataSource {
   final SharedPreferences sharedPreferences;
   final WotStatDao wotStatDao;
+
+  BehaviorSubject<String> realmStream = BehaviorSubject.seeded(INITIAL);
 
   LocalDataSourceImpl(
       {required this.sharedPreferences, required this.wotStatDao});
@@ -26,18 +26,6 @@ class LocalDataSourceImpl extends LocalDataSource {
     sharedPreferences.setString(THEME_KEY, pref);
     return Future.value();
   }
-
-/*
-  @override
-  Future<String?> syncRealmPreference() {
-    final String? pref = sharedPreferences.getString(REALM_KEY);
-    return Future.value(pref);
-  }*/
-  BehaviorSubject<String> realmStream = BehaviorSubject.seeded(NOT_PICKED);
-
-  // todo init state add to realmStreamer init realm
-
-  //todo realm stream from SP
 
   @override
   Future<int> saveUser(UserData user) => wotStatDao.saveUser(user);
@@ -66,8 +54,7 @@ class LocalDataSourceImpl extends LocalDataSource {
 
   @override
   Stream<String> subscribeRealm() {
-    //todo no need???
-    //_readRealm();
+    realmStream.add(_readRealm());
     return realmStream;
   }
 }

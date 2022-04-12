@@ -1,11 +1,7 @@
 import 'dart:async';
-
 import 'package:bloc/bloc.dart';
-import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:wot_statistic/common/constants/constants.dart';
-
-import '../../../../common/errors/failure.dart';
 import '../../../domain/entities/user.dart';
 import '../../../domain/use_cases/remove_user_use_case.dart';
 import '../../../domain/use_cases/save_user_use_case.dart';
@@ -32,175 +28,66 @@ class SingInCubit extends Cubit<SingInState> {
     required this.subscribeRealm,
     required this.removeUserUseCase,
   }) : super(const SingInState(
-            prevUsers: [], status: SingInStatus.initial, errorMessage: null)) {
+            prevUsers: [],
+            status: SingInStatus.initial,
+            errorMessage: null,
+            realm: NOT_PICKED,
+            currentUser: null)) {
     _initialize();
-
   }
+
   void _initialize() {
-    _subscriptionUsers = subscribeUsers.execute()
-        .listen((event) {
-
-      emit(  state.copyWith(
-          status: SingInStatus.usersSynced, prevUsers: event),
-      );
-    });
-
-    _subscriptionRealm = subscribeRealm.execute()
-        .listen((event) {
-      if(event == NOT_PICKED){
-        setRealm.execute(EU);
+    _subscriptionRealm = subscribeRealm.execute().listen((realm) {
+      // if(realm == INITIAL) return;
+      if (realm == NOT_PICKED) {
+        setNewRealm(EU); // as default EU realm
+        return;
       }
-      _currentRealm = event;
-      /**
-          if(_currentRealm != event){
-
-          }
-       * */
-      emit(  state.copyWith(
-          status: SingInStatus.realmSynced),
-      );
+      _newRealmStatus(realm);
+      if (_subscriptionUsers != null) _subscriptionUsers?.cancel();
+      _subscriptionUsers =
+          subscribeUsers.execute().listen((list) => _newPrevUsersStatus(list));
     });
   }
 
-
-  String _currentRealm = NOT_PICKED;
-  String _currentUserName = NOT_PICKED;
-
-  String get currentUserName => _currentUserName;
-
-  String get currentRealm => _currentRealm;
-
-  User? get currentUser {
-    emit(state.copyWith(status: SingInStatus.loading));
-
-    if (_currentUserName == NOT_PICKED || state.prevUsers.isEmpty) {
-      emit(
+  void _newPrevUsersStatus(List<User> list) => emit(
         state.copyWith(
-            status: SingInStatus.error, errorMessage: "Please, sing up first"),
+            status: SingInStatus.usersSynced,
+            prevUsers: list,
+            currentUser: list.first),
       );
-      return null;
-    }
-    return state.prevUsers.firstWhere((user) => user.nickname == _currentUserName);
-  }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  /*void _initialize() async {
-    emit(state.copyWith(status: SingInStatus.initializing));
-    SingInState realmSyncResult = await _syncRealmPref();
-    emit(realmSyncResult);
-
-    SingInState syncUserResult = await _syncUsersByRealm();
-    emit(syncUserResult);
-
-    if (realmSyncResult.status == SingInStatus.realmSynced &&
-        syncUserResult.status == SingInStatus.usersSynced) {
-      emit(state.copyWith(status: SingInStatus.initialized));
-    }
-  }
-
-  Future<SingInState> _syncRealmPref() async {
-    final Either<Failure, String> result = await syncRealm.execute();
-    return result.fold((l) {
-      _currentRealm = NOT_PICKED;
-      return state.copyWith(
-        status: SingInStatus.error,
-        errorMessage: "Some storage error",
+  void _newRealmStatus(String realm) => emit(
+        state.copyWith(status: SingInStatus.realmSynced, realm: realm),
       );
-    }, (realm) {
-      _currentRealm = realm;
-      return state.copyWith(status: SingInStatus.realmSynced);
-    });
+  void error(String message) => emit(
+    state.copyWith(
+        status: SingInStatus.error, errorMessage: message),
+  );
+
+  void setNewRealm(String realm) => setRealm.execute(realm);
+
+  void setCurrentUser(String userNickname) {
+    final User newCurrentUser =
+        state.prevUsers.firstWhere((user) => user.nickname == userNickname);
+    emit(state.copyWith(currentUser: newCurrentUser));
   }
-
-  Future<SingInState> _syncUsersByRealm() async {
-    final Either<Failure, List<User>> result =
-        await subscribeUsers.execute(currentRealm);
-    return result.fold(
-        (l) => state.copyWith(
-            status: SingInStatus.error,
-            errorMessage: "Some storage error"), (users) {
-      _currentUserName = users.isNotEmpty
-          ? users.first.nickname
-          : NOT_PICKED;
-      return state.copyWith(status: SingInStatus.usersSynced, prevUsers: users);
-    });
-  }
-
-  void setRealmPreference(String realm) async {
-    emit(state.copyWith(status: SingInStatus.loading));
-
-    bool result = await setRealm.execute(realm);
-    if (result) {
-      _currentRealm = realm;
-      emit(state.copyWith(status: SingInStatus.realmSynced));
-    } else {
-      emit(state.copyWith(
-          status: SingInStatus.error, errorMessage: "Some storage error"));
-    }
-    emit(await _syncUsersByRealm());
-  }
-
-  void removeUser() async {
-
-    final User? userToRemove = currentUser;
-    if(userToRemove == null) return;
-    _currentUserName = state.prevUsers.isNotEmpty
-        ? state.prevUsers.first.nickname
-        : NOT_PICKED;
-    final bool result =
-        await removeUserUseCase.execute(userToRemove, currentRealm);
-    result
-        ? emit(await _syncUsersByRealm())
-        : emit(
-            state.copyWith(
-                status: SingInStatus.error, errorMessage: "Some storage error"),
-          );
-  }
-
-
-  void setCurrentUser(String user) {
-    emit(state.copyWith(status: SingInStatus.loading));
-    _currentUserName = user;
-    emit(state.copyWith(status: SingInStatus.usersSynced));
-  }*/
 
   void saveUserInToDataBase(User user) async {
-    emit(state.copyWith(status: SingInStatus.loading));
+    final bool result = await saveUser.execute(user, state.realm);
+    if (!result) error('Some storage error');
+  }
 
-    final bool result = await saveUser.execute(user, currentRealm);
-    /*result
-        ? emit(await _syncUsersByRealm())
-        : emit(
-            state.copyWith(
-                status: SingInStatus.error, errorMessage: "Some storage error"),
-          );*/
+  void removeUser() {
+    state.currentUser == null
+        ? error("No user to delete")
+        : removeUserUseCase.execute(state.currentUser!, state.realm);
   }
 
   @override
-  Future<void> close(){
-    //todo close all streams
-    //todo repository close
+  Future<void> close() {
     _subscriptionUsers?.cancel();
     _subscriptionRealm?.cancel();
     return super.close();
   }
-
 }
-

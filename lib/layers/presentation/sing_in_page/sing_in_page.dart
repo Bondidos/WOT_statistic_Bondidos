@@ -8,7 +8,6 @@ import 'package:wot_statistic/layers/presentation/sing_in_page/widgets/region_pi
 import 'package:wot_statistic/layers/presentation/sing_in_page/widgets/themed_button.dart';
 import 'package:wot_statistic/layers/presentation/sing_in_page/widgets/user_picker.dart';
 import 'package:wot_statistic/layers/presentation/singup_user/singup_user_page.dart';
-import 'package:wot_statistic/layers/presentation/statistic_page/statistic_page.dart';
 
 import '../../../common/theme/text_styles.dart';
 
@@ -52,12 +51,10 @@ class SingInPage extends StatelessWidget {
           }
         },
         buildWhen: (prevState, currentState) =>
-            (currentState.status == SingInStatus.initialized ||
-                currentState.status == SingInStatus.initializing ||
-                currentState.status == SingInStatus.usersSynced),
+            (currentState.status == SingInStatus.usersSynced &&
+                prevState != currentState),
         builder: (ctx, state) {
-          if (state.status == SingInStatus.initialized ||
-              state.status == SingInStatus.usersSynced) {
+          if (state.status == SingInStatus.usersSynced) {
             return Stack(
               alignment: Alignment.topCenter,
               children: [
@@ -88,12 +85,17 @@ class SingInPage extends StatelessWidget {
                       ThemedButton(
                         title: "Sing In",
                         onTap: () {
-                          User? logInEdUser =
+                          if (state.currentUser == null) {
+                            context.read<SingInCubit>().error("Sing up first");
+                            return;
+                          }
+
+                          /*   User? logInEdUser =
                               context.read<SingInCubit>().currentUser;
                           if (logInEdUser == null) return;
                           Navigator.of(context).pushReplacementNamed(
                               StatisticPage.id,
-                              arguments: logInEdUser);
+                              arguments: logInEdUser);*/
                           //todo validate user token
                           //todo navigate statisticScreen
                         },
@@ -102,22 +104,21 @@ class SingInPage extends StatelessWidget {
                       ThemedButton(
                           title: "Sing Up",
                           onTap: () async {
-                            String realm =
-                                context.read<SingInCubit>().currentRealm;
+                            String realm = state.realm;
 
                             User? user = await Navigator.of(context)
                                     .pushNamed(SingUpPage.id, arguments: realm)
                                 as User?;
-                              if (user == null) return;
-                              context
-                                  .read<SingInCubit>()
-                                  .saveUserInToDataBase(user);
+                            if (user == null) return;
+                            context
+                                .read<SingInCubit>()
+                                .saveUserInToDataBase(user);
                           }),
                       const SizedBox(height: 20),
                       ThemedButton(
                           title: "Delete",
                           onTap: () {
-                           // context.read<SingInCubit>().removeUser();
+                            context.read<SingInCubit>().removeUser();
                           }),
                       const SizedBox(height: 20),
                     ],

@@ -14,9 +14,8 @@ class RegionPicker extends StatelessWidget {
       buildWhen: (prevState, currentState) =>
           (currentState.status == SingInStatus.realmSynced),
       builder: (ctx, state) {
-        if (state.status == SingInStatus.realmSynced ||
-            state.status == SingInStatus.initialized) {
-          final String currentRealm = context.read<SingInCubit>().currentRealm;
+        // if (state.status == SingInStatus.realmSynced) {
+          final String currentRealm = state.realm;
 
           return Row(
             children: [
@@ -35,7 +34,7 @@ class RegionPicker extends StatelessWidget {
                     PopupMenuItem(
                       onTap: () {
                         if (currentRealm != EU) {
-                         // context.read<SingInCubit>().setRealmPreference(EU);
+                         context.read<SingInCubit>().setNewRealm(EU);
                         }
                       },
                       child: Wrap(
@@ -55,7 +54,7 @@ class RegionPicker extends StatelessWidget {
                     PopupMenuItem(
                       onTap: () {
                         if (currentRealm != CIS) {
-                         // context.read<SingInCubit>().setRealmPreference(CIS);
+                         context.read<SingInCubit>().setNewRealm(CIS);
                         }
                       },
                       child: Wrap(
@@ -77,8 +76,8 @@ class RegionPicker extends StatelessWidget {
               ),
             ],
           );
-        }
-        return const Text(NOT_PICKED);
+        // }
+        // return const Text(NOT_PICKED);
       },
     );
   }

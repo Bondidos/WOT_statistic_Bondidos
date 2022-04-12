@@ -29,6 +29,7 @@ class _SingUpPageState extends State<SingUpPage> {
   @override
   Widget build(BuildContext context) {
     String realm = ModalRoute.of(context)!.settings.arguments as String;
+//todo find out why keyboard is lagging
 
     return Scaffold(
       appBar: AppBar(

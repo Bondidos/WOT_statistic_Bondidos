@@ -17,7 +17,8 @@ class WotStatDao extends DatabaseAccessor<WotStatDatabase>
   }
 
   Future<int> removeUser(UserData user) async {
-    return await delete(userTable).delete(user.toTableCompanion());
+    UserTableCompanion remove = user.toTableCompanion();
+    return await delete(userTable).delete(remove);
   }
 
   Future<int> _saveUser(UserTableCompanion entry) {

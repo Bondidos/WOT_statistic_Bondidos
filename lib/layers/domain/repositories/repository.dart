@@ -5,8 +5,6 @@ import '../entities/user.dart';
 
 abstract class Repository {
   Future<Either<Failure, String>> syncThemeWithCache(String? pref);
-  // Future<Either<Failure, List<User>>> getSavedUsersByRealm(String realm);
-  // Future<Either<Failure, String>> syncRealmPreference();
 
   Future<bool> saveUser(User user, String realm);
   Future<bool> setRealm(String realm);
