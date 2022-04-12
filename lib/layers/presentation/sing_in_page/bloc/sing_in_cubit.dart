@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
@@ -15,21 +17,30 @@ part 'sing_in_state.dart';
 
 class SingInCubit extends Cubit<SingInState> {
   final SaveUserUseCase saveUser;
-  final GetSavedUsersByRealm getUsersByRealm;
-  final SyncRealmUseCase syncRealm;
+  final GetSavedUsersByRealm subscribeUsers;
+  final SyncRealmUseCase subscribeRealm;
   final SetRealmPrefUseCase setRealm;
   final RemoveUserUseCase removeUserUseCase;
+
+  StreamSubscription? _subscriptionUsers;
 
   SingInCubit({
     required this.setRealm,
     required this.saveUser,
-    required this.getUsersByRealm,
-    required this.syncRealm,
+    required this.subscribeUsers,
+    required this.subscribeRealm,
     required this.removeUserUseCase,
   }) : super(const SingInState(
             prevUsers: [], status: SingInStatus.initial, errorMessage: null)) {
-    _initialize();
+    //_initialize();
+    _subscriptionUsers = subscribeUsers.execute()
+        .listen((event) {
+          emit(  state.copyWith(
+              status: SingInStatus.usersSynced, prevUsers: event),
+          );
+    });
   }
+
 
   String _currentRealm = NOT_PICKED;
   String _currentUserName = NOT_PICKED;
@@ -51,7 +62,7 @@ class SingInCubit extends Cubit<SingInState> {
     return state.prevUsers.firstWhere((user) => user.nickname == _currentUserName);
   }
 
-  void _initialize() async {
+  /*void _initialize() async {
     emit(state.copyWith(status: SingInStatus.initializing));
     SingInState realmSyncResult = await _syncRealmPref();
     emit(realmSyncResult);
@@ -81,7 +92,7 @@ class SingInCubit extends Cubit<SingInState> {
 
   Future<SingInState> _syncUsersByRealm() async {
     final Either<Failure, List<User>> result =
-        await getUsersByRealm.execute(currentRealm);
+        await subscribeUsers.execute(currentRealm);
     return result.fold(
         (l) => state.copyWith(
             status: SingInStatus.error,
@@ -129,17 +140,17 @@ class SingInCubit extends Cubit<SingInState> {
     emit(state.copyWith(status: SingInStatus.loading));
     _currentUserName = user;
     emit(state.copyWith(status: SingInStatus.usersSynced));
-  }
+  }*/
 
   void saveUserInToDataBase(User user) async {
     emit(state.copyWith(status: SingInStatus.loading));
 
     final bool result = await saveUser.execute(user, currentRealm);
-    result
+    /*result
         ? emit(await _syncUsersByRealm())
         : emit(
             state.copyWith(
                 status: SingInStatus.error, errorMessage: "Some storage error"),
-          );
+          );*/
   }
 }

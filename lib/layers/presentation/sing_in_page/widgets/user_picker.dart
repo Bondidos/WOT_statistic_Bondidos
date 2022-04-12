@@ -19,8 +19,9 @@ class UserPicker extends StatelessWidget {
       builder: (ctx, state) {
         if (state.status == SingInStatus.usersSynced ||
             state.status == SingInStatus.initialized) {
+
           final List<String> usersInCache =
-              state.prevUsers.map((e) => e.nickname).toList();
+              state.prevUsers.map((e) => "${e.nickname} ${state.prevUsers.indexOf(e)}").toList();
           final String currentUser = context.read<SingInCubit>().currentUserName;
 
           String userNameToDisplay =
@@ -53,7 +54,7 @@ class UserPicker extends StatelessWidget {
                           ),
                           onChanged: (data) {
                             if (data != null) {
-                              context.read<SingInCubit>().setCurrentUser(data);
+                              //context.read<SingInCubit>().setCurrentUser(data);
                             }
                           },
                           items: usersInCache

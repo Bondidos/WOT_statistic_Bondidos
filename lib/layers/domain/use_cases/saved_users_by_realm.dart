@@ -8,8 +8,11 @@ class GetSavedUsersByRealm {
   final Repository repository;
 
   GetSavedUsersByRealm({required this.repository});
-
+/*
   Future<Either<Failure, List<User>>> execute(String realm) async {
     return repository.getSavedUsersByRealm(realm);
-  }
+  }*/
+
+  Stream<List<User>> execute() => repository.subscribeUsers();
+
 }

@@ -108,18 +108,16 @@ class SingInPage extends StatelessWidget {
                             User? user = await Navigator.of(context)
                                     .pushNamed(SingUpPage.id, arguments: realm)
                                 as User?;
-
-                            if (user != null) {
+                              if (user == null) return;
                               context
                                   .read<SingInCubit>()
                                   .saveUserInToDataBase(user);
-                            }
                           }),
                       const SizedBox(height: 20),
                       ThemedButton(
                           title: "Delete",
                           onTap: () {
-                            context.read<SingInCubit>().removeUser();
+                           // context.read<SingInCubit>().removeUser();
                           }),
                       const SizedBox(height: 20),
                     ],

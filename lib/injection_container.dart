@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:wot_statistic/layers/local/data_sources/sources/database.dart';
+import 'package:wot_statistic/layers/local/data_sources/sources/drift_database/dao/dao.dart';
 import 'package:wot_statistic/layers/presentation/sing_in_page/bloc/sing_in_cubit.dart';
 
 import 'layers/data/repositories/repository_impl.dart';
@@ -14,6 +14,8 @@ import 'layers/domain/use_cases/set_realm_pref_use_case.dart';
 import 'layers/domain/use_cases/sync_realm_use_case.dart';
 import 'layers/domain/use_cases/sync_theme_use_case.dart';
 import 'layers/local/data_sources/local_source_impl/local_datasource_impl.dart';
+import 'layers/local/data_sources/sources/drift_database/construct_db/mobile.dart';
+import 'layers/local/data_sources/sources/drift_database/database/database.dart';
 import 'layers/presentation/settings_page/bloc/settings_cubit.dart';
 
 final inj = GetIt.instance;
@@ -24,8 +26,8 @@ Future<void> init() async {
   inj.registerFactory(() => SettingsCubit(sync: inj()));
   inj.registerFactory(() => SingInCubit(
         saveUser: inj(),
-        getUsersByRealm: inj(),
-        syncRealm: inj(),
+        subscribeUsers: inj(),
+        subscribeRealm: inj(),
         setRealm: inj(),
         removeUserUseCase: inj(),
       ));
@@ -42,11 +44,12 @@ Future<void> init() async {
 
   inj.registerFactory<LocalDataSource>(() => LocalDataSourceImpl(
         sharedPreferences: inj(),
-        driftDatabase: inj(),
+        wotStatDao: inj(),
       ));
 
-  final sharedPref = await SharedPreferences.getInstance();
-  final driftDatabase = WotStatDatabase();
+  final SharedPreferences sharedPref = await SharedPreferences.getInstance();
+  final WotStatDatabase driftDatabase = constructDb();
+  final WotStatDao wotStatDao = WotStatDao(driftDatabase);
   inj.registerFactory(() => sharedPref);
-  inj.registerFactory(() => driftDatabase);
+  inj.registerFactory(() => wotStatDao);
 }

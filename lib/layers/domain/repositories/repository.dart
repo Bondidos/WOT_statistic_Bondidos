@@ -15,4 +15,5 @@ abstract class Repository {
   Future<bool> setRealm(String realm);
 
   Future<bool> removeUserUseCase(User user, String realm);
+  Stream<List<User>> subscribeUsers();
 }

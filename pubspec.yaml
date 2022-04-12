@@ -43,6 +43,10 @@ dependencies:
   path_provider: ^2.0.9
   path: ^1.8.0
 
+  #rxdart:
+  rxdart: ^0.27.1
+
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

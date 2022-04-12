@@ -1,44 +1,40 @@
+import 'package:equatable/equatable.dart';
+
 import '../../domain/entities/user.dart';
 
-class UserData extends User {
-  const UserData({
-    required id,
-    required nickname,
-    required accessToken,
-    required expiresAt,
-  }) : super(
-          id: id,
-          nickname: nickname,
-          accessToken: accessToken,
-          expiresAt: expiresAt,
-        );
+class UserData extends Equatable {
+  final int id;
+  final String nickname;
+  final String accessToken;
+  final int expiresAt;
+  final String realm;
 
-  /*factory UserData.fromMap(Map<String, dynamic> sqlUser) {
+  const UserData({
+    required this.id,
+    required this.nickname,
+    required this.accessToken,
+    required this.expiresAt,
+    required this.realm,
+  });
+
+  factory UserData.fromUser(User user, String realm) {
     return UserData(
-      id: sqlUser[DatabaseHelper.columnId],
-      nickname: sqlUser[DatabaseHelper.nickname],
-      accessToken: sqlUser[DatabaseHelper.accessToken],
-      expiresAt: sqlUser[DatabaseHelper.expiresAt],
+      id: user.id,
+      nickname: user.nickname,
+      accessToken: user.accessToken,
+      expiresAt: user.expiresAt,
+      realm: realm,
     );
   }
 
-  factory UserData.fromUser(User user) {
-    return UserData(
-        id: user.id,
-        nickname: user.nickname,
-        accessToken: user.accessToken,
-        expiresAt: user.expiresAt);
-  }
-
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      DatabaseHelper.columnId: id,
-      DatabaseHelper.nickname: nickname,
-      DatabaseHelper.accessToken: accessToken,
-      DatabaseHelper.expiresAt: expiresAt,
-    };
-  }*/
+  User createUser() =>
+      User(id: id,
+          nickname: nickname,
+          accessToken: accessToken,
+          expiresAt: expiresAt
+      );
 
   @override
-  List<Object?> get props => [id, nickname, accessToken, expiresAt];
+  List<Object?> get props => [id, nickname, accessToken, expiresAt, realm];
+
 }

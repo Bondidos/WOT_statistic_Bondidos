@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:wot_statistic/common/constants/constants.dart';
 import 'package:wot_statistic/common/errors/failure.dart';
 import 'package:wot_statistic/layers/data/sources/local_data_source.dart';
@@ -38,22 +39,14 @@ class RepositoryImpl extends Repository {
   @override
   Future<bool> saveUser(User user, String realm) async {
     try {
-      int result = await localSource.saveUser(UserData.fromUser(user), realm);
+      int result = await localSource.saveUser(UserData.fromUser(user,realm));
       return (result != 0) ? Future.value(true) : Future.value(false);
     } catch (e) {
       return Future.value(false);
     }
   }
 
-  @override
-  Future<Either<Failure, List<User>>> getSavedUsersByRealm(String realm) async {
-    try {
-      List<User> userList = await localSource.getSavedUsersByRealm(realm);
-      return Right(userList);
-    } catch (e) {
-      return const Left(Failure("Some unexpected Error"));
-    }
-  }
+
 
   @override
   Future<Either<Failure, String>> syncRealmPreference() async {
@@ -84,10 +77,26 @@ class RepositoryImpl extends Repository {
   Future<bool> removeUserUseCase(User user, String realm) async {
     try {
       final int result =
-          await localSource.removeUser(UserData.fromUser(user), realm);
+          await localSource.removeUser(UserData.fromUser(user,realm));
       return result != 0 ? true : false;
     } catch (e) {
       return false;
     }
   }
+
+  @override
+  Future<Either<Failure, List<User>>> getSavedUsersByRealm(String realm) async {
+    try {
+      Stream<List<User>> userList = localSource.getSavedUsersByRealm(realm);
+      //_usersByRealm.add(userList);
+      return Right([]);
+    } catch (e) {
+      return const Left(Failure("Some unexpected Error"));
+    }
+  }
+
+  @override
+  Stream<List<User>> subscribeUsers()   => localSource.getUsersByRealm();
+
+
 }

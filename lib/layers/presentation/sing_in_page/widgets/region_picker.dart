@@ -35,7 +35,7 @@ class RegionPicker extends StatelessWidget {
                     PopupMenuItem(
                       onTap: () {
                         if (currentRealm != EU) {
-                          context.read<SingInCubit>().setRealmPreference(EU);
+                         // context.read<SingInCubit>().setRealmPreference(EU);
                         }
                       },
                       child: Wrap(
@@ -55,7 +55,7 @@ class RegionPicker extends StatelessWidget {
                     PopupMenuItem(
                       onTap: () {
                         if (currentRealm != CIS) {
-                          context.read<SingInCubit>().setRealmPreference(CIS);
+                         // context.read<SingInCubit>().setRealmPreference(CIS);
                         }
                       },
                       child: Wrap(

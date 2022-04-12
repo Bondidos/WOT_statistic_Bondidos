@@ -1,3 +1,4 @@
+import '../../domain/entities/user.dart';
 import '../models/user_data.dart';
 
 abstract class LocalDataSource {
@@ -5,13 +6,15 @@ abstract class LocalDataSource {
 
   Future<void> saveThemePreference(String pref);
 
-  Future<int> saveUser(UserData user, String realm);
+  Future<int> saveUser(UserData user);
 
-  Future<List<UserData>> getSavedUsersByRealm(String realm);
+  Stream<List<User>> getSavedUsersByRealm(String realm);
 
   Future<String?> syncRealmPreference();
 
   Future<bool> setRealm(String realm);
 
-  Future<int> removeUser(UserData user, String realm);
+  Future<int> removeUser(UserData user);
+
+  Stream<List<User>> getUsersByRealm();
 }
