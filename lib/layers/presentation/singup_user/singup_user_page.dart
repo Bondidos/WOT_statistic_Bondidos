@@ -1,8 +1,5 @@
-import 'dart:io';
-
+import 'package:easy_web_view/easy_web_view.dart';
 import 'package:flutter/material.dart';
-import 'package:webview_flutter/webview_flutter.dart';
-import 'package:wot_statistic/layers/domain/entities/user.dart';
 
 import '../../../common/constants/constants.dart';
 import '../../../common/theme/text_styles.dart';
@@ -18,12 +15,49 @@ class SingUpPage extends StatefulWidget {
 }
 
 class _SingUpPageState extends State<SingUpPage> {
+
+
+  @override
+  Widget build(BuildContext context) {
+    String realm = ModalRoute.of(context)!.settings.arguments as String;
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(SingUpPage.id, style: appBarTitle(context)),
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.refresh),
+          )
+        ],
+      ),
+      body: EasyWebView(
+        src:  (realm == EU) ? EU_LOGIN_URL : CIS_LOGIN_URL,
+        // isMarkdown: false, // Use markdown syntax
+        // convertToWidgets: false, // Try to convert to flutter widgets
+        // width: 100,
+        // height: 100,
+      ),
+    );
+  }
+}
+
+/*
+class SingUpPage extends StatefulWidget {
+  const SingUpPage({Key? key}) : super(key: key);
+  static const id = "OpenId login";
+
+  @override
+  State<SingUpPage> createState() => _SingUpPageState();
+}
+
+class _SingUpPageState extends State<SingUpPage> {
   late final WebViewController _controller;
 
   @override
   void initState() {
 
-    if (Platform.isAndroid) WebView.platform = AndroidWebView();
+    if (defaultTargetPlatform == TargetPlatform.android) WebView.platform = AndroidWebView();
     super.initState();
   }
 
@@ -76,3 +110,4 @@ class _SingUpPageState extends State<SingUpPage> {
     );
   }
 }
+*/
