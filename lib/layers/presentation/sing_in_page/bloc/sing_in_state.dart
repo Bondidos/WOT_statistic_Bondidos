@@ -2,7 +2,7 @@ part of 'sing_in_cubit.dart';
 //todo remove unused states
 enum SingInStatus {
   initial,
-  usersSynced,
+  // usersSynced,
   realmSynced,
   error,
 }
@@ -34,8 +34,8 @@ class SingInState extends Equatable {
     return SingInState(
         prevUsers: prevUsers ?? this.prevUsers,
         status: status ?? this.status,
-        errorMessage: errorMessage ?? this.errorMessage,
+        errorMessage: errorMessage,
         realm: realm ?? this.realm,
-        currentUser: currentUser ?? this.currentUser);
+        currentUser: currentUser);
   }
 }

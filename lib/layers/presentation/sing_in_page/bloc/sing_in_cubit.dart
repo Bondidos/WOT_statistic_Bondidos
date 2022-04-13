@@ -38,27 +38,22 @@ class SingInCubit extends Cubit<SingInState> {
 
   void _initialize() {
     _subscriptionRealm = subscribeRealm.execute().listen((realm) {
-      // if(realm == INITIAL) return;
       if (realm == NOT_PICKED) {
         setNewRealm(EU); // as default EU realm
         return;
       }
-      _newRealmStatus(realm);
       if (_subscriptionUsers != null) _subscriptionUsers?.cancel();
       _subscriptionUsers =
-          subscribeUsers.execute().listen((list) => _newPrevUsersStatus(list));
+          subscribeUsers.execute().listen((list) => _newPrevUsersStatus(list,realm));
     });
   }
 
-  void _newPrevUsersStatus(List<User> list) => emit(
+  void _newPrevUsersStatus(List<User> list, String realm) => emit(
         state.copyWith(
-            status: SingInStatus.usersSynced,
+            status: SingInStatus.realmSynced,
             prevUsers: list,
-            currentUser: list.first),
-      );
-
-  void _newRealmStatus(String realm) => emit(
-        state.copyWith(status: SingInStatus.realmSynced, realm: realm),
+            realm: realm,
+            currentUser: list.isNotEmpty ? list.first : null),
       );
   void error(String message) => emit(
     state.copyWith(

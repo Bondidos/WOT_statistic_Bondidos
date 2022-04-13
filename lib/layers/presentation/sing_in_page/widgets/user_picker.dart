@@ -15,7 +15,7 @@ class UserPicker extends StatelessWidget {
 
     return BlocBuilder<SingInCubit, SingInState>(
       buildWhen: (prevState, currentState) =>
-          (currentState.status == SingInStatus.usersSynced),
+          (currentState.status == SingInStatus.realmSynced),
       builder: (ctx, state) {
 
           final List<String> usersInCache =

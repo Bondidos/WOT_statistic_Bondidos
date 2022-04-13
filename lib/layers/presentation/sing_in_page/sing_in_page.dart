@@ -50,11 +50,9 @@ class SingInPage extends StatelessWidget {
             );
           }
         },
-        buildWhen: (prevState, currentState) =>
-            (currentState.status == SingInStatus.usersSynced &&
-                prevState != currentState),
+        buildWhen: (prevState, currentState) => currentState.status != SingInStatus.error,
         builder: (ctx, state) {
-          if (state.status == SingInStatus.usersSynced) {
+          if (state.status == SingInStatus.realmSynced) {
             return Stack(
               alignment: Alignment.topCenter,
               children: [
