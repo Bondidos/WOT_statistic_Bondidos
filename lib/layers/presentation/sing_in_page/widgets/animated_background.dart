@@ -34,7 +34,7 @@ class _AnimatedBackgroundState extends State<AnimatedBackground> {
                   )
                 : Image.asset(
                     "assets/background/main_background_land.jpg",
-                    fit: BoxFit.fitWidth,
+                    fit: BoxFit.cover,
                     height: MediaQuery.of(context).size.height,
                     width: MediaQuery.of(context).size.width,
                   ),

@@ -20,7 +20,7 @@ class SingInPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(SingInPage.id, style: appBarTitle(context)),
+        title: Text(id, style: appBarTitle(context)),
         actions: [
           IconButton(
             onPressed: () {

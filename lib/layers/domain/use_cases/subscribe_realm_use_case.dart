@@ -1,3 +1,6 @@
+import 'package:dartz/dartz.dart';
+
+import '../../../common/errors/failure.dart';
 import '../repositories/repository.dart';
 
 class SubscribeRealm {

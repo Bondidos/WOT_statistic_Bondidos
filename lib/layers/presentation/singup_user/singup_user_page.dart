@@ -22,6 +22,7 @@ class _SingUpPageState extends State<SingUpPage> {
 
   @override
   void initState() {
+
     if (Platform.isAndroid) WebView.platform = AndroidWebView();
     super.initState();
   }

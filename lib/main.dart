@@ -26,11 +26,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<SettingsCubit, SettingsState>(
-      buildWhen: (prevState, currentState) => (currentState != prevState),
+      buildWhen: (prevState, currentState) =>
+          (currentState is ThemeDark || currentState is ThemeLight),
       builder: (ctx, state) {
-        if (state is SettingsInit) {
+/*        if (state is SettingsInit) {
           return const CircularProgressIndicator();
-        }
+        }*/
         return MaterialApp(
           theme: (state is ThemeDark)
               ? ThemeData(
@@ -61,7 +62,7 @@ class MyApp extends StatelessWidget {
             SingUpPage.id: (ctx) => const SingUpPage(),
             StatisticPage.id: (ctx) => const StatisticPage(),
           },
-          initialRoute: SingInPage.id,
+          home: const SingInPage(),
         );
       },
     );

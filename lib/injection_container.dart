@@ -10,10 +10,11 @@ import 'layers/data/sources/local_data_source.dart';
 import 'layers/domain/repositories/repository.dart';
 import 'layers/domain/use_cases/remove_user_use_case.dart';
 import 'layers/domain/use_cases/save_user_use_case.dart';
+import 'layers/domain/use_cases/set_theme_usecase.dart';
 import 'layers/domain/use_cases/subscribe_users_use_case.dart';
 import 'layers/domain/use_cases/set_realm_pref_use_case.dart';
 import 'layers/domain/use_cases/subscribe_realm_use_case.dart';
-import 'layers/domain/use_cases/sync_theme_use_case.dart';
+import 'layers/domain/use_cases/subscribe_theme_use_case.dart';
 import 'layers/local/data_sources/local_source_impl/local_datasource_impl.dart';
 import 'layers/local/data_sources/sources/drift_database/database/database.dart';
 import 'layers/presentation/settings_page/bloc/settings_cubit.dart';
@@ -23,7 +24,8 @@ final inj = GetIt.instance;
 Future<void> init() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  inj.registerFactory(() => SettingsCubit(sync: inj()));
+  inj.registerFactory(
+      () => SettingsCubit(subscribeTheme: inj(), setTheme: inj()));
   inj.registerFactory(() => SingInCubit(
         saveUser: inj(),
         subscribeUsers: inj(),
@@ -32,12 +34,13 @@ Future<void> init() async {
         removeUserUseCase: inj(),
       ));
 
-  inj.registerFactory(() => SyncThemeUseCase(repository: inj()));
+  inj.registerFactory(() => SubscribeThemeUseCase(repository: inj()));
   inj.registerFactory(() => SaveUserUseCase(repository: inj()));
   inj.registerFactory(() => SubscribeUsers(repository: inj()));
   inj.registerFactory(() => SubscribeRealm(repository: inj()));
   inj.registerFactory(() => SetRealmUseCase(repository: inj()));
   inj.registerFactory(() => RemoveUserUseCase(repository: inj()));
+  inj.registerFactory(() => SetThemeUseCase(repository: inj()));
 
   inj.registerLazySingleton<Repository>(
       () => RepositoryImpl(localSource: inj()));

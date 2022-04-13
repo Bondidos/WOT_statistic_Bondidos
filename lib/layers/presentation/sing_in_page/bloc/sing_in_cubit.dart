@@ -68,10 +68,7 @@ class SingInCubit extends Cubit<SingInState> {
     emit(state.copyWith(currentUser: newCurrentUser));
   }
 
-  void saveUserInToDataBase(User user) async {
-    final bool result = await saveUser.execute(user, state.realm);
-    if (!result) error('Some storage error');
-  }
+  void saveUserInToDataBase(User user) => saveUser.execute(user, state.realm);
 
   void removeUser() {
     state.currentUser == null

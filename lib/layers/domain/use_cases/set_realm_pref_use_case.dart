@@ -5,7 +5,5 @@ class SetRealmUseCase {
 
   SetRealmUseCase({required this.repository});
 
-  Future<bool> execute(String pref) async {
-    return repository.setRealm(pref);
-  }
+  void execute(String pref) => repository.setRealm(pref);
 }

@@ -4,12 +4,13 @@ import '../../../common/errors/failure.dart';
 import '../entities/user.dart';
 
 abstract class Repository {
-  Future<Either<Failure, String>> syncThemeWithCache(String? pref);
 
-  Future<bool> saveUser(User user, String realm);
-  Future<bool> setRealm(String realm);
-  Future<bool> removeUser(User user, String realm);
+  void saveUser(User user, String realm);
+  void setRealm(String realm);
+  void removeUser(User user, String realm);
+  void setTheme(String theme);
 
+  Stream<String> get subscribeTheme;
   Stream<List<User>> get subscribeUsers;
   Stream<String> get subscribeRealm;
 }

@@ -2,15 +2,16 @@ import '../../domain/entities/user.dart';
 import '../models/user_data.dart';
 
 abstract class LocalDataSource {
-  Future<String?> getThemePreference();
 
-  Future<void> saveThemePreference(String pref);
+  void setTheme(String theme);
 
-  Future<int> saveUser(UserData user);
+  void setRealm(String realm);
 
-  Future<bool> setRealm(String realm);
+  void saveUser(UserData user);
 
-  Future<int> removeUser(UserData user);
+  void removeUser(UserData user);
+
+  Stream<String> subscribeTheme();
 
   Stream<List<User>> subscribeUsers();
 

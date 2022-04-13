@@ -1,6 +1,4 @@
 import 'package:drift/drift.dart';
-
-
 //https://github.com/Sproute777/flutter_drift_explore.git
 class UserTable extends Table {
   IntColumn get id => integer()();

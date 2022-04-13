@@ -10,51 +10,42 @@ class LocalDataSourceImpl extends LocalDataSource {
   final SharedPreferences sharedPreferences;
   final WotStatDao wotStatDao;
 
-  BehaviorSubject<String> realmStream = BehaviorSubject.seeded(INITIAL);
-
   LocalDataSourceImpl(
       {required this.sharedPreferences, required this.wotStatDao});
 
-  @override
-  Future<String?> getThemePreference() {
-    String? pref = sharedPreferences.getString(THEME_KEY);
-    return Future.value(pref);
-  }
+  BehaviorSubject<String> realmStream = BehaviorSubject.seeded(NOT_PICKED);
+  BehaviorSubject<String> themeStream = BehaviorSubject.seeded(NOT_PICKED);
+
+  String get _readRealm => sharedPreferences.getString(REALM_KEY) ?? NOT_PICKED;
+
+  String get _readTheme => sharedPreferences.getString(THEME_KEY) ?? NOT_PICKED;
 
   @override
-  Future<void> saveThemePreference(String pref) {
-    sharedPreferences.setString(THEME_KEY, pref);
-    return Future.value();
-  }
+  Stream<List<User>> subscribeUsers() => wotStatDao.getUsersByRealm(_readRealm);
 
   @override
-  Future<int> saveUser(UserData user) => wotStatDao.saveUser(user);
+  Stream<String> subscribeRealm() => realmStream..add(_readRealm);
 
   @override
-  Future<int> removeUser(UserData user) => wotStatDao.removeUser(user);
+  Stream<String> subscribeTheme() => themeStream..add(_readTheme);
 
   @override
-  Future<bool> setRealm(String realm) async {
+  void saveUser(UserData user) => wotStatDao.saveUser(user);
+
+  @override
+  void removeUser(UserData user) => wotStatDao.removeUser(user);
+
+  @override
+  void setRealm(String realm) async {
     final bool result = await sharedPreferences.setString(REALM_KEY, realm);
-    if (result) realmStream.add(realm);
-    return Future.value(result);
-  }
-
-  String _readRealm() {
-    final String? result = sharedPreferences.getString(REALM_KEY);
-    if (result == null) return NOT_PICKED;
-    return result;
+    if (!result) return;
+    realmStream.add(realm);
   }
 
   @override
-  Stream<List<User>> subscribeUsers() {
-    String realm = _readRealm();
-    return wotStatDao.getUsersByRealm(realm);
-  }
-
-  @override
-  Stream<String> subscribeRealm() {
-    realmStream.add(_readRealm());
-    return realmStream;
+  void setTheme(String theme) async {
+    final bool result = await sharedPreferences.setString(THEME_KEY, theme);
+    if (!result) return;
+    themeStream.add(theme);
   }
 }
