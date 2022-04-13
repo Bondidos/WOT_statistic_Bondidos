@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:wot_statistic/layers/local/data_sources/sources/drift_database/construct_db/shared.dart';
 import 'package:wot_statistic/layers/local/data_sources/sources/drift_database/dao/dao.dart';
 import 'package:wot_statistic/layers/presentation/sing_in_page/bloc/sing_in_cubit.dart';
 
@@ -14,7 +15,6 @@ import 'layers/domain/use_cases/set_realm_pref_use_case.dart';
 import 'layers/domain/use_cases/subscribe_realm_use_case.dart';
 import 'layers/domain/use_cases/sync_theme_use_case.dart';
 import 'layers/local/data_sources/local_source_impl/local_datasource_impl.dart';
-import 'layers/local/data_sources/sources/drift_database/construct_db/mobile.dart';
 import 'layers/local/data_sources/sources/drift_database/database/database.dart';
 import 'layers/presentation/settings_page/bloc/settings_cubit.dart';
 

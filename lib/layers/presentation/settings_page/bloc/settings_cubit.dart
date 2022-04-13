@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:bloc/bloc.dart';
@@ -46,18 +48,21 @@ class SettingsCubit extends Cubit<SettingsState> {
   bool get isDarkTheme => (state is ThemeDark) ? true : false;
 
   // todo theme from web browser (?)
-  Future<SettingsState> getPlatformTheme() async {
-    const MethodChannel platform = MethodChannel(CHANNEL);
-    final String platformTheme;
-    try {
-      platformTheme = await platform.invokeMethod(GET_THEME);
-    } on PlatformException catch (_) {
-      return const SettingsError(message: "Error while sync theme");
-    }
-    if (platformTheme == DARK_THEME) {
-      return const ThemeDark();
-    } else {
-      return const ThemeLight();
-    }
+  Future<SettingsState> getPlatformTheme() async {/*
+    if(Platform.isAndroid) {
+      const MethodChannel platform = MethodChannel(CHANNEL);
+      final String platformTheme;
+      try {
+        platformTheme = await platform.invokeMethod(GET_THEME);
+      } on PlatformException catch (_) {
+        return const SettingsError(message: "Error while sync theme");
+      }
+      if (platformTheme == DARK_THEME) {
+        return const ThemeDark();
+      } else {
+        return const ThemeLight();
+      }
+    }*/
+    return const ThemeLight();
   }
 }
