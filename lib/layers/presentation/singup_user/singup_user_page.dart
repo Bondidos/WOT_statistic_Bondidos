@@ -1,7 +1,6 @@
 import 'package:easy_web_view/easy_web_view.dart';
 import 'package:flutter/material.dart';
 
-import '../../../common/constants/constants.dart';
 import '../../../common/theme/text_styles.dart';
 
 const String status = "status";
@@ -20,23 +19,33 @@ class _SingUpPageState extends State<SingUpPage> {
   @override
   Widget build(BuildContext context) {
     String realm = ModalRoute.of(context)!.settings.arguments as String;
+    bool _editing = false;
 
     return Scaffold(
       appBar: AppBar(
         title: Text(SingUpPage.id, style: appBarTitle(context)),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              setState(() {
+
+              });
+            },
             icon: const Icon(Icons.refresh),
           )
         ],
       ),
-      body: EasyWebView(
-        src:  (realm == EU) ? EU_LOGIN_URL : CIS_LOGIN_URL,
-        // isMarkdown: false, // Use markdown syntax
+      body: _editing
+      ? Container()
+      : EasyWebView(
+        src:  'https://vk.com/',
+        isMarkdown: false, // Use markdown syntax
+        convertToWidgets: false,
+        convertToMarkdown: false,
         // convertToWidgets: false, // Try to convert to flutter widgets
         // width: 100,
         // height: 100,
+        onLoaded: (str){print(str);},
       ),
     );
   }
