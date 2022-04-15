@@ -37,15 +37,15 @@ class _SingUpPageState extends State<SingUpPage> {
       ),
       body: _editing
       ? Container()
-      : EasyWebView(
+      : const EasyWebView(
+        key: ValueKey("sds"),
         src:  'https://vk.com/',
-        isMarkdown: false, // Use markdown syntax
+        isMarkdown: true, // Use markdown syntax
         convertToWidgets: false,
         convertToMarkdown: false,
         // convertToWidgets: false, // Try to convert to flutter widgets
         // width: 100,
         // height: 100,
-        onLoaded: (str){print(str);},
       ),
     );
   }
