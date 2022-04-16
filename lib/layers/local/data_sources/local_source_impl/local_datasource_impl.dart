@@ -7,6 +7,7 @@ import '../../../domain/entities/user.dart';
 import '../sources/drift_database/dao/wot_stat_dao.dart';
 
 class LocalDataSourceImpl extends LocalDataSource {
+  //todo move SP to separate file?
   final SharedPreferences sharedPreferences;
   final WotStatDao wotStatDao;
 

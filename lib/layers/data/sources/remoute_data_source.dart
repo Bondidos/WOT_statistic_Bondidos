@@ -1,7 +1,8 @@
-import '../../domain/entities/personal_data.dart';
-import '../models/remoute/personal_api_data/personal_api_data.dart';
+import 'package:dio/dio.dart';
+
+import '../models/remoute/personal_api_data/personal_data_api.dart';
 
 abstract class RemoteDataSource {
-  Future<PersonalApiData> fetchPersonalData(int accountId,String accessToken);
+  Future<PersonalDataApi> fetchPersonalData(int accountId,String accessToken);
 
 }

@@ -11,8 +11,8 @@ class PersonalDataCubit extends Cubit<PersonalDataStatus>{
   PersonalDataCubit({required this.loadData}) : super(const LoadingStatus()){
     fetchPersonalData();
   }
-  void fetchPersonalData(){
-    List<PersonalData> result = loadData.execute();
+  void fetchPersonalData() async {
+    List<PersonalData> result = await loadData.execute();
     emit(LoadedDataStatus(dataList: result));
   }
 

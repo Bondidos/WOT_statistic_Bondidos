@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:logger/logger.dart';
 import 'package:wot_statistic/layers/data/sources/local_data_source.dart';
 import 'package:wot_statistic/layers/domain/entities/achieves.dart';
 import 'package:wot_statistic/layers/domain/entities/personal_data.dart';
@@ -12,9 +13,10 @@ import '../sources/remoute_data_source.dart';
 
 class RepositoryImpl extends Repository {
   final LocalDataSource localSource;
-  final RemoteDataSource remoreSource;
+  final RemoteDataSource remoteSource;
+  final Logger logger = Logger();
 
-  RepositoryImpl({required this.localSource, required this.remoreSource});
+  RepositoryImpl({required this.localSource, required this.remoteSource});
 
   @override
   Stream<String> get subscribeRealm => localSource.subscribeRealm();
@@ -46,8 +48,15 @@ class RepositoryImpl extends Repository {
   }
 
   @override
-  Future<List<PersonalData>> fetchPersonalData() {
-    return remoreSource.fetchPersonalData();
+  Future<List<PersonalData>> fetchPersonalData() async{
+
+    var response = await remoteSource.fetchPersonalData(
+        560508396,
+        '97b34e7578971c9c06c1a7c599797a00f65e5299',
+    );
+    logger.d(response.toString());
+
+    return [];
   }
 
   @override

@@ -6,5 +6,5 @@ class LoadPersonalData {
   final Repository repository;
   LoadPersonalData({required this.repository});
 
-  List<PersonalData> execute() => repository.fetchPersonalData();
+  Future<List<PersonalData>> execute() => repository.fetchPersonalData();
 }

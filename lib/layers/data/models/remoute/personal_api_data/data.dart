@@ -1,14 +1,21 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:wot_statistic/layers/data/models/remoute/personal_api_data/user_api_data.dart';
-part 'data.g.dart';
+import 'package:wot_statistic/layers/data/models/remoute/personal_api_data/x560508396.dart';
 
-@JsonSerializable()
 class Data {
-  @JsonKey()
-  UserApiData data;
+    @JsonKey(name: '560508396')
+    final UserId userId;
 
-  Data(this.data);
+    Data({required this.userId});
 
-  factory Data.fromJson(Map<String, dynamic> json) => _$DataFromJson(json);
-  Map<String, dynamic> toJson() => _$DataToJson(this);
+    factory Data.fromJson(Map<String, dynamic> json) {
+        return Data(
+            userId: UserId.fromJson(json['560508396']),
+        );
+    }
+
+    Map<String, dynamic> toJson() {
+        final Map<String, dynamic> data = <String, dynamic>{};
+          data['560508396'] = userId.toJson();
+        return data;
+    }
 }

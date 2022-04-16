@@ -10,6 +10,7 @@ import 'package:wot_statistic/layers/presentation/sing_in_page/widgets/user_pick
 import 'package:wot_statistic/layers/presentation/singup_user/singup_user_page.dart';
 
 import '../../../common/theme/text_styles.dart';
+import '../statistic_page/statistic_page.dart';
 
 class SingInPage extends StatelessWidget {
   const SingInPage({Key? key}) : super(key: key);
@@ -83,17 +84,19 @@ class SingInPage extends StatelessWidget {
                       ThemedButton(
                         title: "Sing In",
                         onTap: () {
-                          if (state.currentUser == null) {
+                          /*if (state.currentUser == null) {
                             context.read<SingInCubit>().error("Sing up first");
                             return;
                           }
 
-                          /*   User? logInEdUser =
+                             User? logInEdUser =
                               context.read<SingInCubit>().currentUser;
                           if (logInEdUser == null) return;
                           Navigator.of(context).pushReplacementNamed(
                               StatisticPage.id,
                               arguments: logInEdUser);*/
+                          Navigator.of(context).pushNamed(
+                              StatisticPage.id);
                           //todo validate user token
                           //todo navigate statisticScreen
                         },

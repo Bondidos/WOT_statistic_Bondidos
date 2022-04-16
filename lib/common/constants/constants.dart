@@ -24,5 +24,6 @@ const EU_LOGIN_URL =
 const REDIRECT_URL = "https://developers.wargaming.net/reference/all/wot/auth/login/";
 
 // app id
-const APPLICATION_ID = 'c5c36d84a8f9b45847e4c1b408faf74f';
-const FIELDS_DATA = "-statistics.trees_cut,-statistics.stronghold_skirmish,-statistics.stronghold_defense,-statistics.clan,-statistics.regular_team,-statistics.company,-statistics.historical,-statistics.team,-statistics.frags";
+const APPLICATION_ID = '5d489c586717c2b76ade8bea16607167';
+const FIELDS_DATA = 'private,global_rating,clan_id';
+//"-statistics.trees_cut,-statistics.stronghold_skirmish,-statistics.stronghold_defense,-statistics.clan,-statistics.regular_team,-statistics.company,-statistics.historical,-statistics.team,-statistics.frags";

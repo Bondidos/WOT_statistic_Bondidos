@@ -1,6 +1,7 @@
-import 'package:wot_statistic/layers/data/models/remoute/personal_api_data/personal_api_data.dart';
+import 'package:dio/dio.dart';
 
 import '../../../common/constants/constants.dart';
+import '../../data/models/remoute/personal_api_data/personal_data_api.dart';
 import '../../data/sources/remoute_data_source.dart';
 import '../sources/wot_api_client.dart';
 
@@ -9,7 +10,7 @@ class RemoteSourceImpl extends RemoteDataSource{
   RemoteSourceImpl({required this.wotClient});
 
   @override
-  Future<PersonalApiData> fetchPersonalData(int accountId,String accessToken) => wotClient.fetchPersonalData(
+  Future<PersonalDataApi> fetchPersonalData(int accountId,String accessToken) => wotClient.fetchPersonalData(
       APPLICATION_ID,
       accountId,
       accessToken,
