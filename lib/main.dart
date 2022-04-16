@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'layers/presentation/sing_in_page/bloc/sing_in_cubit.dart';
 import 'layers/presentation/sing_in_page/sing_in_page.dart';
+import 'layers/presentation/statistic_page/bloc/personal_data_cubit.dart';
 
 void main() async {
   await di.init();
@@ -15,6 +16,7 @@ void main() async {
     providers: [
       BlocProvider<SettingsCubit>(create: (ctx) => di.inj<SettingsCubit>()),
       BlocProvider<SingInCubit>(create: (ctx) => di.inj<SingInCubit>()),
+      BlocProvider<PersonalDataCubit>(create: (ctx) => di.inj<PersonalDataCubit>()),
     ],
     child: const MyApp(),
   ));

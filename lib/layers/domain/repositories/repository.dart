@@ -1,7 +1,7 @@
-import 'package:dartz/dartz.dart';
-
-import '../../../common/errors/failure.dart';
+import '../entities/achieves.dart';
+import '../entities/personal_data.dart';
 import '../entities/user.dart';
+import '../entities/vehicle.dart';
 
 abstract class Repository {
 
@@ -13,4 +13,10 @@ abstract class Repository {
   Stream<String> get subscribeTheme;
   Stream<List<User>> get subscribeUsers;
   Stream<String> get subscribeRealm;
+
+  Future<List<PersonalData>> fetchPersonalData();
+  Future<List<Achieve>> fetchAchieves();
+  Future<List<Vehicle>> fetchVehicles();
+  // List<Players> searchPlayer();
+
 }

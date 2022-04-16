@@ -1,5 +1,5 @@
 import 'package:drift/drift.dart';
-import '../../../../../data/models/user_data.dart';
+import '../../../../../data/models/local/user_data.dart';
 import '../../../../../domain/entities/user.dart';
 import '../wot_stat_database.dart';
 

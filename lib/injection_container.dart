@@ -8,6 +8,7 @@ import 'package:wot_statistic/layers/presentation/sing_in_page/bloc/sing_in_cubi
 import 'layers/data/repositories/repository_impl.dart';
 import 'layers/data/sources/local_data_source.dart';
 import 'layers/domain/repositories/repository.dart';
+import 'layers/domain/use_cases/load_personal_data.dart';
 import 'layers/domain/use_cases/remove_user_use_case.dart';
 import 'layers/domain/use_cases/save_user_use_case.dart';
 import 'layers/domain/use_cases/set_theme_usecase.dart';
@@ -41,6 +42,7 @@ Future<void> init() async {
   inj.registerFactory(() => SetRealmUseCase(repository: inj()));
   inj.registerFactory(() => RemoveUserUseCase(repository: inj()));
   inj.registerFactory(() => SetThemeUseCase(repository: inj()));
+  inj.registerFactory(() => LoadPersonalData(repository: inj()));
 
   inj.registerLazySingleton<Repository>(
       () => RepositoryImpl(localSource: inj()));

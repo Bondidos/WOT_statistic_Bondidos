@@ -1,8 +1,8 @@
 import 'package:drift/drift.dart';
 import 'package:equatable/equatable.dart';
 
-import '../../domain/entities/user.dart';
-import '../../local/data_sources/sources/drift_database/database/database.dart';
+import '../../../domain/entities/user.dart';
+import '../../../local/data_sources/sources/drift_database/database/database.dart';
 
 class UserData extends Equatable {
   final int id;

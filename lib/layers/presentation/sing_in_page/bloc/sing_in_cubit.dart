@@ -47,7 +47,7 @@ class SingInCubit extends Cubit<SingInState> {
           subscribeUsers.execute().listen((list) => _newPrevUsersStatus(list,realm));
     });
   }
-
+  // todo prevUsers must be List<String>
   void _newPrevUsersStatus(List<User> list, String realm) => emit(
         state.copyWith(
             status: SingInStatus.realmSynced,

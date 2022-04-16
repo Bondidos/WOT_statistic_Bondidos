@@ -1,8 +1,8 @@
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:wot_statistic/layers/data/models/user_data.dart';
 import 'package:wot_statistic/layers/data/sources/local_data_source.dart';
 import '../../../../common/constants/constants.dart';
+import '../../../data/models/local/user_data.dart';
 import '../../../domain/entities/user.dart';
 import '../sources/drift_database/dao/wot_stat_dao.dart';
 
