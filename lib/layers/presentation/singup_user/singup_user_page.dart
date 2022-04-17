@@ -1,57 +1,12 @@
-import 'package:easy_web_view/easy_web_view.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
+import '../../../common/constants/constants.dart';
 import '../../../common/theme/text_styles.dart';
+import '../../domain/entities/user.dart';
 
 const String status = "status";
-
-class SingUpPage extends StatefulWidget {
-  const SingUpPage({Key? key}) : super(key: key);
-  static const id = "OpenId login";
-
-  @override
-  State<SingUpPage> createState() => _SingUpPageState();
-}
-
-class _SingUpPageState extends State<SingUpPage> {
-
-
-  @override
-  Widget build(BuildContext context) {
-    String realm = ModalRoute.of(context)!.settings.arguments as String;
-    bool _editing = false;
-
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(SingUpPage.id, style: appBarTitle(context)),
-        actions: [
-          IconButton(
-            onPressed: () {
-              setState(() {
-
-              });
-            },
-            icon: const Icon(Icons.refresh),
-          )
-        ],
-      ),
-      body: _editing
-      ? Container()
-      : const EasyWebView(
-        key: ValueKey("sds"),
-        src:  'https://vk.com/',
-        isMarkdown: true, // Use markdown syntax
-        convertToWidgets: false,
-        convertToMarkdown: false,
-        // convertToWidgets: false, // Try to convert to flutter widgets
-        // width: 100,
-        // height: 100,
-      ),
-    );
-  }
-}
-
-/*
 class SingUpPage extends StatefulWidget {
   const SingUpPage({Key? key}) : super(key: key);
   static const id = "OpenId login";
@@ -115,6 +70,54 @@ class _SingUpPageState extends State<SingUpPage> {
             }
           }
         },
+      ),
+    );
+  }
+}
+
+/*
+
+class SingUpPage extends StatefulWidget {
+  const SingUpPage({Key? key}) : super(key: key);
+  static const id = "OpenId login";
+
+  @override
+  State<SingUpPage> createState() => _SingUpPageState();
+}
+
+class _SingUpPageState extends State<SingUpPage> {
+
+
+  @override
+  Widget build(BuildContext context) {
+    String realm = ModalRoute.of(context)!.settings.arguments as String;
+    bool _editing = false;
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(SingUpPage.id, style: appBarTitle(context)),
+        actions: [
+          IconButton(
+            onPressed: () {
+              setState(() {
+
+              });
+            },
+            icon: const Icon(Icons.refresh),
+          )
+        ],
+      ),
+      body: _editing
+      ? Container()
+      : const EasyWebView(
+        key: ValueKey("sds"),
+        src:  'https://vk.com/',
+        isMarkdown: true, // Use markdown syntax
+        convertToWidgets: false,
+        convertToMarkdown: false,
+        // convertToWidgets: false, // Try to convert to flutter widgets
+        // width: 100,
+        // height: 100,
       ),
     );
   }

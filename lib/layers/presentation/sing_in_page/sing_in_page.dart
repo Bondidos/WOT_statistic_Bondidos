@@ -19,6 +19,9 @@ class SingInPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final SingInCubit cubit = context.read<SingInCubit>();
+
     return Scaffold(
       appBar: AppBar(
         title: Text(id, style: appBarTitle(context)),
@@ -51,7 +54,8 @@ class SingInPage extends StatelessWidget {
             );
           }
         },
-        buildWhen: (prevState, currentState) => currentState.status != SingInStatus.error,
+        buildWhen: (prevState, currentState) =>
+            currentState.status != SingInStatus.error,
         builder: (ctx, state) {
           if (state.status == SingInStatus.realmSynced) {
             return Stack(
@@ -83,22 +87,10 @@ class SingInPage extends StatelessWidget {
                       const SizedBox(height: 20),
                       ThemedButton(
                         title: "Sing In",
-                        onTap: () {
-                          /*if (state.currentUser == null) {
-                            context.read<SingInCubit>().error("Sing up first");
-                            return;
+                        onTap: () async {
+                          if (await cubit.validateUserToken()) {
+                            Navigator.of(context).pushNamed(StatisticPage.id);
                           }
-
-                             User? logInEdUser =
-                              context.read<SingInCubit>().currentUser;
-                          if (logInEdUser == null) return;
-                          Navigator.of(context).pushReplacementNamed(
-                              StatisticPage.id,
-                              arguments: logInEdUser);*/
-                          Navigator.of(context).pushNamed(
-                              StatisticPage.id);
-                          //todo validate user token
-                          //todo navigate statisticScreen
                         },
                       ),
                       const SizedBox(height: 20),
@@ -111,16 +103,13 @@ class SingInPage extends StatelessWidget {
                                     .pushNamed(SingUpPage.id, arguments: realm)
                                 as User?;
                             if (user == null) return;
-                            context
-                                .read<SingInCubit>()
-                                .saveUserInToDataBase(user);
+                            cubit.saveUserInToDataBase(user);
                           }),
                       const SizedBox(height: 20),
                       ThemedButton(
-                          title: "Delete",
-                          onTap: () {
-                            context.read<SingInCubit>().removeUser();
-                          }),
+                        title: "Delete",
+                        onTap: () => cubit.removeUser(),
+                      ),
                       const SizedBox(height: 20),
                     ],
                   ),

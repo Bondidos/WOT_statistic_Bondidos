@@ -9,6 +9,7 @@ import 'package:wot_statistic/layers/domain/entities/vehicle.dart';
 import 'package:wot_statistic/layers/domain/repositories/repository.dart';
 
 import '../models/local/user_data.dart';
+import '../models/remoute/personal_api_data/personal_data_api.dart';
 import '../sources/remoute_data_source.dart';
 
 class RepositoryImpl extends Repository {
@@ -47,21 +48,37 @@ class RepositoryImpl extends Repository {
     return Future.value([]);
   }
 
+  /**---------------------------------------------------*/
   @override
-  Future<List<PersonalData>> fetchPersonalData() async{
-
-    var response = await remoteSource.fetchPersonalData(
-        560508396,
-        '97b34e7578971c9c06c1a7c599797a00f65e5299',
-    );
+  Future<List<PersonalData>> fetchPersonalData() async {
+    final UserData? singedUser = await localSource.getSingedUser();
+    if (singedUser == null) throw Exception('Singed User is not exist');
+    final PersonalDataApi response;
+    try {
+      response = await remoteSource.fetchPersonalData(
+        accountId: singedUser.id,
+        accessToken: singedUser.accessToken,
+      );
+    } catch (e) {
+      throw Exception('Check internet connection');
+    }
     logger.d(response.toString());
+    if (response.status != 'ok') {
+      throw Exception('Response status: ${response.status}');
+    }
 
-    return [];
+    return response.toList();
   }
+
+  /**---------------------------------------------------*/
 
   @override
   Future<List<Vehicle>> fetchVehicles() {
     // TODO: implement fetchVehicles
     return Future.value([]);
   }
+
+  @override
+  Future<void> setSingedUser(User user, String realm) =>
+      localSource.setSingedUser(UserData.fromUser(user, realm));
 }

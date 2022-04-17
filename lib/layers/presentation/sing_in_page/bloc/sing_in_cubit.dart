@@ -5,6 +5,7 @@ import 'package:wot_statistic/common/constants/constants.dart';
 import '../../../domain/entities/user.dart';
 import '../../../domain/use_cases/remove_user_use_case.dart';
 import '../../../domain/use_cases/save_user_use_case.dart';
+import '../../../domain/use_cases/sing_in_use_case.dart';
 import '../../../domain/use_cases/subscribe_users_use_case.dart';
 import '../../../domain/use_cases/set_realm_pref_use_case.dart';
 import '../../../domain/use_cases/subscribe_realm_use_case.dart';
@@ -17,6 +18,7 @@ class SingInCubit extends Cubit<SingInState> {
   final SubscribeRealm subscribeRealm;
   final SetRealmUseCase setRealm;
   final RemoveUserUseCase removeUserUseCase;
+  final SingInUseCase singIn;
 
   StreamSubscription? _subscriptionUsers;
   StreamSubscription? _subscriptionRealm;
@@ -27,6 +29,7 @@ class SingInCubit extends Cubit<SingInState> {
     required this.subscribeUsers,
     required this.subscribeRealm,
     required this.removeUserUseCase,
+    required this.singIn,
   }) : super(const SingInState(
             prevUsers: [],
             status: SingInStatus.initial,
@@ -74,6 +77,19 @@ class SingInCubit extends Cubit<SingInState> {
     state.currentUser == null
         ? error("No user to delete")
         : removeUserUseCase.execute(state.currentUser!, state.realm);
+  }
+
+  Future<bool>  validateUserToken() async {
+    if(state.currentUser == null) {
+      error('Please, sing up');
+      return false;
+    }
+    if(DateTime.now().millisecondsSinceEpoch > state.currentUser!.expiresAt *1000){
+      error('Token expired, please sing up');
+      return false;
+    }
+    await singIn.execute(state.currentUser!, state.realm);
+    return true;
   }
 
   @override

@@ -9,6 +9,7 @@ abstract class Repository {
   void setRealm(String realm);
   void removeUser(User user, String realm);
   void setTheme(String theme);
+  Future<void> setSingedUser(User user,String realm);
 
   Stream<String> get subscribeTheme;
   Stream<List<User>> get subscribeUsers;

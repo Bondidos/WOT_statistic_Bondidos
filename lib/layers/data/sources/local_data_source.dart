@@ -11,6 +11,10 @@ abstract class LocalDataSource {
 
   void removeUser(UserData user);
 
+  Future<void> setSingedUser(UserData user);
+
+  UserData? getSingedUser();
+
   Stream<String> subscribeTheme();
 
   Stream<List<User>> subscribeUsers();

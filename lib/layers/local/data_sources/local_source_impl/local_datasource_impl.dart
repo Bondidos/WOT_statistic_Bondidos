@@ -22,6 +22,37 @@ class LocalDataSourceImpl extends LocalDataSource {
   String get _readTheme => sharedPreferences.getString(THEME_KEY) ?? NOT_PICKED;
 
   @override
+  Future<void> setSingedUser(UserData user) async {
+    await sharedPreferences.setInt(SINGED_USER_ID, user.id);
+    await sharedPreferences.setString(SINGED_USER_NICKNAME, user.nickname);
+    await sharedPreferences.setString(SINGED_USER_TOKEN, user.accessToken);
+    await sharedPreferences.setInt(SINGED_USER_EXPIRE, user.expiresAt);
+    await sharedPreferences.setString(SINGED_USER_REALM, user.realm);
+  }
+
+  @override
+  UserData? getSingedUser() {
+    int? id = sharedPreferences.getInt(SINGED_USER_ID);
+    String? nickname = sharedPreferences.getString(SINGED_USER_NICKNAME);
+    String? accessToken = sharedPreferences.getString(SINGED_USER_TOKEN);
+    int? expiresAt = sharedPreferences.getInt(SINGED_USER_EXPIRE);
+    String? realm = sharedPreferences.getString(SINGED_USER_REALM);
+
+    if (id == null ||
+        nickname == null ||
+        accessToken == null ||
+        expiresAt == null ||
+        realm == null) return null;
+
+    return UserData(
+        id: id,
+        nickname: nickname,
+        accessToken: accessToken,
+        expiresAt: expiresAt,
+        realm: realm);
+  }
+
+  @override
   Stream<List<User>> subscribeUsers() => wotStatDao.getUsersByRealm(_readRealm);
 
   @override

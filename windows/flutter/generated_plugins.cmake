@@ -3,10 +3,7 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
-  permission_handler_windows
   sqlite3_flutter_libs
-  url_launcher_windows
-  webview_windows
 )
 
 set(PLUGIN_BUNDLED_LIBRARIES)

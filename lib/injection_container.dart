@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wot_statistic/layers/data/sources/remoute_data_source.dart';
+import 'package:wot_statistic/layers/domain/use_cases/sing_in_use_case.dart';
 import 'package:wot_statistic/layers/local/data_sources/sources/drift_database/construct_db/shared.dart';
 import 'package:wot_statistic/layers/local/data_sources/sources/drift_database/dao/dao.dart';
 import 'package:wot_statistic/layers/presentation/sing_in_page/bloc/sing_in_cubit.dart';
@@ -39,6 +40,7 @@ Future<void> init() async {
         subscribeRealm: inj(),
         setRealm: inj(),
         removeUserUseCase: inj(),
+        singIn: inj(),
       ));
 
   inj.registerFactory(() => PersonalDataCubit(loadData: inj()));
@@ -51,13 +53,13 @@ Future<void> init() async {
   inj.registerFactory(() => RemoveUserUseCase(repository: inj()));
   inj.registerFactory(() => SetThemeUseCase(repository: inj()));
   inj.registerFactory(() => LoadPersonalData(repository: inj()));
+  inj.registerFactory(() => SingInUseCase(repository: inj()));
 
   inj.registerLazySingleton<Repository>(
       () => RepositoryImpl(localSource: inj(), remoteSource: inj()));
 
-  inj.registerFactory<RemoteDataSource>(() => RemoteSourceImpl(
-      wotClient: inj())
-  );
+  inj.registerFactory<RemoteDataSource>(
+      () => RemoteSourceImpl(wotClient: inj()));
 
   inj.registerFactory<LocalDataSource>(() => LocalDataSourceImpl(
         sharedPreferences: inj(),
