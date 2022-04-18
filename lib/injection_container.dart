@@ -2,7 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:wot_statistic/common/constants/constants.dart';
 import 'package:wot_statistic/layers/data/sources/remoute_data_source.dart';
 import 'package:wot_statistic/layers/domain/use_cases/sing_in_use_case.dart';
 import 'package:wot_statistic/layers/local/data_sources/sources/drift_database/construct_db/shared.dart';
@@ -72,9 +71,7 @@ Future<void> init() async {
   inj.registerFactory<WotClient>(() => WotClient(inj()));
   final SharedPreferences sharedPref = await SharedPreferences.getInstance();
   final WotStatDatabase driftDatabase = constructDb();
-  final BaseOptions baseOptions = BaseOptions(
-    baseUrl: "",
-  );
+  final BaseOptions baseOptions = BaseOptions();
   inj.registerFactory(() => baseOptions);
   final Dio dio = Dio(inj())..interceptors.add(LogInterceptor());
   inj.registerFactory(() => dio);

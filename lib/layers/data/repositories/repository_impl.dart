@@ -20,7 +20,13 @@ class RepositoryImpl extends Repository {
   final Logger logger = Logger();
   final BaseOptions baseOptions;
 
-  RepositoryImpl({required this.baseOptions, required this.localSource, required this.remoteSource});
+  RepositoryImpl(
+      {required this.baseOptions, required this.localSource, required this.remoteSource}) {
+    localSource.subscribeRealm().listen((event) {
+      baseOptions.baseUrl = event == EU ? BASE_URL_EU : BASE_URL_CIS;
+    });
+    // todo destroy stream
+  }
 
   @override
   Stream<String> get subscribeRealm => localSource.subscribeRealm();
@@ -56,7 +62,7 @@ class RepositoryImpl extends Repository {
   Future<List<PersonalData>> fetchPersonalData() async {
     final UserData? singedUser = await localSource.getSingedUser();
     if (singedUser == null) throw Exception('Singed User is not exist');
-    baseOptions.baseUrl = singedUser.realm == EU ? BASE_URL_EU : BASE_URL_CIS;
+    // baseOptions.baseUrl = singedUser.realm == EU ? BASE_URL_EU : BASE_URL_CIS;
     final PersonalDataApi response;
     try {
       response = await remoteSource.fetchPersonalData(
