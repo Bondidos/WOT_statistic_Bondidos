@@ -50,7 +50,7 @@ class SingInCubit extends Cubit<SingInState> {
           subscribeUsers.execute().listen((list) => _newPrevUsersStatus(list,realm));
     });
   }
-  // todo prevUsers must be List<String>
+  // todo refresh state after emitting error
   void _newPrevUsersStatus(List<User> list, String realm) => emit(
         state.copyWith(
             status: SingInStatus.realmSynced,
@@ -88,6 +88,7 @@ class SingInCubit extends Cubit<SingInState> {
       error('Token expired, please sing up');
       return false;
     }
+    // todo token extension
     await singIn.execute(state.currentUser!, state.realm);
     return true;
   }

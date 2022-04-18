@@ -9,9 +9,7 @@ part 'personal_data_status.dart';
 class PersonalDataCubit extends Cubit<PersonalDataStatus> {
   final LoadPersonalData loadData;
 
-  PersonalDataCubit({required this.loadData}) : super(const LoadingStatus()) {
-    fetchPersonalData();
-  }
+  PersonalDataCubit({required this.loadData}) : super(const LoadingStatus());
 
   void fetchPersonalData() async {
     try {

@@ -1,5 +1,3 @@
-import 'package:dio/dio.dart';
-
 import '../../../common/constants/constants.dart';
 import '../../data/models/remoute/personal_api_data/personal_data_api.dart';
 import '../../data/sources/remoute_data_source.dart';

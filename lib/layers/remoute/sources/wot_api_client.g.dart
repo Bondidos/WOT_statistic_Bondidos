@@ -9,9 +9,7 @@ part of 'wot_api_client.dart';
 // ignore_for_file: unnecessary_brace_in_string_interps
 
 class _WotClient implements WotClient {
-  _WotClient(this._dio, {this.baseUrl}) {
-    baseUrl ??= 'https://api.worldoftanks.eu';
-  }
+  _WotClient(this._dio, {this.baseUrl});
 
   final Dio _dio;
 

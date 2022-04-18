@@ -1,6 +1,8 @@
 import 'dart:async';
 
+import 'package:dio/dio.dart';
 import 'package:logger/logger.dart';
+import 'package:wot_statistic/common/constants/constants.dart';
 import 'package:wot_statistic/layers/data/sources/local_data_source.dart';
 import 'package:wot_statistic/layers/domain/entities/achieves.dart';
 import 'package:wot_statistic/layers/domain/entities/personal_data.dart';
@@ -16,8 +18,9 @@ class RepositoryImpl extends Repository {
   final LocalDataSource localSource;
   final RemoteDataSource remoteSource;
   final Logger logger = Logger();
+  final BaseOptions baseOptions;
 
-  RepositoryImpl({required this.localSource, required this.remoteSource});
+  RepositoryImpl({required this.baseOptions, required this.localSource, required this.remoteSource});
 
   @override
   Stream<String> get subscribeRealm => localSource.subscribeRealm();
@@ -53,6 +56,7 @@ class RepositoryImpl extends Repository {
   Future<List<PersonalData>> fetchPersonalData() async {
     final UserData? singedUser = await localSource.getSingedUser();
     if (singedUser == null) throw Exception('Singed User is not exist');
+    baseOptions.baseUrl = singedUser.realm == EU ? BASE_URL_EU : BASE_URL_CIS;
     final PersonalDataApi response;
     try {
       response = await remoteSource.fetchPersonalData(
