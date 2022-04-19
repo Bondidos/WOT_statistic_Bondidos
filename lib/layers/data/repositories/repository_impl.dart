@@ -42,14 +42,14 @@ class RepositoryImpl extends Repository {
 
   @override
   void saveUser(User user, String realm) =>
-      localSource.saveUser(UserData.fromUser(user, realm));
+      localSource.saveUser(UserData.fromUserAndRealm(user, realm));
 
   @override
   void setRealm(String realm) => localSource.setRealm(realm);
 
   @override
   void removeUser(User user, String realm) =>
-      localSource.removeUser(UserData.fromUser(user, realm));
+      localSource.removeUser(UserData.fromUserAndRealm(user, realm));
 
   @override
   Future<List<Achieve>> fetchAchieves() {
@@ -60,24 +60,24 @@ class RepositoryImpl extends Repository {
   /**---------------------------------------------------*/
   @override
   Future<List<PersonalData>> fetchPersonalData() async {
-    final UserData? singedUser = await localSource.getSingedUser();
-    if (singedUser == null) throw Exception('Singed User is not exist');
+    final UserData? signedUser = await localSource.getSignedUser();
+    if (signedUser == null) throw Exception('Singed User is not exist');
     // baseOptions.baseUrl = singedUser.realm == EU ? BASE_URL_EU : BASE_URL_CIS;
-    final PersonalDataApi response;
+    final PersonalDataApi personalDataApi;
     try {
-      response = await remoteSource.fetchPersonalData(
-        accountId: singedUser.id,
-        accessToken: singedUser.accessToken,
+      personalDataApi = await remoteSource.fetchPersonalData(
+        accountId: signedUser.id,
+        accessToken: signedUser.accessToken,
       );
     } catch (e) {
       throw Exception('Check internet connection');
     }
-    logger.d(response.toString());
-    if (response.status != 'ok') {
-      throw Exception('Response status: ${response.status}');
+    logger.d(personalDataApi.toString());
+    if (personalDataApi.status != HTTP_STATUS_OK) {
+      throw Exception('Response status: ${personalDataApi.status}');
     }
 
-    return response.toList();
+    return personalDataApi.toList();
   }
 
   /**---------------------------------------------------*/
@@ -90,5 +90,5 @@ class RepositoryImpl extends Repository {
 
   @override
   Future<void> setSingedUser(User user, String realm) =>
-      localSource.setSingedUser(UserData.fromUser(user, realm));
+      localSource.setSingedUser(UserData.fromUserAndRealm(user, realm));
 }

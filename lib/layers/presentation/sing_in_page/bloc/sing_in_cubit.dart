@@ -31,11 +31,11 @@ class SingInCubit extends Cubit<SingInState> {
     required this.removeUserUseCase,
     required this.singIn,
   }) : super(const SingInState(
-            prevUsers: [],
-            status: SingInStatus.initial,
-            errorMessage: null,
-            realm: NOT_PICKED,
-            currentUser: null)) {
+      prevUsers: [],
+      status: SingInStatus.initial,
+      errorMessage: null,
+      realm: NOT_PICKED,
+      currentUser: null)) {
     _initialize();
   }
 
@@ -45,30 +45,40 @@ class SingInCubit extends Cubit<SingInState> {
         setNewRealm(EU); // as default EU realm
         return;
       }
-      if (_subscriptionUsers != null) _subscriptionUsers?.cancel();
+      if (_subscriptionUsers != null) _subscriptionUsers!.cancel();
       _subscriptionUsers =
-          subscribeUsers.execute().listen((list) => _newPrevUsersStatus(list,realm));
+          subscribeUsers.execute().listen((list) =>
+              _newPrevUsersStatus(list, realm));
     });
   }
+
   // todo refresh state after emitting error
-  void _newPrevUsersStatus(List<User> list, String realm) => emit(
+  void _newPrevUsersStatus(List<User> list, String realm) =>
+      emit(
         state.copyWith(
             status: SingInStatus.realmSynced,
             prevUsers: list,
             realm: realm,
             currentUser: list.isNotEmpty ? list.first : null),
       );
-  void error(String message) => emit(
-    state.copyWith(
-        status: SingInStatus.error, errorMessage: message),
-  );
+
+  void error(String message) =>
+      emit(
+        state.copyWith(
+            status: SingInStatus.error, errorMessage: message),
+      );
 
   void setNewRealm(String realm) => setRealm.execute(realm);
 
   void setCurrentUser(String userNickname) {
-    final User newCurrentUser =
-        state.prevUsers.firstWhere((user) => user.nickname == userNickname);
-    emit(state.copyWith(currentUser: newCurrentUser));
+    try {
+      final User newCurrentUser =
+      state.prevUsers.firstWhere((user) => user.nickname == userNickname,
+          orElse: () => throw Exception('User not found'));
+      emit(state.copyWith(currentUser: newCurrentUser));
+    } catch (e){
+      error(e.toString());
+    }
   }
 
   void saveUserInToDataBase(User user) => saveUser.execute(user, state.realm);
@@ -79,12 +89,14 @@ class SingInCubit extends Cubit<SingInState> {
         : removeUserUseCase.execute(state.currentUser!, state.realm);
   }
 
-  Future<bool>  validateUserToken() async {
-    if(state.currentUser == null) {
+  Future<bool> validateUserToken() async {
+    if (state.currentUser == null) {
       error('Please, sing up');
       return false;
     }
-    if(DateTime.now().millisecondsSinceEpoch > state.currentUser!.expiresAt *1000){
+    if (DateTime
+        .now()
+        .millisecondsSinceEpoch > state.currentUser!.expiresAt * 1000) {
       error('Token expired, please sing up');
       return false;
     }

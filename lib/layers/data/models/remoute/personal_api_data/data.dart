@@ -9,10 +9,11 @@ class Data {
   @JsonKey(name: 'global_rating')
   int globalRating;
 
-  Data(
-      {required this.private,
-      required this.clanId,
-      required this.globalRating});
+  Data({
+    required this.private,
+    required this.clanId,
+    required this.globalRating,
+  });
 
   factory Data.fromJson(Map<String, dynamic> json) {
     return Data(

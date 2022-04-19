@@ -22,16 +22,17 @@ class LocalDataSourceImpl extends LocalDataSource {
   String get _readTheme => sharedPreferences.getString(THEME_KEY) ?? NOT_PICKED;
 
   @override
-  Future<void> setSingedUser(UserData user) async {
-    await sharedPreferences.setInt(SINGED_USER_ID, user.id);
-    await sharedPreferences.setString(SINGED_USER_NICKNAME, user.nickname);
-    await sharedPreferences.setString(SINGED_USER_TOKEN, user.accessToken);
-    await sharedPreferences.setInt(SINGED_USER_EXPIRE, user.expiresAt);
-    await sharedPreferences.setString(SINGED_USER_REALM, user.realm);
-  }
+  Future<void> setSingedUser(UserData user) async => Future.wait([
+      sharedPreferences.setInt(SINGED_USER_ID, user.id),
+      sharedPreferences.setString(SINGED_USER_NICKNAME, user.nickname),
+      sharedPreferences.setString(SINGED_USER_TOKEN, user.accessToken),
+      sharedPreferences.setInt(SINGED_USER_EXPIRE, user.expiresAt),
+      sharedPreferences.setString(SINGED_USER_REALM, user.realm),
+    ]);
+
 
   @override
-  UserData? getSingedUser() {
+  UserData? getSignedUser() {
     int? id = sharedPreferences.getInt(SINGED_USER_ID);
     String? nickname = sharedPreferences.getString(SINGED_USER_NICKNAME);
     String? accessToken = sharedPreferences.getString(SINGED_USER_TOKEN);

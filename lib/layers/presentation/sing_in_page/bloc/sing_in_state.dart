@@ -1,4 +1,5 @@
 part of 'sing_in_cubit.dart';
+
 //todo remove unused states
 enum SingInStatus {
   initial,
@@ -38,4 +39,20 @@ class SingInState extends Equatable {
         realm: realm ?? this.realm,
         currentUser: currentUser);
   }
+}
+
+class SingInError extends SingInState {
+  SingInError({
+    required List<User> prevUsers,
+    required SingInStatus status,
+    required String? errorMessage,
+    required String realm,
+    required User? currentUser,
+  }) : super(
+          prevUsers: prevUsers,
+          status: status,
+          errorMessage: errorMessage,
+          realm: realm,
+          currentUser: currentUser,
+        );
 }

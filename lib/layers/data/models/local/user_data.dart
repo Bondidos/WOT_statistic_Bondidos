@@ -19,7 +19,7 @@ class UserData extends Equatable {
     required this.realm,
   });
 
-  factory UserData.fromUser(User user, String realm) {
+  factory UserData.fromUserAndRealm(User user, String realm) {
     return UserData(
       id: user.id,
       nickname: user.nickname,

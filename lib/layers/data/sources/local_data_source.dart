@@ -13,7 +13,7 @@ abstract class LocalDataSource {
 
   Future<void> setSingedUser(UserData user);
 
-  UserData? getSingedUser();
+  UserData? getSignedUser();
 
   Stream<String> subscribeTheme();
 

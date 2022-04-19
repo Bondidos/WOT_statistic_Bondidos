@@ -30,6 +30,7 @@ const REDIRECT_URL = "https://developers.wargaming.net/reference/all/wot/auth/lo
 
 const BASE_URL_EU = 'https://api.worldoftanks.eu';
 const BASE_URL_CIS = 'https://api.worldoftanks.ru';
+const HTTP_STATUS_OK = 'ok';
 
 // app id
 const APPLICATION_ID = '5d489c586717c2b76ade8bea16607167';
