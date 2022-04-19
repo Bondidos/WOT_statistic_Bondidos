@@ -51,7 +51,7 @@ class _SingUpPageState extends State<SingUpPage> {
           final cookieManager = CookieManager();
           cookieManager.clearCookies();
         },
-        userAgent: 'random',
+        // userAgent: 'random',
         initialUrl: (realm == EU) ? EU_LOGIN_URL : CIS_LOGIN_URL,
         onPageStarted: (url) {
           if (url.contains(REDIRECT_URL)) {
