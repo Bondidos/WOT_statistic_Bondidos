@@ -14,15 +14,14 @@ class StatisticPage extends StatelessWidget {
     context.read<PersonalDataCubit>().fetchPersonalData();
     return Scaffold(
       appBar: AppBar(
-        leading: Builder(builder: (ctx) {
-          return IconButton(
-            icon: const Icon(Icons.arrow_back),
+        actions: [
+          IconButton(
             onPressed: () {
-              Navigator.popAndPushNamed(context, SingInPage.id);
+              Navigator.of(context).pushNamed(SingInPage.id);
             },
-            tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
-          );
-        }),
+            icon: const Icon(Icons.logout),
+          ),
+        ],
         title: Text(
           id,
           style: appBarTitle(context),

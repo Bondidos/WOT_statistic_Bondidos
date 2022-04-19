@@ -19,7 +19,6 @@ class SingInPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     final SingInCubit cubit = context.read<SingInCubit>();
 
     return Scaffold(
@@ -89,7 +88,8 @@ class SingInPage extends StatelessWidget {
                         title: "Sing In",
                         onTap: () async {
                           if (await cubit.validateUserToken()) {
-                            Navigator.of(context).pushNamed(StatisticPage.id);
+                            Navigator.of(context)
+                                .pushReplacementNamed(StatisticPage.id);
                           }
                         },
                       ),
