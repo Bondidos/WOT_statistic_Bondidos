@@ -14,13 +14,13 @@ import '../../../domain/use_cases/subscribe_realm_use_case.dart';
 
 part 'sign_in_state.dart';
 
-class SingInCubit extends Cubit<SingInState> {
+class SingInCubit extends Cubit<SignInState> {
   final SaveUserUseCase saveUser;
   final SubscribeUsers subscribeUsers;
   final SubscribeRealm subscribeRealm;
   final SetRealmUseCase setRealm;
   final RemoveUserUseCase removeUserUseCase;
-  final SingInUseCase singIn;
+  final SingInUseCase signIn;
 
   StreamSubscription? _subscriptionUsers;
   StreamSubscription? _subscriptionRealm;
@@ -31,13 +31,8 @@ class SingInCubit extends Cubit<SingInState> {
     required this.subscribeUsers,
     required this.subscribeRealm,
     required this.removeUserUseCase,
-    required this.singIn,
-  }) : super(const SingInState(
-      prevUsers: [],
-      status: SingInStatus.initial,
-      errorMessage: null,
-      realm: NOT_PICKED,
-      currentUser: null)) {
+    required this.signIn,
+  }) : super(const SignInStateInit()) {
     _initialize();
   }
 
@@ -47,55 +42,69 @@ class SingInCubit extends Cubit<SingInState> {
         setNewRealm(EU); // as default EU realm
         return;
       }
-      if (_subscriptionUsers != null) _subscriptionUsers!.cancel();
-      _subscriptionUsers =
-          subscribeUsers.execute().listen((list) =>
-              _newPrevUsersStatus(list, realm));
+      _fetchPrevUsers(realm);
     });
   }
 
-  // todo refresh state after emitting error
-  void _newPrevUsersStatus(List<User> list, String realm) =>
-      emit(
-        state.copyWith(
-            status: SingInStatus.realmSynced,
-            prevUsers: list,
-            realm: realm,
-            currentUser: list.isNotEmpty ? list.first : null),
-      );
+  String _currentRealm = NOT_PICKED;
+  List<User> _prevUsers = [];
+  User? _currentUser;
 
-  void error(String message) =>
-      emit(
-        state.copyWith(
-            status: SingInStatus.error, errorMessage: message),
-      );
+  User? get currentUser => _currentUser;
 
-  void setNewRealm(String realm) => setRealm.execute(realm);
+  String get currentRealm => _currentRealm;
+
+  void _fetchPrevUsers(String realm) {
+    if (_subscriptionUsers != null) _subscriptionUsers!.cancel();
+    _subscriptionUsers = subscribeUsers
+        .execute()
+        .listen((list) => _newPrevUsersStatus(list, realm));
+  }
+
+  void _newPrevUsersStatus(List<User> usersList, String realm) {
+    _currentRealm = realm;
+    _prevUsers = usersList;
+    _currentUser = (usersList.isEmpty) ? null : usersList.first;
+    emit(SignInStateLoaded(realm: realm, prevUsers: usersList));
+  }
+
+  void error(String message) => emit(SignInStateError(errorMessage: message));
+
+  void setNewRealm(String realm) {
+    emit(const SignInStateLoading());
+    setRealm.execute(realm);
+  }
 
   void setCurrentUser(String userNickname) {
+    emit(const SignInStateLoading());
     try {
-      final User newCurrentUser =
-      state.prevUsers.firstWhere((user) => user.nickname == userNickname,
+      _currentUser = _prevUsers.firstWhere(
+          (user) => user.nickname == userNickname,
           orElse: () => throw Exception('User not found'));
-      emit(state.copyWith(currentUser: newCurrentUser));
-    } catch (e){
+      emit(SignInStateLoaded(realm: _currentRealm, prevUsers: _prevUsers));
+    } catch (e) {
       error(e.toString());
     }
   }
 
-  void saveUserInToDataBase(User user) => saveUser.execute(user, state.realm);
+  void saveUserInToDataBase(User user) {
+    emit(const SignInStateLoading());
+    _currentUser = user;
+    saveUser.execute(user, _currentRealm);
+  }
 
-  List<String> get usersInCache => state.prevUsers.map((e) => e.nickname).toList();
+  List<String> get usersInCache => _prevUsers.map((e) => e.nickname).toList();
 
   List<DropdownMenuItem<String>> createDropDownItem(BuildContext context) {
     final List<DropdownMenuItem<String>> result = [];
-    for(int index = 0; index < usersInCache.length; index++){
-      result.add(_generateDropdownItem(index,context));
+    for (int index = 0; index < usersInCache.length; index++) {
+      result.add(_generateDropdownItem(index, context));
     }
     return result;
   }
 
-  DropdownMenuItem<String> _generateDropdownItem(int index, BuildContext context){
+  DropdownMenuItem<String> _generateDropdownItem(
+      int index, BuildContext context) {
     return DropdownMenuItem<String>(
       value: usersInCache[index],
       child: Text(
@@ -106,26 +115,30 @@ class SingInCubit extends Cubit<SingInState> {
     );
   }
 
-
-  void removeUser() {
-    state.currentUser == null
-        ? error("No user to delete")
-        : removeUserUseCase.execute(state.currentUser!, state.realm);
+  void removeUser() async {
+    emit(const SignInStateLoading());
+    if (_currentUser == null) {
+      error("No user to delete");
+    } else {
+      await removeUserUseCase.execute(_currentUser!, _currentRealm);
+      _fetchPrevUsers(_currentRealm);
+    }
   }
 
-  Future<bool> validateUserToken() async {
-    if (state.currentUser == null) {
+  Future<bool> signInAction() async {
+    emit(const SignInStateLoading());
+    if (_currentUser == null) {
       error('Please, sign up');
       return false;
     }
-    if (DateTime
-        .now()
-        .millisecondsSinceEpoch > state.currentUser!.expiresAt * 1000) {
+    if (DateTime.now().millisecondsSinceEpoch >
+        _currentUser!.expiresAt * 1000) {
       error('Token expired, please sign up');
       return false;
     }
     // todo token extension
-    await singIn.execute(state.currentUser!, state.realm);
+    await signIn.execute(_currentUser!, _currentRealm);
+    emit(SignInStateLoaded(realm: _currentRealm, prevUsers: _prevUsers));
     return true;
   }
 

@@ -49,7 +49,7 @@ class RepositoryImpl extends Repository {
   void setRealm(String realm) => localSource.setRealm(realm);
 
   @override
-  void removeUser(User user, String realm) =>
+  Future<void> removeUser(User user, String realm) =>
       localSource.removeUser(UserData.fromUserAndRealm(user, realm));
 
   @override

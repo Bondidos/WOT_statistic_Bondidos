@@ -39,13 +39,13 @@ class SignInPage extends StatelessWidget {
           )
         ],
       ),
-      body: BlocConsumer<SingInCubit, SingInState>(
+      body: BlocConsumer<SingInCubit, SignInState>(
         listener: (prevState, currentState) {
-          if (currentState.status == SingInStatus.error) {
+          if (currentState is SignInStateError) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(
-                  currentState.errorMessage!,
+                  currentState.errorMessage,
                   style: onSecondarySubtitle(context),
                 ),
                 duration: const Duration(seconds: 2),
@@ -54,9 +54,10 @@ class SignInPage extends StatelessWidget {
           }
         },
         buildWhen: (prevState, currentState) =>
-            currentState.status != SingInStatus.error,
+            (currentState is SignInStateLoaded ||
+                currentState is SignInStateInit),
         builder: (ctx, state) {
-          if (state.status == SingInStatus.realmSynced) {
+          if (state is SignInStateLoaded) {
             return Stack(
               alignment: Alignment.topCenter,
               children: [
@@ -70,7 +71,7 @@ class SignInPage extends StatelessWidget {
                         child: Align(
                           alignment: Alignment.topLeft,
                           child: Padding(
-                            padding: const EdgeInsets.only(left: 15,top: 15),
+                            padding: const EdgeInsets.only(left: 15, top: 15),
                             child: Wrap(
                               children: [
                                 Text(
@@ -93,7 +94,7 @@ class SignInPage extends StatelessWidget {
                             ThemedButton(
                               title: "Sign In",
                               onTap: () async {
-                                if (await cubit.validateUserToken()) {
+                                if (await cubit.signInAction()) {
                                   Navigator.of(context)
                                       .pushReplacementNamed(StatisticPage.id);
                                 }
@@ -126,7 +127,7 @@ class SignInPage extends StatelessWidget {
               ],
             );
           } else {
-            return const Center(child: CircularProgressIndicator());
+            return const CircularProgressIndicator();
           }
         },
       ),

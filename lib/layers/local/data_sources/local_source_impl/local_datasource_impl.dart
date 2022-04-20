@@ -67,7 +67,7 @@ class LocalDataSourceImpl extends LocalDataSource {
   void saveUser(UserData user) => wotStatDao.saveUser(user);
 
   @override
-  void removeUser(UserData user) => wotStatDao.removeUser(user);
+  Future<void> removeUser(UserData user) => wotStatDao.removeUser(user);
 
   @override
   void setRealm(String realm) async {

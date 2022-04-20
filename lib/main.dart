@@ -31,9 +31,6 @@ class MyApp extends StatelessWidget {
       buildWhen: (prevState, currentState) =>
           (currentState is ThemeDark || currentState is ThemeLight),
       builder: (ctx, state) {
-/*        if (state is SettingsInit) {
-          return const CircularProgressIndicator();
-        }*/
         return MaterialApp(
           theme: (state is ThemeDark)
               ? ThemeData(
@@ -43,7 +40,7 @@ class MyApp extends StatelessWidget {
                     secondary: const Color(0xff003566),
                     onPrimary: const Color(0xfffca311),
                     onSurface: const Color(0xff98c1d9),
-                    onSecondary: const Color(0xff98c1d9),
+                    onSecondary: const Color(0xfffca311),
                   ),
                   fontFamily: "Krona One",
                 )

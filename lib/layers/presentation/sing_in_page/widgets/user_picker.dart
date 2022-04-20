@@ -13,17 +13,18 @@ class UserPicker extends StatelessWidget {
     final Color _onSecondary = Theme.of(context).colorScheme.onSecondary;
     final SingInCubit cubit = context.read<SingInCubit>();
 
-    return BlocBuilder<SingInCubit, SingInState>(
+    return BlocBuilder<SingInCubit, SignInState>(
       buildWhen: (prevState, currentState) =>
-          (currentState.status == SingInStatus.realmSynced),
+          (currentState is SignInStateLoaded),
       builder: (ctx, state) {
-        final String currentUser = (state.currentUser == null)
+        final String currentUser = (cubit.currentUser == null)
             ? NOT_PICKED
-            : state.currentUser!.nickname;
+            : cubit.currentUser!.nickname;
 
-        final String userNameToDisplay = (currentUser == NOT_PICKED)
-            ? cubit.usersInCache.first
-            : currentUser;
+        final String userNameToDisplay =
+            (currentUser == NOT_PICKED && cubit.usersInCache.isNotEmpty)
+                ? cubit.usersInCache.first
+                : currentUser;
 
         return userNameToDisplay != NOT_PICKED
             ? DecoratedBox(

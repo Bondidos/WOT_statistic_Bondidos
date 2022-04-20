@@ -6,5 +6,6 @@ class RemoveUserUseCase {
 
   RemoveUserUseCase({required this.repository});
 
-  void execute(User user, String realm) => repository.removeUser(user, realm);
+  Future<void> execute(User user, String realm) =>
+      repository.removeUser(user, realm);
 }

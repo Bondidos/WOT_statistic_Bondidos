@@ -9,7 +9,7 @@ abstract class LocalDataSource {
 
   void saveUser(UserData user);
 
-  void removeUser(UserData user);
+  Future<void> removeUser(UserData user);
 
   Future<void> setSingedUser(UserData user);
 

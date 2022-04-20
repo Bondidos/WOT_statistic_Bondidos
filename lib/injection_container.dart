@@ -40,7 +40,7 @@ Future<void> init() async {
         subscribeRealm: inj(),
         setRealm: inj(),
         removeUserUseCase: inj(),
-        singIn: inj(),
+        signIn: inj(),
       ));
 
   inj.registerFactory(() => PersonalDataCubit(loadData: inj()));

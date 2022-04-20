@@ -61,9 +61,8 @@ class _SignUpPageState extends State<SignUpPage> {
         onPageStarted: (url) {
           if (url.contains(REDIRECT_URL)) {
             Navigator.of(context).pop(User.fromUrl(url));
-          } else {
-            Navigator.of(context).pop();
           }
+          //todo cancel sign in
         },
       ),
     );

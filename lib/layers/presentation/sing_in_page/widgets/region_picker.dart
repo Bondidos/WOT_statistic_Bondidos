@@ -10,16 +10,16 @@ class RegionPicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SingInCubit, SingInState>(
-      buildWhen: (prevState, currentState) =>
-          (currentState.status == SingInStatus.realmSynced),
-      builder: (ctx, state) {
-        final String currentRealm = state.realm;
+    final SingInCubit cubit = context.read<SingInCubit>();
 
+    return BlocBuilder<SingInCubit, SignInState>(
+      buildWhen: (prevState, currentState) =>
+          (currentState is SignInStateLoaded),
+      builder: (ctx, state) {
         return Row(
           children: [
             Text(
-              currentRealm,
+              cubit.currentRealm,
               style: onSurfaceSubtitle(context),
             ),
             PopupMenuButton(
@@ -32,8 +32,8 @@ class RegionPicker extends StatelessWidget {
                 return <PopupMenuEntry>[
                   PopupMenuItem(
                     onTap: () {
-                      if (currentRealm != EU) {
-                        context.read<SingInCubit>().setNewRealm(EU);
+                      if (cubit.currentRealm != EU) {
+                        cubit.setNewRealm(EU);
                       }
                     },
                     child: Wrap(
@@ -52,8 +52,8 @@ class RegionPicker extends StatelessWidget {
                   ),
                   PopupMenuItem(
                     onTap: () {
-                      if (currentRealm != CIS) {
-                        context.read<SingInCubit>().setNewRealm(CIS);
+                      if (cubit.currentRealm != CIS) {
+                        cubit.setNewRealm(CIS);
                       }
                     },
                     child: Wrap(
