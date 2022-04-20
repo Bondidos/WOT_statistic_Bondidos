@@ -1,6 +1,9 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:wot_statistic/layers/data/models/remote/personal_api_data/private.dart';
 
+part 'data.g.dart';
+
+@JsonSerializable()
 class Data {
   @JsonKey(name: 'private')
   Private? private;
@@ -8,29 +11,20 @@ class Data {
   int? clanId;
   @JsonKey(name: 'global_rating')
   int globalRating;
+  @JsonKey(name: 'nickname')
+  String nickname;
+  @JsonKey(name: 'logout_at')
+  int logoutAt;
 
   Data({
     required this.private,
     required this.clanId,
     required this.globalRating,
+    required this.nickname,
+    required this.logoutAt,
   });
 
-  factory Data.fromJson(Map<String, dynamic> json) {
-    return Data(
-      private:
-          json['private'] != null ? Private.fromJson(json['private']) : null,
-      clanId: json['clan_id'],
-      globalRating: json['global_rating'],
-    );
-  }
+  factory Data.fromJson(Map<String, dynamic> json) => _$DataFromJson(json);
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['clan_id'] = clanId;
-    data['global_rating'] = globalRating;
-    if (private != null) {
-      data['private'] = private?.toJson();
-    }
-    return data;
-  }
+  Map<String, dynamic> toJson() => _$DataToJson(this);
 }

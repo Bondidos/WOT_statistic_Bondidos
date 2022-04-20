@@ -1,41 +1,49 @@
-import 'Restrictions.dart';
+import 'package:json_annotation/json_annotation.dart';
+import 'package:wot_statistic/layers/data/models/remote/personal_api_data/restrictions.dart';
 
+part 'private.g.dart';
+
+@JsonSerializable()
 class Private {
-  Map<String, dynamic> privateData;
+  @JsonKey(name: 'gold')
+  int gold;
+  @JsonKey(name: 'free_xp')
+  int freeXp;
+  @JsonKey(name: 'ban_time')
+  int? banTime;
+  @JsonKey(name: 'is_bound_to_phone')
+  bool isBoundToPhone;
+  @JsonKey(name: 'is_premium')
+  bool isPremium;
+  @JsonKey(name: 'credits')
+  int credits;
+  @JsonKey(name: 'premium_expires_at')
+  int premiumExpiresAt;
+  @JsonKey(name: 'bonds')
+  int bonds;
+  @JsonKey(name: 'battle_life_time')
+  int battleLifeTime;
+  @JsonKey(name: 'ban_info')
+  int? banInfo;
+  @JsonKey(name: 'restrictions')
+  Restrictions restrictions;
 
-  Private({required this.privateData});
+  Private({
+    required this.gold,
+    required this.freeXp,
+    required this.banTime,
+    required this.isBoundToPhone,
+    required this.isPremium,
+    required this.credits,
+    required this.premiumExpiresAt,
+    required this.bonds,
+    required this.battleLifeTime,
+    required this.banInfo,
+    required this.restrictions,
+  });
 
-  factory Private.fromJson(Map<String, dynamic> json) {
-    return Private(
-      privateData: <String, dynamic>{
-        'Ban Info': json['ban_info'],
-        'Ban Time': json['ban_time'],
-        'Battle Life Time': json['battle_life_time'],
-        'Bonds': json['bonds'],
-        'Credits': json['credits'],
-        'Free Xp': json['free_xp'],
-        'Gold': json['gold'],
-        'Bounded to phone': json['is_bound_to_phone'],
-        'Premium': json['is_premium'],
-        'Premium expires': json['premium_expires_at'],
-        'Restrictions': Restrictions.fromJson(json['restrictions']),
-      },
-    );
-  }
+  factory Private.fromJson(Map<String, dynamic> json) =>
+      _$PrivateFromJson(json);
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['battle_life_time'] = privateData['Battle Life Time'];
-    data['bonds'] = privateData['Bonds'];
-    data['credits'] = privateData['Credits'];
-    data['free_xp'] = privateData['Free Xp'];
-    data['gold'] = privateData['Gold'];
-    data['is_bound_to_phone'] = privateData['Bounded to phone'];
-    data['is_premium'] = privateData['Premium'];
-    data['premium_expires_at'] = privateData['Premium expires'];
-    data['ban_info'] = privateData['Ban Info'];
-    data['ban_time'] = privateData['Ban Time'];
-    data['restrictions'] = privateData['Restrictions'].toJson();
-    return data;
-  }
+  Map<String, dynamic> toJson() => _$PrivateToJson(this);
 }

@@ -1,23 +1,16 @@
-
 import 'package:json_annotation/json_annotation.dart';
 
+part 'restrictions.g.dart';
+
+@JsonSerializable()
 class Restrictions {
-    @JsonKey(name: 'chat_ban_time')
-    String? chatBanTime;
+  @JsonKey(name: 'chat_ban_time')
+  String? chatBanTime;
 
-    Restrictions({required this.chatBanTime});
+  Restrictions({required this.chatBanTime});
 
-    factory Restrictions.fromJson(Map<String, dynamic> json) {
-        return Restrictions(
-            chatBanTime: json['chat_ban_time']
-        );
-    }
+  factory Restrictions.fromJson(Map<String, dynamic> json) =>
+      _$RestrictionsFromJson(json);
 
-    Map<String, dynamic> toJson() {
-        final Map<String, dynamic> data = <String, dynamic>{};
-        if (chatBanTime != null) {
-            data['chat_ban_time'] = chatBanTime;
-        }
-        return data;
-    }
+  Map<String, dynamic> toJson() => _$RestrictionsToJson(this);
 }
