@@ -8,6 +8,7 @@ import '../../../common/theme/text_styles.dart';
 import '../../domain/entities/user.dart';
 
 const String status = "status";
+
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key}) : super(key: key);
   static const id = "OpenId login";
@@ -21,15 +22,16 @@ class _SignUpPageState extends State<SignUpPage> {
 
   @override
   void initState() {
-
-    if (defaultTargetPlatform == TargetPlatform.android) WebView.platform = AndroidWebView();
+    if (defaultTargetPlatform == TargetPlatform.android) {
+      WebView.platform = AndroidWebView();
+    }
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    String realm = ModalRoute.of(context)!.settings.arguments as String;
-//todo find out why keyboard is lagging
+    String realm = ModalRoute.of(context)?.settings.arguments as String;
+    //todo find out why keyboard is lagging
 
     return Scaffold(
       appBar: AppBar(
@@ -44,6 +46,8 @@ class _SignUpPageState extends State<SignUpPage> {
         ],
       ),
       body: WebView(
+        gestureNavigationEnabled: true,
+        key: const ValueKey('webView'),
         javascriptMode: JavascriptMode.unrestricted,
         onWebViewCreated: (webViewController) {
           _controller = webViewController;
@@ -52,23 +56,13 @@ class _SignUpPageState extends State<SignUpPage> {
           final cookieManager = CookieManager();
           cookieManager.clearCookies();
         },
-        // userAgent: 'random',
+        userAgent: 'random',
         initialUrl: (realm == EU) ? EU_LOGIN_URL : CIS_LOGIN_URL,
         onPageStarted: (url) {
           if (url.contains(REDIRECT_URL)) {
-            Map<String, String> response = Uri.splitQueryString(url);
-            String? status = response["status"];
-            if (status == "ok") {
-              User result = User(
-                id: int.parse(response["account_id"]!),
-                nickname: response["nickname"]!,
-                accessToken: response["access_token"]!,
-                expiresAt: int.parse(response["expires_at"]!),
-              );
-              Navigator.of(context).pop(result);
-            } else {
-              Navigator.of(context).pop();
-            }
+            Navigator.of(context).pop(User.fromUrl(url));
+          } else {
+            Navigator.of(context).pop();
           }
         },
       ),

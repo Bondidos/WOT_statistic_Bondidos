@@ -13,6 +13,16 @@ class User extends Equatable {
     required this.expiresAt,
   });
 
+  factory User.fromUrl(String url) {
+    Map<String, String> response = Uri.splitQueryString(url);
+    return User(
+      id: int.parse(response["account_id"]!),
+      nickname: response["nickname"]!,
+      accessToken: response["access_token"]!,
+      expiresAt: int.parse(response["expires_at"]!),
+    );
+  }
+
   @override
   List<Object?> get props => [id, nickname, accessToken, expiresAt];
 }

@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:wot_statistic/common/constants/constants.dart';
+import '../../../../common/theme/text_styles.dart';
 import '../../../domain/entities/user.dart';
 import '../../../domain/use_cases/remove_user_use_case.dart';
 import '../../../domain/use_cases/save_user_use_case.dart';
@@ -85,6 +87,26 @@ class SingInCubit extends Cubit<SingInState> {
 
   List<String> get usersInCache => state.prevUsers.map((e) => e.nickname).toList();
 
+  List<DropdownMenuItem<String>> createDropDownItem(BuildContext context) {
+    final List<DropdownMenuItem<String>> result = [];
+    for(int index = 0; index < usersInCache.length; index++){
+      result.add(_generateDropdownItem(index,context));
+    }
+    return result;
+  }
+
+  DropdownMenuItem<String> _generateDropdownItem(int index, BuildContext context){
+    return DropdownMenuItem<String>(
+      value: usersInCache[index],
+      child: Text(
+        usersInCache[index],
+        maxLines: 1,
+        style: onPrimaryTitle(context),
+      ),
+    );
+  }
+
+
   void removeUser() {
     state.currentUser == null
         ? error("No user to delete")
@@ -93,13 +115,13 @@ class SingInCubit extends Cubit<SingInState> {
 
   Future<bool> validateUserToken() async {
     if (state.currentUser == null) {
-      error('Please, sing up');
+      error('Please, sign up');
       return false;
     }
     if (DateTime
         .now()
         .millisecondsSinceEpoch > state.currentUser!.expiresAt * 1000) {
-      error('Token expired, please sing up');
+      error('Token expired, please sign up');
       return false;
     }
     // todo token extension

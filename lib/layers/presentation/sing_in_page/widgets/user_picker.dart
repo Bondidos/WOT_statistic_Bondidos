@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:wot_statistic/common/theme/text_styles.dart';
 import 'package:wot_statistic/layers/presentation/sing_in_page/bloc/sign_in_cubit.dart';
 
 import '../../../../common/constants/constants.dart';
@@ -11,9 +10,8 @@ class UserPicker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Color _onPrimary = Theme.of(context).colorScheme.onPrimary;
-    final Color _secondary = Theme.of(context).colorScheme.secondary;
+    final Color _onSecondary = Theme.of(context).colorScheme.onSecondary;
     final SingInCubit cubit = context.read<SingInCubit>();
-    final List<String> usersInCache = cubit.usersInCache;
 
     return BlocBuilder<SingInCubit, SingInState>(
       buildWhen: (prevState, currentState) =>
@@ -23,23 +21,22 @@ class UserPicker extends StatelessWidget {
             ? NOT_PICKED
             : state.currentUser!.nickname;
 
-        String userNameToDisplay =
-            (usersInCache.isNotEmpty && currentUser == NOT_PICKED)
-                ? usersInCache.first
-                : currentUser;
+        final String userNameToDisplay = (currentUser == NOT_PICKED)
+            ? cubit.usersInCache.first
+            : currentUser;
 
         return userNameToDisplay != NOT_PICKED
             ? DecoratedBox(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
-                  color: _secondary,
+                  color: _onSecondary,
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(5.0),
                   child: Column(
                     children: [
                       DropdownButton<String>(
-                        dropdownColor: _secondary,
+                        dropdownColor: _onSecondary,
                         value: userNameToDisplay,
                         icon: Icon(
                           Icons.arrow_drop_down,
@@ -49,23 +46,12 @@ class UserPicker extends StatelessWidget {
                         elevation: 16,
                         underline: Container(
                           height: 2,
-                          color: _secondary,
+                          color: _onSecondary,
                         ),
                         onChanged: (userNickname) {
-                            cubit.setCurrentUser(userNickname!);
+                          cubit.setCurrentUser(userNickname!);
                         },
-                        items: usersInCache.map<DropdownMenuItem<String>>(
-                          (value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(
-                                value,
-                                maxLines: 1,
-                                style: onPrimaryTitle(context),
-                              ),
-                            );
-                          },
-                        ).toList(),
+                        items: cubit.createDropDownItem(context),
                       ),
                     ],
                   ),
