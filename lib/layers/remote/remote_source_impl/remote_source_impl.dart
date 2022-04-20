@@ -1,6 +1,6 @@
-import '../../../common/constants/constants.dart';
-import '../../data/models/remoute/personal_api_data/personal_data_api.dart';
-import '../../data/sources/remoute_data_source.dart';
+import '../../../common/constants/network_const.dart';
+import '../../data/models/remote/personal_api_data/personal_data_api.dart';
+import '../../data/sources/remote_data_source.dart';
 import '../sources/wot_api_client.dart';
 
 class RemoteSourceImpl extends RemoteDataSource {

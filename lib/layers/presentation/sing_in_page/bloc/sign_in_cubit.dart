@@ -10,7 +10,7 @@ import '../../../domain/use_cases/subscribe_users_use_case.dart';
 import '../../../domain/use_cases/set_realm_pref_use_case.dart';
 import '../../../domain/use_cases/subscribe_realm_use_case.dart';
 
-part 'sing_in_state.dart';
+part 'sign_in_state.dart';
 
 class SingInCubit extends Cubit<SingInState> {
   final SaveUserUseCase saveUser;
@@ -82,6 +82,8 @@ class SingInCubit extends Cubit<SingInState> {
   }
 
   void saveUserInToDataBase(User user) => saveUser.execute(user, state.realm);
+
+  List<String> get usersInCache => state.prevUsers.map((e) => e.nickname).toList();
 
   void removeUser() {
     state.currentUser == null

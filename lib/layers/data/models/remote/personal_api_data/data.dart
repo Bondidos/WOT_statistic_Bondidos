@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:wot_statistic/layers/data/models/remoute/personal_api_data/private.dart';
+import 'package:wot_statistic/layers/data/models/remote/personal_api_data/private.dart';
 
 class Data {
   @JsonKey(name: 'private')

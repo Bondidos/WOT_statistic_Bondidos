@@ -1,4 +1,4 @@
-import '../models/remoute/personal_api_data/personal_data_api.dart';
+import '../models/remote/personal_api_data/personal_data_api.dart';
 
 abstract class RemoteDataSource {
   Future<PersonalDataApi> fetchPersonalData(

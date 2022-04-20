@@ -43,8 +43,7 @@ class PersonalDataApi {
     final Data? privateData = data?[data?.keys.first];
     if (privateData == null) return result;
     result.add(PersonalData(
-        dataTitle: 'clanId',
-        dataValue: privateData.clanId.toString()));
+        dataTitle: 'clanId', dataValue: privateData.clanId.toString()));
     result.add(PersonalData(
         dataTitle: 'global_rating',
         dataValue: privateData.globalRating.toString()));

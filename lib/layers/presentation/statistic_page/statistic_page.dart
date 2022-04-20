@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:wot_statistic/layers/presentation/sing_in_page/sing_in_page.dart';
+import 'package:wot_statistic/layers/presentation/sing_in_page/sign_in_page.dart';
 import 'package:wot_statistic/layers/presentation/statistic_page/bloc/personal_data_cubit.dart';
 
 import '../../../common/theme/text_styles.dart';
@@ -17,7 +17,7 @@ class StatisticPage extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.of(context).pushNamed(SingInPage.id);
+              Navigator.of(context).pushNamed(SignInPage.id);
             },
             icon: const Icon(Icons.logout),
           ),

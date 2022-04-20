@@ -10,9 +10,10 @@ import 'package:wot_statistic/layers/domain/entities/user.dart';
 import 'package:wot_statistic/layers/domain/entities/vehicle.dart';
 import 'package:wot_statistic/layers/domain/repositories/repository.dart';
 
+import '../../../common/constants/network_const.dart';
 import '../models/local/user_data.dart';
-import '../models/remoute/personal_api_data/personal_data_api.dart';
-import '../sources/remoute_data_source.dart';
+import '../models/remote/personal_api_data/personal_data_api.dart';
+import '../sources/remote_data_source.dart';
 
 class RepositoryImpl extends Repository {
   final LocalDataSource localSource;

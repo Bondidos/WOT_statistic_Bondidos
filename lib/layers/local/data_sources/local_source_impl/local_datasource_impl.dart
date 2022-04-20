@@ -2,6 +2,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wot_statistic/layers/data/sources/local_data_source.dart';
 import '../../../../common/constants/constants.dart';
+import '../../../../common/constants/shared_pref_keys.dart';
 import '../../../data/models/local/user_data.dart';
 import '../../../domain/entities/user.dart';
 import '../sources/drift_database/dao/wot_stat_dao.dart';
@@ -23,13 +24,12 @@ class LocalDataSourceImpl extends LocalDataSource {
 
   @override
   Future<void> setSingedUser(UserData user) async => Future.wait([
-      sharedPreferences.setInt(SINGED_USER_ID, user.id),
-      sharedPreferences.setString(SINGED_USER_NICKNAME, user.nickname),
-      sharedPreferences.setString(SINGED_USER_TOKEN, user.accessToken),
-      sharedPreferences.setInt(SINGED_USER_EXPIRE, user.expiresAt),
-      sharedPreferences.setString(SINGED_USER_REALM, user.realm),
-    ]);
-
+        sharedPreferences.setInt(SINGED_USER_ID, user.id),
+        sharedPreferences.setString(SINGED_USER_NICKNAME, user.nickname),
+        sharedPreferences.setString(SINGED_USER_TOKEN, user.accessToken),
+        sharedPreferences.setInt(SINGED_USER_EXPIRE, user.expiresAt),
+        sharedPreferences.setString(SINGED_USER_REALM, user.realm),
+      ]);
 
   @override
   UserData? getSignedUser() {
@@ -46,11 +46,12 @@ class LocalDataSourceImpl extends LocalDataSource {
         realm == null) return null;
 
     return UserData(
-        id: id,
-        nickname: nickname,
-        accessToken: accessToken,
-        expiresAt: expiresAt,
-        realm: realm);
+      id: id,
+      nickname: nickname,
+      accessToken: accessToken,
+      expiresAt: expiresAt,
+      realm: realm,
+    );
   }
 
   @override

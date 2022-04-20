@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:wot_statistic/layers/presentation/settings_page/settings_page.dart';
-import 'package:wot_statistic/layers/presentation/singup_user/singup_user_page.dart';
 import 'package:wot_statistic/layers/presentation/statistic_page/statistic_page.dart';
 import 'injection_container.dart' as di;
 import 'layers/presentation/settings_page/bloc/settings_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'layers/presentation/sing_in_page/bloc/sing_in_cubit.dart';
-import 'layers/presentation/sing_in_page/sing_in_page.dart';
+import 'layers/presentation/sign_up_user/sign_up_user_page.dart';
+import 'layers/presentation/sing_in_page/bloc/sign_in_cubit.dart';
+import 'layers/presentation/sing_in_page/sign_in_page.dart';
 import 'layers/presentation/statistic_page/bloc/personal_data_cubit.dart';
 
 void main() async {
@@ -59,12 +59,12 @@ class MyApp extends StatelessWidget {
                   fontFamily: "Krona One",
                 ),
           routes: {
-            SingInPage.id: (ctx) => const SingInPage(),
+            SignInPage.id: (ctx) => const SignInPage(),
             SettingsPage.id: (ctx) => const SettingsPage(),
-            SingUpPage.id: (ctx) => const SingUpPage(),
+            SignUpPage.id: (ctx) => const SignUpPage(),
             StatisticPage.id: (ctx) => const StatisticPage(),
           },
-          home: const SingInPage(),
+          home: const SignInPage(),
         );
       },
     );

@@ -3,19 +3,20 @@ import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../../common/constants/constants.dart';
+import '../../../common/constants/network_const.dart';
 import '../../../common/theme/text_styles.dart';
 import '../../domain/entities/user.dart';
 
 const String status = "status";
-class SingUpPage extends StatefulWidget {
-  const SingUpPage({Key? key}) : super(key: key);
+class SignUpPage extends StatefulWidget {
+  const SignUpPage({Key? key}) : super(key: key);
   static const id = "OpenId login";
 
   @override
-  State<SingUpPage> createState() => _SingUpPageState();
+  State<SignUpPage> createState() => _SignUpPageState();
 }
 
-class _SingUpPageState extends State<SingUpPage> {
+class _SignUpPageState extends State<SignUpPage> {
   late final WebViewController _controller;
 
   @override
@@ -32,7 +33,7 @@ class _SingUpPageState extends State<SingUpPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(SingUpPage.id, style: appBarTitle(context)),
+        title: Text(SignUpPage.id, style: appBarTitle(context)),
         actions: [
           IconButton(
             onPressed: () {

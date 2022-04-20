@@ -25,15 +25,16 @@ class WotStatDao extends DatabaseAccessor<WotStatDatabase>
     return into(userTable).insert(entry, mode: InsertMode.replace);
   }
 
-   Stream<List<User>> getUsersByRealm(String realm) {
+  Stream<List<User>> getUsersByRealm(String realm) {
     final query = select(userTable)
       ..where((tbl) => userTable.realm.equals(realm));
-    return query.map((e) => User(
-        id: e.id,
-        nickname: e.nickname,
-        accessToken: e.token,
-        expiresAt: e.expiresAt,
-        )).watch();
+    return query
+        .map((e) => User(
+              id: e.id,
+              nickname: e.nickname,
+              accessToken: e.token,
+              expiresAt: e.expiresAt,
+            ))
+        .watch();
   }
-
 }

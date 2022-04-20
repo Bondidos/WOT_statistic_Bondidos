@@ -37,9 +37,7 @@ class _SettingsPageState extends State<SettingsPage> {
               style: onPrimarySubtitle(context),
             )),
             Divider(
-              thickness: 3,
-              color: Theme.of(context).colorScheme.secondary
-            ),
+                thickness: 3, color: Theme.of(context).colorScheme.secondary),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,

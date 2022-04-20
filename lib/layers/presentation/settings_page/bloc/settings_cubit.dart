@@ -4,9 +4,10 @@ import 'package:equatable/equatable.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:wot_statistic/layers/domain/use_cases/set_theme_usecase.dart';
+import 'package:wot_statistic/layers/domain/use_cases/set_theme_use_case.dart';
 
 import '../../../../common/constants/constants.dart';
+import '../../../../common/constants/shared_pref_keys.dart';
 import '../../../domain/use_cases/subscribe_theme_use_case.dart';
 
 part 'settings_state.dart';

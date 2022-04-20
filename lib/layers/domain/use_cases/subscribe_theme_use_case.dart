@@ -1,7 +1,4 @@
-import 'package:dartz/dartz.dart';
 import 'package:wot_statistic/layers/domain/repositories/repository.dart';
-
-import '../../../common/errors/failure.dart';
 
 class SubscribeThemeUseCase {
   final Repository repository;

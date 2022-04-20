@@ -13,18 +13,16 @@ class ThemedButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width / 3,
-      child: ElevatedButton(
-        style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all<Color?>(
-              Theme.of(context).colorScheme.primary),
-        ),
-        onPressed: () => onTap(),
-        child: Text(
-          title,
-          style: onSurfaceSubtitle(context),
-        ),
+    return MaterialButton(
+      /*style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all<Color?>(
+            Theme.of(context).colorScheme.primary),
+      ),*/
+      color: Theme.of(context).colorScheme.primary,
+      onPressed: () => onTap(),
+      child: Text(
+        title,
+        style: onSurfaceSubtitle(context),
       ),
     );
   }

@@ -2,18 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wot_statistic/layers/domain/entities/user.dart';
 import 'package:wot_statistic/layers/presentation/settings_page/settings_page.dart';
-import 'package:wot_statistic/layers/presentation/sing_in_page/bloc/sing_in_cubit.dart';
+import 'package:wot_statistic/layers/presentation/sing_in_page/bloc/sign_in_cubit.dart';
 import 'package:wot_statistic/layers/presentation/sing_in_page/widgets/animated_background.dart';
 import 'package:wot_statistic/layers/presentation/sing_in_page/widgets/region_picker.dart';
 import 'package:wot_statistic/layers/presentation/sing_in_page/widgets/themed_button.dart';
 import 'package:wot_statistic/layers/presentation/sing_in_page/widgets/user_picker.dart';
-import 'package:wot_statistic/layers/presentation/singup_user/singup_user_page.dart';
 
 import '../../../common/theme/text_styles.dart';
+import '../sign_up_user/sign_up_user_page.dart';
 import '../statistic_page/statistic_page.dart';
 
-class SingInPage extends StatelessWidget {
-  const SingInPage({Key? key}) : super(key: key);
+class SignInPage extends StatelessWidget {
+  const SignInPage({Key? key}) : super(key: key);
 
   static const String id = "WOT Statistic";
 
@@ -63,54 +63,63 @@ class SingInPage extends StatelessWidget {
                 const AnimatedBackground(),
                 SingleChildScrollView(
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       SizedBox(
                         height: MediaQuery.of(context).size.height / 2,
                         child: Align(
                           alignment: Alignment.topLeft,
                           child: Padding(
-                            padding: const EdgeInsets.all(15.0),
+                            padding: const EdgeInsets.only(left: 15,top: 15),
                             child: Wrap(
                               children: [
                                 Text(
                                   "Pick realm",
                                   style: onSurfaceSubtitle(context),
                                 ),
-                                const RegionPicker()
+                                const RegionPicker(),
                               ],
                             ),
                           ),
                         ),
                       ),
                       const UserPicker(),
-                      const SizedBox(height: 20),
-                      ThemedButton(
-                        title: "Sing In",
-                        onTap: () async {
-                          if (await cubit.validateUserToken()) {
-                            Navigator.of(context)
-                                .pushReplacementNamed(StatisticPage.id);
-                          }
-                        },
-                      ),
-                      const SizedBox(height: 20),
-                      ThemedButton(
-                          title: "Sing Up",
-                          onTap: () async {
-                            String realm = state.realm;
+                      IntrinsicWidth(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            const SizedBox(height: 20),
+                            ThemedButton(
+                              title: "Sign In",
+                              onTap: () async {
+                                if (await cubit.validateUserToken()) {
+                                  Navigator.of(context)
+                                      .pushReplacementNamed(StatisticPage.id);
+                                }
+                              },
+                            ),
+                            const SizedBox(height: 10),
+                            ThemedButton(
+                                title: "Sign Up",
+                                onTap: () async {
+                                  String realm = state.realm;
 
-                            User? user = await Navigator.of(context)
-                                    .pushNamed(SingUpPage.id, arguments: realm)
-                                as User?;
-                            if (user == null) return;
-                            cubit.saveUserInToDataBase(user);
-                          }),
-                      const SizedBox(height: 20),
-                      ThemedButton(
-                        title: "Delete",
-                        onTap: () => cubit.removeUser(),
+                                  User? user = await Navigator.of(context)
+                                      .pushNamed(SignUpPage.id,
+                                          arguments: realm) as User?;
+                                  if (user == null) return;
+                                  cubit.saveUserInToDataBase(user);
+                                }),
+                            const SizedBox(height: 10),
+                            ThemedButton(
+                              title: "Delete",
+                              onTap: () => cubit.removeUser(),
+                            ),
+                            const SizedBox(height: 20),
+                          ],
+                        ),
                       ),
-                      const SizedBox(height: 20),
                     ],
                   ),
                 ),
