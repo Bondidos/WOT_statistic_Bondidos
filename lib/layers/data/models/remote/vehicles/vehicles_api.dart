@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 import 'tank_api.dart';
 
-part 'vehicleApi.g.dart';
+part 'vehicles_api.g.dart';
 
 @JsonSerializable()
 class VehiclesApi {
@@ -16,5 +16,5 @@ class VehiclesApi {
   factory VehiclesApi.fromJson(Map<String, dynamic> json) =>
       _$VehiclesApiFromJson(json);
 
-  Map<String, dynamic> toJson() => _$VehiclesApiFromJson(this);
+  Map<String, dynamic> toJson() => _$VehiclesApiToJson(this);
 }

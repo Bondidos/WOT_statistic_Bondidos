@@ -5,6 +5,7 @@ part 'private.g.dart';
 
 @JsonSerializable()
 class Private {
+  //todo create map instead object?
   @JsonKey(name: 'gold')
   final int gold;
   @JsonKey(name: 'free_xp')

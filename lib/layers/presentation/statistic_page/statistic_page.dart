@@ -5,9 +5,18 @@ import 'package:wot_statistic/layers/presentation/statistic_page/bloc/personal_d
 
 import '../../../common/theme/text_styles.dart';
 
-class StatisticPage extends StatelessWidget {
+class StatisticPage extends StatefulWidget {
   const StatisticPage({Key? key}) : super(key: key);
   static const String id = "Account details";
+
+  @override
+  State<StatisticPage> createState() => _StatisticPageState();
+}
+
+class _StatisticPageState extends State<StatisticPage> {
+
+  int currentIndex = 0;
+  final List<Widget> pages = [];
 
   @override
   Widget build(BuildContext context) {
@@ -23,34 +32,11 @@ class StatisticPage extends StatelessWidget {
           ),
         ],
         title: Text(
-          id,
+          StatisticPage.id,
           style: appBarTitle(context),
         ),
       ),
-      body: BlocConsumer<PersonalDataCubit, PersonalDataStatus>(
-        listener: (ctx, state) {
-          if (state is ErrorStatus) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.message),
-              ),
-            );
-          }
-        },
-        builder: (ctx, status) {
-          if (status is LoadedDataStatus) {
-            return ListView.builder(
-              itemCount: status.dataList.length,
-              itemBuilder: (ctx, index) => ListTile(
-                title: Text(status.dataList[index].dataTitle),
-                subtitle: Text(status.dataList[index].dataValue),
-              ),
-            );
-          } else {
-            return const CircularProgressIndicator();
-          }
-        },
-      ),
+      body:,
     );
   }
 }
