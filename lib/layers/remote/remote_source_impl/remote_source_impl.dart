@@ -12,5 +12,5 @@ class RemoteSourceImpl extends RemoteDataSource {
   Future<PersonalDataApi> fetchPersonalData(
           {required int accountId, required String accessToken}) =>
       wotClient.fetchPersonalData(
-          APPLICATION_ID, accountId, accessToken, FIELDS_DATA);
+          APPLICATION_ID, accountId, accessToken, PRIVATE_DATA);
 }

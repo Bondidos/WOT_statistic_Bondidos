@@ -115,6 +115,7 @@ class SingInCubit extends Cubit<SignInState> {
     );
   }
 
+  //todo sign out (api.logOut)
   void removeUser() async {
     emit(const SignInStateLoading());
     if (_currentUser == null) {

@@ -13,5 +13,6 @@ const INITIAL = "initial";
 // assets
 const PORTRAIT_BACKGROUND = "assets/background/main_background_portrait.jpg";
 const LAND_BACKGROUND = "assets/background/main_background_land.jpg";
+const TANK_ICON = "assets/icons/tank_icon.png";
 
 

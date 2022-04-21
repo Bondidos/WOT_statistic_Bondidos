@@ -1,42 +1,58 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wot_statistic/layers/presentation/sing_in_page/sign_in_page.dart';
-import 'package:wot_statistic/layers/presentation/statistic_page/bloc/personal_data_cubit.dart';
 
+import '../../../common/constants/constants.dart';
 import '../../../common/theme/text_styles.dart';
+import 'bloc/statistic_cubit.dart';
 
-class StatisticPage extends StatefulWidget {
+class StatisticPage extends StatelessWidget {
   const StatisticPage({Key? key}) : super(key: key);
-  static const String id = "Account details";
+  static const String id = "Statistic page";
 
-  @override
-  State<StatisticPage> createState() => _StatisticPageState();
-}
-
-class _StatisticPageState extends State<StatisticPage> {
-
-  int currentIndex = 0;
-  final List<Widget> pages = [];
+  static const List<String> title = ["Personal data", "Achieves", "Vehicles"];
 
   @override
   Widget build(BuildContext context) {
-    context.read<PersonalDataCubit>().fetchPersonalData();
-    return Scaffold(
-      appBar: AppBar(
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.of(context).pushNamed(SignInPage.id);
-            },
-            icon: const Icon(Icons.logout),
+    StatisticCubit cubit = context.read<StatisticCubit>();
+    return BlocBuilder<StatisticCubit, int>(
+      builder: (context, index) {
+        return Scaffold(
+          /*appBar: AppBar(
+            actions: [
+              IconButton(
+                onPressed: () {
+                  Navigator.of(context).pushReplacementNamed(SignInPage.id);
+                },
+                icon: const Icon(Icons.logout),
+              ),
+            ],
+            title: Text(
+              title[index],
+              style: appBarTitle(context),
+            ),
+          ),*/
+          bottomNavigationBar: BottomNavigationBar(
+            items: const [
+              BottomNavigationBarItem(
+                label: "Private",
+                icon: Icon(Icons.privacy_tip),
+              ),
+              BottomNavigationBarItem(
+                label: "Achieves",
+                icon: Icon(Icons.check_circle),
+              ),
+              BottomNavigationBarItem(
+                label: "Vehicles",
+                icon: ImageIcon(AssetImage(TANK_ICON)),
+              ),
+            ],
+            currentIndex: index,
+            onTap: (pageIndex) => cubit.navigateTo(pageIndex),
           ),
-        ],
-        title: Text(
-          StatisticPage.id,
-          style: appBarTitle(context),
-        ),
-      ),
-      body:,
+          body: cubit.page(index),
+        );
+      },
     );
   }
 }

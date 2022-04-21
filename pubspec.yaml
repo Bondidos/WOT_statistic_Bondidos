@@ -66,6 +66,7 @@ flutter:
   assets:
     - assets/realm/
     - assets/background/
+    - assets/icons/
 
   fonts:
     - family: Lobster

@@ -11,4 +11,4 @@ const BASE_URL_CIS = 'https://api.worldoftanks.ru';
 const HTTP_STATUS_OK = 'ok';
 
 const APPLICATION_ID = '5d489c586717c2b76ade8bea16607167';
-const FIELDS_DATA = 'private,global_rating,clan_id,nickname,logout_at';
+const PRIVATE_DATA = 'private,global_rating,clan_id,nickname,logout_at';

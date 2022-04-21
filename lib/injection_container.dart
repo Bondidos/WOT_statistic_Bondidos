@@ -22,7 +22,7 @@ import 'layers/domain/use_cases/subscribe_theme_use_case.dart';
 import 'layers/local/data_sources/local_source_impl/local_datasource_impl.dart';
 import 'layers/local/data_sources/sources/drift_database/database/database.dart';
 import 'layers/presentation/settings_page/bloc/settings_cubit.dart';
-import 'layers/presentation/statistic_page/bloc/personal_data_cubit.dart';
+import 'layers/presentation/statistic_page/widgets/personal_data_widget/bloc/personal_data_cubit.dart';
 import 'layers/remote/remote_source_impl/remote_source_impl.dart';
 import 'layers/remote/sources/wot_api_client.dart';
 
