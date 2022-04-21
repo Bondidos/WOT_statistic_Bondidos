@@ -5,7 +5,7 @@ part 'restrictions.g.dart';
 @JsonSerializable()
 class Restrictions {
   @JsonKey(name: 'chat_ban_time')
-  String? chatBanTime;
+  final String? chatBanTime;
 
   Restrictions({required this.chatBanTime});
 

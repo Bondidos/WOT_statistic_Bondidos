@@ -10,7 +10,7 @@ class PersonalDataApi {
   @JsonKey(name: 'data')
   final Map<String, Data>? data;
   @JsonKey(name: 'status')
-  String status;
+  final String status;
 
   PersonalDataApi({required this.data, required this.status});
 

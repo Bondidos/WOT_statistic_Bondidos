@@ -6,15 +6,15 @@ part 'data.g.dart';
 @JsonSerializable()
 class Data {
   @JsonKey(name: 'private')
-  Private? private;
+  final Private? private;
   @JsonKey(name: 'clan_id')
-  int? clanId;
+  final int? clanId;
   @JsonKey(name: 'global_rating')
-  int globalRating;
+  final int globalRating;
   @JsonKey(name: 'nickname')
   String nickname;
   @JsonKey(name: 'logout_at')
-  int logoutAt;
+  final int logoutAt;
 
   Data({
     required this.private,

@@ -6,27 +6,27 @@ part 'private.g.dart';
 @JsonSerializable()
 class Private {
   @JsonKey(name: 'gold')
-  int gold;
+  final int gold;
   @JsonKey(name: 'free_xp')
-  int freeXp;
+  final int freeXp;
   @JsonKey(name: 'ban_time')
-  int? banTime;
+  final int? banTime;
   @JsonKey(name: 'is_bound_to_phone')
-  bool isBoundToPhone;
+  final bool isBoundToPhone;
   @JsonKey(name: 'is_premium')
-  bool isPremium;
+  final bool isPremium;
   @JsonKey(name: 'credits')
-  int credits;
+  final int credits;
   @JsonKey(name: 'premium_expires_at')
-  int premiumExpiresAt;
+  final int premiumExpiresAt;
   @JsonKey(name: 'bonds')
-  int bonds;
+  final int bonds;
   @JsonKey(name: 'battle_life_time')
-  int battleLifeTime;
+  final int battleLifeTime;
   @JsonKey(name: 'ban_info')
-  int? banInfo;
+  final int? banInfo;
   @JsonKey(name: 'restrictions')
-  Restrictions restrictions;
+  final Restrictions restrictions;
 
   Private({
     required this.gold,
