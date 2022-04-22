@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/http.dart';
 
+import '../../data/models/remote/clan_info/clan_info.dart';
 import '../../data/models/remote/personal_api_data/personal_data_api.dart';
 
 part 'wot_api_client.g.dart';
@@ -16,4 +17,11 @@ abstract class WotClient {
     @Query('access_token') String accessToken,
     @Query('fields') String fields,
   );
+
+  @GET("/wot/clans/info/")
+  Future<ClanInfo> fetchClanInfo(
+      @Query('application_id') String applicationId,
+      @Query('clan_id') int clanId,
+      );
+
 }

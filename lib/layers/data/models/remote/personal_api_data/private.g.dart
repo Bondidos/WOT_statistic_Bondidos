@@ -16,7 +16,7 @@ Private _$PrivateFromJson(Map<String, dynamic> json) => Private(
       premiumExpiresAt: json['premium_expires_at'] as int,
       bonds: json['bonds'] as int,
       battleLifeTime: json['battle_life_time'] as int,
-      banInfo: json['ban_info'] as int?,
+      banInfo: json['ban_info'] as String?,
       restrictions:
           Restrictions.fromJson(json['restrictions'] as Map<String, dynamic>),
     );

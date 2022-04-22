@@ -8,18 +8,21 @@ part 'personal_data_state.dart';
 class PersonalDataCubit extends Cubit<PersonalDataState> {
   final LoadPersonalData loadData;
 
-  PersonalDataCubit({required this.loadData}) : super(const LoadingState());
+  PersonalDataCubit({required this.loadData}) : super(const LoadingState()){
+    fetchPersonalData();
+  }
 
   void fetchPersonalData() async {
     try {
-      final List<PersonalData> result = await loadData.execute();
-      emit(LoadedDataState(dataList: result));
+      final PersonalData result = await loadData.execute();
+      emit(LoadedDataState(personalData: result));
     } catch (e) {
       emit(ErrorState(message: e.toString()));
     }
   }
 
   Future<void> refreshList(){
+    fetchPersonalData();
     return Future.delayed(const Duration(seconds: 2));
   }
 

@@ -12,6 +12,7 @@ import 'package:wot_statistic/layers/domain/repositories/repository.dart';
 
 import '../../../common/constants/network_const.dart';
 import '../models/local/user_data.dart';
+import '../models/remote/clan_info/clan_info.dart';
 import '../models/remote/personal_api_data/personal_data_api.dart';
 import '../sources/remote_data_source.dart';
 
@@ -22,7 +23,9 @@ class RepositoryImpl extends Repository {
   final BaseOptions baseOptions;
 
   RepositoryImpl(
-      {required this.baseOptions, required this.localSource, required this.remoteSource}) {
+      {required this.baseOptions,
+      required this.localSource,
+      required this.remoteSource}) {
     localSource.subscribeRealm().listen((event) {
       baseOptions.baseUrl = event == EU ? BASE_URL_EU : BASE_URL_CIS;
     });
@@ -60,10 +63,32 @@ class RepositoryImpl extends Repository {
 
   /**---------------------------------------------------*/
   @override
-  Future<List<PersonalData>> fetchPersonalData() async {
-    final UserData? signedUser = await localSource.getSignedUser();
-    if (signedUser == null) throw Exception('Singed User is not exist');
-    // baseOptions.baseUrl = singedUser.realm == EU ? BASE_URL_EU : BASE_URL_CIS;
+  Future<PersonalData> fetchPersonalData() async {
+    final UserData? signedUser = localSource.getSignedUser();
+    if (signedUser == null) throw Exception('Signed User is not exist');
+    final PersonalDataApi personalDataApi =
+        await fetchPersonalDataApi(signedUser);
+    final int? clanId = personalDataApi.data![signedUser.id.toString()]!.clanId;
+    final ClanInfo? clanInfo =
+        (clanId != null) ? await fetchClanInfo(clanId) : null;
+    return PersonalData.fromPersonalAndClanInfo(personalDataApi, clanInfo);
+  }
+
+  Future<ClanInfo> fetchClanInfo(int clanId) async {
+    final ClanInfo clanInfo;
+    try {
+      clanInfo = await remoteSource.fetchClanInfo(clanId: clanId);
+    } catch (e) {
+      throw Exception('Check internet connection');
+    }
+    // todo is this check needed?
+    if (clanInfo.status != HTTP_STATUS_OK) {
+      throw Exception('Response status: ${clanInfo.status}');
+    }
+    return clanInfo;
+  }
+
+  Future<PersonalDataApi> fetchPersonalDataApi(UserData signedUser) async {
     final PersonalDataApi personalDataApi;
     try {
       personalDataApi = await remoteSource.fetchPersonalData(
@@ -77,8 +102,13 @@ class RepositoryImpl extends Repository {
     if (personalDataApi.status != HTTP_STATUS_OK) {
       throw Exception('Response status: ${personalDataApi.status}');
     }
-
-    return personalDataApi.toList();
+    if (personalDataApi.data == null) {
+      throw Exception('Personal data is null');
+    }
+    if (personalDataApi.data?[personalDataApi.data!.keys.first] == null) {
+      throw Exception('Private data is null');
+    }
+    return personalDataApi;
   }
 
   /**---------------------------------------------------*/

@@ -17,9 +17,9 @@ class LoadingState extends PersonalDataState{
   List<Object?> get props => [];
 }
 class LoadedDataState extends PersonalDataState{
-  final List<PersonalData> dataList;
-  const LoadedDataState({required this.dataList});
+  final PersonalData personalData;
+  const LoadedDataState({required this.personalData});
 
   @override
-  List<Object?> get props => [dataList];
+  List<Object?> get props => [personalData];
 }

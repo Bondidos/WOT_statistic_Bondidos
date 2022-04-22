@@ -7,7 +7,7 @@ part of 'restrictions.dart';
 // **************************************************************************
 
 Restrictions _$RestrictionsFromJson(Map<String, dynamic> json) => Restrictions(
-      chatBanTime: json['chat_ban_time'] as String?,
+      chatBanTime: json['chat_ban_time'] as int?,
     );
 
 Map<String, dynamic> _$RestrictionsToJson(Restrictions instance) =>
