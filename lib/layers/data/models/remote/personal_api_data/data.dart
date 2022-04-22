@@ -12,7 +12,7 @@ class Data {
   @JsonKey(name: 'global_rating')
   final int globalRating;
   @JsonKey(name: 'nickname')
-  String nickname;
+  final String nickname;
   @JsonKey(name: 'logout_at')
   final int logoutAt;
 
