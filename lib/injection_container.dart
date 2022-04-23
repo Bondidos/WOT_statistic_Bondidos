@@ -12,6 +12,7 @@ import 'layers/data/repositories/repository_impl.dart';
 import 'layers/data/sources/local_data_source.dart';
 import 'layers/domain/repositories/repository.dart';
 import 'layers/domain/use_cases/load_personal_data.dart';
+import 'layers/domain/use_cases/load_vehicles_data.dart';
 import 'layers/domain/use_cases/remove_user_use_case.dart';
 import 'layers/domain/use_cases/save_user_use_case.dart';
 import 'layers/domain/use_cases/set_theme_use_case.dart';
@@ -23,6 +24,7 @@ import 'layers/local/data_sources/local_source_impl/local_datasource_impl.dart';
 import 'layers/local/data_sources/sources/drift_database/database/database.dart';
 import 'layers/presentation/settings_page/bloc/settings_cubit.dart';
 import 'layers/presentation/statistic_page/widgets/personal_data_widget/bloc/personal_data_cubit.dart';
+import 'layers/presentation/statistic_page/widgets/vehicles_widget/bloc/vehicles_data_cubit.dart';
 import 'layers/remote/remote_source_impl/remote_source_impl.dart';
 import 'layers/remote/sources/wot_api_client.dart';
 
@@ -44,7 +46,9 @@ Future<void> init() async {
       ));
 
   inj.registerFactory(() => PersonalDataCubit(loadData: inj()));
+  inj.registerFactory(() => VehiclesDataCubit(loadVehicles: inj()));
 
+  inj.registerFactory(() => LoadVehiclesData(repository: inj()));
   inj.registerFactory(() => SubscribeThemeUseCase(repository: inj()));
   inj.registerFactory(() => SaveUserUseCase(repository: inj()));
   inj.registerFactory(() => SubscribeUsers(repository: inj()));

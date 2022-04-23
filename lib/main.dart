@@ -10,6 +10,7 @@ import 'layers/presentation/sing_in_page/bloc/sign_in_cubit.dart';
 import 'layers/presentation/sing_in_page/sign_in_page.dart';
 import 'layers/presentation/statistic_page/bloc/statistic_cubit.dart';
 import 'layers/presentation/statistic_page/widgets/personal_data_widget/bloc/personal_data_cubit.dart';
+import 'layers/presentation/statistic_page/widgets/vehicles_widget/bloc/vehicles_data_cubit.dart';
 
 void main() async {
   await di.init();
@@ -19,6 +20,7 @@ void main() async {
       BlocProvider<SingInCubit>(create: (ctx) => di.inj<SingInCubit>()),
       BlocProvider<PersonalDataCubit>(create: (ctx) => di.inj<PersonalDataCubit>()),
       BlocProvider<StatisticCubit>(create: (ctx) => StatisticCubit()),
+      BlocProvider<VehiclesDataCubit>(create: (ctx) => di.inj<VehiclesDataCubit>()),
     ],
     child: const MyApp(),
   ));

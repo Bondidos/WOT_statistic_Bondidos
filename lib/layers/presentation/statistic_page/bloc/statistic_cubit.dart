@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../widgets/achieves.dart';
 import '../widgets/personal_data_widget/personal_data.dart';
-import '../widgets/vehicles.dart';
+import '../widgets/vehicles_widget/vehicles.dart';
 
 const startIndex = 0;
 

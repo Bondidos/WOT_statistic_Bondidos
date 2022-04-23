@@ -1,4 +1,5 @@
 import '../../domain/entities/user.dart';
+import '../../domain/entities/vehicles_data.dart';
 import '../models/local/user_data.dart';
 
 abstract class LocalDataSource {

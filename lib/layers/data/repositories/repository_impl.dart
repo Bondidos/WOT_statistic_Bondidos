@@ -7,13 +7,14 @@ import 'package:wot_statistic/layers/data/sources/local_data_source.dart';
 import 'package:wot_statistic/layers/domain/entities/achieves.dart';
 import 'package:wot_statistic/layers/domain/entities/personal_data.dart';
 import 'package:wot_statistic/layers/domain/entities/user.dart';
-import 'package:wot_statistic/layers/domain/entities/vehicle.dart';
+import 'package:wot_statistic/layers/domain/entities/vehicles_data.dart';
 import 'package:wot_statistic/layers/domain/repositories/repository.dart';
 
 import '../../../common/constants/network_const.dart';
 import '../models/local/user_data.dart';
 import '../models/remote/clan_info/clan_info.dart';
 import '../models/remote/personal_api_data/personal_data_api.dart';
+import '../models/remote/vehicles/vehicles_api.dart';
 import '../sources/remote_data_source.dart';
 
 class RepositoryImpl extends Repository {
@@ -30,6 +31,12 @@ class RepositoryImpl extends Repository {
       baseOptions.baseUrl = event == EU ? BASE_URL_EU : BASE_URL_CIS;
     });
     // todo destroy stream
+  }
+
+  UserData get signedUser {
+    final _signedUser = localSource.getSignedUser();
+    if (_signedUser == null) throw Exception('Signed User is not exist');
+    return _signedUser;
   }
 
   @override
@@ -61,14 +68,12 @@ class RepositoryImpl extends Repository {
     return Future.value([]);
   }
 
-  /**---------------------------------------------------*/
   @override
   Future<PersonalData> fetchPersonalData() async {
-    final UserData? signedUser = localSource.getSignedUser();
-    if (signedUser == null) throw Exception('Signed User is not exist');
     final PersonalDataApi personalDataApi =
         await fetchPersonalDataApi(signedUser);
-    final int? clanId = personalDataApi.data![signedUser.id.toString()]!.clanId;
+    final int? clanId =
+        personalDataApi.data?[signedUser.id.toString()]?.clanId;
     final ClanInfo? clanInfo =
         (clanId != null) ? await fetchClanInfo(clanId) : null;
     return PersonalData.fromPersonalAndClanInfo(personalDataApi, clanInfo);
@@ -111,15 +116,18 @@ class RepositoryImpl extends Repository {
     return personalDataApi;
   }
 
-  /**---------------------------------------------------*/
-
-  @override
-  Future<List<Vehicle>> fetchVehicles() {
-    // TODO: implement fetchVehicles
-    return Future.value([]);
-  }
-
   @override
   Future<void> setSingedUser(User user, String realm) =>
       localSource.setSingedUser(UserData.fromUserAndRealm(user, realm));
+
+  @override
+  Future<VehiclesData> fetchVehiclesData() async {
+    final VehiclesApi vehiclesApi = await remoteSource.fetchVehiclesData(
+      accountId: signedUser.id,
+      accessToken: signedUser.accessToken,
+    );
+
+
+    return Future.value(VehiclesData());
+  }
 }
