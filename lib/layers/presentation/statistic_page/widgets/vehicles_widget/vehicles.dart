@@ -10,6 +10,8 @@ class VehiclesWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final VehiclesDataCubit cubit = context.read<VehiclesDataCubit>();
+
     return Scaffold(
       body: BlocConsumer<VehiclesDataCubit, VehiclesDataState>(
           listener: (context, currentState) {
@@ -34,8 +36,11 @@ class VehiclesWidget extends StatelessWidget {
                 child: Text("state loaded"),
               );
             }
-            return const Center(
-              child: CircularProgressIndicator(),
+            return RefreshIndicator(
+              onRefresh: () => cubit.refreshList(),
+              child: const Center(
+                child: CircularProgressIndicator(),
+              ),
             );
           }),
     );

@@ -8,9 +8,13 @@ part of 'vehicles_api.dart';
 
 VehiclesApi _$VehiclesApiFromJson(Map<String, dynamic> json) => VehiclesApi(
       status: json['status'] as String,
-      vehicles: (json['data'] as List<dynamic>)
-          .map((e) => TankApi.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      vehicles: (json['data'] as Map<String, dynamic>).map(
+        (k, e) => MapEntry(
+            k,
+            (e as List<dynamic>)
+                .map((e) => TankApi.fromJson(e as Map<String, dynamic>))
+                .toList()),
+      ),
     );
 
 Map<String, dynamic> _$VehiclesApiToJson(VehiclesApi instance) =>

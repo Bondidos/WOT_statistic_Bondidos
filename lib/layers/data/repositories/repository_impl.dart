@@ -14,6 +14,8 @@ import '../../../common/constants/network_const.dart';
 import '../models/local/user_data.dart';
 import '../models/remote/clan_info/clan_info.dart';
 import '../models/remote/personal_api_data/personal_data_api.dart';
+import '../models/remote/vehicle_ttc/tactical_tech_c.dart';
+import '../models/remote/vehicle_ttc/vehicles_ttc.dart';
 import '../models/remote/vehicles/vehicles_api.dart';
 import '../sources/remote_data_source.dart';
 
@@ -72,8 +74,7 @@ class RepositoryImpl extends Repository {
   Future<PersonalData> fetchPersonalData() async {
     final PersonalDataApi personalDataApi =
         await fetchPersonalDataApi(signedUser);
-    final int? clanId =
-        personalDataApi.data?[signedUser.id.toString()]?.clanId;
+    final int? clanId = personalDataApi.data?[signedUser.id.toString()]?.clanId;
     final ClanInfo? clanInfo =
         (clanId != null) ? await fetchClanInfo(clanId) : null;
     return PersonalData.fromPersonalAndClanInfo(personalDataApi, clanInfo);
@@ -127,7 +128,64 @@ class RepositoryImpl extends Repository {
       accessToken: signedUser.accessToken,
     );
 
+    var data = vehiclesApi.vehicles.values.first;
+    logger.d(data.length);
+    //todo fetch TTC by id from database
+    //String tankIds = vehiclesApi.createListOfTankId();
+    // logger.d(tankIds);
 
+    //var ttc = await remoteSource.fetchVehiclesTTC(limit: 100);
+    // logger.d(ttc);
     return Future.value(VehiclesData());
+  }
+
+  Future<void> initOrSyncDatabase() async {
+    try {
+      //todo language!!!!!!!!!
+      final VehiclesTTC firstPage = await remoteSource.fetchVehiclesTTC(
+        limit: 100,
+        pageNumber: 1,
+        language: "en",
+      );
+
+      int ttcCountDatabase = localSource.getTTCCount();
+      if (firstPage.meta.count == ttcCountDatabase) {
+        return;
+      }
+      final List<VehiclesTTC> allPagesOfVehicleTTC =
+          await _fetchAllPages(firstPage, "en");
+      final List<TTC> allVehiclesTTC = _mergeTTC(allPagesOfVehicleTTC);
+      final int ttcCount = await localSource.saveTTCList(allVehiclesTTC);
+      localSource.setTTCCount(ttcCount);
+    } catch (e) {
+      throw Exception('Error while sync Database');
+    }
+  }
+
+  Future<List<VehiclesTTC>> _fetchAllPages(
+      VehiclesTTC allPagesOfVehicleTTC, String language) async {
+    Iterable<int> pagesList =
+        (Iterable.generate(allPagesOfVehicleTTC.meta.pageTotal)
+            .map((e) => e + 1));
+    List<VehiclesTTC> vehiclesTTCList = [allPagesOfVehicleTTC];
+    var i = 2;
+    for (i in pagesList) {
+      vehiclesTTCList.add(
+        await remoteSource.fetchVehiclesTTC(
+          limit: 100,
+          pageNumber: i,
+          language: language,
+        ),
+      );
+    }
+    return vehiclesTTCList;
+  }
+
+  List<TTC> _mergeTTC(List<VehiclesTTC> vehiclesTTCList) {
+    List<TTC> result = [];
+    for (var element in vehiclesTTCList) {
+      result.addAll(element.data.values.first.values);
+    }
+    return result;
   }
 }

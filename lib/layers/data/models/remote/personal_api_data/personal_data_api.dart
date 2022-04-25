@@ -11,7 +11,7 @@ class PersonalDataApi {
   @JsonKey(name: 'status')
   final String status;
 
-  PersonalDataApi({required this.data, required this.status});
+  PersonalDataApi({required this.data, required this.status,});
 
   factory PersonalDataApi.fromJson(Map<String, dynamic> json) =>
       _$PersonalDataApiFromJson(json);

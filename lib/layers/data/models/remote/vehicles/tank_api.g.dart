@@ -7,9 +7,7 @@ part of 'tank_api.dart';
 // **************************************************************************
 
 TankApi _$TankApiFromJson(Map<String, dynamic> json) => TankApi(
-      tankStat: (json['statistics'] as Map<String, dynamic>).map(
-        (k, e) => MapEntry(k, TankStat.fromJson(e as Map<String, dynamic>)),
-      ),
+      tankStat: TankStat.fromJson(json['statistics'] as Map<String, dynamic>),
       markOfMastery: json['mark_of_mastery'] as int,
       tankId: json['tank_id'] as int,
     );

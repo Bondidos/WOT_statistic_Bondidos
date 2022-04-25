@@ -1,5 +1,6 @@
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:wot_statistic/layers/data/models/remote/vehicle_ttc/tactical_tech_c.dart';
 import 'package:wot_statistic/layers/data/sources/local_data_source.dart';
 import '../../../../common/constants/constants.dart';
 import '../../../../common/constants/shared_pref_keys.dart';
@@ -82,4 +83,18 @@ class LocalDataSourceImpl extends LocalDataSource {
     if (!result) return;
     themeStream.add(theme);
   }
+
+  @override
+  Future<List<TTC>> fetchTTCByListOfIDs(List<int> tankIds) =>
+      wotStatDao.fetchTTCByListOfIDs(tankIds);
+
+  @override
+  Future<int> saveTTCList(List<TTC> listTTC) => wotStatDao.saveTTCList(listTTC);
+
+  @override
+  int getTTCCount() => sharedPreferences.getInt(TTC_COUNT_IN_DB) ?? 0;
+
+  @override
+  void setTTCCount(int ttcCount) =>
+      sharedPreferences.setInt(TTC_COUNT_IN_DB, ttcCount);
 }

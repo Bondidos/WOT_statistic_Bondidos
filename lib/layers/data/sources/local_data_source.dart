@@ -1,6 +1,6 @@
 import '../../domain/entities/user.dart';
-import '../../domain/entities/vehicles_data.dart';
 import '../models/local/user_data.dart';
+import '../models/remote/vehicle_ttc/tactical_tech_c.dart';
 
 abstract class LocalDataSource {
 
@@ -10,9 +10,17 @@ abstract class LocalDataSource {
 
   void saveUser(UserData user);
 
+  void setTTCCount(int ttcCount);
+
+  int getTTCCount();
+
   Future<void> removeUser(UserData user);
 
   Future<void> setSingedUser(UserData user);
+
+  Future<int> saveTTCList(List<TTC> listTTC);
+
+  Future<List<TTC>> fetchTTCByListOfIDs(List<int> tankIds);
 
   UserData? getSignedUser();
 

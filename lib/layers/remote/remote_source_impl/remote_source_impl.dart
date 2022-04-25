@@ -1,4 +1,4 @@
-import 'package:wot_statistic/layers/domain/entities/vehicles_data.dart';
+import 'package:wot_statistic/layers/data/models/remote/vehicle_ttc/vehicles_ttc.dart';
 
 import '../../../common/constants/network_const.dart';
 import '../../data/models/remote/clan_info/clan_info.dart';
@@ -16,7 +16,7 @@ class RemoteSourceImpl extends RemoteDataSource {
   Future<PersonalDataApi> fetchPersonalData(
           {required int accountId, required String accessToken}) =>
       wotClient.fetchPersonalData(
-          APPLICATION_ID, accountId, accessToken, PRIVATE_DATA);
+          APPLICATION_ID, accountId, accessToken, PRIVATE_DATA_FIELDS);
 
   @override
   Future<ClanInfo> fetchClanInfo({required int clanId}) =>
@@ -26,4 +26,10 @@ class RemoteSourceImpl extends RemoteDataSource {
   Future<VehiclesApi> fetchVehiclesData(
           {required int accountId, required String accessToken}) =>
       wotClient.fetchVehiclesData(APPLICATION_ID, accountId, accessToken);
+
+  @override
+  Future<VehiclesTTC> fetchVehiclesTTC(
+          {required int limit, required int pageNumber, required String language}) =>
+      wotClient.fetchVehiclesTTC(
+          APPLICATION_ID, VEHICLES_TTC_FIELDS, limit, pageNumber,language);
 }

@@ -6,7 +6,7 @@ part 'tank_api.g.dart';
 @JsonSerializable()
 class TankApi {
   @JsonKey(name: "statistics")
-  final Map<String, TankStat> tankStat;
+  final TankStat tankStat;
   @JsonKey(name: "mark_of_mastery")
   final int markOfMastery;
   @JsonKey(name: "tank_id")

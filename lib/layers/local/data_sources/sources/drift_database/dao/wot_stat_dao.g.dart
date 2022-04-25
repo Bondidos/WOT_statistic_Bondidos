@@ -8,4 +8,5 @@ part of 'wot_stat_dao.dart';
 
 mixin _$WotStatDaoMixin on DatabaseAccessor<WotStatDatabase> {
   $UserTableTable get userTable => attachedDatabase.userTable;
+  $VehicleTTCTableTable get vehicleTTCTable => attachedDatabase.vehicleTTCTable;
 }

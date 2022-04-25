@@ -1,9 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/http.dart';
+import 'package:wot_statistic/layers/data/models/remote/vehicle_ttc/meta.dart';
 import 'package:wot_statistic/layers/data/models/remote/vehicles/vehicles_api.dart';
 
 import '../../data/models/remote/clan_info/clan_info.dart';
 import '../../data/models/remote/personal_api_data/personal_data_api.dart';
+import '../../data/models/remote/vehicle_ttc/vehicles_ttc.dart';
 
 part 'wot_api_client.g.dart';
 
@@ -31,4 +33,14 @@ abstract class WotClient {
       @Query('account_id') int accountId,
       @Query('access_token') String accessToken,
       );
+
+  @GET("/wot/encyclopedia/vehicles/")
+  Future<VehiclesTTC> fetchVehiclesTTC(
+      @Query('application_id') String applicationId,
+      @Query('fields') String fields,
+      @Query('limit') int limit,
+      @Query('page_no') int pageNumber,
+      @Query('language') String language,
+      );
+
 }
