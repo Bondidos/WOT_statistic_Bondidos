@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wot_statistic/layers/data/sources/remote_data_source.dart';
+import 'package:wot_statistic/layers/domain/use_cases/load_achieves_data.dart';
 import 'package:wot_statistic/layers/domain/use_cases/sing_in_use_case.dart';
 import 'package:wot_statistic/layers/local/data_sources/sources/drift_database/construct_db/shared.dart';
 import 'package:wot_statistic/layers/local/data_sources/sources/drift_database/dao/dao.dart';
@@ -23,6 +24,7 @@ import 'layers/domain/use_cases/subscribe_theme_use_case.dart';
 import 'layers/local/data_sources/local_source_impl/local_datasource_impl.dart';
 import 'layers/local/data_sources/sources/drift_database/database/database.dart';
 import 'layers/presentation/settings_page/bloc/settings_cubit.dart';
+import 'layers/presentation/statistic_page/widgets/achieves_widget/bloc/achieves_data_cubit.dart';
 import 'layers/presentation/statistic_page/widgets/personal_data_widget/bloc/personal_data_cubit.dart';
 import 'layers/presentation/statistic_page/widgets/vehicles_widget/bloc/vehicles_data_cubit.dart';
 import 'layers/remote/remote_source_impl/remote_source_impl.dart';
@@ -47,7 +49,9 @@ Future<void> init() async {
 
   inj.registerFactory(() => PersonalDataCubit(loadData: inj()));
   inj.registerFactory(() => VehiclesDataCubit(loadVehicles: inj()));
+  inj.registerFactory(() => AchievesDataCubit(loadAchieves: inj()));
 
+  inj.registerFactory(() => LoadAchievesData(repository: inj()));
   inj.registerFactory(() => LoadVehiclesData(repository: inj()));
   inj.registerFactory(() => SubscribeThemeUseCase(repository: inj()));
   inj.registerFactory(() => SaveUserUseCase(repository: inj()));

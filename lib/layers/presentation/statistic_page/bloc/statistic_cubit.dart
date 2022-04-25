@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 
-import '../widgets/achieves.dart';
+import '../widgets/achieves_widget/achieves.dart';
 import '../widgets/personal_data_widget/personal_data.dart';
 import '../widgets/vehicles_widget/vehicles.dart';
 

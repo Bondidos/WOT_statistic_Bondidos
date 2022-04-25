@@ -85,4 +85,7 @@ class WotStatDao extends DatabaseAccessor<WotStatDatabase>
             ))
         .get();
   }
+
+
+
 }

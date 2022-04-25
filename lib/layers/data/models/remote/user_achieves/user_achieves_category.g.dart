@@ -1,20 +1,21 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'achieves_category.dart';
+part of 'user_achieves_category.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-AchievesCategoryApi _$AchievesCategoryApiFromJson(Map<String, dynamic> json) =>
-    AchievesCategoryApi(
+UserAchievesCategoryApi _$UserAchievesCategoryApiFromJson(
+        Map<String, dynamic> json) =>
+    UserAchievesCategoryApi(
       achievements: Map<String, int>.from(json['achievements'] as Map),
       frags: Map<String, int>.from(json['frags'] as Map),
       maxSeries: Map<String, int>.from(json['max_series'] as Map),
     );
 
-Map<String, dynamic> _$AchievesCategoryApiToJson(
-        AchievesCategoryApi instance) =>
+Map<String, dynamic> _$UserAchievesCategoryApiToJson(
+        UserAchievesCategoryApi instance) =>
     <String, dynamic>{
       'achievements': instance.achievements,
       'frags': instance.frags,

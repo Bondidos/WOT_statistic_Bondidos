@@ -14,6 +14,7 @@ import '../../../common/constants/network_const.dart';
 import '../models/local/user_data.dart';
 import '../models/remote/clan_info/clan_info.dart';
 import '../models/remote/personal_api_data/personal_data_api.dart';
+import '../models/remote/user_achieves/user_achieves_api_data.dart';
 import '../models/remote/vehicle_ttc/tactical_tech_c.dart';
 import '../models/remote/vehicle_ttc/vehicles_ttc.dart';
 import '../models/remote/vehicles/vehicles_api.dart';
@@ -32,8 +33,8 @@ class RepositoryImpl extends Repository {
     localSource.subscribeRealm().listen((event) {
       baseOptions.baseUrl = event == EU ? BASE_URL_EU : BASE_URL_CIS;
     });
-    // todo  https://habr.com/ru/post/451292/
-    Future.delayed(const Duration(seconds: 1), () => initOrSyncDatabase());
+    //todo init database
+    // initOrSyncDatabase();
   }
 
   UserData get signedUser {
@@ -66,8 +67,12 @@ class RepositoryImpl extends Repository {
       localSource.removeUser(UserData.fromUserAndRealm(user, realm));
 
   @override
-  Future<List<Achieve>> fetchAchieves() {
+  Future<List<Achieve>> fetchAchieves() async {
     // TODO: implement fetchAchieves
+
+    UserAchievesApi achievesApi =
+        await remoteSource.fetchAchievesData(accountId: signedUser.id);
+
     return Future.value([]);
   }
 
@@ -131,13 +136,12 @@ class RepositoryImpl extends Repository {
 
     var data = vehiclesApi.vehicles.values.first;
     logger.d(data.length);
-    //todo fetch TTC by id from database
     List<int> tankIds = vehiclesApi.createListOfTankId();
-    // logger.d(tankIds);
-
     List<TTC> ttc = await localSource.fetchTTCByListOfIDs(tankIds);
-    ttc.forEach((element) {print(element.name);});
-    // logger.d(ttc);
+    /*ttc.forEach((element) {
+      print(element.name);
+    });*/
+    //todo map data to VehiclesData
     return Future.value(VehiclesData());
   }
 
