@@ -8,11 +8,7 @@ part of 'vehicles_ttc.dart';
 
 VehiclesTTC _$VehiclesTTCFromJson(Map<String, dynamic> json) => VehiclesTTC(
       data: (json['data'] as Map<String, dynamic>).map(
-        (k, e) => MapEntry(
-            k,
-            (e as Map<String, dynamic>).map(
-              (k, e) => MapEntry(k, TTC.fromJson(e as Map<String, dynamic>)),
-            )),
+        (k, e) => MapEntry(k, TTC.fromJson(e as Map<String, dynamic>)),
       ),
       meta: Meta.fromJson(json['meta'] as Map<String, dynamic>),
       status: json['status'] as String,

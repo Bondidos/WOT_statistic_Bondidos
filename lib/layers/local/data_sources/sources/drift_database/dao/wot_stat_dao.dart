@@ -75,7 +75,7 @@ class WotStatDao extends DatabaseAccessor<WotStatDatabase>
     return query
         .map((e) => TTC(
               description: e.description,
-              images: VehicleImages(bigIcon: e.image),
+              images: VehicleImages(bigIcon: e.images),
               isPremium: e.isPremium,
               isPremiumIgr: e.isPremiumIgr,
               nation: e.nation,

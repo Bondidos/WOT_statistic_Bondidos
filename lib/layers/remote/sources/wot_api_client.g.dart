@@ -78,12 +78,15 @@ class _WotClient implements WotClient {
   }
 
   @override
-  Future<VehiclesTTC> fetchVehiclesTTC(applicationId, fields, limit) async {
+  Future<VehiclesTTC> fetchVehiclesTTC(
+      applicationId, fields, limit, pageNumber, language) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'application_id': applicationId,
       r'fields': fields,
-      r'limit': limit
+      r'limit': limit,
+      r'page_no': pageNumber,
+      r'language': language
     };
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};

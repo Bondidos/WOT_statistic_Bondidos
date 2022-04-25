@@ -8,7 +8,7 @@ part 'vehicles_ttc.g.dart';
 @JsonSerializable()
 class VehiclesTTC {
   @JsonKey(name: 'data')
-  final Map<String, Map<String, TTC>> data;
+  final Map<String, TTC> data;
   @JsonKey(name: 'meta')
   final Meta meta;
   @JsonKey(name: 'status')

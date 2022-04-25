@@ -293,7 +293,7 @@ class $UserTableTable extends UserTable
 class VehicleTTCTableData extends DataClass
     implements Insertable<VehicleTTCTableData> {
   final String description;
-  final String image;
+  final String images;
   final bool isPremium;
   final bool isPremiumIgr;
   final String name;
@@ -302,7 +302,7 @@ class VehicleTTCTableData extends DataClass
   final int tankId;
   VehicleTTCTableData(
       {required this.description,
-      required this.image,
+      required this.images,
       required this.isPremium,
       required this.isPremiumIgr,
       required this.name,
@@ -315,7 +315,7 @@ class VehicleTTCTableData extends DataClass
     return VehicleTTCTableData(
       description: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}description'])!,
-      image: const StringType()
+      images: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}images'])!,
       isPremium: const BoolType()
           .mapFromDatabaseResponse(data['${effectivePrefix}is_premium'])!,
@@ -335,7 +335,7 @@ class VehicleTTCTableData extends DataClass
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['description'] = Variable<String>(description);
-    map['images'] = Variable<String>(image);
+    map['images'] = Variable<String>(images);
     map['is_premium'] = Variable<bool>(isPremium);
     map['is_premium_igr'] = Variable<bool>(isPremiumIgr);
     map['name'] = Variable<String>(name);
@@ -348,7 +348,7 @@ class VehicleTTCTableData extends DataClass
   VehicleTTCTableCompanion toCompanion(bool nullToAbsent) {
     return VehicleTTCTableCompanion(
       description: Value(description),
-      images: Value(image),
+      images: Value(images),
       isPremium: Value(isPremium),
       isPremiumIgr: Value(isPremiumIgr),
       name: Value(name),
@@ -363,7 +363,7 @@ class VehicleTTCTableData extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return VehicleTTCTableData(
       description: serializer.fromJson<String>(json['description']),
-      image: serializer.fromJson<String>(json['images']),
+      images: serializer.fromJson<String>(json['images']),
       isPremium: serializer.fromJson<bool>(json['isPremium']),
       isPremiumIgr: serializer.fromJson<bool>(json['isPremiumIgr']),
       name: serializer.fromJson<String>(json['name']),
@@ -377,7 +377,7 @@ class VehicleTTCTableData extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'description': serializer.toJson<String>(description),
-      'images': serializer.toJson<String>(image),
+      'images': serializer.toJson<String>(images),
       'isPremium': serializer.toJson<bool>(isPremium),
       'isPremiumIgr': serializer.toJson<bool>(isPremiumIgr),
       'name': serializer.toJson<String>(name),
@@ -398,7 +398,7 @@ class VehicleTTCTableData extends DataClass
           int? tankId}) =>
       VehicleTTCTableData(
         description: description ?? this.description,
-        image: images ?? this.image,
+        images: images ?? this.images,
         isPremium: isPremium ?? this.isPremium,
         isPremiumIgr: isPremiumIgr ?? this.isPremiumIgr,
         name: name ?? this.name,
@@ -410,7 +410,7 @@ class VehicleTTCTableData extends DataClass
   String toString() {
     return (StringBuffer('VehicleTTCTableData(')
           ..write('description: $description, ')
-          ..write('images: $image, ')
+          ..write('images: $images, ')
           ..write('isPremium: $isPremium, ')
           ..write('isPremiumIgr: $isPremiumIgr, ')
           ..write('name: $name, ')
@@ -423,13 +423,13 @@ class VehicleTTCTableData extends DataClass
 
   @override
   int get hashCode => Object.hash(
-      description, image, isPremium, isPremiumIgr, name, nation, type, tankId);
+      description, images, isPremium, isPremiumIgr, name, nation, type, tankId);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is VehicleTTCTableData &&
           other.description == this.description &&
-          other.image == this.image &&
+          other.images == this.images &&
           other.isPremium == this.isPremium &&
           other.isPremiumIgr == this.isPremiumIgr &&
           other.name == this.name &&

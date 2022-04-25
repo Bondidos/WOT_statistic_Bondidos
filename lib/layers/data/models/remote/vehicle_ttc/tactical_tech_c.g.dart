@@ -8,7 +8,7 @@ part of 'tactical_tech_c.dart';
 
 TTC _$TTCFromJson(Map<String, dynamic> json) => TTC(
       description: json['description'] as String,
-      images: VehicleImages.fromJson(json['big_icon'] as Map<String, dynamic>),
+      images: VehicleImages.fromJson(json['images'] as Map<String, dynamic>),
       isPremium: json['is_premium'] as bool,
       isPremiumIgr: json['is_premium_igr'] as bool,
       nation: json['nation'] as String,
@@ -19,7 +19,7 @@ TTC _$TTCFromJson(Map<String, dynamic> json) => TTC(
 
 Map<String, dynamic> _$TTCToJson(TTC instance) => <String, dynamic>{
       'description': instance.description,
-      'big_icon': instance.images,
+      'images': instance.images,
       'is_premium': instance.isPremium,
       'is_premium_igr': instance.isPremiumIgr,
       'name': instance.name,

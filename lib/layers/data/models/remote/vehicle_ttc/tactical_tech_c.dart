@@ -7,7 +7,7 @@ part 'tactical_tech_c.g.dart';
 class TTC {
   @JsonKey(name: 'description')
   String description;
-  @JsonKey(name: 'big_icon')
+  @JsonKey(name: 'images')
   VehicleImages images;
   @JsonKey(name: 'is_premium')
   bool isPremium;

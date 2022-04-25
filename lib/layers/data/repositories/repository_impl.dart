@@ -32,7 +32,8 @@ class RepositoryImpl extends Repository {
     localSource.subscribeRealm().listen((event) {
       baseOptions.baseUrl = event == EU ? BASE_URL_EU : BASE_URL_CIS;
     });
-    // todo destroy stream
+    // todo  https://habr.com/ru/post/451292/
+    Future.delayed(const Duration(seconds: 1), () => initOrSyncDatabase());
   }
 
   UserData get signedUser {
@@ -131,10 +132,11 @@ class RepositoryImpl extends Repository {
     var data = vehiclesApi.vehicles.values.first;
     logger.d(data.length);
     //todo fetch TTC by id from database
-    //String tankIds = vehiclesApi.createListOfTankId();
+    List<int> tankIds = vehiclesApi.createListOfTankId();
     // logger.d(tankIds);
 
-    //var ttc = await remoteSource.fetchVehiclesTTC(limit: 100);
+    List<TTC> ttc = await localSource.fetchTTCByListOfIDs(tankIds);
+    ttc.forEach((element) {print(element.name);});
     // logger.d(ttc);
     return Future.value(VehiclesData());
   }
@@ -143,13 +145,13 @@ class RepositoryImpl extends Repository {
     try {
       //todo language!!!!!!!!!
       final VehiclesTTC firstPage = await remoteSource.fetchVehiclesTTC(
-        limit: 100,
+        limit: 1,
         pageNumber: 1,
         language: "en",
       );
 
       int ttcCountDatabase = localSource.getTTCCount();
-      if (firstPage.meta.count == ttcCountDatabase) {
+      if (firstPage.meta.total == ttcCountDatabase) {
         return;
       }
       final List<VehiclesTTC> allPagesOfVehicleTTC =
@@ -164,12 +166,13 @@ class RepositoryImpl extends Repository {
 
   Future<List<VehiclesTTC>> _fetchAllPages(
       VehiclesTTC allPagesOfVehicleTTC, String language) async {
+    var numberOfPagesToDownload =
+        ((allPagesOfVehicleTTC.meta.total / 100).ceil().toInt());
     Iterable<int> pagesList =
-        (Iterable.generate(allPagesOfVehicleTTC.meta.pageTotal)
-            .map((e) => e + 1));
-    List<VehiclesTTC> vehiclesTTCList = [allPagesOfVehicleTTC];
-    var i = 2;
-    for (i in pagesList) {
+        (Iterable.generate(numberOfPagesToDownload).map((e) => e + 1));
+    List<VehiclesTTC> vehiclesTTCList = [];
+
+    for (var i in pagesList) {
       vehiclesTTCList.add(
         await remoteSource.fetchVehiclesTTC(
           limit: 100,
@@ -184,7 +187,7 @@ class RepositoryImpl extends Repository {
   List<TTC> _mergeTTC(List<VehiclesTTC> vehiclesTTCList) {
     List<TTC> result = [];
     for (var element in vehiclesTTCList) {
-      result.addAll(element.data.values.first.values);
+      result.addAll(element.data.values);
     }
     return result;
   }

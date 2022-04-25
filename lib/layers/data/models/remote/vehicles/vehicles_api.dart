@@ -18,16 +18,11 @@ class VehiclesApi {
 
   Map<String, dynamic> toJson() => _$VehiclesApiToJson(this);
 
-  List<String> createListOfTankId() {
-    List<String> result = [];
+  List<int> createListOfTankId() {
     String key = vehicles.keys.first;
     if (vehicles[key] == null) throw NullThrownError();
-    final List<String> vehiclesId =
-        vehicles[key]!.map((tankStat) => tankStat.tankId.toString()).toList();
-    while (vehiclesId.length > 100) {
-      result.add(vehiclesId.fold(
-          "", (previousValue, element) => previousValue + ",$element"));
-    }
-    return result;
+    final List<int> vehiclesId =
+        vehicles[key]!.map((tankStat) => tankStat.tankId).toList();
+    return vehiclesId;
   }
 }
