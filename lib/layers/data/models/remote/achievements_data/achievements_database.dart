@@ -1,7 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 
-import '../vehicle_ttc/meta.dart';
 import 'achievement_data.dart';
+import 'achievements_meta.dart';
 
 part 'achievements_database.g.dart';
 
@@ -10,7 +10,7 @@ class AchievementsDataBase {
   @JsonKey(name: 'data')
   final Map<String, AchievementData> data;
   @JsonKey(name: 'meta')
-  final Meta meta;
+  final AchievementsMeta meta;
   @JsonKey(name: 'status')
   final String status;
 

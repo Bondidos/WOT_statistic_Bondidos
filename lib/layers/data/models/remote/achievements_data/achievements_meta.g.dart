@@ -1,15 +1,17 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'meta.dart';
+part of 'achievements_meta.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-Meta _$MetaFromJson(Map<String, dynamic> json) => Meta(
+AchievementsMeta _$AchievementsMetaFromJson(Map<String, dynamic> json) =>
+    AchievementsMeta(
       count: json['count'] as int,
     );
 
-Map<String, dynamic> _$MetaToJson(Meta instance) => <String, dynamic>{
+Map<String, dynamic> _$AchievementsMetaToJson(AchievementsMeta instance) =>
+    <String, dynamic>{
       'count': instance.count,
     };

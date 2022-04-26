@@ -1,6 +1,7 @@
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:wot_statistic/layers/data/models/remote/vehicle_ttc/tactical_tech_c.dart';
+import 'package:wot_statistic/layers/data/models/remote/achievements_data/achievement_data.dart';
+import 'package:wot_statistic/layers/data/models/remote/vehicles_data/vehicles_data_ttc.dart';
 import 'package:wot_statistic/layers/data/sources/local_data_source.dart';
 import '../../../../common/constants/constants.dart';
 import '../../../../common/constants/shared_pref_keys.dart';
@@ -85,16 +86,33 @@ class LocalDataSourceImpl extends LocalDataSource {
   }
 
   @override
-  Future<List<TTC>> fetchTTCByListOfIDs(List<int> tankIds) =>
+  Future<List<VehiclesDataTTC>> fetchTTCByListOfIDs(List<int> tankIds) =>
       wotStatDao.fetchTTCByListOfIDs(tankIds);
 
   @override
-  Future<int> saveTTCList(List<TTC> listTTC) => wotStatDao.saveTTCList(listTTC);
+  Future<int> saveTTCList(List<VehiclesDataTTC> listTTC) =>
+      wotStatDao.saveTTCList(listTTC);
 
   @override
-  int getTTCCount() => sharedPreferences.getInt(TTC_COUNT_IN_DB) ?? 0;
+  int getVehiclesTTCCount() => sharedPreferences.getInt(TTC_COUNT_IN_DB) ?? 0;
 
   @override
-  void setTTCCount(int ttcCount) =>
+  void setVehiclesTtcCount(int ttcCount) =>
       sharedPreferences.setInt(TTC_COUNT_IN_DB, ttcCount);
+
+  @override
+  void setAchievesCount(int achievesCount) =>
+      sharedPreferences.setInt(ACHIEVES_COUNT_IN_DB, achievesCount);
+
+  @override
+  int getAchievesCount() => sharedPreferences.getInt(ACHIEVES_COUNT_IN_DB) ?? 0;
+
+  @override
+  Future<List<AchievementData>> fetchAchievementsById(
+          List<String> achievementId) =>
+      wotStatDao.fetchAchievementsById(achievementId);
+
+  @override
+  Future<int> saveAchievementsData(Map<String, AchievementData> achievements) =>
+      wotStatDao.saveAchievementsData(achievements);
 }

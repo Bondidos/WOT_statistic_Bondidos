@@ -1,22 +1,22 @@
 import 'package:json_annotation/json_annotation.dart';
 
-import 'tank_api.dart';
+import 'user_vehicle.dart';
 
-part 'vehicles_api.g.dart';
+part 'user_vehicles_api.g.dart';
 
 @JsonSerializable()
-class VehiclesApi {
+class UserVehiclesApi {
   @JsonKey(name: 'status')
   final String status;
   @JsonKey(name: 'data')
-  final Map<String, List<TankApi>> vehicles;
+  final Map<String, List<UserVehicle>> vehicles;
 
-  VehiclesApi({required this.status, required this.vehicles});
+  UserVehiclesApi({required this.status, required this.vehicles});
 
-  factory VehiclesApi.fromJson(Map<String, dynamic> json) =>
-      _$VehiclesApiFromJson(json);
+  factory UserVehiclesApi.fromJson(Map<String, dynamic> json) =>
+      _$UserVehiclesApiFromJson(json);
 
-  Map<String, dynamic> toJson() => _$VehiclesApiToJson(this);
+  Map<String, dynamic> toJson() => _$UserVehiclesApiToJson(this);
 
   List<int> createListOfTankId() {
     String key = vehicles.keys.first;

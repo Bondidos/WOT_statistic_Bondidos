@@ -1,14 +1,16 @@
 import 'package:drift/drift.dart';
 import '../../../../../data/models/local/user_data.dart';
-import '../../../../../data/models/remote/vehicle_ttc/tactical_tech_c.dart';
-import '../../../../../data/models/remote/vehicle_ttc/vehicle_images.dart';
+import '../../../../../data/models/remote/achievements_data/achievement_data.dart';
+import '../../../../../data/models/remote/vehicles_data/vehicles_data_images.dart';
+import '../../../../../data/models/remote/vehicles_data/vehicles_data_ttc.dart';
 import '../../../../../domain/entities/user.dart';
+import '../tables/achieve_table.dart';
 import '../tables/vehicle_ttc.dart';
 import '../wot_stat_database.dart';
 
 part 'wot_stat_dao.g.dart';
 
-@DriftAccessor(tables: [UserTable, VehicleTTCTable])
+@DriftAccessor(tables: [UserTable, VehicleTTCTable, AchievementsTable])
 class WotStatDao extends DatabaseAccessor<WotStatDatabase>
     with _$WotStatDaoMixin {
   final WotStatDatabase wotStatDatabase;
@@ -41,7 +43,7 @@ class WotStatDao extends DatabaseAccessor<WotStatDatabase>
         .watch();
   }
 
-  Future<int> saveTTCList(List<TTC> listTTC) async {
+  Future<int> saveTTCList(List<VehiclesDataTTC> listTTC) async {
     final List<VehicleTTCTableCompanion> listTTCCompanion =
         listTTC.map((ttc) => _toVehicleTTCTableCompanion(ttc)).toList();
     return await _saveTTCList(listTTCCompanion);
@@ -57,7 +59,7 @@ class WotStatDao extends DatabaseAccessor<WotStatDatabase>
     return itemsInserted;
   }
 
-  VehicleTTCTableCompanion _toVehicleTTCTableCompanion(TTC ttc) =>
+  VehicleTTCTableCompanion _toVehicleTTCTableCompanion(VehiclesDataTTC ttc) =>
       VehicleTTCTableCompanion(
         description: Value(ttc.description),
         images: Value(ttc.images.bigIcon),
@@ -69,13 +71,13 @@ class WotStatDao extends DatabaseAccessor<WotStatDatabase>
         tankId: Value(ttc.tankId),
       );
 
-  Future<List<TTC>> fetchTTCByListOfIDs(List<int> tankIds) {
+  Future<List<VehiclesDataTTC>> fetchTTCByListOfIDs(List<int> tankIds) {
     final query = select(vehicleTTCTable)
       ..where((tbl) => tbl.tankId.isIn(tankIds));
     return query
-        .map((e) => TTC(
+        .map((e) => VehiclesDataTTC(
               description: e.description,
-              images: VehicleImages(bigIcon: e.images),
+              images: VehiclesDataImages(bigIcon: e.images),
               isPremium: e.isPremium,
               isPremiumIgr: e.isPremiumIgr,
               nation: e.nation,
@@ -86,6 +88,52 @@ class WotStatDao extends DatabaseAccessor<WotStatDatabase>
         .get();
   }
 
+  Future<int> saveAchievementsData(
+      Map<String, AchievementData> achievements) async {
+    final List<AchievementsTableCompanion> listAchievementsCompanion =
+        achievements.values
+            .map((e) => _toAchievementsTableCompanion(e))
+            .toList();
+    return await _saveAchievementsData(listAchievementsCompanion);
+  }
 
+  AchievementsTableCompanion _toAchievementsTableCompanion(
+          AchievementData achievement) =>
+      AchievementsTableCompanion(
+        name: Value(achievement.name),
+        section: Value(achievement.section),
+        sectionOrder: Value(achievement.sectionOrder),
+        imageBig: Value(achievement.imageBig),
+        image: Value(achievement.image),
+        condition: Value(achievement.condition),
+        description: Value(achievement.description),
+      );
 
+  Future<int> _saveAchievementsData(
+      List<AchievementsTableCompanion> listAchievementsCompanion) async {
+    int itemsInserted = 0;
+    Future.forEach<AchievementsTableCompanion>(listAchievementsCompanion,
+        (element) {
+      into(achievementsTable).insertOnConflictUpdate(element);
+      itemsInserted++;
+    });
+    return itemsInserted;
+  }
+
+  Future<List<AchievementData>> fetchAchievementsById(
+      List<String> achievementId) {
+    final query = select(achievementsTable)
+      ..where((tbl) => tbl.name.isIn(achievementId));
+    return query
+        .map((e) => AchievementData(
+              name: e.name,
+              section: e.section,
+              sectionOrder: e.sectionOrder,
+              imageBig: e.imageBig,
+              image: e.image,
+              condition: e.condition,
+              description: e.description,
+            ))
+        .get();
+  }
 }

@@ -1,26 +1,35 @@
 import '../../domain/entities/user.dart';
 import '../models/local/user_data.dart';
-import '../models/remote/vehicle_ttc/tactical_tech_c.dart';
+import '../models/remote/achievements_data/achievement_data.dart';
+import '../models/remote/vehicles_data/vehicles_data_ttc.dart';
 
 abstract class LocalDataSource {
-
   void setTheme(String theme);
 
   void setRealm(String realm);
 
   void saveUser(UserData user);
 
-  void setTTCCount(int ttcCount);
+  void setVehiclesTtcCount(int ttcCount);
 
-  int getTTCCount();
+  void setAchievesCount(int achievesCount);
+
+  int getAchievesCount();
+
+  int getVehiclesTTCCount();
 
   Future<void> removeUser(UserData user);
 
   Future<void> setSingedUser(UserData user);
 
-  Future<int> saveTTCList(List<TTC> listTTC);
+  Future<int> saveTTCList(List<VehiclesDataTTC> listTTC);
 
-  Future<List<TTC>> fetchTTCByListOfIDs(List<int> tankIds);
+  Future<List<VehiclesDataTTC>> fetchTTCByListOfIDs(List<int> tankIds);
+
+  Future<List<AchievementData>> fetchAchievementsById(
+      List<String> achievementId);
+
+  Future<int> saveAchievementsData(Map<String, AchievementData> achievements);
 
   UserData? getSignedUser();
 

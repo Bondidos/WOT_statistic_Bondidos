@@ -1,12 +1,12 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/http.dart';
-import 'package:wot_statistic/layers/data/models/remote/achievements_api_data/achievements_database.dart';
+import 'package:wot_statistic/layers/data/models/remote/achievements_data/achievements_database.dart';
 import 'package:wot_statistic/layers/data/models/remote/user_achieves/user_achieves_api_data.dart';
-import 'package:wot_statistic/layers/data/models/remote/vehicles/vehicles_api.dart';
+import 'package:wot_statistic/layers/data/models/remote/user_vehicles/user_vehicles_api.dart';
 
 import '../../data/models/remote/clan_info/clan_info.dart';
 import '../../data/models/remote/personal_api_data/personal_data_api.dart';
-import '../../data/models/remote/vehicle_ttc/vehicles_ttc.dart';
+import '../../data/models/remote/vehicles_data/vehicles_data.dart';
 
 part 'wot_api_client.g.dart';
 
@@ -29,14 +29,14 @@ abstract class WotClient {
   );
 
   @GET("/wot/account/tanks/")
-  Future<VehiclesApi> fetchVehiclesData(
+  Future<UserVehiclesApi> fetchUserVehicles(
     @Query('application_id') String applicationId,
     @Query('account_id') int accountId,
     @Query('access_token') String accessToken,
   );
 
-  @GET("/wot/encyclopedia/vehicles/")
-  Future<VehiclesTTC> fetchVehiclesTTC(
+  @GET("/wot/encyclopedia/user_vehicles/")
+  Future<VehiclesData> fetchVehiclesDatabase(
     @Query('application_id') String applicationId,
     @Query('fields') String fields,
     @Query('limit') int limit,

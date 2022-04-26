@@ -10,3 +10,4 @@ const SINGED_USER_TOKEN = 'Singed User token';
 const SINGED_USER_EXPIRE = 'Singed User EXPIRE';
 const SINGED_USER_REALM = 'Singed User realm';
 const TTC_COUNT_IN_DB = 'TTC count in DB';
+const ACHIEVES_COUNT_IN_DB = 'Achieves count in DB';

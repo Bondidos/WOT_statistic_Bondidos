@@ -1,17 +1,17 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'vehicle_images.dart';
+part of 'vehicles_data_images.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-VehicleImages _$VehicleImagesFromJson(Map<String, dynamic> json) =>
-    VehicleImages(
+VehiclesDataImages _$VehiclesDataImagesFromJson(Map<String, dynamic> json) =>
+    VehiclesDataImages(
       bigIcon: json['big_icon'] as String,
     );
 
-Map<String, dynamic> _$VehicleImagesToJson(VehicleImages instance) =>
+Map<String, dynamic> _$VehiclesDataImagesToJson(VehiclesDataImages instance) =>
     <String, dynamic>{
       'big_icon': instance.bigIcon,
     };

@@ -1,14 +1,14 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:wot_statistic/layers/data/models/remote/vehicle_ttc/vehicle_images.dart';
+import 'package:wot_statistic/layers/data/models/remote/vehicles_data/vehicles_data_images.dart';
 
-part 'tactical_tech_c.g.dart';
+part 'vehicles_data_ttc.g.dart';
 
 @JsonSerializable()
-class TTC {
+class VehiclesDataTTC {
   @JsonKey(name: 'description')
   String description;
   @JsonKey(name: 'images')
-  VehicleImages images;
+  VehiclesDataImages images;
   @JsonKey(name: 'is_premium')
   bool isPremium;
   @JsonKey(name: 'is_premium_igr')
@@ -22,7 +22,7 @@ class TTC {
   @JsonKey(name: 'tank_id')
   int tankId;
 
-  TTC({
+  VehiclesDataTTC({
     required this.description,
     required this.images,
     required this.isPremium,
@@ -33,7 +33,7 @@ class TTC {
     required this.tankId,
   });
 
-  factory TTC.fromJson(Map<String, dynamic> json) => _$TTCFromJson(json);
+  factory VehiclesDataTTC.fromJson(Map<String, dynamic> json) => _$VehiclesDataTTCFromJson(json);
 
-  Map<String, dynamic> toJson() => _$TTCToJson(this);
+  Map<String, dynamic> toJson() => _$VehiclesDataTTCToJson(this);
 }

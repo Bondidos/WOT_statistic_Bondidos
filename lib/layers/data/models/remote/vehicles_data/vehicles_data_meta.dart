@@ -1,9 +1,9 @@
 import 'package:json_annotation/json_annotation.dart';
 
-part 'meta.g.dart';
+part 'vehicles_data_meta.g.dart';
 
 @JsonSerializable()
-class Meta {
+class VehiclesDataMeta {
   @JsonKey(name: 'count')
   final int count;
   @JsonKey(name: 'limit')
@@ -15,7 +15,7 @@ class Meta {
   @JsonKey(name: 'total')
   final int total;
 
-  Meta({
+  VehiclesDataMeta({
     required this.count,
     required this.limit,
     required this.page,
@@ -23,7 +23,8 @@ class Meta {
     required this.total,
   });
 
-  factory Meta.fromJson(Map<String, dynamic> json) => _$MetaFromJson(json);
+  factory VehiclesDataMeta.fromJson(Map<String, dynamic> json) =>
+      _$VehiclesDataMetaFromJson(json);
 
-  Map<String, dynamic> toJson() => _$MetaToJson(this);
+  Map<String, dynamic> toJson() => _$VehiclesDataMetaToJson(this);
 }

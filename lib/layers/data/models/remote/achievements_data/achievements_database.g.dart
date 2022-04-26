@@ -13,7 +13,7 @@ AchievementsDataBase _$AchievementsDataBaseFromJson(
         (k, e) =>
             MapEntry(k, AchievementData.fromJson(e as Map<String, dynamic>)),
       ),
-      meta: Meta.fromJson(json['meta'] as Map<String, dynamic>),
+      meta: AchievementsMeta.fromJson(json['meta'] as Map<String, dynamic>),
       status: json['status'] as String,
     );
 

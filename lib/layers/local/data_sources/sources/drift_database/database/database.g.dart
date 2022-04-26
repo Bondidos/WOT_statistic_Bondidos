@@ -702,15 +702,386 @@ class $VehicleTTCTableTable extends VehicleTTCTable
   }
 }
 
+class AchievementsTableData extends DataClass
+    implements Insertable<AchievementsTableData> {
+  final String name;
+  final String section;
+  final String sectionOrder;
+  final String imageBig;
+  final String image;
+  final String condition;
+  final String description;
+  AchievementsTableData(
+      {required this.name,
+      required this.section,
+      required this.sectionOrder,
+      required this.imageBig,
+      required this.image,
+      required this.condition,
+      required this.description});
+  factory AchievementsTableData.fromData(Map<String, dynamic> data,
+      {String? prefix}) {
+    final effectivePrefix = prefix ?? '';
+    return AchievementsTableData(
+      name: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}name'])!,
+      section: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}section'])!,
+      sectionOrder: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}section_order'])!,
+      imageBig: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}image_big'])!,
+      image: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}image'])!,
+      condition: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}condition'])!,
+      description: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}description'])!,
+    );
+  }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['name'] = Variable<String>(name);
+    map['section'] = Variable<String>(section);
+    map['section_order'] = Variable<String>(sectionOrder);
+    map['image_big'] = Variable<String>(imageBig);
+    map['image'] = Variable<String>(image);
+    map['condition'] = Variable<String>(condition);
+    map['description'] = Variable<String>(description);
+    return map;
+  }
+
+  AchievementsTableCompanion toCompanion(bool nullToAbsent) {
+    return AchievementsTableCompanion(
+      name: Value(name),
+      section: Value(section),
+      sectionOrder: Value(sectionOrder),
+      imageBig: Value(imageBig),
+      image: Value(image),
+      condition: Value(condition),
+      description: Value(description),
+    );
+  }
+
+  factory AchievementsTableData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return AchievementsTableData(
+      name: serializer.fromJson<String>(json['name']),
+      section: serializer.fromJson<String>(json['section']),
+      sectionOrder: serializer.fromJson<String>(json['sectionOrder']),
+      imageBig: serializer.fromJson<String>(json['imageBig']),
+      image: serializer.fromJson<String>(json['image']),
+      condition: serializer.fromJson<String>(json['condition']),
+      description: serializer.fromJson<String>(json['description']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'name': serializer.toJson<String>(name),
+      'section': serializer.toJson<String>(section),
+      'sectionOrder': serializer.toJson<String>(sectionOrder),
+      'imageBig': serializer.toJson<String>(imageBig),
+      'image': serializer.toJson<String>(image),
+      'condition': serializer.toJson<String>(condition),
+      'description': serializer.toJson<String>(description),
+    };
+  }
+
+  AchievementsTableData copyWith(
+          {String? name,
+          String? section,
+          String? sectionOrder,
+          String? imageBig,
+          String? image,
+          String? condition,
+          String? description}) =>
+      AchievementsTableData(
+        name: name ?? this.name,
+        section: section ?? this.section,
+        sectionOrder: sectionOrder ?? this.sectionOrder,
+        imageBig: imageBig ?? this.imageBig,
+        image: image ?? this.image,
+        condition: condition ?? this.condition,
+        description: description ?? this.description,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('AchievementsTableData(')
+          ..write('name: $name, ')
+          ..write('section: $section, ')
+          ..write('sectionOrder: $sectionOrder, ')
+          ..write('imageBig: $imageBig, ')
+          ..write('image: $image, ')
+          ..write('condition: $condition, ')
+          ..write('description: $description')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      name, section, sectionOrder, imageBig, image, condition, description);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is AchievementsTableData &&
+          other.name == this.name &&
+          other.section == this.section &&
+          other.sectionOrder == this.sectionOrder &&
+          other.imageBig == this.imageBig &&
+          other.image == this.image &&
+          other.condition == this.condition &&
+          other.description == this.description);
+}
+
+class AchievementsTableCompanion
+    extends UpdateCompanion<AchievementsTableData> {
+  final Value<String> name;
+  final Value<String> section;
+  final Value<String> sectionOrder;
+  final Value<String> imageBig;
+  final Value<String> image;
+  final Value<String> condition;
+  final Value<String> description;
+  const AchievementsTableCompanion({
+    this.name = const Value.absent(),
+    this.section = const Value.absent(),
+    this.sectionOrder = const Value.absent(),
+    this.imageBig = const Value.absent(),
+    this.image = const Value.absent(),
+    this.condition = const Value.absent(),
+    this.description = const Value.absent(),
+  });
+  AchievementsTableCompanion.insert({
+    required String name,
+    required String section,
+    required String sectionOrder,
+    required String imageBig,
+    required String image,
+    required String condition,
+    required String description,
+  })  : name = Value(name),
+        section = Value(section),
+        sectionOrder = Value(sectionOrder),
+        imageBig = Value(imageBig),
+        image = Value(image),
+        condition = Value(condition),
+        description = Value(description);
+  static Insertable<AchievementsTableData> custom({
+    Expression<String>? name,
+    Expression<String>? section,
+    Expression<String>? sectionOrder,
+    Expression<String>? imageBig,
+    Expression<String>? image,
+    Expression<String>? condition,
+    Expression<String>? description,
+  }) {
+    return RawValuesInsertable({
+      if (name != null) 'name': name,
+      if (section != null) 'section': section,
+      if (sectionOrder != null) 'section_order': sectionOrder,
+      if (imageBig != null) 'image_big': imageBig,
+      if (image != null) 'image': image,
+      if (condition != null) 'condition': condition,
+      if (description != null) 'description': description,
+    });
+  }
+
+  AchievementsTableCompanion copyWith(
+      {Value<String>? name,
+      Value<String>? section,
+      Value<String>? sectionOrder,
+      Value<String>? imageBig,
+      Value<String>? image,
+      Value<String>? condition,
+      Value<String>? description}) {
+    return AchievementsTableCompanion(
+      name: name ?? this.name,
+      section: section ?? this.section,
+      sectionOrder: sectionOrder ?? this.sectionOrder,
+      imageBig: imageBig ?? this.imageBig,
+      image: image ?? this.image,
+      condition: condition ?? this.condition,
+      description: description ?? this.description,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (section.present) {
+      map['section'] = Variable<String>(section.value);
+    }
+    if (sectionOrder.present) {
+      map['section_order'] = Variable<String>(sectionOrder.value);
+    }
+    if (imageBig.present) {
+      map['image_big'] = Variable<String>(imageBig.value);
+    }
+    if (image.present) {
+      map['image'] = Variable<String>(image.value);
+    }
+    if (condition.present) {
+      map['condition'] = Variable<String>(condition.value);
+    }
+    if (description.present) {
+      map['description'] = Variable<String>(description.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('AchievementsTableCompanion(')
+          ..write('name: $name, ')
+          ..write('section: $section, ')
+          ..write('sectionOrder: $sectionOrder, ')
+          ..write('imageBig: $imageBig, ')
+          ..write('image: $image, ')
+          ..write('condition: $condition, ')
+          ..write('description: $description')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $AchievementsTableTable extends AchievementsTable
+    with TableInfo<$AchievementsTableTable, AchievementsTableData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $AchievementsTableTable(this.attachedDatabase, [this._alias]);
+  final VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String?> name = GeneratedColumn<String?>(
+      'name', aliasedName, false,
+      type: const StringType(), requiredDuringInsert: true);
+  final VerificationMeta _sectionMeta = const VerificationMeta('section');
+  @override
+  late final GeneratedColumn<String?> section = GeneratedColumn<String?>(
+      'section', aliasedName, false,
+      type: const StringType(), requiredDuringInsert: true);
+  final VerificationMeta _sectionOrderMeta =
+      const VerificationMeta('sectionOrder');
+  @override
+  late final GeneratedColumn<String?> sectionOrder = GeneratedColumn<String?>(
+      'section_order', aliasedName, false,
+      type: const StringType(), requiredDuringInsert: true);
+  final VerificationMeta _imageBigMeta = const VerificationMeta('imageBig');
+  @override
+  late final GeneratedColumn<String?> imageBig = GeneratedColumn<String?>(
+      'image_big', aliasedName, false,
+      type: const StringType(), requiredDuringInsert: true);
+  final VerificationMeta _imageMeta = const VerificationMeta('image');
+  @override
+  late final GeneratedColumn<String?> image = GeneratedColumn<String?>(
+      'image', aliasedName, false,
+      type: const StringType(), requiredDuringInsert: true);
+  final VerificationMeta _conditionMeta = const VerificationMeta('condition');
+  @override
+  late final GeneratedColumn<String?> condition = GeneratedColumn<String?>(
+      'condition', aliasedName, false,
+      type: const StringType(), requiredDuringInsert: true);
+  final VerificationMeta _descriptionMeta =
+      const VerificationMeta('description');
+  @override
+  late final GeneratedColumn<String?> description = GeneratedColumn<String?>(
+      'description', aliasedName, false,
+      type: const StringType(), requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns =>
+      [name, section, sectionOrder, imageBig, image, condition, description];
+  @override
+  String get aliasedName => _alias ?? 'achievements_table';
+  @override
+  String get actualTableName => 'achievements_table';
+  @override
+  VerificationContext validateIntegrity(
+      Insertable<AchievementsTableData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('section')) {
+      context.handle(_sectionMeta,
+          section.isAcceptableOrUnknown(data['section']!, _sectionMeta));
+    } else if (isInserting) {
+      context.missing(_sectionMeta);
+    }
+    if (data.containsKey('section_order')) {
+      context.handle(
+          _sectionOrderMeta,
+          sectionOrder.isAcceptableOrUnknown(
+              data['section_order']!, _sectionOrderMeta));
+    } else if (isInserting) {
+      context.missing(_sectionOrderMeta);
+    }
+    if (data.containsKey('image_big')) {
+      context.handle(_imageBigMeta,
+          imageBig.isAcceptableOrUnknown(data['image_big']!, _imageBigMeta));
+    } else if (isInserting) {
+      context.missing(_imageBigMeta);
+    }
+    if (data.containsKey('image')) {
+      context.handle(
+          _imageMeta, image.isAcceptableOrUnknown(data['image']!, _imageMeta));
+    } else if (isInserting) {
+      context.missing(_imageMeta);
+    }
+    if (data.containsKey('condition')) {
+      context.handle(_conditionMeta,
+          condition.isAcceptableOrUnknown(data['condition']!, _conditionMeta));
+    } else if (isInserting) {
+      context.missing(_conditionMeta);
+    }
+    if (data.containsKey('description')) {
+      context.handle(
+          _descriptionMeta,
+          description.isAcceptableOrUnknown(
+              data['description']!, _descriptionMeta));
+    } else if (isInserting) {
+      context.missing(_descriptionMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {name};
+  @override
+  AchievementsTableData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    return AchievementsTableData.fromData(data,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
+  }
+
+  @override
+  $AchievementsTableTable createAlias(String alias) {
+    return $AchievementsTableTable(attachedDatabase, alias);
+  }
+}
+
 abstract class _$WotStatDatabase extends GeneratedDatabase {
   _$WotStatDatabase(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
   late final $UserTableTable userTable = $UserTableTable(this);
   late final $VehicleTTCTableTable vehicleTTCTable =
       $VehicleTTCTableTable(this);
+  late final $AchievementsTableTable achievementsTable =
+      $AchievementsTableTable(this);
   late final WotStatDao wotStatDao = WotStatDao(this as WotStatDatabase);
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities =>
-      [userTable, vehicleTTCTable];
+      [userTable, vehicleTTCTable, achievementsTable];
 }

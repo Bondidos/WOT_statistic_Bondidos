@@ -1,14 +1,16 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'tactical_tech_c.dart';
+part of 'vehicles_data_ttc.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-TTC _$TTCFromJson(Map<String, dynamic> json) => TTC(
+VehiclesDataTTC _$VehiclesDataTTCFromJson(Map<String, dynamic> json) =>
+    VehiclesDataTTC(
       description: json['description'] as String,
-      images: VehicleImages.fromJson(json['images'] as Map<String, dynamic>),
+      images:
+          VehiclesDataImages.fromJson(json['images'] as Map<String, dynamic>),
       isPremium: json['is_premium'] as bool,
       isPremiumIgr: json['is_premium_igr'] as bool,
       nation: json['nation'] as String,
@@ -17,7 +19,8 @@ TTC _$TTCFromJson(Map<String, dynamic> json) => TTC(
       tankId: json['tank_id'] as int,
     );
 
-Map<String, dynamic> _$TTCToJson(TTC instance) => <String, dynamic>{
+Map<String, dynamic> _$VehiclesDataTTCToJson(VehiclesDataTTC instance) =>
+    <String, dynamic>{
       'description': instance.description,
       'images': instance.images,
       'is_premium': instance.isPremium,

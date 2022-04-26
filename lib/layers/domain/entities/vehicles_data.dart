@@ -1,3 +1,3 @@
-class VehiclesData {
+class VehiclesDataDomain {
 
 }

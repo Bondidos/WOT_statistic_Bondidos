@@ -15,7 +15,7 @@ abstract class Repository {
   Stream<List<User>> get subscribeUsers;
   Stream<String> get subscribeRealm;
 
-  Future<VehiclesData> fetchVehiclesData();
+  Future<VehiclesDataDomain> fetchUserVehicles();
   Future<PersonalData> fetchPersonalData();
   Future<List<Achieve>> fetchAchieves();
   // List<Players> searchPlayer();

@@ -3,6 +3,9 @@ import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:logger/logger.dart';
 import 'package:wot_statistic/common/constants/constants.dart';
+import 'package:wot_statistic/layers/data/models/remote/achievements_data/achievement_data.dart';
+import 'package:wot_statistic/layers/data/models/remote/vehicles_data/vehicles_data_meta.dart';
+import 'package:wot_statistic/layers/data/models/remote/vehicles_data/vehicles_data_ttc.dart';
 import 'package:wot_statistic/layers/data/sources/local_data_source.dart';
 import 'package:wot_statistic/layers/domain/entities/achieves.dart';
 import 'package:wot_statistic/layers/domain/entities/personal_data.dart';
@@ -12,12 +15,12 @@ import 'package:wot_statistic/layers/domain/repositories/repository.dart';
 
 import '../../../common/constants/network_const.dart';
 import '../models/local/user_data.dart';
+import '../models/remote/achievements_data/achievements_database.dart';
 import '../models/remote/clan_info/clan_info.dart';
 import '../models/remote/personal_api_data/personal_data_api.dart';
 import '../models/remote/user_achieves/user_achieves_api_data.dart';
-import '../models/remote/vehicle_ttc/tactical_tech_c.dart';
-import '../models/remote/vehicle_ttc/vehicles_ttc.dart';
-import '../models/remote/vehicles/vehicles_api.dart';
+import '../models/remote/user_vehicles/user_vehicles_api.dart';
+import '../models/remote/vehicles_data/vehicles_data.dart';
 import '../sources/remote_data_source.dart';
 
 class RepositoryImpl extends Repository {
@@ -70,8 +73,14 @@ class RepositoryImpl extends Repository {
   Future<List<Achieve>> fetchAchieves() async {
     // TODO: implement fetchAchieves
 
-    UserAchievesApi achievesApi =
+    final UserAchievesApi achievesApi =
         await remoteSource.fetchAchievesData(accountId: signedUser.id);
+
+    final List<String> achievesId = achievesApi.createListOfAchievementsId();
+    final List<AchievementData> achievementsDataById =
+        await localSource.fetchAchievementsById(achievesId);
+
+    //todo combine to stream? =)
 
     return Future.value([]);
   }
@@ -128,57 +137,68 @@ class RepositoryImpl extends Repository {
       localSource.setSingedUser(UserData.fromUserAndRealm(user, realm));
 
   @override
-  Future<VehiclesData> fetchVehiclesData() async {
-    final VehiclesApi vehiclesApi = await remoteSource.fetchVehiclesData(
+  Future<VehiclesDataDomain> fetchUserVehicles() async {
+    final UserVehiclesApi vehiclesApi = await remoteSource.fetchUserVehicles(
       accountId: signedUser.id,
       accessToken: signedUser.accessToken,
     );
 
-    var data = vehiclesApi.vehicles.values.first;
-    logger.d(data.length);
     List<int> tankIds = vehiclesApi.createListOfTankId();
-    List<TTC> ttc = await localSource.fetchTTCByListOfIDs(tankIds);
-    /*ttc.forEach((element) {
-      print(element.name);
-    });*/
-    //todo map data to VehiclesData
-    return Future.value(VehiclesData());
+    List<VehiclesDataTTC> vehiclesTTC =
+        await localSource.fetchTTCByListOfIDs(tankIds);
+    // merge data. m.b. try stream?
+    //todo map data to VehiclesData,rename VehiclesDataDomain
+    return Future.value(VehiclesDataDomain());
   }
 
-  Future<void> initOrSyncDatabase() async {
-    try {
-      //todo language!!!!!!!!!
-      final VehiclesTTC firstPage = await remoteSource.fetchVehiclesTTC(
-        limit: 1,
-        pageNumber: 1,
-        language: "en",
-      );
-
-      int ttcCountDatabase = localSource.getTTCCount();
-      if (firstPage.meta.total == ttcCountDatabase) {
-        return;
-      }
-      final List<VehiclesTTC> allPagesOfVehicleTTC =
-          await _fetchAllPages(firstPage, "en");
-      final List<TTC> allVehiclesTTC = _mergeTTC(allPagesOfVehicleTTC);
-      final int ttcCount = await localSource.saveTTCList(allVehiclesTTC);
-      localSource.setTTCCount(ttcCount);
-    } catch (e) {
-      throw Exception('Error while sync Database');
-    }
+//todo try-catch in useCase
+  Future<void> initOrSyncVehiclesDatabase() async {
+    _initVehiclesDatabase();
+    _initAchievesDatabase();
   }
 
-  Future<List<VehiclesTTC>> _fetchAllPages(
-      VehiclesTTC allPagesOfVehicleTTC, String language) async {
-    var numberOfPagesToDownload =
-        ((allPagesOfVehicleTTC.meta.total / 100).ceil().toInt());
-    Iterable<int> pagesList =
+  Future<void> _initAchievesDatabase() async {
+    final int achievesInDbCount = localSource.getAchievesCount();
+    final AchievementsDataBase achievementsDataBase =
+        await remoteSource.fetchAchievesDataBase();
+    if (achievesInDbCount == achievementsDataBase.meta.count) return;
+    //else create achievementsDataBase
+    int insertedItems =
+        await localSource.saveAchievementsData(achievementsDataBase.data);
+    localSource.setAchievesCount(insertedItems);
+  }
+
+  Future<void> _initVehiclesDatabase() async {
+    //todo language!!!!!!!!!
+    final VehiclesDataMeta vehiclesDataMeta =
+        (await remoteSource.fetchVehiclesDatabase(
+      limit: 1,
+      pageNumber: 1,
+      language: "en",
+    ))
+            .meta;
+
+    final int databaseTtcCount = localSource.getVehiclesTTCCount();
+    if (vehiclesDataMeta.total == databaseTtcCount) return;
+    //else create vehiclesDatabase
+    final List<VehiclesData> allPagesOfVehicleTTC =
+        await _fetchAllPages(vehiclesDataMeta, "en");
+    final List<VehiclesDataTTC> allVehiclesTTC =
+        _mergeTTC(allPagesOfVehicleTTC);
+    final int savedTtcCount = await localSource.saveTTCList(allVehiclesTTC);
+    localSource.setVehiclesTtcCount(savedTtcCount);
+  }
+
+  Future<List<VehiclesData>> _fetchAllPages(
+      VehiclesDataMeta meta, String language) async {
+    final int numberOfPagesToDownload = ((meta.total / 100).ceil().toInt());
+    final Iterable<int> pagesCount =
         (Iterable.generate(numberOfPagesToDownload).map((e) => e + 1));
-    List<VehiclesTTC> vehiclesTTCList = [];
+    List<VehiclesData> vehiclesTTCList = [];
 
-    for (var i in pagesList) {
+    for (var i in pagesCount) {
       vehiclesTTCList.add(
-        await remoteSource.fetchVehiclesTTC(
+        await remoteSource.fetchVehiclesDatabase(
           limit: 100,
           pageNumber: i,
           language: language,
@@ -188,8 +208,8 @@ class RepositoryImpl extends Repository {
     return vehiclesTTCList;
   }
 
-  List<TTC> _mergeTTC(List<VehiclesTTC> vehiclesTTCList) {
-    List<TTC> result = [];
+  List<VehiclesDataTTC> _mergeTTC(List<VehiclesData> vehiclesTTCList) {
+    List<VehiclesDataTTC> result = [];
     for (var element in vehiclesTTCList) {
       result.addAll(element.data.values);
     }

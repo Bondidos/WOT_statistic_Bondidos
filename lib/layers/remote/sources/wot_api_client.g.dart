@@ -57,7 +57,7 @@ class _WotClient implements WotClient {
   }
 
   @override
-  Future<VehiclesApi> fetchVehiclesData(
+  Future<UserVehiclesApi> fetchUserVehicles(
       applicationId, accountId, accessToken) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
@@ -68,17 +68,17 @@ class _WotClient implements WotClient {
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<VehiclesApi>(
+        _setStreamType<UserVehiclesApi>(
             Options(method: 'GET', headers: _headers, extra: _extra)
                 .compose(_dio.options, '/wot/account/tanks/',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = VehiclesApi.fromJson(_result.data!);
+    final value = UserVehiclesApi.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<VehiclesTTC> fetchVehiclesTTC(
+  Future<VehiclesData> fetchVehiclesDatabase(
       applicationId, fields, limit, pageNumber, language) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
@@ -91,12 +91,12 @@ class _WotClient implements WotClient {
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<VehiclesTTC>(
+        _setStreamType<VehiclesData>(
             Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '/wot/encyclopedia/vehicles/',
+                .compose(_dio.options, '/wot/encyclopedia/user_vehicles/',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = VehiclesTTC.fromJson(_result.data!);
+    final value = VehiclesData.fromJson(_result.data!);
     return value;
   }
 

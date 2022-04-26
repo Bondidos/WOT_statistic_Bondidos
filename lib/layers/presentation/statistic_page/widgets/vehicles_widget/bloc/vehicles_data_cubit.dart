@@ -13,7 +13,7 @@ class VehiclesDataCubit extends Cubit<VehiclesDataState> {
 
   void fetchPersonalData() async {
     try {
-      final VehiclesData result = await loadVehicles.execute();
+      final VehiclesDataDomain result = await loadVehicles.execute();
       emit(LoadedDataState(vehiclesData: result));
     } catch (e) {
       emit(ErrorState(message: e.toString()));

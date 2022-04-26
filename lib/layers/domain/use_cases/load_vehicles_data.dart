@@ -5,5 +5,5 @@ class LoadVehiclesData {
   final Repository repository;
   LoadVehiclesData({required this.repository});
 
-  Future<VehiclesData> execute() => repository.fetchVehiclesData();
+  Future<VehiclesDataDomain> execute() => repository.fetchUserVehicles();
 }

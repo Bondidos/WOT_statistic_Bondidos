@@ -1,11 +1,10 @@
-import 'package:wot_statistic/layers/data/models/remote/achievements_api_data/achievements_database.dart';
-import 'package:wot_statistic/layers/data/models/remote/vehicle_ttc/vehicles_ttc.dart';
-
 import '../../../common/constants/network_const.dart';
+import '../../data/models/remote/achievements_data/achievements_database.dart';
 import '../../data/models/remote/clan_info/clan_info.dart';
 import '../../data/models/remote/personal_api_data/personal_data_api.dart';
 import '../../data/models/remote/user_achieves/user_achieves_api_data.dart';
-import '../../data/models/remote/vehicles/vehicles_api.dart';
+import '../../data/models/remote/user_vehicles/user_vehicles_api.dart';
+import '../../data/models/remote/vehicles_data/vehicles_data.dart';
 import '../../data/sources/remote_data_source.dart';
 import '../sources/wot_api_client.dart';
 
@@ -25,16 +24,17 @@ class RemoteSourceImpl extends RemoteDataSource {
       wotClient.fetchClanInfo(APPLICATION_ID, clanId);
 
   @override
-  Future<VehiclesApi> fetchVehiclesData(
+  Future<UserVehiclesApi> fetchUserVehicles(
           {required int accountId, required String accessToken}) =>
-      wotClient.fetchVehiclesData(APPLICATION_ID, accountId, accessToken);
+      wotClient.fetchUserVehicles(APPLICATION_ID, accountId, accessToken);
 
   @override
-  Future<VehiclesTTC> fetchVehiclesTTC(
-          {required int limit,
-          required int pageNumber,
-          required String language}) =>
-      wotClient.fetchVehiclesTTC(
+  Future<VehiclesData> fetchVehiclesDatabase({
+    required int limit,
+    required int pageNumber,
+    required String language,
+  }) =>
+      wotClient.fetchVehiclesDatabase(
           APPLICATION_ID, VEHICLES_TTC_FIELDS, limit, pageNumber, language);
 
   @override
