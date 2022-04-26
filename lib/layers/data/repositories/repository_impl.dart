@@ -7,7 +7,6 @@ import 'package:wot_statistic/layers/data/models/remote/achievements_data/achiev
 import 'package:wot_statistic/layers/data/models/remote/vehicles_data/vehicles_data_meta.dart';
 import 'package:wot_statistic/layers/data/models/remote/vehicles_data/vehicles_data_ttc.dart';
 import 'package:wot_statistic/layers/data/sources/local_data_source.dart';
-import 'package:wot_statistic/layers/domain/entities/achieves.dart';
 import 'package:wot_statistic/layers/domain/entities/personal_data.dart';
 import 'package:wot_statistic/layers/domain/entities/user.dart';
 import 'package:wot_statistic/layers/domain/entities/vehicles_data.dart';
@@ -19,6 +18,7 @@ import '../models/remote/achievements_data/achievements_database.dart';
 import '../models/remote/clan_info/clan_info.dart';
 import '../models/remote/personal_api_data/personal_data_api.dart';
 import '../models/remote/user_achieves/user_achieves_api_data.dart';
+import '../models/remote/user_vehicles/user_vehicle.dart';
 import '../models/remote/user_vehicles/user_vehicles_api.dart';
 import '../models/remote/vehicles_data/vehicles_data.dart';
 import '../sources/remote_data_source.dart';
@@ -36,8 +36,8 @@ class RepositoryImpl extends Repository {
     localSource.subscribeRealm().listen((event) {
       baseOptions.baseUrl = event == EU ? BASE_URL_EU : BASE_URL_CIS;
     });
-    //todo init database
-    // initOrSyncDatabase();
+    //todo kill stream
+    initOrSyncVehiclesDatabase();
   }
 
   UserData get signedUser {
@@ -45,6 +45,10 @@ class RepositoryImpl extends Repository {
     if (_signedUser == null) throw Exception('Signed User is not exist');
     return _signedUser;
   }
+
+  @override
+  Future<void> setSingedUser(User user, String realm) =>
+      localSource.setSingedUser(UserData.fromUserAndRealm(user, realm));
 
   @override
   Stream<String> get subscribeRealm => localSource.subscribeRealm();
@@ -70,46 +74,38 @@ class RepositoryImpl extends Repository {
       localSource.removeUser(UserData.fromUserAndRealm(user, realm));
 
   @override
-  Future<List<Achieve>> fetchAchieves() async {
-    // TODO: implement fetchAchieves
-
-    final UserAchievesApi achievesApi =
-        await remoteSource.fetchAchievesData(accountId: signedUser.id);
-
+  Future<List<AchievementData>> fetchAchieves() async {
+    final UserAchievesApi achievesApi;
+    try {
+      achievesApi =
+          await remoteSource.fetchAchievesData(accountId: signedUser.id);
+    } catch (e) {
+      throw Exception('Check internet connection');
+    }
     final List<String> achievesId = achievesApi.createListOfAchievementsId();
-    final List<AchievementData> achievementsDataById =
-        await localSource.fetchAchievementsById(achievesId);
-
-    //todo combine to stream? =)
-
-    return Future.value([]);
+    final List<AchievementData> achievesByIdFromDb = await localSource.fetchAchievementsById(achievesId);
+    //todo merge achievesByIdFromDb with achievesApi
+    return [];
   }
 
   @override
   Future<PersonalData> fetchPersonalData() async {
-    final PersonalDataApi personalDataApi =
-        await fetchPersonalDataApi(signedUser);
-    final int? clanId = personalDataApi.data?[signedUser.id.toString()]?.clanId;
-    final ClanInfo? clanInfo =
-        (clanId != null) ? await fetchClanInfo(clanId) : null;
-    return PersonalData.fromPersonalAndClanInfo(personalDataApi, clanInfo);
-  }
-
-  Future<ClanInfo> fetchClanInfo(int clanId) async {
-    final ClanInfo clanInfo;
+    final PersonalDataApi personalDataApi;
+    final ClanInfo? clanInfo;
     try {
-      clanInfo = await remoteSource.fetchClanInfo(clanId: clanId);
+      personalDataApi = await _fetchPersonalDataApi(signedUser);
+      final int? clanId =
+          personalDataApi.data?[signedUser.id.toString()]?.clanId;
+      clanInfo = (clanId != null)
+          ? await remoteSource.fetchClanInfo(clanId: clanId)
+          : null;
     } catch (e) {
       throw Exception('Check internet connection');
     }
-    // todo is this check needed?
-    if (clanInfo.status != HTTP_STATUS_OK) {
-      throw Exception('Response status: ${clanInfo.status}');
-    }
-    return clanInfo;
+    return PersonalData.fromPersonalAndClanInfo(personalDataApi, clanInfo);
   }
 
-  Future<PersonalDataApi> fetchPersonalDataApi(UserData signedUser) async {
+  Future<PersonalDataApi> _fetchPersonalDataApi(UserData signedUser) async {
     final PersonalDataApi personalDataApi;
     try {
       personalDataApi = await remoteSource.fetchPersonalData(
@@ -119,65 +115,67 @@ class RepositoryImpl extends Repository {
     } catch (e) {
       throw Exception('Check internet connection');
     }
-    logger.d(personalDataApi.toString());
-    if (personalDataApi.status != HTTP_STATUS_OK) {
-      throw Exception('Response status: ${personalDataApi.status}');
-    }
-    if (personalDataApi.data == null) {
-      throw Exception('Personal data is null');
-    }
-    if (personalDataApi.data?[personalDataApi.data!.keys.first] == null) {
-      throw Exception('Private data is null');
-    }
     return personalDataApi;
   }
 
   @override
-  Future<void> setSingedUser(User user, String realm) =>
-      localSource.setSingedUser(UserData.fromUserAndRealm(user, realm));
-
-  @override
-  Future<VehiclesDataDomain> fetchUserVehicles() async {
-    final UserVehiclesApi vehiclesApi = await remoteSource.fetchUserVehicles(
+  Future<List<Vehicle>> fetchUserVehicles() async {
+    final UserVehiclesApi userVehicles = await remoteSource.fetchUserVehicles(
       accountId: signedUser.id,
       accessToken: signedUser.accessToken,
     );
-
-    List<int> tankIds = vehiclesApi.createListOfTankId();
-    List<VehiclesDataTTC> vehiclesTTC =
+    final List<int> tankIds = userVehicles.createListOfTankId();
+    final List<VehiclesDataTTC> vehiclesByIdFromDb =
         await localSource.fetchTTCByListOfIDs(tankIds);
-    // merge data. m.b. try stream?
-    //todo map data to VehiclesData,rename VehiclesDataDomain
-    return Future.value(VehiclesDataDomain());
+    final List<Vehicle> result = _createVehicleListFrom(
+        vehiclesByIdFromDb, userVehicles.vehicles.values.first);
+    return result;
   }
 
-//todo try-catch in useCase
+  List<Vehicle> _createVehicleListFrom(List<VehiclesDataTTC> vehiclesByIdFromDb,
+      List<UserVehicle> userVehicles) {
+    List<Vehicle> result = [];
+    for (var i = 0; i < vehiclesByIdFromDb.length; i++) {
+      result
+          .add(Vehicle.fromTtcAndUser(userVehicles[i], vehiclesByIdFromDb[i]));
+    }
+    return result;
+  }
+
   Future<void> initOrSyncVehiclesDatabase() async {
+    //todo language!!!!!!!!!
+    baseOptions.baseUrl = BASE_URL_EU; //todo from shared prefs
     _initVehiclesDatabase();
     _initAchievesDatabase();
   }
 
   Future<void> _initAchievesDatabase() async {
     final int achievesInDbCount = localSource.getAchievesCount();
-    final AchievementsDataBase achievementsDataBase =
-        await remoteSource.fetchAchievesDataBase();
+    final AchievementsDataBase achievementsDataBase;
+    try {
+      achievementsDataBase = await remoteSource.fetchAchievesDataBase();
+    } catch (e) {
+      throw Exception('Check internet connection');
+    }
     if (achievesInDbCount == achievementsDataBase.meta.count) return;
-    //else create achievementsDataBase
+    // else create DB
     int insertedItems =
         await localSource.saveAchievementsData(achievementsDataBase.data);
     localSource.setAchievesCount(insertedItems);
   }
 
   Future<void> _initVehiclesDatabase() async {
-    //todo language!!!!!!!!!
-    final VehiclesDataMeta vehiclesDataMeta =
-        (await remoteSource.fetchVehiclesDatabase(
-      limit: 1,
-      pageNumber: 1,
-      language: "en",
-    ))
-            .meta;
-
+    final VehiclesDataMeta vehiclesDataMeta;
+    try {
+      vehiclesDataMeta = (await remoteSource.fetchVehiclesDatabase(
+        limit: 1,
+        pageNumber: 1,
+        language: "en",
+      ))
+          .meta;
+    } catch (e) {
+      throw Exception('Check internet connection');
+    }
     final int databaseTtcCount = localSource.getVehiclesTTCCount();
     if (vehiclesDataMeta.total == databaseTtcCount) return;
     //else create vehiclesDatabase
@@ -195,15 +193,18 @@ class RepositoryImpl extends Repository {
     final Iterable<int> pagesCount =
         (Iterable.generate(numberOfPagesToDownload).map((e) => e + 1));
     List<VehiclesData> vehiclesTTCList = [];
-
-    for (var i in pagesCount) {
-      vehiclesTTCList.add(
-        await remoteSource.fetchVehiclesDatabase(
-          limit: 100,
-          pageNumber: i,
-          language: language,
-        ),
-      );
+    try {
+      for (var i in pagesCount) {
+        vehiclesTTCList.add(
+          await remoteSource.fetchVehiclesDatabase(
+            limit: 100,
+            pageNumber: i,
+            language: language,
+          ),
+        );
+      }
+    } catch (e) {
+      throw Exception('Check internet connection');
     }
     return vehiclesTTCList;
   }

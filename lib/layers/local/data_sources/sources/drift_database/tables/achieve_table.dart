@@ -5,15 +5,17 @@ class AchievementsTable extends Table {
 
   TextColumn get section => text()();
 
-  TextColumn get sectionOrder => text()();
+  IntColumn get sectionOrder => integer()();
 
-  TextColumn get imageBig => text()();
+  TextColumn get imageBig => text().nullable()();
 
-  TextColumn get image => text()();
+  TextColumn get image => text().nullable()();
 
-  TextColumn get condition => text()();
+  TextColumn get condition => text().nullable()();
 
-  TextColumn get description => text()();
+  TextColumn get description => text().nullable()();
+
+  TextColumn get nameI18n => text()();
 
   @override
   Set<Column> get primaryKey => {name};

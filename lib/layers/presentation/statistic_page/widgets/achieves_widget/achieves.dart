@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wot_statistic/layers/presentation/statistic_page/widgets/achieves_widget/bloc/achieves_data_cubit.dart';
 
 import '../../../../../common/theme/text_styles.dart';
+import '../../../../data/models/remote/achievements_data/achievement_data.dart';
 import '../../../../domain/entities/achieves.dart';
 import 'bloc/achieves_state.dart';
 
@@ -32,7 +33,7 @@ class AchievesWidget extends StatelessWidget {
               (currentState is LoadingState || currentState is LoadedDataState),
           builder: (ctx, state) {
             if (state is LoadedDataState) {
-              final List<Achieve> data = state.achievesData;
+              final List<AchievementData> data = state.achievesData;
               return const Center(
                 child: Text("state loaded"),
               );

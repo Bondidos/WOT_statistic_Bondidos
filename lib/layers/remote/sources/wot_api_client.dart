@@ -35,7 +35,7 @@ abstract class WotClient {
     @Query('access_token') String accessToken,
   );
 
-  @GET("/wot/encyclopedia/user_vehicles/")
+  @GET("/wot/encyclopedia/vehicles/")
   Future<VehiclesData> fetchVehiclesDatabase(
     @Query('application_id') String applicationId,
     @Query('fields') String fields,

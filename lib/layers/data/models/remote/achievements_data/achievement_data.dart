@@ -9,15 +9,17 @@ class AchievementData {
   @JsonKey(name: 'section')
   final String section;
   @JsonKey(name: 'section_order')
-  final String sectionOrder;
+  final int sectionOrder;
   @JsonKey(name: 'image_big')
-  final String imageBig;
+  final String? imageBig;
   @JsonKey(name: 'image')
-  final String image;
+  final String? image;
   @JsonKey(name: 'condition')
-  final String condition;
+  final String? condition;
   @JsonKey(name: 'description')
-  final String description;
+  final String? description;
+  @JsonKey(name: 'name_i18n')
+  final String nameI18n;
 
   const AchievementData({
     required this.name,
@@ -27,6 +29,7 @@ class AchievementData {
     required this.image,
     required this.condition,
     required this.description,
+    required this.nameI18n,
   });
 
   factory AchievementData.fromJson(Map<String, dynamic> json) =>

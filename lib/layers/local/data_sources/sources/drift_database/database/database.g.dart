@@ -706,19 +706,21 @@ class AchievementsTableData extends DataClass
     implements Insertable<AchievementsTableData> {
   final String name;
   final String section;
-  final String sectionOrder;
-  final String imageBig;
-  final String image;
-  final String condition;
-  final String description;
+  final int sectionOrder;
+  final String? imageBig;
+  final String? image;
+  final String? condition;
+  final String? description;
+  final String nameI18n;
   AchievementsTableData(
       {required this.name,
       required this.section,
       required this.sectionOrder,
-      required this.imageBig,
-      required this.image,
-      required this.condition,
-      required this.description});
+      this.imageBig,
+      this.image,
+      this.condition,
+      this.description,
+      required this.nameI18n});
   factory AchievementsTableData.fromData(Map<String, dynamic> data,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
@@ -727,16 +729,18 @@ class AchievementsTableData extends DataClass
           .mapFromDatabaseResponse(data['${effectivePrefix}name'])!,
       section: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}section'])!,
-      sectionOrder: const StringType()
+      sectionOrder: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}section_order'])!,
       imageBig: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}image_big'])!,
+          .mapFromDatabaseResponse(data['${effectivePrefix}image_big']),
       image: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}image'])!,
+          .mapFromDatabaseResponse(data['${effectivePrefix}image']),
       condition: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}condition'])!,
+          .mapFromDatabaseResponse(data['${effectivePrefix}condition']),
       description: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}description'])!,
+          .mapFromDatabaseResponse(data['${effectivePrefix}description']),
+      nameI18n: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}name_i18n'])!,
     );
   }
   @override
@@ -744,11 +748,20 @@ class AchievementsTableData extends DataClass
     final map = <String, Expression>{};
     map['name'] = Variable<String>(name);
     map['section'] = Variable<String>(section);
-    map['section_order'] = Variable<String>(sectionOrder);
-    map['image_big'] = Variable<String>(imageBig);
-    map['image'] = Variable<String>(image);
-    map['condition'] = Variable<String>(condition);
-    map['description'] = Variable<String>(description);
+    map['section_order'] = Variable<int>(sectionOrder);
+    if (!nullToAbsent || imageBig != null) {
+      map['image_big'] = Variable<String?>(imageBig);
+    }
+    if (!nullToAbsent || image != null) {
+      map['image'] = Variable<String?>(image);
+    }
+    if (!nullToAbsent || condition != null) {
+      map['condition'] = Variable<String?>(condition);
+    }
+    if (!nullToAbsent || description != null) {
+      map['description'] = Variable<String?>(description);
+    }
+    map['name_i18n'] = Variable<String>(nameI18n);
     return map;
   }
 
@@ -757,10 +770,18 @@ class AchievementsTableData extends DataClass
       name: Value(name),
       section: Value(section),
       sectionOrder: Value(sectionOrder),
-      imageBig: Value(imageBig),
-      image: Value(image),
-      condition: Value(condition),
-      description: Value(description),
+      imageBig: imageBig == null && nullToAbsent
+          ? const Value.absent()
+          : Value(imageBig),
+      image:
+          image == null && nullToAbsent ? const Value.absent() : Value(image),
+      condition: condition == null && nullToAbsent
+          ? const Value.absent()
+          : Value(condition),
+      description: description == null && nullToAbsent
+          ? const Value.absent()
+          : Value(description),
+      nameI18n: Value(nameI18n),
     );
   }
 
@@ -770,11 +791,12 @@ class AchievementsTableData extends DataClass
     return AchievementsTableData(
       name: serializer.fromJson<String>(json['name']),
       section: serializer.fromJson<String>(json['section']),
-      sectionOrder: serializer.fromJson<String>(json['sectionOrder']),
-      imageBig: serializer.fromJson<String>(json['imageBig']),
-      image: serializer.fromJson<String>(json['image']),
-      condition: serializer.fromJson<String>(json['condition']),
-      description: serializer.fromJson<String>(json['description']),
+      sectionOrder: serializer.fromJson<int>(json['sectionOrder']),
+      imageBig: serializer.fromJson<String?>(json['imageBig']),
+      image: serializer.fromJson<String?>(json['image']),
+      condition: serializer.fromJson<String?>(json['condition']),
+      description: serializer.fromJson<String?>(json['description']),
+      nameI18n: serializer.fromJson<String>(json['nameI18n']),
     );
   }
   @override
@@ -783,22 +805,24 @@ class AchievementsTableData extends DataClass
     return <String, dynamic>{
       'name': serializer.toJson<String>(name),
       'section': serializer.toJson<String>(section),
-      'sectionOrder': serializer.toJson<String>(sectionOrder),
-      'imageBig': serializer.toJson<String>(imageBig),
-      'image': serializer.toJson<String>(image),
-      'condition': serializer.toJson<String>(condition),
-      'description': serializer.toJson<String>(description),
+      'sectionOrder': serializer.toJson<int>(sectionOrder),
+      'imageBig': serializer.toJson<String?>(imageBig),
+      'image': serializer.toJson<String?>(image),
+      'condition': serializer.toJson<String?>(condition),
+      'description': serializer.toJson<String?>(description),
+      'nameI18n': serializer.toJson<String>(nameI18n),
     };
   }
 
   AchievementsTableData copyWith(
           {String? name,
           String? section,
-          String? sectionOrder,
+          int? sectionOrder,
           String? imageBig,
           String? image,
           String? condition,
-          String? description}) =>
+          String? description,
+          String? nameI18n}) =>
       AchievementsTableData(
         name: name ?? this.name,
         section: section ?? this.section,
@@ -807,6 +831,7 @@ class AchievementsTableData extends DataClass
         image: image ?? this.image,
         condition: condition ?? this.condition,
         description: description ?? this.description,
+        nameI18n: nameI18n ?? this.nameI18n,
       );
   @override
   String toString() {
@@ -817,14 +842,15 @@ class AchievementsTableData extends DataClass
           ..write('imageBig: $imageBig, ')
           ..write('image: $image, ')
           ..write('condition: $condition, ')
-          ..write('description: $description')
+          ..write('description: $description, ')
+          ..write('nameI18n: $nameI18n')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(
-      name, section, sectionOrder, imageBig, image, condition, description);
+  int get hashCode => Object.hash(name, section, sectionOrder, imageBig, image,
+      condition, description, nameI18n);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -835,18 +861,20 @@ class AchievementsTableData extends DataClass
           other.imageBig == this.imageBig &&
           other.image == this.image &&
           other.condition == this.condition &&
-          other.description == this.description);
+          other.description == this.description &&
+          other.nameI18n == this.nameI18n);
 }
 
 class AchievementsTableCompanion
     extends UpdateCompanion<AchievementsTableData> {
   final Value<String> name;
   final Value<String> section;
-  final Value<String> sectionOrder;
-  final Value<String> imageBig;
-  final Value<String> image;
-  final Value<String> condition;
-  final Value<String> description;
+  final Value<int> sectionOrder;
+  final Value<String?> imageBig;
+  final Value<String?> image;
+  final Value<String?> condition;
+  final Value<String?> description;
+  final Value<String> nameI18n;
   const AchievementsTableCompanion({
     this.name = const Value.absent(),
     this.section = const Value.absent(),
@@ -855,30 +883,30 @@ class AchievementsTableCompanion
     this.image = const Value.absent(),
     this.condition = const Value.absent(),
     this.description = const Value.absent(),
+    this.nameI18n = const Value.absent(),
   });
   AchievementsTableCompanion.insert({
     required String name,
     required String section,
-    required String sectionOrder,
-    required String imageBig,
-    required String image,
-    required String condition,
-    required String description,
+    required int sectionOrder,
+    this.imageBig = const Value.absent(),
+    this.image = const Value.absent(),
+    this.condition = const Value.absent(),
+    this.description = const Value.absent(),
+    required String nameI18n,
   })  : name = Value(name),
         section = Value(section),
         sectionOrder = Value(sectionOrder),
-        imageBig = Value(imageBig),
-        image = Value(image),
-        condition = Value(condition),
-        description = Value(description);
+        nameI18n = Value(nameI18n);
   static Insertable<AchievementsTableData> custom({
     Expression<String>? name,
     Expression<String>? section,
-    Expression<String>? sectionOrder,
-    Expression<String>? imageBig,
-    Expression<String>? image,
-    Expression<String>? condition,
-    Expression<String>? description,
+    Expression<int>? sectionOrder,
+    Expression<String?>? imageBig,
+    Expression<String?>? image,
+    Expression<String?>? condition,
+    Expression<String?>? description,
+    Expression<String>? nameI18n,
   }) {
     return RawValuesInsertable({
       if (name != null) 'name': name,
@@ -888,17 +916,19 @@ class AchievementsTableCompanion
       if (image != null) 'image': image,
       if (condition != null) 'condition': condition,
       if (description != null) 'description': description,
+      if (nameI18n != null) 'name_i18n': nameI18n,
     });
   }
 
   AchievementsTableCompanion copyWith(
       {Value<String>? name,
       Value<String>? section,
-      Value<String>? sectionOrder,
-      Value<String>? imageBig,
-      Value<String>? image,
-      Value<String>? condition,
-      Value<String>? description}) {
+      Value<int>? sectionOrder,
+      Value<String?>? imageBig,
+      Value<String?>? image,
+      Value<String?>? condition,
+      Value<String?>? description,
+      Value<String>? nameI18n}) {
     return AchievementsTableCompanion(
       name: name ?? this.name,
       section: section ?? this.section,
@@ -907,6 +937,7 @@ class AchievementsTableCompanion
       image: image ?? this.image,
       condition: condition ?? this.condition,
       description: description ?? this.description,
+      nameI18n: nameI18n ?? this.nameI18n,
     );
   }
 
@@ -920,19 +951,22 @@ class AchievementsTableCompanion
       map['section'] = Variable<String>(section.value);
     }
     if (sectionOrder.present) {
-      map['section_order'] = Variable<String>(sectionOrder.value);
+      map['section_order'] = Variable<int>(sectionOrder.value);
     }
     if (imageBig.present) {
-      map['image_big'] = Variable<String>(imageBig.value);
+      map['image_big'] = Variable<String?>(imageBig.value);
     }
     if (image.present) {
-      map['image'] = Variable<String>(image.value);
+      map['image'] = Variable<String?>(image.value);
     }
     if (condition.present) {
-      map['condition'] = Variable<String>(condition.value);
+      map['condition'] = Variable<String?>(condition.value);
     }
     if (description.present) {
-      map['description'] = Variable<String>(description.value);
+      map['description'] = Variable<String?>(description.value);
+    }
+    if (nameI18n.present) {
+      map['name_i18n'] = Variable<String>(nameI18n.value);
     }
     return map;
   }
@@ -946,7 +980,8 @@ class AchievementsTableCompanion
           ..write('imageBig: $imageBig, ')
           ..write('image: $image, ')
           ..write('condition: $condition, ')
-          ..write('description: $description')
+          ..write('description: $description, ')
+          ..write('nameI18n: $nameI18n')
           ..write(')'))
         .toString();
   }
@@ -971,33 +1006,46 @@ class $AchievementsTableTable extends AchievementsTable
   final VerificationMeta _sectionOrderMeta =
       const VerificationMeta('sectionOrder');
   @override
-  late final GeneratedColumn<String?> sectionOrder = GeneratedColumn<String?>(
+  late final GeneratedColumn<int?> sectionOrder = GeneratedColumn<int?>(
       'section_order', aliasedName, false,
-      type: const StringType(), requiredDuringInsert: true);
+      type: const IntType(), requiredDuringInsert: true);
   final VerificationMeta _imageBigMeta = const VerificationMeta('imageBig');
   @override
   late final GeneratedColumn<String?> imageBig = GeneratedColumn<String?>(
-      'image_big', aliasedName, false,
-      type: const StringType(), requiredDuringInsert: true);
+      'image_big', aliasedName, true,
+      type: const StringType(), requiredDuringInsert: false);
   final VerificationMeta _imageMeta = const VerificationMeta('image');
   @override
   late final GeneratedColumn<String?> image = GeneratedColumn<String?>(
-      'image', aliasedName, false,
-      type: const StringType(), requiredDuringInsert: true);
+      'image', aliasedName, true,
+      type: const StringType(), requiredDuringInsert: false);
   final VerificationMeta _conditionMeta = const VerificationMeta('condition');
   @override
   late final GeneratedColumn<String?> condition = GeneratedColumn<String?>(
-      'condition', aliasedName, false,
-      type: const StringType(), requiredDuringInsert: true);
+      'condition', aliasedName, true,
+      type: const StringType(), requiredDuringInsert: false);
   final VerificationMeta _descriptionMeta =
       const VerificationMeta('description');
   @override
   late final GeneratedColumn<String?> description = GeneratedColumn<String?>(
-      'description', aliasedName, false,
+      'description', aliasedName, true,
+      type: const StringType(), requiredDuringInsert: false);
+  final VerificationMeta _nameI18nMeta = const VerificationMeta('nameI18n');
+  @override
+  late final GeneratedColumn<String?> nameI18n = GeneratedColumn<String?>(
+      'name_i18n', aliasedName, false,
       type: const StringType(), requiredDuringInsert: true);
   @override
-  List<GeneratedColumn> get $columns =>
-      [name, section, sectionOrder, imageBig, image, condition, description];
+  List<GeneratedColumn> get $columns => [
+        name,
+        section,
+        sectionOrder,
+        imageBig,
+        image,
+        condition,
+        description,
+        nameI18n
+      ];
   @override
   String get aliasedName => _alias ?? 'achievements_table';
   @override
@@ -1031,28 +1079,26 @@ class $AchievementsTableTable extends AchievementsTable
     if (data.containsKey('image_big')) {
       context.handle(_imageBigMeta,
           imageBig.isAcceptableOrUnknown(data['image_big']!, _imageBigMeta));
-    } else if (isInserting) {
-      context.missing(_imageBigMeta);
     }
     if (data.containsKey('image')) {
       context.handle(
           _imageMeta, image.isAcceptableOrUnknown(data['image']!, _imageMeta));
-    } else if (isInserting) {
-      context.missing(_imageMeta);
     }
     if (data.containsKey('condition')) {
       context.handle(_conditionMeta,
           condition.isAcceptableOrUnknown(data['condition']!, _conditionMeta));
-    } else if (isInserting) {
-      context.missing(_conditionMeta);
     }
     if (data.containsKey('description')) {
       context.handle(
           _descriptionMeta,
           description.isAcceptableOrUnknown(
               data['description']!, _descriptionMeta));
+    }
+    if (data.containsKey('name_i18n')) {
+      context.handle(_nameI18nMeta,
+          nameI18n.isAcceptableOrUnknown(data['name_i18n']!, _nameI18nMeta));
     } else if (isInserting) {
-      context.missing(_descriptionMeta);
+      context.missing(_nameI18nMeta);
     }
     return context;
   }

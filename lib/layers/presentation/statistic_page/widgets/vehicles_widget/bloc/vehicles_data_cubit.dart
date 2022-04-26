@@ -8,12 +8,12 @@ class VehiclesDataCubit extends Cubit<VehiclesDataState> {
   final LoadVehiclesData loadVehicles;
 
   VehiclesDataCubit({required this.loadVehicles}) : super(const LoadingState()){
-    fetchPersonalData();
+    fetchVehiclesData();
   }
 
-  void fetchPersonalData() async {
+  void fetchVehiclesData() async {
     try {
-      final VehiclesDataDomain result = await loadVehicles.execute();
+      final List<Vehicle> result = await loadVehicles.execute();
       emit(LoadedDataState(vehiclesData: result));
     } catch (e) {
       emit(ErrorState(message: e.toString()));
@@ -21,7 +21,7 @@ class VehiclesDataCubit extends Cubit<VehiclesDataState> {
   }
 
   Future<void> refreshList(){
-    fetchPersonalData();
+    fetchVehiclesData();
     return Future.delayed(const Duration(seconds: 2));
   }
 }

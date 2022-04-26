@@ -115,6 +115,7 @@ class WotStatDao extends DatabaseAccessor<WotStatDatabase>
     Future.forEach<AchievementsTableCompanion>(listAchievementsCompanion,
         (element) {
       into(achievementsTable).insertOnConflictUpdate(element);
+      //todo update counter
       itemsInserted++;
     });
     return itemsInserted;
@@ -133,6 +134,7 @@ class WotStatDao extends DatabaseAccessor<WotStatDatabase>
               image: e.image,
               condition: e.condition,
               description: e.description,
+              nameI18n: e.nameI18n,
             ))
         .get();
   }

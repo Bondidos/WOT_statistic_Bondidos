@@ -6,21 +6,21 @@ part 'vehicles_data_ttc.g.dart';
 @JsonSerializable()
 class VehiclesDataTTC {
   @JsonKey(name: 'description')
-  String description;
+  final String description;
   @JsonKey(name: 'images')
-  VehiclesDataImages images;
+  final VehiclesDataImages images;
   @JsonKey(name: 'is_premium')
-  bool isPremium;
+  final bool isPremium;
   @JsonKey(name: 'is_premium_igr')
-  bool isPremiumIgr;
+  final bool isPremiumIgr;
   @JsonKey(name: 'name')
-  String name;
+  final String name;
   @JsonKey(name: 'nation')
-  String nation;
+  final String nation;
   @JsonKey(name: 'type')
-  String type;
+  final String type;
   @JsonKey(name: 'tank_id')
-  int tankId;
+  final int tankId;
 
   VehiclesDataTTC({
     required this.description,

@@ -93,7 +93,7 @@ class _WotClient implements WotClient {
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<VehiclesData>(
             Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '/wot/encyclopedia/user_vehicles/',
+                .compose(_dio.options, '/wot/encyclopedia/vehicles/',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = VehiclesData.fromJson(_result.data!);

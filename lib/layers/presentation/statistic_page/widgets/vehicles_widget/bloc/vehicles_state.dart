@@ -19,7 +19,7 @@ class LoadingState extends VehiclesDataState{
   List<Object?> get props => [];
 }
 class LoadedDataState extends VehiclesDataState{
-  final VehiclesDataDomain vehiclesData;
+  final List<Vehicle> vehiclesData;
   const LoadedDataState({required this.vehiclesData});
 
   @override
