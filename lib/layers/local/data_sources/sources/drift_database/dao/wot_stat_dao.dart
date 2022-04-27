@@ -107,6 +107,7 @@ class WotStatDao extends DatabaseAccessor<WotStatDatabase>
         image: Value(achievement.image),
         condition: Value(achievement.condition),
         description: Value(achievement.description),
+        nameI18n: Value(achievement.nameI18n),
       );
 
   Future<int> _saveAchievementsData(
@@ -115,7 +116,6 @@ class WotStatDao extends DatabaseAccessor<WotStatDatabase>
     Future.forEach<AchievementsTableCompanion>(listAchievementsCompanion,
         (element) {
       into(achievementsTable).insertOnConflictUpdate(element);
-      //todo update counter
       itemsInserted++;
     });
     return itemsInserted;
@@ -124,7 +124,8 @@ class WotStatDao extends DatabaseAccessor<WotStatDatabase>
   Future<List<AchievementData>> fetchAchievementsById(
       List<String> achievementId) {
     final query = select(achievementsTable)
-      ..where((tbl) => tbl.name.isIn(achievementId));
+      ..where((tbl) => tbl.name.isIn(achievementId))
+      ..orderBy([(u) => OrderingTerm.asc(achievementsTable.section)]);
     return query
         .map((e) => AchievementData(
               name: e.name,

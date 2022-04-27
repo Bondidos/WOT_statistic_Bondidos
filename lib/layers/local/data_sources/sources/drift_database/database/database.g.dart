@@ -711,7 +711,7 @@ class AchievementsTableData extends DataClass
   final String? image;
   final String? condition;
   final String? description;
-  final String nameI18n;
+  final String? nameI18n;
   AchievementsTableData(
       {required this.name,
       required this.section,
@@ -720,7 +720,7 @@ class AchievementsTableData extends DataClass
       this.image,
       this.condition,
       this.description,
-      required this.nameI18n});
+      this.nameI18n});
   factory AchievementsTableData.fromData(Map<String, dynamic> data,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
@@ -740,7 +740,7 @@ class AchievementsTableData extends DataClass
       description: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}description']),
       nameI18n: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}name_i18n'])!,
+          .mapFromDatabaseResponse(data['${effectivePrefix}name_i18n']),
     );
   }
   @override
@@ -761,7 +761,9 @@ class AchievementsTableData extends DataClass
     if (!nullToAbsent || description != null) {
       map['description'] = Variable<String?>(description);
     }
-    map['name_i18n'] = Variable<String>(nameI18n);
+    if (!nullToAbsent || nameI18n != null) {
+      map['name_i18n'] = Variable<String?>(nameI18n);
+    }
     return map;
   }
 
@@ -781,7 +783,9 @@ class AchievementsTableData extends DataClass
       description: description == null && nullToAbsent
           ? const Value.absent()
           : Value(description),
-      nameI18n: Value(nameI18n),
+      nameI18n: nameI18n == null && nullToAbsent
+          ? const Value.absent()
+          : Value(nameI18n),
     );
   }
 
@@ -796,7 +800,7 @@ class AchievementsTableData extends DataClass
       image: serializer.fromJson<String?>(json['image']),
       condition: serializer.fromJson<String?>(json['condition']),
       description: serializer.fromJson<String?>(json['description']),
-      nameI18n: serializer.fromJson<String>(json['nameI18n']),
+      nameI18n: serializer.fromJson<String?>(json['nameI18n']),
     );
   }
   @override
@@ -810,7 +814,7 @@ class AchievementsTableData extends DataClass
       'image': serializer.toJson<String?>(image),
       'condition': serializer.toJson<String?>(condition),
       'description': serializer.toJson<String?>(description),
-      'nameI18n': serializer.toJson<String>(nameI18n),
+      'nameI18n': serializer.toJson<String?>(nameI18n),
     };
   }
 
@@ -874,7 +878,7 @@ class AchievementsTableCompanion
   final Value<String?> image;
   final Value<String?> condition;
   final Value<String?> description;
-  final Value<String> nameI18n;
+  final Value<String?> nameI18n;
   const AchievementsTableCompanion({
     this.name = const Value.absent(),
     this.section = const Value.absent(),
@@ -893,11 +897,10 @@ class AchievementsTableCompanion
     this.image = const Value.absent(),
     this.condition = const Value.absent(),
     this.description = const Value.absent(),
-    required String nameI18n,
+    this.nameI18n = const Value.absent(),
   })  : name = Value(name),
         section = Value(section),
-        sectionOrder = Value(sectionOrder),
-        nameI18n = Value(nameI18n);
+        sectionOrder = Value(sectionOrder);
   static Insertable<AchievementsTableData> custom({
     Expression<String>? name,
     Expression<String>? section,
@@ -906,7 +909,7 @@ class AchievementsTableCompanion
     Expression<String?>? image,
     Expression<String?>? condition,
     Expression<String?>? description,
-    Expression<String>? nameI18n,
+    Expression<String?>? nameI18n,
   }) {
     return RawValuesInsertable({
       if (name != null) 'name': name,
@@ -928,7 +931,7 @@ class AchievementsTableCompanion
       Value<String?>? image,
       Value<String?>? condition,
       Value<String?>? description,
-      Value<String>? nameI18n}) {
+      Value<String?>? nameI18n}) {
     return AchievementsTableCompanion(
       name: name ?? this.name,
       section: section ?? this.section,
@@ -966,7 +969,7 @@ class AchievementsTableCompanion
       map['description'] = Variable<String?>(description.value);
     }
     if (nameI18n.present) {
-      map['name_i18n'] = Variable<String>(nameI18n.value);
+      map['name_i18n'] = Variable<String?>(nameI18n.value);
     }
     return map;
   }
@@ -1033,8 +1036,8 @@ class $AchievementsTableTable extends AchievementsTable
   final VerificationMeta _nameI18nMeta = const VerificationMeta('nameI18n');
   @override
   late final GeneratedColumn<String?> nameI18n = GeneratedColumn<String?>(
-      'name_i18n', aliasedName, false,
-      type: const StringType(), requiredDuringInsert: true);
+      'name_i18n', aliasedName, true,
+      type: const StringType(), requiredDuringInsert: false);
   @override
   List<GeneratedColumn> get $columns => [
         name,
@@ -1097,8 +1100,6 @@ class $AchievementsTableTable extends AchievementsTable
     if (data.containsKey('name_i18n')) {
       context.handle(_nameI18nMeta,
           nameI18n.isAcceptableOrUnknown(data['name_i18n']!, _nameI18nMeta));
-    } else if (isInserting) {
-      context.missing(_nameI18nMeta);
     }
     return context;
   }

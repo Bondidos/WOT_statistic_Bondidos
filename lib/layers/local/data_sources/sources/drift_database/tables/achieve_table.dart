@@ -15,7 +15,7 @@ class AchievementsTable extends Table {
 
   TextColumn get description => text().nullable()();
 
-  TextColumn get nameI18n => text()();
+  TextColumn get nameI18n => text().nullable()();
 
   @override
   Set<Column> get primaryKey => {name};

@@ -1,5 +1,4 @@
 import '../../data/models/remote/achievements_data/achievement_data.dart';
-import '../../data/models/remote/user_achieves/user_achieves_api_data.dart';
 
 class Achieve {
   final String name;
@@ -22,16 +21,16 @@ class Achieve {
     required this.count,
   });
 
-  factory Achieve.fromApiAndData(AchievementData achievementData,
-      UserAchievesApi userAchievesApi) =>
+  factory Achieve.fromApiAndData(Map<String, int> achievesId,
+      AchievementData achievesByIdFromDb) =>
       Achieve(
-        imageBig: imageBig,
-        image: image,
-        condition: condition,
-        description: description,
-        section: section,
-        sectionOrder: sectionOrder,
-        name: name,
-        count: count,
+        imageBig: achievesByIdFromDb.imageBig,
+        image: achievesByIdFromDb.image,
+        condition: achievesByIdFromDb.condition,
+        description: achievesByIdFromDb.description,
+        section: achievesByIdFromDb.section,
+        sectionOrder: achievesByIdFromDb.sectionOrder,
+        name: achievesByIdFromDb.nameI18n ?? achievesByIdFromDb.name,
+        count: achievesId[achievesByIdFromDb.name]!,
       );
 }

@@ -13,6 +13,7 @@ import 'package:wot_statistic/layers/domain/entities/vehicles_data.dart';
 import 'package:wot_statistic/layers/domain/repositories/repository.dart';
 
 import '../../../common/constants/network_const.dart';
+import '../../domain/entities/achieves.dart';
 import '../models/local/user_data.dart';
 import '../models/remote/achievements_data/achievements_database.dart';
 import '../models/remote/clan_info/clan_info.dart';
@@ -74,7 +75,7 @@ class RepositoryImpl extends Repository {
       localSource.removeUser(UserData.fromUserAndRealm(user, realm));
 
   @override
-  Future<List<AchievementData>> fetchAchieves() async {
+  Future<List<Achieve>> fetchAchieves() async {
     final UserAchievesApi achievesApi;
     try {
       achievesApi =
@@ -82,10 +83,13 @@ class RepositoryImpl extends Repository {
     } catch (e) {
       throw Exception('Check internet connection');
     }
-    final List<String> achievesId = achievesApi.createListOfAchievementsId();
-    final List<AchievementData> achievesByIdFromDb = await localSource.fetchAchievementsById(achievesId);
-    //todo merge achievesByIdFromDb with achievesApi
-    return [];
+    final Map<String, int> achievesId =
+        achievesApi.createListOfAchievementsId();
+    final List<AchievementData> achievesByIdFromDb =
+        await localSource.fetchAchievementsById(achievesId.keys.toList());
+    return achievesByIdFromDb
+        .map((e) => Achieve.fromApiAndData(achievesId, e))
+        .toList();
   }
 
   @override
@@ -145,8 +149,10 @@ class RepositoryImpl extends Repository {
   Future<void> initOrSyncVehiclesDatabase() async {
     //todo language!!!!!!!!!
     baseOptions.baseUrl = BASE_URL_EU; //todo from shared prefs
-    _initVehiclesDatabase();
-    _initAchievesDatabase();
+    Future.wait([
+      _initVehiclesDatabase(),
+      _initAchievesDatabase(),
+    ]);
   }
 
   Future<void> _initAchievesDatabase() async {

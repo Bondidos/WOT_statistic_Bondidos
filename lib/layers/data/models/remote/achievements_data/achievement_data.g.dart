@@ -15,7 +15,7 @@ AchievementData _$AchievementDataFromJson(Map<String, dynamic> json) =>
       image: json['image'] as String?,
       condition: json['condition'] as String?,
       description: json['description'] as String?,
-      nameI18n: json['name_i18n'] as String,
+      nameI18n: json['name_i18n'] as String?,
     );
 
 Map<String, dynamic> _$AchievementDataToJson(AchievementData instance) =>

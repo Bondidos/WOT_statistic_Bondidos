@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
-
-import '../../../../../data/models/remote/achievements_data/achievement_data.dart';
+import 'package:wot_statistic/layers/domain/entities/achieves.dart';
 
 abstract class AchievesState extends Equatable {
   const AchievesState();
@@ -23,7 +22,7 @@ class LoadingState extends AchievesState {
 }
 
 class LoadedDataState extends AchievesState {
-  final List<AchievementData> achievesData;
+  final List<Achieve> achievesData;
 
   const LoadedDataState({required this.achievesData});
 

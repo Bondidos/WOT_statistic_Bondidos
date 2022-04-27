@@ -19,7 +19,7 @@ class AchievementData {
   @JsonKey(name: 'description')
   final String? description;
   @JsonKey(name: 'name_i18n')
-  final String nameI18n;
+  final String? nameI18n;
 
   const AchievementData({
     required this.name,

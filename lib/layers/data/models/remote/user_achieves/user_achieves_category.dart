@@ -11,7 +11,7 @@ class UserAchievesCategoryApi {
   @JsonKey(name: 'max_series')
   final Map<String, int> maxSeries;
 
-  UserAchievesCategoryApi({
+  const UserAchievesCategoryApi({
     required this.achievements,
     required this.frags,
     required this.maxSeries,
@@ -22,11 +22,12 @@ class UserAchievesCategoryApi {
 
   Map<String, dynamic> toJson() => _$UserAchievesCategoryApiToJson(this);
 
-  List<String> createListOfNames() {
-    List<String> result = [];
-      for (var element in achievements.keys) { result.add(element); }
-      for (var element in frags.keys) { result.add(element); }
-      for (var element in maxSeries.keys) { result.add(element); }
-    return result;
+  Map<String, int> createAchievesMap(){
+    Map<String, int> allAchieves = {};
+    allAchieves.addAll(achievements);
+    allAchieves.addAll(frags);
+    allAchieves.addAll(maxSeries);
+    allAchieves.removeWhere((key, value) => value == 0);
+    return allAchieves;
   }
 }
