@@ -9,10 +9,10 @@ class PersonalDataCubit extends Cubit<PersonalDataState> {
   final LoadPersonalData loadData;
 
   PersonalDataCubit({required this.loadData}) : super(const LoadingState()){
-    fetchPersonalData();
+    _fetchPersonalData();
   }
 
-  void fetchPersonalData() async {
+  void _fetchPersonalData() async {
     try {
       final PersonalData result = await loadData.execute();
       emit(LoadedDataState(personalData: result));
@@ -21,12 +21,7 @@ class PersonalDataCubit extends Cubit<PersonalDataState> {
     }
   }
 
-  Future<void> refreshList(){
-    fetchPersonalData();
-    return Future.delayed(const Duration(seconds: 2));
-  }
-
-  void extendToken(){
-    //todo extend token
+  Future<void> refreshList() async {
+    _fetchPersonalData();
   }
 }

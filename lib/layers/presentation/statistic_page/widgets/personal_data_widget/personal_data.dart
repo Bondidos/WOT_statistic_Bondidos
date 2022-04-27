@@ -1,7 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:wot_statistic/layers/domain/entities/personal_data_card.dart';
 import 'package:wot_statistic/layers/presentation/statistic_page/widgets/personal_data_widget/bloc/personal_data_cubit.dart';
 
+import '../../../../../common/constants/network_const.dart';
+import '../../../../../common/constants/personal_data_images.dart';
 import '../../../../../common/theme/text_styles.dart';
 import '../../../sing_in_page/sign_in_page.dart';
 
@@ -39,13 +43,48 @@ class PersonalDataWidget extends StatelessWidget {
               child: CustomScrollView(
                 slivers: [
                   SliverAppBar(
-                    // title: Text('personal data', style: appBarTitle(context)),
                     expandedHeight: 200,
                     pinned: true,
                     flexibleSpace: FlexibleSpaceBar(
-                      title: Text(data.nickname, style: appBarTitle(context)),
+                      title: Text(data.nickname,
+                          style: onSecondarySubtitle(context)),
                       background: Container(
+                        padding: const EdgeInsets.only(top: 15),
                         color: Theme.of(context).colorScheme.primary,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Column(
+                              children: [
+                                state.personalData.clanLogo != null
+                                    ? Image.network(
+                                        state.personalData.clanLogo!,
+                                        height: 140,
+                                        width: 140,
+                                        fit: BoxFit.cover,
+                                      )
+                                    : const Text("Player have no clan"),
+                                state.personalData.clan != null
+                                    ? Text(state.personalData.clan!) //todo font
+                                    : Container(),
+                              ],
+                            ),
+                            Column(
+                              children: [
+                                Image.network(
+                                  GLOBAL_RATING_LOGO,
+                                  height: 140,
+                                  width: 140,
+                                  fit: BoxFit.cover,
+                                ),
+                                Text(
+                                    state.personalData.globalRating.toString()),
+                                //todo font
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                     actions: [
@@ -71,9 +110,13 @@ class PersonalDataWidget extends StatelessWidget {
                     ),*/
                     delegate: SliverChildBuilderDelegate(
                       (context, index) {
-                        return const PrivateItemWidget();
+                        List<PersonalDataCard> personalData =
+                            state.personalData.private ?? [];
+                        return PrivateItemWidget(
+                          card: personalData[index],
+                        );
                       },
-                      childCount: 20,
+                      childCount: state.personalData.private?.length ?? 0,
                     ),
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
@@ -96,19 +139,25 @@ class PersonalDataWidget extends StatelessWidget {
 }
 
 class PrivateItemWidget extends StatelessWidget {
-  const PrivateItemWidget({Key? key}) : super(key: key);
+  const PrivateItemWidget({Key? key, required this.card}) : super(key: key);
+  final PersonalDataCard card;
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Theme.of(context).colorScheme.onPrimary,
+      color: Theme.of(context).colorScheme.primary,
       margin: const EdgeInsets.all(15),
-      /* shape: Border.all(
-        color: const Color(0xfffca311),
-        width: 3.0,
-        style: BorderStyle.none,
-      ),*/
-      child: Text("item"),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          Image.network(card.image,
+            height: 80,
+            width: 80,
+            fit: BoxFit.cover,),
+          Text(card.title),
+          Text(card.value),
+        ],
+      ),
     );
   }
 }

@@ -1,10 +1,16 @@
+import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:logger/logger.dart';
 import 'package:wot_statistic/layers/data/models/remote/personal_api_data/restrictions.dart';
+
+import '../../../../../common/constants/personal_data_images.dart';
+import '../../../../domain/entities/personal_data_card.dart';
 
 part 'private.g.dart';
 
 @JsonSerializable()
 class Private {
+  Logger logger = Logger();
   @JsonKey(name: 'gold')
   final int gold;
   @JsonKey(name: 'free_xp')
@@ -47,38 +53,69 @@ class Private {
 
   Map<String, dynamic> toJson() => _$PrivateToJson(this);
 
-  /*Map<String, dynamic> prepareData() {
-    List<String> renamedKeys = [
-      'Gold',
-      'Free exp',
-      'Ban time',
-      'Bounded to phone',
-      'Premium account',
-      'Premium expire at',
-      'Bonds',
-      'Battle life time',
-      'Banned',
-      'Chat ban time',
-    ];
-    Map<String, dynamic> data = toJson();
-    data['ban_time'] =
-        DateTime.fromMicrosecondsSinceEpoch(data['ban_time'] * 100);
-    data['is_bound_to_phone'] = data['is_bound_to_phone'] ? 'Yes' : 'No';
-    data['is_premium'] = data['is_premium'] ? 'Yes' : 'No';
-    data['premium_expires_at'] =
-        DateTime.fromMicrosecondsSinceEpoch(data['premium_expires_at'] * 100);
-    data['battle_life_time'] =
-        DateTime.fromMicrosecondsSinceEpoch(data['battle_life_time'] * 100)
-            .hour;
-    data['restrictions'] = DateTime.fromMicrosecondsSinceEpoch(
-        data['restrictions']['chat_ban_time'] * 100);
-    var result = <String,dynamic>{};
-    data.forEach((key, value) {
-
-    });
-
-    for(int i = 0; i<data.keys.length;i++){
-      data.keys = renamedKeys;
-    }
-  }*/
+  List<PersonalDataCard> toCardList() {
+    List<PersonalDataCard> privateCards = [];
+    privateCards.add(PersonalDataCard(
+      title: "Gold:",
+      image: GOLD_IMG,
+      value: gold.toString(),
+    ));
+    privateCards.add(PersonalDataCard(
+      title: 'Bonds',
+      image: BONDS,
+      value: bonds.toString(),
+    ));
+    privateCards.add(PersonalDataCard(
+      title: 'Free Exp:',
+      image: FREE_EXP,
+      value: freeXp.toString(),
+    ));
+    privateCards.add(PersonalDataCard(
+      title: 'Credits:',
+      image: CREDITS,
+      value: credits.toString(),
+    ));
+    privateCards.add(PersonalDataCard(
+      title: 'Premium',
+      image: PREMIUM_ACC,
+      value: isPremium
+      ? "Yes"
+      : "No",
+    ));
+    privateCards.add(PersonalDataCard(
+      title: 'Expires at:',
+      image: PREMIUM_ACC,
+      value: premiumExpiresAt * 1000 >= DateTime.now().microsecondsSinceEpoch
+      ? 'Expired'
+      : DateTime.fromMillisecondsSinceEpoch(premiumExpiresAt * 1000).day.toString(),
+    ));
+    privateCards.add(PersonalDataCard(
+      title: 'Is bound to Phone:',
+      image: IS_BOUND_TO_PHONE,
+      value: isBoundToPhone
+          ? 'Yes'
+          : 'No',
+    ));
+    privateCards.add(PersonalDataCard(
+      title: "Battle lifetime:",
+      image: BATTLE,
+      value: ('${(battleLifeTime / 3600 ).ceil()} hours'),
+    ));
+    logger.d(battleLifeTime);
+    privateCards.add(PersonalDataCard(
+      title: 'Ban time:',
+      image: BAN_TIME,
+      value: banTime != null
+          ? DateTime.fromMicrosecondsSinceEpoch(banTime! * 1000).toString()
+          : "None",
+    ));
+    privateCards.add(PersonalDataCard(
+      title: 'Chat ban ifo:',
+      image: CHAT_BAN,
+      value: restrictions.chatBanTime != null
+      ? DateTime.fromMicrosecondsSinceEpoch(restrictions.chatBanTime! * 1000).hour.toString()
+          : 'No',
+    ));
+    return privateCards;
+  }
 }
