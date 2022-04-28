@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:wot_statistic/layers/presentation/sing_in_page/sign_in_page.dart';
 
 import '../../../common/constants/constants.dart';
-import '../../../common/theme/text_styles.dart';
 import 'bloc/statistic_cubit.dart';
 
 class StatisticPage extends StatelessWidget {

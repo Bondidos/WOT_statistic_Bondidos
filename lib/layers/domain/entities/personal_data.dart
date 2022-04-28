@@ -4,7 +4,6 @@ import 'package:wot_statistic/layers/domain/entities/personal_data_card.dart';
 import '../../data/models/remote/clan_info/clan_data.dart';
 import '../../data/models/remote/clan_info/clan_info.dart';
 import '../../data/models/remote/personal_api_data/data.dart';
-import '../../data/models/remote/personal_api_data/private.dart';
 
 class PersonalData {
   final List<PersonalDataCard>? private;

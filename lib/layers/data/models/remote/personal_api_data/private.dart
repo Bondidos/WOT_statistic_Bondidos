@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:logger/logger.dart';
 import 'package:wot_statistic/layers/data/models/remote/personal_api_data/restrictions.dart';
@@ -10,7 +10,6 @@ part 'private.g.dart';
 
 @JsonSerializable()
 class Private {
-  Logger logger = Logger();
   @JsonKey(name: 'gold')
   final int gold;
   @JsonKey(name: 'free_xp')
@@ -54,6 +53,7 @@ class Private {
   Map<String, dynamic> toJson() => _$PrivateToJson(this);
 
   List<PersonalDataCard> toCardList() {
+    var dateFormat = DateFormat.yMd();
     List<PersonalDataCard> privateCards = [];
     privateCards.add(PersonalDataCard(
       title: "Gold:",
@@ -78,42 +78,39 @@ class Private {
     privateCards.add(PersonalDataCard(
       title: 'Premium',
       image: PREMIUM_ACC,
-      value: isPremium
-      ? "Yes"
-      : "No",
+      value: isPremium ? "Yes" : "No",
     ));
     privateCards.add(PersonalDataCard(
       title: 'Expires at:',
       image: PREMIUM_ACC,
       value: premiumExpiresAt * 1000 >= DateTime.now().microsecondsSinceEpoch
-      ? 'Expired'
-      : DateTime.fromMillisecondsSinceEpoch(premiumExpiresAt * 1000).day.toString(),
+          ? 'Expired'
+          : dateFormat.format(
+              DateTime.fromMillisecondsSinceEpoch(premiumExpiresAt * 1000)),
     ));
     privateCards.add(PersonalDataCard(
-      title: 'Is bound to Phone:',
+      title: 'Bounded to phone:',
       image: IS_BOUND_TO_PHONE,
-      value: isBoundToPhone
-          ? 'Yes'
-          : 'No',
+      value: isBoundToPhone ? 'Yes' : 'No',
     ));
     privateCards.add(PersonalDataCard(
       title: "Battle lifetime:",
       image: BATTLE,
-      value: ('${(battleLifeTime / 3600 ).ceil()} hours'),
+      value: ('${(battleLifeTime / 3600).ceil()} hours'),
     ));
-    logger.d(battleLifeTime);
     privateCards.add(PersonalDataCard(
       title: 'Ban time:',
       image: BAN_TIME,
       value: banTime != null
-          ? DateTime.fromMicrosecondsSinceEpoch(banTime! * 1000).toString()
+          ?  dateFormat.format(DateTime.fromMicrosecondsSinceEpoch(banTime! * 1000))
           : "None",
     ));
     privateCards.add(PersonalDataCard(
       title: 'Chat ban ifo:',
       image: CHAT_BAN,
       value: restrictions.chatBanTime != null
-      ? DateTime.fromMicrosecondsSinceEpoch(restrictions.chatBanTime! * 1000).hour.toString()
+          ? dateFormat.format(DateTime.fromMicrosecondsSinceEpoch(
+              restrictions.chatBanTime! * 1000))
           : 'No',
     ));
     return privateCards;

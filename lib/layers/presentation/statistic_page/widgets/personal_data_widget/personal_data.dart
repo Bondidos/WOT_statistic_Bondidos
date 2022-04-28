@@ -1,10 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wot_statistic/layers/domain/entities/personal_data_card.dart';
 import 'package:wot_statistic/layers/presentation/statistic_page/widgets/personal_data_widget/bloc/personal_data_cubit.dart';
 
-import '../../../../../common/constants/network_const.dart';
 import '../../../../../common/constants/personal_data_images.dart';
 import '../../../../../common/theme/text_styles.dart';
 import '../../../sing_in_page/sign_in_page.dart';
@@ -72,7 +70,7 @@ class PersonalDataWidget extends StatelessWidget {
                             ),
                             Column(
                               children: [
-                                Image.network(
+                                Image.asset(
                                   GLOBAL_RATING_LOGO,
                                   height: 140,
                                   width: 140,
@@ -98,16 +96,6 @@ class PersonalDataWidget extends StatelessWidget {
                     ],
                   ),
                   SliverGrid(
-                    //SliverChildBuilderDelegate
-                    // delegate: SliverChildBuilderDelegate(
-                    /*(context, index) {
-                      return const PrivateItemWidget();
-                    },
-                    childCount: 20, //state.dataList.length,*/
-                    /*  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 1,
-                      mainAxisExtent: 150,
-                    ),*/
                     delegate: SliverChildBuilderDelegate(
                       (context, index) {
                         List<PersonalDataCard> personalData =
@@ -150,7 +138,7 @@ class PrivateItemWidget extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          Image.network(card.image,
+          Image.asset(card.image,
             height: 80,
             width: 80,
             fit: BoxFit.cover,),
