@@ -16,6 +16,9 @@ AchievementData _$AchievementDataFromJson(Map<String, dynamic> json) =>
       condition: json['condition'] as String?,
       description: json['description'] as String?,
       nameI18n: json['name_i18n'] as String?,
+      options: (json['options'] as List<dynamic>?)
+          ?.map((e) => AchieveOption.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$AchievementDataToJson(AchievementData instance) =>
@@ -28,4 +31,5 @@ Map<String, dynamic> _$AchievementDataToJson(AchievementData instance) =>
       'condition': instance.condition,
       'description': instance.description,
       'name_i18n': instance.nameI18n,
+      'options': instance.options,
     };

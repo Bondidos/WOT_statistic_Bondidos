@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wot_statistic/layers/domain/entities/personal_data_card.dart';
 import 'package:wot_statistic/layers/presentation/statistic_page/widgets/personal_data_widget/bloc/personal_data_cubit.dart';
+import 'package:wot_statistic/layers/presentation/statistic_page/widgets/personal_data_widget/private_item_widget.dart';
 
 import '../../../../../common/constants/personal_data_images.dart';
 import '../../../../../common/theme/text_styles.dart';
@@ -32,7 +33,6 @@ class PersonalDataWidget extends StatelessWidget {
         buildWhen: (prevState, currentState) =>
             (currentState is LoadingState || currentState is LoadedDataState),
         builder: (ctx, state) {
-          //todo uncomment
           //todo extract to separate widget
           if (state is LoadedDataState) {
             var data = state.personalData;
@@ -45,7 +45,7 @@ class PersonalDataWidget extends StatelessWidget {
                     pinned: true,
                     flexibleSpace: FlexibleSpaceBar(
                       title: Text(data.nickname,
-                          style: onSecondarySubtitle(context)),
+                          style: onSurfaceSubtitle(context)),
                       background: Container(
                         padding: const EdgeInsets.only(top: 15),
                         color: Theme.of(context).colorScheme.primary,
@@ -62,9 +62,15 @@ class PersonalDataWidget extends StatelessWidget {
                                         width: 140,
                                         fit: BoxFit.cover,
                                       )
-                                    : const Text("Player have no clan"),
+                                    : Text(
+                                        "Player have no clan",
+                                        style: onCard(context),
+                                      ),
                                 state.personalData.clan != null
-                                    ? Text(state.personalData.clan!) //todo font
+                                    ? Text(
+                                        state.personalData.clan!,
+                                        style: onCard(context),
+                                      )
                                     : Container(),
                               ],
                             ),
@@ -77,8 +83,9 @@ class PersonalDataWidget extends StatelessWidget {
                                   fit: BoxFit.cover,
                                 ),
                                 Text(
-                                    state.personalData.globalRating.toString()),
-                                //todo font
+                                  state.personalData.globalRating.toString(),
+                                  style: onCard(context),
+                                ),
                               ],
                             ),
                           ],
@@ -116,7 +123,6 @@ class PersonalDataWidget extends StatelessWidget {
               ),
             );
           }
-          //todo uncomment
           return const Center(
             child: CircularProgressIndicator(),
           );
@@ -125,39 +131,3 @@ class PersonalDataWidget extends StatelessWidget {
     );
   }
 }
-
-class PrivateItemWidget extends StatelessWidget {
-  const PrivateItemWidget({Key? key, required this.card}) : super(key: key);
-  final PersonalDataCard card;
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      color: Theme.of(context).colorScheme.primary,
-      margin: const EdgeInsets.all(15),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          Image.asset(card.image,
-            height: 80,
-            width: 80,
-            fit: BoxFit.cover,),
-          Text(card.title),
-          Text(card.value),
-        ],
-      ),
-    );
-  }
-}
-
-//
-// DecoratedBox(
-// child: Container(
-// height: 40,
-// width: 40,
-// ),
-// decoration: BoxDecoration(
-// color: Theme.of(context).colorScheme.onPrimary,
-// borderRadius: BorderRadius.circular(15),
-// ),
-// );

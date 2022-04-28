@@ -39,3 +39,11 @@ TextStyle onPrimaryTitle(BuildContext context) {
     color: Theme.of(context).colorScheme.onPrimary,
   );
 }
+
+TextStyle onCard(BuildContext context) {
+  return TextStyle(
+    fontSize: 12,
+    fontStyle: FontStyle.normal,
+    color: Theme.of(context).colorScheme.onPrimary,
+  );
+}

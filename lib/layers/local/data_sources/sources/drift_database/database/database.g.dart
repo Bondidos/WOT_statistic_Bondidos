@@ -712,6 +712,7 @@ class AchievementsTableData extends DataClass
   final String? condition;
   final String? description;
   final String? nameI18n;
+  final String? options;
   AchievementsTableData(
       {required this.name,
       required this.section,
@@ -720,7 +721,8 @@ class AchievementsTableData extends DataClass
       this.image,
       this.condition,
       this.description,
-      this.nameI18n});
+      this.nameI18n,
+      this.options});
   factory AchievementsTableData.fromData(Map<String, dynamic> data,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
@@ -741,6 +743,8 @@ class AchievementsTableData extends DataClass
           .mapFromDatabaseResponse(data['${effectivePrefix}description']),
       nameI18n: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}name_i18n']),
+      options: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}options']),
     );
   }
   @override
@@ -764,6 +768,9 @@ class AchievementsTableData extends DataClass
     if (!nullToAbsent || nameI18n != null) {
       map['name_i18n'] = Variable<String?>(nameI18n);
     }
+    if (!nullToAbsent || options != null) {
+      map['options'] = Variable<String?>(options);
+    }
     return map;
   }
 
@@ -786,6 +793,9 @@ class AchievementsTableData extends DataClass
       nameI18n: nameI18n == null && nullToAbsent
           ? const Value.absent()
           : Value(nameI18n),
+      options: options == null && nullToAbsent
+          ? const Value.absent()
+          : Value(options),
     );
   }
 
@@ -801,6 +811,7 @@ class AchievementsTableData extends DataClass
       condition: serializer.fromJson<String?>(json['condition']),
       description: serializer.fromJson<String?>(json['description']),
       nameI18n: serializer.fromJson<String?>(json['nameI18n']),
+      options: serializer.fromJson<String?>(json['options']),
     );
   }
   @override
@@ -815,6 +826,7 @@ class AchievementsTableData extends DataClass
       'condition': serializer.toJson<String?>(condition),
       'description': serializer.toJson<String?>(description),
       'nameI18n': serializer.toJson<String?>(nameI18n),
+      'options': serializer.toJson<String?>(options),
     };
   }
 
@@ -826,7 +838,8 @@ class AchievementsTableData extends DataClass
           String? image,
           String? condition,
           String? description,
-          String? nameI18n}) =>
+          String? nameI18n,
+          String? options}) =>
       AchievementsTableData(
         name: name ?? this.name,
         section: section ?? this.section,
@@ -836,6 +849,7 @@ class AchievementsTableData extends DataClass
         condition: condition ?? this.condition,
         description: description ?? this.description,
         nameI18n: nameI18n ?? this.nameI18n,
+        options: options ?? this.options,
       );
   @override
   String toString() {
@@ -847,14 +861,15 @@ class AchievementsTableData extends DataClass
           ..write('image: $image, ')
           ..write('condition: $condition, ')
           ..write('description: $description, ')
-          ..write('nameI18n: $nameI18n')
+          ..write('nameI18n: $nameI18n, ')
+          ..write('options: $options')
           ..write(')'))
         .toString();
   }
 
   @override
   int get hashCode => Object.hash(name, section, sectionOrder, imageBig, image,
-      condition, description, nameI18n);
+      condition, description, nameI18n, options);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -866,7 +881,8 @@ class AchievementsTableData extends DataClass
           other.image == this.image &&
           other.condition == this.condition &&
           other.description == this.description &&
-          other.nameI18n == this.nameI18n);
+          other.nameI18n == this.nameI18n &&
+          other.options == this.options);
 }
 
 class AchievementsTableCompanion
@@ -879,6 +895,7 @@ class AchievementsTableCompanion
   final Value<String?> condition;
   final Value<String?> description;
   final Value<String?> nameI18n;
+  final Value<String?> options;
   const AchievementsTableCompanion({
     this.name = const Value.absent(),
     this.section = const Value.absent(),
@@ -888,6 +905,7 @@ class AchievementsTableCompanion
     this.condition = const Value.absent(),
     this.description = const Value.absent(),
     this.nameI18n = const Value.absent(),
+    this.options = const Value.absent(),
   });
   AchievementsTableCompanion.insert({
     required String name,
@@ -898,6 +916,7 @@ class AchievementsTableCompanion
     this.condition = const Value.absent(),
     this.description = const Value.absent(),
     this.nameI18n = const Value.absent(),
+    this.options = const Value.absent(),
   })  : name = Value(name),
         section = Value(section),
         sectionOrder = Value(sectionOrder);
@@ -910,6 +929,7 @@ class AchievementsTableCompanion
     Expression<String?>? condition,
     Expression<String?>? description,
     Expression<String?>? nameI18n,
+    Expression<String?>? options,
   }) {
     return RawValuesInsertable({
       if (name != null) 'name': name,
@@ -920,6 +940,7 @@ class AchievementsTableCompanion
       if (condition != null) 'condition': condition,
       if (description != null) 'description': description,
       if (nameI18n != null) 'name_i18n': nameI18n,
+      if (options != null) 'options': options,
     });
   }
 
@@ -931,7 +952,8 @@ class AchievementsTableCompanion
       Value<String?>? image,
       Value<String?>? condition,
       Value<String?>? description,
-      Value<String?>? nameI18n}) {
+      Value<String?>? nameI18n,
+      Value<String?>? options}) {
     return AchievementsTableCompanion(
       name: name ?? this.name,
       section: section ?? this.section,
@@ -941,6 +963,7 @@ class AchievementsTableCompanion
       condition: condition ?? this.condition,
       description: description ?? this.description,
       nameI18n: nameI18n ?? this.nameI18n,
+      options: options ?? this.options,
     );
   }
 
@@ -971,6 +994,9 @@ class AchievementsTableCompanion
     if (nameI18n.present) {
       map['name_i18n'] = Variable<String?>(nameI18n.value);
     }
+    if (options.present) {
+      map['options'] = Variable<String?>(options.value);
+    }
     return map;
   }
 
@@ -984,7 +1010,8 @@ class AchievementsTableCompanion
           ..write('image: $image, ')
           ..write('condition: $condition, ')
           ..write('description: $description, ')
-          ..write('nameI18n: $nameI18n')
+          ..write('nameI18n: $nameI18n, ')
+          ..write('options: $options')
           ..write(')'))
         .toString();
   }
@@ -1038,6 +1065,11 @@ class $AchievementsTableTable extends AchievementsTable
   late final GeneratedColumn<String?> nameI18n = GeneratedColumn<String?>(
       'name_i18n', aliasedName, true,
       type: const StringType(), requiredDuringInsert: false);
+  final VerificationMeta _optionsMeta = const VerificationMeta('options');
+  @override
+  late final GeneratedColumn<String?> options = GeneratedColumn<String?>(
+      'options', aliasedName, true,
+      type: const StringType(), requiredDuringInsert: false);
   @override
   List<GeneratedColumn> get $columns => [
         name,
@@ -1047,7 +1079,8 @@ class $AchievementsTableTable extends AchievementsTable
         image,
         condition,
         description,
-        nameI18n
+        nameI18n,
+        options
       ];
   @override
   String get aliasedName => _alias ?? 'achievements_table';
@@ -1100,6 +1133,10 @@ class $AchievementsTableTable extends AchievementsTable
     if (data.containsKey('name_i18n')) {
       context.handle(_nameI18nMeta,
           nameI18n.isAcceptableOrUnknown(data['name_i18n']!, _nameI18nMeta));
+    }
+    if (data.containsKey('options')) {
+      context.handle(_optionsMeta,
+          options.isAcceptableOrUnknown(data['options']!, _optionsMeta));
     }
     return context;
   }

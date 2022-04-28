@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:drift/drift.dart';
 import '../../../../../data/models/local/user_data.dart';
+import '../../../../../data/models/remote/achievements_data/achieve_option.dart';
 import '../../../../../data/models/remote/achievements_data/achievement_data.dart';
 import '../../../../../data/models/remote/vehicles_data/vehicles_data_images.dart';
 import '../../../../../data/models/remote/vehicles_data/vehicles_data_ttc.dart';
@@ -108,6 +111,9 @@ class WotStatDao extends DatabaseAccessor<WotStatDatabase>
         condition: Value(achievement.condition),
         description: Value(achievement.description),
         nameI18n: Value(achievement.nameI18n),
+        options: achievement.options != null
+            ? Value(achievement.optionsToString())
+            : const Value(null),
       );
 
   Future<int> _saveAchievementsData(
@@ -126,17 +132,27 @@ class WotStatDao extends DatabaseAccessor<WotStatDatabase>
     final query = select(achievementsTable)
       ..where((tbl) => tbl.name.isIn(achievementId))
       ..orderBy([(u) => OrderingTerm.asc(achievementsTable.section)]);
-    return query
-        .map((e) => AchievementData(
-              name: e.name,
-              section: e.section,
-              sectionOrder: e.sectionOrder,
-              imageBig: e.imageBig,
-              image: e.image,
-              condition: e.condition,
-              description: e.description,
-              nameI18n: e.nameI18n,
-            ))
-        .get();
+    return query.map((e) {
+      return AchievementData(
+        name: e.name,
+        section: e.section,
+        sectionOrder: e.sectionOrder,
+        imageBig: e.imageBig,
+        image: e.image,
+        condition: e.condition,
+        description: e.description,
+        nameI18n: e.nameI18n,
+        options:
+            e.options != null ? _toOptionList(json.decode(e.options!)) : null,
+      );
+    }).get();
+  }
+
+  List<AchieveOption> _toOptionList(List<dynamic> str) {
+    List<AchieveOption> result = [];
+    for (var element in str) {
+      result.add(AchieveOption.fromJson(element));
+    }
+    return result;
   }
 }

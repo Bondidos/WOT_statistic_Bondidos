@@ -1,4 +1,8 @@
+import 'dart:convert';
+
 import 'package:json_annotation/json_annotation.dart';
+
+import 'achieve_option.dart';
 
 part 'achievement_data.g.dart';
 
@@ -20,6 +24,8 @@ class AchievementData {
   final String? description;
   @JsonKey(name: 'name_i18n')
   final String? nameI18n;
+  @JsonKey(name: 'options')
+  final List<AchieveOption>? options;
 
   const AchievementData({
     required this.name,
@@ -30,10 +36,14 @@ class AchievementData {
     required this.condition,
     required this.description,
     required this.nameI18n,
+    required this.options
   });
 
   factory AchievementData.fromJson(Map<String, dynamic> json) =>
       _$AchievementDataFromJson(json);
 
   Map<String, dynamic> toJson() => _$AchievementDataToJson(this);
+
+  String optionsToString() => json.encode(options);
+
 }
