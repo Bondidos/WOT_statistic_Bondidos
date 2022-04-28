@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:wot_statistic/layers/domain/entities/achieves.dart';
 
 abstract class AchievesState extends Equatable {
@@ -22,7 +23,7 @@ class LoadingState extends AchievesState {
 }
 
 class LoadedDataState extends AchievesState {
-  final List<Achieve> achievesData;
+  final List<StaggeredGridTile> achievesData;
 
   const LoadedDataState({required this.achievesData});
 

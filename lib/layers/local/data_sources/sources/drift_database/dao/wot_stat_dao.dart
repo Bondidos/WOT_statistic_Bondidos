@@ -128,10 +128,11 @@ class WotStatDao extends DatabaseAccessor<WotStatDatabase>
   }
 
   Future<List<AchievementData>> fetchAchievementsById(
-      List<String> achievementId) {
+      List<String> achievementId, String filter) {
     final query = select(achievementsTable)
       ..where((tbl) => tbl.name.isIn(achievementId))
-      ..orderBy([(u) => OrderingTerm.asc(achievementsTable.section)]);
+      ..where((tbl) => tbl.section.equals(filter))
+      ..orderBy([(u) => OrderingTerm.asc(achievementsTable.sectionOrder)]);
     return query.map((e) {
       return AchievementData(
         name: e.name,

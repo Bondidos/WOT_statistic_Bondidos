@@ -109,8 +109,8 @@ class LocalDataSourceImpl extends LocalDataSource {
 
   @override
   Future<List<AchievementData>> fetchAchievementsById(
-          List<String> achievementId) =>
-      wotStatDao.fetchAchievementsById(achievementId);
+          List<String> achievementId,String filter) =>
+      wotStatDao.fetchAchievementsById(achievementId,filter);
 
   @override
   Future<int> saveAchievementsData(Map<String, AchievementData> achievements) =>

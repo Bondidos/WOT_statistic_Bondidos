@@ -12,6 +12,7 @@ import 'package:wot_statistic/layers/domain/entities/user.dart';
 import 'package:wot_statistic/layers/domain/entities/vehicles_data.dart';
 import 'package:wot_statistic/layers/domain/repositories/repository.dart';
 
+import '../../../common/constants/achieves_filters.dart';
 import '../../../common/constants/network_const.dart';
 import '../../domain/entities/achieves.dart';
 import '../models/local/user_data.dart';
@@ -75,7 +76,7 @@ class RepositoryImpl extends Repository {
       localSource.removeUser(UserData.fromUserAndRealm(user, realm));
 
   @override
-  Future<List<Achieve>> fetchAchieves() async {
+  Future<List<List<Achieve>>> fetchAchieves() async {
     final UserAchievesApi achievesApi;
     try {
       achievesApi =
@@ -85,11 +86,27 @@ class RepositoryImpl extends Repository {
     }
     final Map<String, int> achievesId =
         achievesApi.createListOfAchievementsId();
-    final List<AchievementData> achievesByIdFromDb =
-        await localSource.fetchAchievementsById(achievesId.keys.toList());
-    return achievesByIdFromDb
-        .map((e) => Achieve.fromApiAndData(achievesId, e))
-        .toList();
+    final List<List<AchievementData>> achievesByIdFromDb =
+        await _fetchByIdAndFilter(achievesId.keys.toList());
+    List<List<Achieve>> result = [];
+    for (var element in achievesByIdFromDb) {
+      var buffer =
+          element.map((e) => Achieve.fromApiAndData(achievesId, e)).toList();
+      result.add(buffer);
+    }
+    return result;
+  }
+
+  Future<List<List<AchievementData>>> _fetchByIdAndFilter(
+      List<String> achievementId) {
+    return Future.wait([
+      localSource.fetchAchievementsById(achievementId, EPIC),
+      localSource.fetchAchievementsById(achievementId, ACTION),
+      localSource.fetchAchievementsById(achievementId, SPECIAL),
+      localSource.fetchAchievementsById(achievementId, MEMORIAL),
+      localSource.fetchAchievementsById(achievementId, GROUP),
+      localSource.fetchAchievementsById(achievementId, CLASS),
+    ]);
   }
 
   @override

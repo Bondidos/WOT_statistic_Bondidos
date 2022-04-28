@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:wot_statistic/layers/presentation/statistic_page/widgets/achieves_widget/bloc/achieves_data_cubit.dart';
 
 import '../../../../../common/theme/text_styles.dart';
@@ -35,14 +36,27 @@ class AchievesWidget extends StatelessWidget {
             (currentState is LoadingState || currentState is LoadedDataState),
         builder: (ctx, state) {
           if (state is LoadedDataState) {
-            return GridView.builder(
+            return SingleChildScrollView(
+              child: StaggeredGrid.count(
+                crossAxisCount: 3,
+                children: state.achievesData,
+              ),
+            );
+
+            /*GridView.builder(
               itemCount: state.achievesData.length,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 3),
               itemBuilder: (ctx, index) {
+                if(index == 0) {
+                  return Container(
+                  width: MediaQuery.of(context).size.width,
+                  child: Text('Bunner'),
+                );
+                }
                 return AchieveItemWidget(card: state.achievesData[index]);
               },
-            );
+            );*/
           }
           return RefreshIndicator(
             onRefresh: () => cubit.refreshList(),
@@ -77,7 +91,7 @@ class AchieveItemWidget extends StatelessWidget {
             ),
           ),
           Image.network(
-            card.imageBig ?? card.image ?? '', //todo images
+            card.image, //todo images
             height: 50,
             width: 50,
             fit: BoxFit.cover,

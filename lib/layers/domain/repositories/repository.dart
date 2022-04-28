@@ -1,3 +1,4 @@
+import '../../data/models/remote/achievements_data/achievement_data.dart';
 import '../entities/achieves.dart';
 import '../entities/personal_data.dart';
 import '../entities/user.dart';
@@ -24,6 +25,6 @@ abstract class Repository {
 
   Future<PersonalData> fetchPersonalData();
 
-  Future<List<Achieve>> fetchAchieves();
+  Future<List<List<Achieve>>> fetchAchieves();
 // List<Players> searchPlayer();
 }

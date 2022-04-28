@@ -27,7 +27,7 @@ abstract class LocalDataSource {
   Future<List<VehiclesDataTTC>> fetchTTCByListOfIDs(List<int> tankIds);
 
   Future<List<AchievementData>> fetchAchievementsById(
-      List<String> achievementId);
+      List<String> achievementId,String filter);
 
   Future<int> saveAchievementsData(Map<String, AchievementData> achievements);
 

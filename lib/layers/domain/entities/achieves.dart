@@ -3,8 +3,8 @@ import '../../data/models/remote/achievements_data/achievement_data.dart';
 class Achieve {
   final String name;
   final int count;
-  final String? imageBig;
-  final String? image;
+  final String imageBig;
+  final String image;
   final String? condition;
   final String? description;
   final String section;
@@ -21,16 +21,25 @@ class Achieve {
     required this.count,
   });
 
-  factory Achieve.fromApiAndData(Map<String, int> achievesId,
-      AchievementData achievesByIdFromDb) =>
+  factory Achieve.fromApiAndData(
+          Map<String, int> achievesId, AchievementData achievesByIdFromDb) =>
       Achieve(
-        imageBig: achievesByIdFromDb.imageBig,
-        image: achievesByIdFromDb.image,
+        imageBig: achievesByIdFromDb.options == null
+            ? achievesByIdFromDb.imageBig!
+            : achievesByIdFromDb
+                .options![achievesId[achievesByIdFromDb.name]!-1].imageBig!,
+        image: achievesByIdFromDb.options == null
+            ? achievesByIdFromDb.image!
+            : achievesByIdFromDb
+                .options![achievesId[achievesByIdFromDb.name]!-1].image!,
         condition: achievesByIdFromDb.condition,
         description: achievesByIdFromDb.description,
         section: achievesByIdFromDb.section,
         sectionOrder: achievesByIdFromDb.sectionOrder,
-        name: achievesByIdFromDb.nameI18n ?? achievesByIdFromDb.name,
+        name: achievesByIdFromDb.options == null
+            ? achievesByIdFromDb.nameI18n!
+            : achievesByIdFromDb
+                .options![achievesId[achievesByIdFromDb.name]!-1].nameI18n,
         count: achievesId[achievesByIdFromDb.name]!,
       );
 }

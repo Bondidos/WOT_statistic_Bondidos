@@ -6,5 +6,5 @@ class LoadAchievesData {
 
   LoadAchievesData({required this.repository});
 
-  Future<List<Achieve>> execute() => repository.fetchAchieves();
+  Future<List<List<Achieve>>> execute() => repository.fetchAchieves();
 }
