@@ -31,6 +31,7 @@ class AchievesDataCubit extends Cubit<AchievesState> {
     fetchAchievesData();
     return Future.delayed(const Duration(seconds: 2));
   }
+
   // todo logic if emptyList
   List<StaggeredGridTile> _createListToDisplay(
       List<List<Achieve>> sortedListsBySections) {
@@ -54,7 +55,9 @@ class AchievesDataCubit extends Cubit<AchievesState> {
     return StaggeredGridTile.count(
       crossAxisCellCount: 3,
       mainAxisCellCount: 1,
-      child: Text(name),
+      child: Center(
+        child: Text(name),
+      ),
     );
   }
 

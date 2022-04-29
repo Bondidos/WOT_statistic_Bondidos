@@ -115,4 +115,7 @@ class LocalDataSourceImpl extends LocalDataSource {
   @override
   Future<int> saveAchievementsData(Map<String, AchievementData> achievements) =>
       wotStatDao.saveAchievementsData(achievements);
+
+  @override
+  String getCurrentRealm() => sharedPreferences.getString(REALM_KEY) ?? NOT_PICKED;
 }

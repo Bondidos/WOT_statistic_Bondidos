@@ -38,4 +38,6 @@ abstract class LocalDataSource {
   Stream<List<User>> subscribeUsers();
 
   Stream<String> subscribeRealm();
+
+  String getCurrentRealm();
 }

@@ -79,12 +79,9 @@ Future<void> init() async {
   inj.registerFactory<WotClient>(() => WotClient(inj()));
   final SharedPreferences sharedPref = await SharedPreferences.getInstance();
   final WotStatDatabase driftDatabase = constructDb();
-  final BaseOptions baseOptions = BaseOptions();
-  inj.registerSingleton(() => baseOptions);
+  inj.registerSingleton<BaseOptions>(BaseOptions());
   final Dio dio = Dio(inj())..interceptors.add(LogInterceptor());
   inj.registerFactory(() => dio);
   inj.registerFactory(() => sharedPref);
   inj.registerFactory(() => driftDatabase);
-
-  // runtime change url
 }

@@ -36,6 +36,8 @@ class RepositoryImpl extends Repository {
     required this.localSource,
     required this.remoteSource,
   }) {
+    baseOptions.baseUrl =
+        localSource.getCurrentRealm() == CIS ? BASE_URL_CIS : BASE_URL_EU;
     initOrSyncVehiclesDatabase();
   }
 
@@ -165,7 +167,6 @@ class RepositoryImpl extends Repository {
 
   Future<void> initOrSyncVehiclesDatabase() async {
     //todo language!!!!!!!!!
-    baseOptions.baseUrl = BASE_URL_EU; //todo from shared prefs
     Future.wait([
       _initVehiclesDatabase(),
       _initAchievesDatabase(),

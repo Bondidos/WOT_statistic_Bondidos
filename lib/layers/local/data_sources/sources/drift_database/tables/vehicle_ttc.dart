@@ -17,6 +17,8 @@ class VehicleTTCTable extends Table {
 
   IntColumn get tankId => integer()();
 
+  IntColumn get tier => integer()();
+
   @override
   Set<Column> get primaryKey => {tankId};
 }

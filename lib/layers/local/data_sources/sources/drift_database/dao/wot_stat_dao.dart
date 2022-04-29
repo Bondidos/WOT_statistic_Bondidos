@@ -72,6 +72,7 @@ class WotStatDao extends DatabaseAccessor<WotStatDatabase>
         nation: Value(ttc.nation),
         type: Value(ttc.type),
         tankId: Value(ttc.tankId),
+        tier: Value(ttc.tier)
       );
 
   Future<List<VehiclesDataTTC>> fetchTTCByListOfIDs(List<int> tankIds) {
@@ -87,6 +88,7 @@ class WotStatDao extends DatabaseAccessor<WotStatDatabase>
               name: e.name,
               type: e.type,
               tankId: e.tankId,
+              tier: e.tier,
             ))
         .get();
   }

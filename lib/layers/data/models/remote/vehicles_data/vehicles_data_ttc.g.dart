@@ -17,6 +17,7 @@ VehiclesDataTTC _$VehiclesDataTTCFromJson(Map<String, dynamic> json) =>
       name: json['name'] as String,
       type: json['type'] as String,
       tankId: json['tank_id'] as int,
+      tier: json['tier'] as int,
     );
 
 Map<String, dynamic> _$VehiclesDataTTCToJson(VehiclesDataTTC instance) =>
@@ -29,4 +30,5 @@ Map<String, dynamic> _$VehiclesDataTTCToJson(VehiclesDataTTC instance) =>
       'nation': instance.nation,
       'type': instance.type,
       'tank_id': instance.tankId,
+      'tier': instance.tier,
     };

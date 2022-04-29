@@ -300,6 +300,7 @@ class VehicleTTCTableData extends DataClass
   final String nation;
   final String type;
   final int tankId;
+  final int tier;
   VehicleTTCTableData(
       {required this.description,
       required this.images,
@@ -308,7 +309,8 @@ class VehicleTTCTableData extends DataClass
       required this.name,
       required this.nation,
       required this.type,
-      required this.tankId});
+      required this.tankId,
+      required this.tier});
   factory VehicleTTCTableData.fromData(Map<String, dynamic> data,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
@@ -329,6 +331,8 @@ class VehicleTTCTableData extends DataClass
           .mapFromDatabaseResponse(data['${effectivePrefix}type'])!,
       tankId: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}tank_id'])!,
+      tier: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}tier'])!,
     );
   }
   @override
@@ -342,6 +346,7 @@ class VehicleTTCTableData extends DataClass
     map['nation'] = Variable<String>(nation);
     map['type'] = Variable<String>(type);
     map['tank_id'] = Variable<int>(tankId);
+    map['tier'] = Variable<int>(tier);
     return map;
   }
 
@@ -355,6 +360,7 @@ class VehicleTTCTableData extends DataClass
       nation: Value(nation),
       type: Value(type),
       tankId: Value(tankId),
+      tier: Value(tier),
     );
   }
 
@@ -370,6 +376,7 @@ class VehicleTTCTableData extends DataClass
       nation: serializer.fromJson<String>(json['nation']),
       type: serializer.fromJson<String>(json['type']),
       tankId: serializer.fromJson<int>(json['tankId']),
+      tier: serializer.fromJson<int>(json['tier']),
     );
   }
   @override
@@ -384,6 +391,7 @@ class VehicleTTCTableData extends DataClass
       'nation': serializer.toJson<String>(nation),
       'type': serializer.toJson<String>(type),
       'tankId': serializer.toJson<int>(tankId),
+      'tier': serializer.toJson<int>(tier),
     };
   }
 
@@ -395,7 +403,8 @@ class VehicleTTCTableData extends DataClass
           String? name,
           String? nation,
           String? type,
-          int? tankId}) =>
+          int? tankId,
+          int? tier}) =>
       VehicleTTCTableData(
         description: description ?? this.description,
         images: images ?? this.images,
@@ -405,6 +414,7 @@ class VehicleTTCTableData extends DataClass
         nation: nation ?? this.nation,
         type: type ?? this.type,
         tankId: tankId ?? this.tankId,
+        tier: tier ?? this.tier,
       );
   @override
   String toString() {
@@ -416,14 +426,15 @@ class VehicleTTCTableData extends DataClass
           ..write('name: $name, ')
           ..write('nation: $nation, ')
           ..write('type: $type, ')
-          ..write('tankId: $tankId')
+          ..write('tankId: $tankId, ')
+          ..write('tier: $tier')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(
-      description, images, isPremium, isPremiumIgr, name, nation, type, tankId);
+  int get hashCode => Object.hash(description, images, isPremium, isPremiumIgr,
+      name, nation, type, tankId, tier);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -435,7 +446,8 @@ class VehicleTTCTableData extends DataClass
           other.name == this.name &&
           other.nation == this.nation &&
           other.type == this.type &&
-          other.tankId == this.tankId);
+          other.tankId == this.tankId &&
+          other.tier == this.tier);
 }
 
 class VehicleTTCTableCompanion extends UpdateCompanion<VehicleTTCTableData> {
@@ -447,6 +459,7 @@ class VehicleTTCTableCompanion extends UpdateCompanion<VehicleTTCTableData> {
   final Value<String> nation;
   final Value<String> type;
   final Value<int> tankId;
+  final Value<int> tier;
   const VehicleTTCTableCompanion({
     this.description = const Value.absent(),
     this.images = const Value.absent(),
@@ -456,6 +469,7 @@ class VehicleTTCTableCompanion extends UpdateCompanion<VehicleTTCTableData> {
     this.nation = const Value.absent(),
     this.type = const Value.absent(),
     this.tankId = const Value.absent(),
+    this.tier = const Value.absent(),
   });
   VehicleTTCTableCompanion.insert({
     required String description,
@@ -466,13 +480,15 @@ class VehicleTTCTableCompanion extends UpdateCompanion<VehicleTTCTableData> {
     required String nation,
     required String type,
     this.tankId = const Value.absent(),
+    required int tier,
   })  : description = Value(description),
         images = Value(images),
         isPremium = Value(isPremium),
         isPremiumIgr = Value(isPremiumIgr),
         name = Value(name),
         nation = Value(nation),
-        type = Value(type);
+        type = Value(type),
+        tier = Value(tier);
   static Insertable<VehicleTTCTableData> custom({
     Expression<String>? description,
     Expression<String>? images,
@@ -482,6 +498,7 @@ class VehicleTTCTableCompanion extends UpdateCompanion<VehicleTTCTableData> {
     Expression<String>? nation,
     Expression<String>? type,
     Expression<int>? tankId,
+    Expression<int>? tier,
   }) {
     return RawValuesInsertable({
       if (description != null) 'description': description,
@@ -492,6 +509,7 @@ class VehicleTTCTableCompanion extends UpdateCompanion<VehicleTTCTableData> {
       if (nation != null) 'nation': nation,
       if (type != null) 'type': type,
       if (tankId != null) 'tank_id': tankId,
+      if (tier != null) 'tier': tier,
     });
   }
 
@@ -503,7 +521,8 @@ class VehicleTTCTableCompanion extends UpdateCompanion<VehicleTTCTableData> {
       Value<String>? name,
       Value<String>? nation,
       Value<String>? type,
-      Value<int>? tankId}) {
+      Value<int>? tankId,
+      Value<int>? tier}) {
     return VehicleTTCTableCompanion(
       description: description ?? this.description,
       images: images ?? this.images,
@@ -513,6 +532,7 @@ class VehicleTTCTableCompanion extends UpdateCompanion<VehicleTTCTableData> {
       nation: nation ?? this.nation,
       type: type ?? this.type,
       tankId: tankId ?? this.tankId,
+      tier: tier ?? this.tier,
     );
   }
 
@@ -543,6 +563,9 @@ class VehicleTTCTableCompanion extends UpdateCompanion<VehicleTTCTableData> {
     if (tankId.present) {
       map['tank_id'] = Variable<int>(tankId.value);
     }
+    if (tier.present) {
+      map['tier'] = Variable<int>(tier.value);
+    }
     return map;
   }
 
@@ -556,7 +579,8 @@ class VehicleTTCTableCompanion extends UpdateCompanion<VehicleTTCTableData> {
           ..write('name: $name, ')
           ..write('nation: $nation, ')
           ..write('type: $type, ')
-          ..write('tankId: $tankId')
+          ..write('tankId: $tankId, ')
+          ..write('tier: $tier')
           ..write(')'))
         .toString();
   }
@@ -614,6 +638,11 @@ class $VehicleTTCTableTable extends VehicleTTCTable
   late final GeneratedColumn<int?> tankId = GeneratedColumn<int?>(
       'tank_id', aliasedName, false,
       type: const IntType(), requiredDuringInsert: false);
+  final VerificationMeta _tierMeta = const VerificationMeta('tier');
+  @override
+  late final GeneratedColumn<int?> tier = GeneratedColumn<int?>(
+      'tier', aliasedName, false,
+      type: const IntType(), requiredDuringInsert: true);
   @override
   List<GeneratedColumn> get $columns => [
         description,
@@ -623,7 +652,8 @@ class $VehicleTTCTableTable extends VehicleTTCTable
         name,
         nation,
         type,
-        tankId
+        tankId,
+        tier
       ];
   @override
   String get aliasedName => _alias ?? 'vehicle_t_t_c_table';
@@ -684,6 +714,12 @@ class $VehicleTTCTableTable extends VehicleTTCTable
     if (data.containsKey('tank_id')) {
       context.handle(_tankIdMeta,
           tankId.isAcceptableOrUnknown(data['tank_id']!, _tankIdMeta));
+    }
+    if (data.containsKey('tier')) {
+      context.handle(
+          _tierMeta, tier.isAcceptableOrUnknown(data['tier']!, _tierMeta));
+    } else if (isInserting) {
+      context.missing(_tierMeta);
     }
     return context;
   }

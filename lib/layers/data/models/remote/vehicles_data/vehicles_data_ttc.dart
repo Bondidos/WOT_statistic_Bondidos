@@ -21,6 +21,8 @@ class VehiclesDataTTC {
   final String type;
   @JsonKey(name: 'tank_id')
   final int tankId;
+  @JsonKey(name: 'tier')
+  final int tier;
 
   VehiclesDataTTC({
     required this.description,
@@ -31,6 +33,7 @@ class VehiclesDataTTC {
     required this.name,
     required this.type,
     required this.tankId,
+    required this.tier,
   });
 
   factory VehiclesDataTTC.fromJson(Map<String, dynamic> json) => _$VehiclesDataTTCFromJson(json);

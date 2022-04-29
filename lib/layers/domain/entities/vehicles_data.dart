@@ -12,6 +12,7 @@ class Vehicle {
   final String name;
   final String nation;
   final String type;
+  final int tier;
 
   Vehicle({
     required this.markOfMastery,
@@ -24,6 +25,7 @@ class Vehicle {
     required this.name,
     required this.nation,
     required this.type,
+    required this.tier,
   });
 
   factory Vehicle.fromTtcAndUser(
@@ -41,6 +43,7 @@ class Vehicle {
       name: vehiclesDataTTC.name,
       nation: vehiclesDataTTC.nation,
       type: vehiclesDataTTC.type,
+      tier: vehiclesDataTTC.tier,
     );
   }
 }

@@ -76,6 +76,9 @@ flutter:
     - assets/background/
     - assets/icons/
     - assets/images/
+    - assets/nations/
+    - assets/mastery/
+    - assets/type/
 
   fonts:
     - family: Lobster
