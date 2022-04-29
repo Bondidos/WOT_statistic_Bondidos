@@ -64,16 +64,15 @@ class WotStatDao extends DatabaseAccessor<WotStatDatabase>
 
   VehicleTTCTableCompanion _toVehicleTTCTableCompanion(VehiclesDataTTC ttc) =>
       VehicleTTCTableCompanion(
-        description: Value(ttc.description),
-        images: Value(ttc.images.bigIcon),
-        isPremium: Value(ttc.isPremium),
-        isPremiumIgr: Value(ttc.isPremiumIgr),
-        name: Value(ttc.name),
-        nation: Value(ttc.nation),
-        type: Value(ttc.type),
-        tankId: Value(ttc.tankId),
-        tier: Value(ttc.tier)
-      );
+          description: Value(ttc.description),
+          images: Value(ttc.images.bigIcon),
+          isPremium: Value(ttc.isPremium),
+          isGift: Value(ttc.isGift),
+          name: Value(ttc.name),
+          nation: Value(ttc.nation),
+          type: Value(ttc.type),
+          tankId: Value(ttc.tankId),
+          tier: Value(ttc.tier));
 
   Future<List<VehiclesDataTTC>> fetchTTCByListOfIDs(List<int> tankIds) {
     final query = select(vehicleTTCTable)
@@ -83,7 +82,7 @@ class WotStatDao extends DatabaseAccessor<WotStatDatabase>
               description: e.description,
               images: VehiclesDataImages(bigIcon: e.images),
               isPremium: e.isPremium,
-              isPremiumIgr: e.isPremiumIgr,
+              isGift: e.isGift,
               nation: e.nation,
               name: e.name,
               type: e.type,

@@ -12,7 +12,7 @@ VehiclesDataTTC _$VehiclesDataTTCFromJson(Map<String, dynamic> json) =>
       images:
           VehiclesDataImages.fromJson(json['images'] as Map<String, dynamic>),
       isPremium: json['is_premium'] as bool,
-      isPremiumIgr: json['is_premium_igr'] as bool,
+      isGift: json['is_gift'] as bool,
       nation: json['nation'] as String,
       name: json['name'] as String,
       type: json['type'] as String,
@@ -25,7 +25,7 @@ Map<String, dynamic> _$VehiclesDataTTCToJson(VehiclesDataTTC instance) =>
       'description': instance.description,
       'images': instance.images,
       'is_premium': instance.isPremium,
-      'is_premium_igr': instance.isPremiumIgr,
+      'is_gift': instance.isGift,
       'name': instance.name,
       'nation': instance.nation,
       'type': instance.type,

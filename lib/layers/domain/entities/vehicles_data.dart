@@ -8,11 +8,11 @@ class Vehicle {
   final String description;
   final String image;
   final bool isPremium;
-  final bool isPremiumIgr;
   final String name;
   final String nation;
   final String type;
   final int tier;
+  final bool isGift;
 
   Vehicle({
     required this.markOfMastery,
@@ -21,11 +21,11 @@ class Vehicle {
     required this.description,
     required this.image,
     required this.isPremium,
-    required this.isPremiumIgr,
     required this.name,
     required this.nation,
     required this.type,
     required this.tier,
+    required this.isGift,
   });
 
   factory Vehicle.fromTtcAndUser(
@@ -39,7 +39,7 @@ class Vehicle {
       description: vehiclesDataTTC.description,
       image: vehiclesDataTTC.images.bigIcon,
       isPremium: vehiclesDataTTC.isPremium,
-      isPremiumIgr: vehiclesDataTTC.isPremiumIgr,
+      isGift: vehiclesDataTTC.isGift,
       name: vehiclesDataTTC.name,
       nation: vehiclesDataTTC.nation,
       type: vehiclesDataTTC.type,

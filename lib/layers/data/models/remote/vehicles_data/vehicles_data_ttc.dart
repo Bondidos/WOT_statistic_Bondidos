@@ -11,8 +11,8 @@ class VehiclesDataTTC {
   final VehiclesDataImages images;
   @JsonKey(name: 'is_premium')
   final bool isPremium;
-  @JsonKey(name: 'is_premium_igr')
-  final bool isPremiumIgr;
+  @JsonKey(name: 'is_gift')
+  final bool isGift;
   @JsonKey(name: 'name')
   final String name;
   @JsonKey(name: 'nation')
@@ -28,7 +28,7 @@ class VehiclesDataTTC {
     required this.description,
     required this.images,
     required this.isPremium,
-    required this.isPremiumIgr,
+    required this.isGift,
     required this.nation,
     required this.name,
     required this.type,

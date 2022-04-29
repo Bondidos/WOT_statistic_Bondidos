@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wot_statistic/common/theme/text_styles.dart';
 import 'package:wot_statistic/layers/domain/entities/vehicles_data.dart';
 
 class VehicleItemWidget extends StatelessWidget {
@@ -13,8 +14,7 @@ class VehicleItemWidget extends StatelessWidget {
     double width = MediaQuery.of(context).size.width;
 
     return Container(
-      color: vehicle.isPremiumIgr ? Colors.amberAccent : Colors.blue,
-      //todo color
+      color: _colorPicker(context,vehicle),
       padding: const EdgeInsets.all(0),
       margin: const EdgeInsets.all(10),
       height: width / 3,
@@ -46,7 +46,7 @@ class VehicleItemWidget extends StatelessWidget {
                           type[vehicle.type]!,
                           scale: 15,
                         ),
-                        Text(tier[vehicle.tier]!)
+                        Text(tier[vehicle.tier]!,style: onSurfaceSubtitle(context),)
                       ],
                     )
                   ],
@@ -63,14 +63,14 @@ class VehicleItemWidget extends StatelessWidget {
                 vehicle.markOfMastery != 0
                     ? Image.asset(markOfMastery[vehicle.markOfMastery]!)
                     : Container(),
-                Text(vehicle.battles.toString()),
+                Text('Battles:\n${(vehicle.battles.toString())}'),
               ],
             ),
           ),
           SizedBox(
             width: width / 3,
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
+              crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Text(
@@ -80,17 +80,29 @@ class VehicleItemWidget extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.center,
                 ),
-                Text((100.0 /
-                            vehicle.battles *
-                            vehicle.wins) //todo move to the func
-                        .toStringAsFixed(2) +
-                    '%')
+                Text(
+                  _calculateWins(vehicle.battles, vehicle.wins),
+                  softWrap: true,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ],
             ),
           ),
         ],
       ),
     );
+  }
+
+  String _calculateWins(int battlesCount, int winsCount) {
+    var result = (100.0 / vehicle.battles * vehicle.wins).toStringAsFixed(2);
+    return 'Wins: \n$result%';
+  }
+
+  Color _colorPicker(BuildContext context, Vehicle vehicle){
+    if(vehicle.isGift) return const Color(0x8D827D27);
+    if(vehicle.isPremium) return Colors.orangeAccent;
+    return Theme.of(context).colorScheme.primary;
   }
 }
 

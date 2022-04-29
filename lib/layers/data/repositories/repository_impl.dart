@@ -158,9 +158,9 @@ class RepositoryImpl extends Repository {
   List<Vehicle> _createVehicleListFrom(List<VehiclesDataTTC> vehiclesByIdFromDb,
       List<UserVehicle> userVehicles) {
     List<Vehicle> result = [];
-    for (var i = 0; i < vehiclesByIdFromDb.length; i++) {
-      result
-          .add(Vehicle.fromTtcAndUser(userVehicles[i], vehiclesByIdFromDb[i]));
+    for (var item in vehiclesByIdFromDb) {
+      result.add(Vehicle.fromTtcAndUser(
+          userVehicles.firstWhere((e) => e.tankId == item.tankId), item));
     }
     return result;
   }

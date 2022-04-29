@@ -7,7 +7,7 @@ class VehicleTTCTable extends Table {
 
   BoolColumn get isPremium => boolean()();
 
-  BoolColumn get isPremiumIgr => boolean()();
+  BoolColumn get isGift => boolean()();
 
   TextColumn get name => text()();
 

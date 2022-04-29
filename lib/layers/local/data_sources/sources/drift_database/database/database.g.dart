@@ -295,7 +295,7 @@ class VehicleTTCTableData extends DataClass
   final String description;
   final String images;
   final bool isPremium;
-  final bool isPremiumIgr;
+  final bool isGift;
   final String name;
   final String nation;
   final String type;
@@ -305,7 +305,7 @@ class VehicleTTCTableData extends DataClass
       {required this.description,
       required this.images,
       required this.isPremium,
-      required this.isPremiumIgr,
+      required this.isGift,
       required this.name,
       required this.nation,
       required this.type,
@@ -321,8 +321,8 @@ class VehicleTTCTableData extends DataClass
           .mapFromDatabaseResponse(data['${effectivePrefix}images'])!,
       isPremium: const BoolType()
           .mapFromDatabaseResponse(data['${effectivePrefix}is_premium'])!,
-      isPremiumIgr: const BoolType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}is_premium_igr'])!,
+      isGift: const BoolType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}is_gift'])!,
       name: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}name'])!,
       nation: const StringType()
@@ -341,7 +341,7 @@ class VehicleTTCTableData extends DataClass
     map['description'] = Variable<String>(description);
     map['images'] = Variable<String>(images);
     map['is_premium'] = Variable<bool>(isPremium);
-    map['is_premium_igr'] = Variable<bool>(isPremiumIgr);
+    map['is_gift'] = Variable<bool>(isGift);
     map['name'] = Variable<String>(name);
     map['nation'] = Variable<String>(nation);
     map['type'] = Variable<String>(type);
@@ -355,7 +355,7 @@ class VehicleTTCTableData extends DataClass
       description: Value(description),
       images: Value(images),
       isPremium: Value(isPremium),
-      isPremiumIgr: Value(isPremiumIgr),
+      isGift: Value(isGift),
       name: Value(name),
       nation: Value(nation),
       type: Value(type),
@@ -371,7 +371,7 @@ class VehicleTTCTableData extends DataClass
       description: serializer.fromJson<String>(json['description']),
       images: serializer.fromJson<String>(json['images']),
       isPremium: serializer.fromJson<bool>(json['isPremium']),
-      isPremiumIgr: serializer.fromJson<bool>(json['isPremiumIgr']),
+      isGift: serializer.fromJson<bool>(json['isGift']),
       name: serializer.fromJson<String>(json['name']),
       nation: serializer.fromJson<String>(json['nation']),
       type: serializer.fromJson<String>(json['type']),
@@ -386,7 +386,7 @@ class VehicleTTCTableData extends DataClass
       'description': serializer.toJson<String>(description),
       'images': serializer.toJson<String>(images),
       'isPremium': serializer.toJson<bool>(isPremium),
-      'isPremiumIgr': serializer.toJson<bool>(isPremiumIgr),
+      'isGift': serializer.toJson<bool>(isGift),
       'name': serializer.toJson<String>(name),
       'nation': serializer.toJson<String>(nation),
       'type': serializer.toJson<String>(type),
@@ -399,7 +399,7 @@ class VehicleTTCTableData extends DataClass
           {String? description,
           String? images,
           bool? isPremium,
-          bool? isPremiumIgr,
+          bool? isGift,
           String? name,
           String? nation,
           String? type,
@@ -409,7 +409,7 @@ class VehicleTTCTableData extends DataClass
         description: description ?? this.description,
         images: images ?? this.images,
         isPremium: isPremium ?? this.isPremium,
-        isPremiumIgr: isPremiumIgr ?? this.isPremiumIgr,
+        isGift: isGift ?? this.isGift,
         name: name ?? this.name,
         nation: nation ?? this.nation,
         type: type ?? this.type,
@@ -422,7 +422,7 @@ class VehicleTTCTableData extends DataClass
           ..write('description: $description, ')
           ..write('images: $images, ')
           ..write('isPremium: $isPremium, ')
-          ..write('isPremiumIgr: $isPremiumIgr, ')
+          ..write('isGift: $isGift, ')
           ..write('name: $name, ')
           ..write('nation: $nation, ')
           ..write('type: $type, ')
@@ -433,8 +433,8 @@ class VehicleTTCTableData extends DataClass
   }
 
   @override
-  int get hashCode => Object.hash(description, images, isPremium, isPremiumIgr,
-      name, nation, type, tankId, tier);
+  int get hashCode => Object.hash(
+      description, images, isPremium, isGift, name, nation, type, tankId, tier);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -442,7 +442,7 @@ class VehicleTTCTableData extends DataClass
           other.description == this.description &&
           other.images == this.images &&
           other.isPremium == this.isPremium &&
-          other.isPremiumIgr == this.isPremiumIgr &&
+          other.isGift == this.isGift &&
           other.name == this.name &&
           other.nation == this.nation &&
           other.type == this.type &&
@@ -454,7 +454,7 @@ class VehicleTTCTableCompanion extends UpdateCompanion<VehicleTTCTableData> {
   final Value<String> description;
   final Value<String> images;
   final Value<bool> isPremium;
-  final Value<bool> isPremiumIgr;
+  final Value<bool> isGift;
   final Value<String> name;
   final Value<String> nation;
   final Value<String> type;
@@ -464,7 +464,7 @@ class VehicleTTCTableCompanion extends UpdateCompanion<VehicleTTCTableData> {
     this.description = const Value.absent(),
     this.images = const Value.absent(),
     this.isPremium = const Value.absent(),
-    this.isPremiumIgr = const Value.absent(),
+    this.isGift = const Value.absent(),
     this.name = const Value.absent(),
     this.nation = const Value.absent(),
     this.type = const Value.absent(),
@@ -475,7 +475,7 @@ class VehicleTTCTableCompanion extends UpdateCompanion<VehicleTTCTableData> {
     required String description,
     required String images,
     required bool isPremium,
-    required bool isPremiumIgr,
+    required bool isGift,
     required String name,
     required String nation,
     required String type,
@@ -484,7 +484,7 @@ class VehicleTTCTableCompanion extends UpdateCompanion<VehicleTTCTableData> {
   })  : description = Value(description),
         images = Value(images),
         isPremium = Value(isPremium),
-        isPremiumIgr = Value(isPremiumIgr),
+        isGift = Value(isGift),
         name = Value(name),
         nation = Value(nation),
         type = Value(type),
@@ -493,7 +493,7 @@ class VehicleTTCTableCompanion extends UpdateCompanion<VehicleTTCTableData> {
     Expression<String>? description,
     Expression<String>? images,
     Expression<bool>? isPremium,
-    Expression<bool>? isPremiumIgr,
+    Expression<bool>? isGift,
     Expression<String>? name,
     Expression<String>? nation,
     Expression<String>? type,
@@ -504,7 +504,7 @@ class VehicleTTCTableCompanion extends UpdateCompanion<VehicleTTCTableData> {
       if (description != null) 'description': description,
       if (images != null) 'images': images,
       if (isPremium != null) 'is_premium': isPremium,
-      if (isPremiumIgr != null) 'is_premium_igr': isPremiumIgr,
+      if (isGift != null) 'is_gift': isGift,
       if (name != null) 'name': name,
       if (nation != null) 'nation': nation,
       if (type != null) 'type': type,
@@ -517,7 +517,7 @@ class VehicleTTCTableCompanion extends UpdateCompanion<VehicleTTCTableData> {
       {Value<String>? description,
       Value<String>? images,
       Value<bool>? isPremium,
-      Value<bool>? isPremiumIgr,
+      Value<bool>? isGift,
       Value<String>? name,
       Value<String>? nation,
       Value<String>? type,
@@ -527,7 +527,7 @@ class VehicleTTCTableCompanion extends UpdateCompanion<VehicleTTCTableData> {
       description: description ?? this.description,
       images: images ?? this.images,
       isPremium: isPremium ?? this.isPremium,
-      isPremiumIgr: isPremiumIgr ?? this.isPremiumIgr,
+      isGift: isGift ?? this.isGift,
       name: name ?? this.name,
       nation: nation ?? this.nation,
       type: type ?? this.type,
@@ -548,8 +548,8 @@ class VehicleTTCTableCompanion extends UpdateCompanion<VehicleTTCTableData> {
     if (isPremium.present) {
       map['is_premium'] = Variable<bool>(isPremium.value);
     }
-    if (isPremiumIgr.present) {
-      map['is_premium_igr'] = Variable<bool>(isPremiumIgr.value);
+    if (isGift.present) {
+      map['is_gift'] = Variable<bool>(isGift.value);
     }
     if (name.present) {
       map['name'] = Variable<String>(name.value);
@@ -575,7 +575,7 @@ class VehicleTTCTableCompanion extends UpdateCompanion<VehicleTTCTableData> {
           ..write('description: $description, ')
           ..write('images: $images, ')
           ..write('isPremium: $isPremium, ')
-          ..write('isPremiumIgr: $isPremiumIgr, ')
+          ..write('isGift: $isGift, ')
           ..write('name: $name, ')
           ..write('nation: $nation, ')
           ..write('type: $type, ')
@@ -610,14 +610,13 @@ class $VehicleTTCTableTable extends VehicleTTCTable
       type: const BoolType(),
       requiredDuringInsert: true,
       defaultConstraints: 'CHECK (is_premium IN (0, 1))');
-  final VerificationMeta _isPremiumIgrMeta =
-      const VerificationMeta('isPremiumIgr');
+  final VerificationMeta _isGiftMeta = const VerificationMeta('isGift');
   @override
-  late final GeneratedColumn<bool?> isPremiumIgr = GeneratedColumn<bool?>(
-      'is_premium_igr', aliasedName, false,
+  late final GeneratedColumn<bool?> isGift = GeneratedColumn<bool?>(
+      'is_gift', aliasedName, false,
       type: const BoolType(),
       requiredDuringInsert: true,
-      defaultConstraints: 'CHECK (is_premium_igr IN (0, 1))');
+      defaultConstraints: 'CHECK (is_gift IN (0, 1))');
   final VerificationMeta _nameMeta = const VerificationMeta('name');
   @override
   late final GeneratedColumn<String?> name = GeneratedColumn<String?>(
@@ -648,7 +647,7 @@ class $VehicleTTCTableTable extends VehicleTTCTable
         description,
         images,
         isPremium,
-        isPremiumIgr,
+        isGift,
         name,
         nation,
         type,
@@ -685,13 +684,11 @@ class $VehicleTTCTableTable extends VehicleTTCTable
     } else if (isInserting) {
       context.missing(_isPremiumMeta);
     }
-    if (data.containsKey('is_premium_igr')) {
-      context.handle(
-          _isPremiumIgrMeta,
-          isPremiumIgr.isAcceptableOrUnknown(
-              data['is_premium_igr']!, _isPremiumIgrMeta));
+    if (data.containsKey('is_gift')) {
+      context.handle(_isGiftMeta,
+          isGift.isAcceptableOrUnknown(data['is_gift']!, _isGiftMeta));
     } else if (isInserting) {
-      context.missing(_isPremiumIgrMeta);
+      context.missing(_isGiftMeta);
     }
     if (data.containsKey('name')) {
       context.handle(
