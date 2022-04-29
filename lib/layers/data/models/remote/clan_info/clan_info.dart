@@ -21,8 +21,3 @@ class ClanInfo {
 
   Map<String, dynamic> toJson() => _$ClanInfoToJson(this);
 }
-
-
-
-
-

@@ -80,7 +80,7 @@ Future<void> init() async {
   final SharedPreferences sharedPref = await SharedPreferences.getInstance();
   final WotStatDatabase driftDatabase = constructDb();
   final BaseOptions baseOptions = BaseOptions();
-  inj.registerFactory(() => baseOptions);
+  inj.registerSingleton(() => baseOptions);
   final Dio dio = Dio(inj())..interceptors.add(LogInterceptor());
   inj.registerFactory(() => dio);
   inj.registerFactory(() => sharedPref);

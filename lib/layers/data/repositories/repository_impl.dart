@@ -31,14 +31,11 @@ class RepositoryImpl extends Repository {
   final Logger logger = Logger();
   final BaseOptions baseOptions;
 
-  RepositoryImpl(
-      {required this.baseOptions,
-      required this.localSource,
-      required this.remoteSource}) {
-    localSource.subscribeRealm().listen((event) {
-      baseOptions.baseUrl = event == EU ? BASE_URL_EU : BASE_URL_CIS;
-    });
-    //todo kill stream
+  RepositoryImpl({
+    required this.baseOptions,
+    required this.localSource,
+    required this.remoteSource,
+  }) {
     initOrSyncVehiclesDatabase();
   }
 
@@ -69,7 +66,10 @@ class RepositoryImpl extends Repository {
       localSource.saveUser(UserData.fromUserAndRealm(user, realm));
 
   @override
-  void setRealm(String realm) => localSource.setRealm(realm);
+  void setRealm(String realm) {
+    localSource.setRealm(realm);
+    baseOptions.baseUrl = (realm == EU) ? BASE_URL_EU : BASE_URL_CIS;
+  }
 
   @override
   Future<void> removeUser(User user, String realm) =>
@@ -181,7 +181,11 @@ class RepositoryImpl extends Repository {
       throw Exception('Check internet connection');
     }
     if (achievesInDbCount == achievementsDataBase.meta.count) return;
-    // else create DB
+    _createOrSyncAchievesDb(achievementsDataBase);
+  }
+
+  Future<void> _createOrSyncAchievesDb(
+      AchievementsDataBase achievementsDataBase) async {
     int insertedItems =
         await localSource.saveAchievementsData(achievementsDataBase.data);
     localSource.setAchievesCount(insertedItems);
@@ -201,7 +205,11 @@ class RepositoryImpl extends Repository {
     }
     final int databaseTtcCount = localSource.getVehiclesTTCCount();
     if (vehiclesDataMeta.total == databaseTtcCount) return;
-    //else create vehiclesDatabase
+    _createOrSyncVehiclesDb(vehiclesDataMeta);
+  }
+
+  Future<void> _createOrSyncVehiclesDb(
+      VehiclesDataMeta vehiclesDataMeta) async {
     final List<VehiclesData> allPagesOfVehicleTTC =
         await _fetchAllPages(vehiclesDataMeta, "en");
     final List<VehiclesDataTTC> allVehiclesTTC =
