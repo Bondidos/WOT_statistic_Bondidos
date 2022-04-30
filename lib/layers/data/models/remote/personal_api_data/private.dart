@@ -1,10 +1,9 @@
 import 'package:intl/intl.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:logger/logger.dart';
 import 'package:wot_statistic/layers/data/models/remote/personal_api_data/restrictions.dart';
 
-import '../../../../../common/constants/personal_data_images.dart';
-import '../../../../domain/entities/personal_data_card.dart';
+import 'package:wot_statistic/common/constants/personal_data_images.dart';
+import 'package:wot_statistic/layers/domain/entities/personal_data_card.dart';
 
 part 'private.g.dart';
 

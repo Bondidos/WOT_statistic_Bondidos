@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wot_statistic/layers/presentation/search_user/bloc/search_user_cubit.dart';
 import 'package:wot_statistic/layers/presentation/settings_page/settings_page.dart';
 import 'package:wot_statistic/layers/presentation/statistic_page/statistic_page.dart';
 import 'injection_container.dart' as di;
@@ -23,6 +24,7 @@ void main() async {
       BlocProvider<StatisticCubit>(create: (ctx) => StatisticCubit()),
       BlocProvider<VehiclesDataCubit>(create: (ctx) => di.inj<VehiclesDataCubit>()),
       BlocProvider<AchievesDataCubit>(create: (ctx) => di.inj<AchievesDataCubit>()),
+      BlocProvider<SearchUserCubit>(create: (ctx) => di.inj<SearchUserCubit>()),
     ],
     child: const MyApp(),
   ));

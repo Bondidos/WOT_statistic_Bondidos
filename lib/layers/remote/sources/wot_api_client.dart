@@ -1,12 +1,13 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/http.dart';
 import 'package:wot_statistic/layers/data/models/remote/achievements_data/achievements_database.dart';
+import 'package:wot_statistic/layers/data/models/remote/search_user/search_user.dart';
 import 'package:wot_statistic/layers/data/models/remote/user_achieves/user_achieves_api_data.dart';
 import 'package:wot_statistic/layers/data/models/remote/user_vehicles/user_vehicles_api.dart';
 
-import '../../data/models/remote/clan_info/clan_info.dart';
-import '../../data/models/remote/personal_api_data/personal_data_api.dart';
-import '../../data/models/remote/vehicles_data/vehicles_data.dart';
+import 'package:wot_statistic/layers/data/models/remote/clan_info/clan_info.dart';
+import 'package:wot_statistic/layers/data/models/remote/personal_api_data/personal_data_api.dart';
+import 'package:wot_statistic/layers/data/models/remote/vehicles_data/vehicles_data.dart';
 
 part 'wot_api_client.g.dart';
 
@@ -18,7 +19,7 @@ abstract class WotClient {
   Future<PersonalDataApi> fetchPersonalData(
     @Query('application_id') String applicationId,
     @Query('account_id') int accountId,
-    @Query('access_token') String accessToken,
+    @Query('access_token') String accessToken, //todo nulable
     @Query('fields') String fields,
   );
 
@@ -32,7 +33,7 @@ abstract class WotClient {
   Future<UserVehiclesApi> fetchUserVehicles(
     @Query('application_id') String applicationId,
     @Query('account_id') int accountId,
-    @Query('access_token') String accessToken,
+    @Query('access_token') String accessToken, //todo nulable
   );
 
   @GET("/wot/encyclopedia/vehicles/")
@@ -53,5 +54,12 @@ abstract class WotClient {
   @GET("/wot/encyclopedia/achievements/")
   Future<AchievementsDataBase> fetchAchievesDataBase(
       @Query('application_id') String applicationId,
+      );
+
+  @GET("/wot/account/list/")
+   completed searchUsers(
+      @Query('application_id') String applicationId,
+      @Query('search') String search,
+      @Query('limit') int limit,
       );
 }

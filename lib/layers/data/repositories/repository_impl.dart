@@ -4,9 +4,11 @@ import 'package:dio/dio.dart';
 import 'package:logger/logger.dart';
 import 'package:wot_statistic/common/constants/constants.dart';
 import 'package:wot_statistic/layers/data/models/remote/achievements_data/achievement_data.dart';
+import 'package:wot_statistic/layers/data/models/remote/search_user/search_user.dart';
 import 'package:wot_statistic/layers/data/models/remote/vehicles_data/vehicles_data_meta.dart';
 import 'package:wot_statistic/layers/data/models/remote/vehicles_data/vehicles_data_ttc.dart';
 import 'package:wot_statistic/layers/data/sources/local_data_source.dart';
+import 'package:wot_statistic/layers/domain/entities/found_user.dart';
 import 'package:wot_statistic/layers/domain/entities/personal_data.dart';
 import 'package:wot_statistic/layers/domain/entities/user.dart';
 import 'package:wot_statistic/layers/domain/entities/vehicles_data.dart';
@@ -247,5 +249,11 @@ class RepositoryImpl extends Repository {
       result.addAll(element.data.values);
     }
     return result;
+  }
+
+  @override
+  Future<List<FoundUser>> searchPlayer(String search) async {
+    final SearchUser users = await remoteSource.searchUser(search);
+    return users.data.map((e) => FoundUser.fromSearchUserData(e)).toList();
   }
 }

@@ -14,8 +14,9 @@ class VehicleItemWidget extends StatelessWidget {
     double width = MediaQuery.of(context).size.width;
 
     return Container(
-      color: _colorPicker(context,vehicle),
-      padding: const EdgeInsets.all(0),
+      decoration: BoxDecoration(
+          color: _colorPicker(context,vehicle),
+          borderRadius: const BorderRadius.all(Radius.circular(5))),
       margin: const EdgeInsets.all(10),
       height: width / 3,
       width: width,

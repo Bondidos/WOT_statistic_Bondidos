@@ -1,3 +1,5 @@
+import 'package:wot_statistic/layers/data/models/remote/search_user/search_user.dart';
+
 import '../../../common/constants/network_const.dart';
 import '../../data/models/remote/achievements_data/achievements_database.dart';
 import '../../data/models/remote/clan_info/clan_info.dart';
@@ -7,6 +9,8 @@ import '../../data/models/remote/user_vehicles/user_vehicles_api.dart';
 import '../../data/models/remote/vehicles_data/vehicles_data.dart';
 import '../../data/sources/remote_data_source.dart';
 import '../sources/wot_api_client.dart';
+
+const searchUsersLimit = 10;
 
 class RemoteSourceImpl extends RemoteDataSource {
   final WotClient wotClient;
@@ -44,4 +48,8 @@ class RemoteSourceImpl extends RemoteDataSource {
   @override
   Future<AchievementsDataBase> fetchAchievesDataBase() =>
       wotClient.fetchAchievesDataBase(APPLICATION_ID);
+
+  @override
+  Future<SearchUser> searchUser(String search) =>
+      wotClient.searchUsers(APPLICATION_ID, search, searchUsersLimit);
 }

@@ -1,4 +1,5 @@
-import '../../data/models/remote/achievements_data/achievement_data.dart';
+import 'package:wot_statistic/layers/domain/entities/found_user.dart';
+
 import '../entities/achieves.dart';
 import '../entities/personal_data.dart';
 import '../entities/user.dart';
@@ -26,5 +27,6 @@ abstract class Repository {
   Future<PersonalData> fetchPersonalData();
 
   Future<List<List<Achieve>>> fetchAchieves();
-// List<Players> searchPlayer();
+
+  Future<List<FoundUser>> searchPlayer(String search);
 }

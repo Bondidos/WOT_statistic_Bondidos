@@ -4,13 +4,17 @@ import 'package:wot_statistic/layers/domain/entities/user.dart';
 import 'package:wot_statistic/layers/presentation/settings_page/settings_page.dart';
 import 'package:wot_statistic/layers/presentation/sing_in_page/bloc/sign_in_cubit.dart';
 import 'package:wot_statistic/layers/presentation/sing_in_page/widgets/animated_background.dart';
+import 'package:wot_statistic/layers/presentation/sing_in_page/widgets/floating_button_search.dart';
 import 'package:wot_statistic/layers/presentation/sing_in_page/widgets/region_picker.dart';
+import 'package:wot_statistic/layers/presentation/search_user/search_user_page.dart';
 import 'package:wot_statistic/layers/presentation/sing_in_page/widgets/themed_button.dart';
 import 'package:wot_statistic/layers/presentation/sing_in_page/widgets/user_picker.dart';
 
-import '../../../common/theme/text_styles.dart';
-import '../sign_up_user/sign_up_user_page.dart';
-import '../statistic_page/statistic_page.dart';
+import 'package:wot_statistic/common/theme/text_styles.dart';
+import 'package:wot_statistic/layers/presentation/sign_up_user/sign_up_user_page.dart';
+import 'package:wot_statistic/layers/presentation/statistic_page/statistic_page.dart';
+
+import 'hero_dialog_route.dart';
 
 class SignInPage extends StatelessWidget {
   const SignInPage({Key? key}) : super(key: key);
@@ -25,12 +29,6 @@ class SignInPage extends StatelessWidget {
       appBar: AppBar(
         title: Text(id, style: appBarTitle(context)),
         actions: [
-          IconButton(
-            onPressed: () {
-              //todo search player in directed realm (cubit)
-            },
-            icon: const Icon(Icons.search),
-          ),
           IconButton(
             onPressed: () {
               Navigator.of(context).pushNamed(SettingsPage.id);
@@ -62,26 +60,30 @@ class SignInPage extends StatelessWidget {
               alignment: Alignment.topCenter,
               children: [
                 const AnimatedBackground(),
+                const FloatingButtonSearch(heroTag: id),
                 SingleChildScrollView(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       SizedBox(
-                        height: MediaQuery.of(context).size.height / 2,
-                        child: Align(
-                          alignment: Alignment.topLeft,
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 15, top: 15),
-                            child: Wrap(
-                              children: [
-                                Text(
-                                  "Pick realm",
-                                  style: onSurfaceSubtitle(context),
-                                ),
-                                const RegionPicker(),
-                              ],
+                        height: MediaQuery.of(context).size.height / 2.25,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(left: 15, top: 15),
+                              child: Column(
+                                children: [
+                                  Text(
+                                    "Pick realm",
+                                    style: onSurfaceSubtitle(context),
+                                  ),
+                                  const RegionPicker(),
+                                ],
+                              ),
                             ),
-                          ),
+                          ],
                         ),
                       ),
                       const UserPicker(),
@@ -134,3 +136,5 @@ class SignInPage extends StatelessWidget {
     );
   }
 }
+
+
