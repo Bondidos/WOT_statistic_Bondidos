@@ -7,7 +7,10 @@ class SearchUserState extends Equatable {
   final List<FoundUser> foundList;
   final SearchStatus status;
 
-  const SearchUserState({required this.foundList, required this.status,});
+  const SearchUserState({
+    required this.foundList,
+    required this.status,
+  });
 
   @override
   List<Object?> get props => [foundList, status];
@@ -18,4 +21,13 @@ class SearchUserState extends Equatable {
       status: status ?? this.status,
     );
   }
+}
+
+class SearchError extends SearchUserState {
+  const SearchError({
+    required List<FoundUser> foundList,
+    required SearchStatus status,
+    required this.message,
+  }) : super(foundList: foundList, status: status);
+  final String message;
 }

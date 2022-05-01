@@ -57,7 +57,7 @@ abstract class WotClient {
       );
 
   @GET("/wot/account/list/")
-   completed searchUsers(
+   Future<SearchUser> searchUsers(
       @Query('application_id') String applicationId,
       @Query('search') String search,
       @Query('limit') int limit,

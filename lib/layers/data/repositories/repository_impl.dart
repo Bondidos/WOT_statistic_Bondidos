@@ -253,7 +253,12 @@ class RepositoryImpl extends Repository {
 
   @override
   Future<List<FoundUser>> searchPlayer(String search) async {
-    final SearchUser users = await remoteSource.searchUser(search);
+    final SearchUser users;
+    try {
+      users = await remoteSource.searchUser(search);
+    } catch(e){
+      throw Exception('Check internet connection');
+    }
     return users.data.map((e) => FoundUser.fromSearchUserData(e)).toList();
   }
 }

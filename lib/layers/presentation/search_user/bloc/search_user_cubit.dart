@@ -15,14 +15,27 @@ class SearchUserCubit extends Cubit<SearchUserState> {
     searchStream
         .debounce((event) => TimerStream(true, const Duration(seconds: 1)))
         .listen((search) async {
-      final List<FoundUser> result = await searchUser.execute(search);
-      Logger().d(result);
-      emit(state.copyWith(
-        foundList: result,
-        status: SearchStatus.loaded,
-      ));
+      try {
+        final List<FoundUser> result = await searchUser.execute(search);
+        Logger().d(result);
+        emit(state.copyWith(
+          foundList: result,
+          status: SearchStatus.loaded,
+        ));
+      } catch (e) {
+        emit(SearchError(
+            message: e.toString(),
+            status: SearchStatus.loaded,
+            foundList: List.empty()));
+      }
     });
   }
 
-  void onTextChange(String search) => searchStream.add(search);
+  void onTextChange(String search) => (search.length < 3)
+      ? emit(state.copyWith(foundList: [], status: SearchStatus.initial))
+      : searchStream.add(search);
+
+  void viewUser(int index) {
+    FoundUser user = state.foundList[index];
+  }
 }

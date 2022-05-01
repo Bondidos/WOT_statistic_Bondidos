@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wot_statistic/layers/presentation/search_user/bloc/search_user_cubit.dart';
 
+import '../../../common/theme/text_styles.dart';
 import 'bloc/search_user_state.dart';
 
 class SearchUserPage extends StatelessWidget {
@@ -10,7 +11,7 @@ class SearchUserPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
+    Size size = MediaQuery.of(context).size;
     return Hero(
       tag: heroTag,
       child: Center(
@@ -18,10 +19,25 @@ class SearchUserPage extends StatelessWidget {
           height: 3 * size.height / 4,
           width: 3 * size.width / 4,
           child: Material(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
             color: Theme.of(context).colorScheme.primary,
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: BlocBuilder<SearchUserCubit, SearchUserState>(
+              child: BlocConsumer<SearchUserCubit, SearchUserState>(
+                listener: (ctx, state) {
+                  if (state is SearchError) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          state.message,
+                          style: onSecondarySubtitle(context),
+                        ),
+                        duration: const Duration(seconds: 2),
+                      ),
+                    );
+                  }
+                },
                 builder: (ctx, state) {
                   return Column(
                     mainAxisSize: MainAxisSize.max,
@@ -38,19 +54,14 @@ class SearchUserPage extends StatelessWidget {
                             ? ListView.builder(
                                 itemCount: state.foundList.length,
                                 itemBuilder: (ctx, index) => ListTile(
+                                  onTap: () => context
+                                      .read<SearchUserCubit>()
+                                      .viewUser(index),
                                   title: Text(state.foundList[index].name),
                                 ),
                               )
                             : Container(),
                       )
-                      /*state.foundList.isNotEmpty
-                          ? ListView.builder(
-                              itemCount: state.foundList.length,
-                              itemBuilder: (ctx, index) => ListTile(
-                                title: Text(state.foundList[index].name),
-                              ),
-                            )
-                          : Container(),*/
                     ],
                   );
                 },
