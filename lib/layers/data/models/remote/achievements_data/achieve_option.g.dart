@@ -11,6 +11,7 @@ AchieveOption _$AchieveOptionFromJson(Map<String, dynamic> json) =>
       nameI18n: json['name_i18n'] as String,
       image: json['image'] as String?,
       imageBig: json['image_big'] as String?,
+      description: json['description'] as String?,
     );
 
 Map<String, dynamic> _$AchieveOptionToJson(AchieveOption instance) =>
@@ -18,4 +19,5 @@ Map<String, dynamic> _$AchieveOptionToJson(AchieveOption instance) =>
       'name_i18n': instance.nameI18n,
       'image': instance.image,
       'image_big': instance.imageBig,
+      'description': instance.description,
     };

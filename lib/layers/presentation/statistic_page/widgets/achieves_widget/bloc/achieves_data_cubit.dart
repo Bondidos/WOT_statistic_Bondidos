@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:wot_statistic/layers/presentation/statistic_page/widgets/achieves_widget/bloc/achieves_state.dart';
 
-import '../../../../../domain/entities/achieves.dart';
-import '../../../../../domain/use_cases/load_achieves_data.dart';
-import '../achieves.dart';
+import 'package:wot_statistic/layers/domain/entities/achieves.dart';
+import 'package:wot_statistic/layers/domain/use_cases/load_achieves_data.dart';
+import 'package:wot_statistic/layers/presentation/statistic_page/widgets/achieves_widget/widgets/achieve_item_widget.dart';
 
 class AchievesDataCubit extends Cubit<AchievesState> {
   final LoadAchievesData loadAchieves;
@@ -32,31 +32,26 @@ class AchievesDataCubit extends Cubit<AchievesState> {
     return Future.delayed(const Duration(seconds: 2));
   }
 
-  // todo logic if emptyList
   List<StaggeredGridTile> _createListToDisplay(
       List<List<Achieve>> sortedListsBySections) {
     List<StaggeredGridTile> listToDisplay = [];
-    listToDisplay.add(fromSectionName("Epic"));
-    listToDisplay.addAll(_fromAchieveList(sortedListsBySections[0]));
-    listToDisplay.add(fromSectionName("Action"));
-    listToDisplay.addAll(_fromAchieveList(sortedListsBySections[1]));
-    listToDisplay.add(fromSectionName("Special"));
-    listToDisplay.addAll(_fromAchieveList(sortedListsBySections[2]));
-    listToDisplay.add(fromSectionName("Memorial"));
-    listToDisplay.addAll(_fromAchieveList(sortedListsBySections[3]));
-    listToDisplay.add(fromSectionName("Group"));
-    listToDisplay.addAll(_fromAchieveList(sortedListsBySections[4]));
-    listToDisplay.add(fromSectionName("Class"));
-    listToDisplay.addAll(_fromAchieveList(sortedListsBySections[5]));
+
+    for (int index = 0; index < achievesBySection.length; index++) {
+      if (sortedListsBySections[index].isNotEmpty) {
+        listToDisplay
+            .add(_fromSectionName(sectionName: achievesBySection[index]!));
+        listToDisplay.addAll(_fromAchieveList(sortedListsBySections[index]));
+      }
+    }
     return listToDisplay;
   }
 
-  StaggeredGridTile fromSectionName(String name) {
+  StaggeredGridTile _fromSectionName({required String sectionName}) {
     return StaggeredGridTile.count(
       crossAxisCellCount: 3,
       mainAxisCellCount: 1,
       child: Center(
-        child: Text(name),
+        child: Text(sectionName, textScaleFactor: 2),
       ),
     );
   }
@@ -67,8 +62,11 @@ class AchievesDataCubit extends Cubit<AchievesState> {
       var buffer = StaggeredGridTile.count(
         crossAxisCellCount: 1,
         mainAxisCellCount: 1,
-        child: AchieveItemWidget(
-          card: item,
+        child: Hero(
+          tag: item.name,
+          child: AchieveItemWidget(
+            card: item,
+          ),
         ),
       );
       result.add(buffer);
@@ -76,3 +74,12 @@ class AchievesDataCubit extends Cubit<AchievesState> {
     return result;
   }
 }
+
+const Map<int, String> achievesBySection = {
+  0: 'Epic',
+  1: 'Action',
+  2: 'Special',
+  3: 'Memorial',
+  4: 'Group',
+  5: 'Class',
+};

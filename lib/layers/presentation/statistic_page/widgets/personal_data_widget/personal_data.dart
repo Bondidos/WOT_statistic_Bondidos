@@ -4,7 +4,7 @@ import 'package:wot_statistic/layers/domain/entities/personal_data.dart';
 import 'package:wot_statistic/layers/domain/entities/personal_data_card.dart';
 import 'package:wot_statistic/layers/presentation/common_widget/common_widgets.dart';
 import 'package:wot_statistic/layers/presentation/statistic_page/widgets/personal_data_widget/bloc/personal_data_cubit.dart';
-import 'package:wot_statistic/layers/presentation/statistic_page/widgets/personal_data_widget/private_item_widget.dart';
+import 'package:wot_statistic/layers/presentation/statistic_page/widgets/personal_data_widget/private_item_widget/private_item_widget.dart';
 
 import 'package:wot_statistic/common/constants/personal_data_images.dart';
 import 'package:wot_statistic/common/theme/text_styles.dart';
@@ -70,7 +70,6 @@ class PersonalDataWidget extends StatelessWidget {
                   child: Text('To view personal data, sign in first'),
                 ),
               )
-        // Center(child: Text('To view personal data, sign in first'),)
       ],
     );
   }

@@ -10,11 +10,14 @@ class AchieveOption {
   final String? image;
   @JsonKey(name: 'image_big')
   final String? imageBig;
+  @JsonKey(name: 'description')
+  final String? description;
 
   const AchieveOption({
     required this.nameI18n,
     required this.image,
     required this.imageBig,
+    required this.description,
   });
 
   factory AchieveOption.fromJson(Map<String, dynamic> json) =>

@@ -14,18 +14,18 @@ import 'package:wot_statistic/layers/domain/entities/user.dart';
 import 'package:wot_statistic/layers/domain/entities/vehicles_data.dart';
 import 'package:wot_statistic/layers/domain/repositories/repository.dart';
 
-import '../../../common/constants/achieves_filters.dart';
-import '../../../common/constants/network_const.dart';
-import '../../domain/entities/achieves.dart';
-import '../models/local/user_data.dart';
-import '../models/remote/achievements_data/achievements_database.dart';
-import '../models/remote/clan_info/clan_info.dart';
-import '../models/remote/personal_api_data/personal_data_api.dart';
-import '../models/remote/user_achieves/user_achieves_api_data.dart';
-import '../models/remote/user_vehicles/user_vehicle.dart';
-import '../models/remote/user_vehicles/user_vehicles_api.dart';
-import '../models/remote/vehicles_data/vehicles_data.dart';
-import '../sources/remote_data_source.dart';
+import 'package:wot_statistic/common/constants/achieves_filters.dart';
+import 'package:wot_statistic/common/constants/network_const.dart';
+import 'package:wot_statistic/layers/domain/entities/achieves.dart';
+import 'package:wot_statistic/layers/data/models/local/user_data.dart';
+import 'package:wot_statistic/layers/data/models/remote/achievements_data/achievements_database.dart';
+import 'package:wot_statistic/layers/data/models/remote/clan_info/clan_info.dart';
+import 'package:wot_statistic/layers/data/models/remote/personal_api_data/personal_data_api.dart';
+import 'package:wot_statistic/layers/data/models/remote/user_achieves/user_achieves_api_data.dart';
+import 'package:wot_statistic/layers/data/models/remote/user_vehicles/user_vehicle.dart';
+import 'package:wot_statistic/layers/data/models/remote/user_vehicles/user_vehicles_api.dart';
+import 'package:wot_statistic/layers/data/models/remote/vehicles_data/vehicles_data.dart';
+import 'package:wot_statistic/layers/data/sources/remote_data_source.dart';
 
 class RepositoryImpl extends Repository {
   final LocalDataSource localSource;

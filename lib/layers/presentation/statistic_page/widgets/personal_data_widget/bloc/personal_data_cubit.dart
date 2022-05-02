@@ -14,6 +14,7 @@ class PersonalDataCubit extends Cubit<PersonalDataState> {
 
   void _fetchPersonalData() async {
     try {
+      if(state is !LoadingState) emit(const LoadingState());
       final PersonalData result = await loadData.execute();
       emit(LoadedDataState(personalData: result));
     } catch (e) {

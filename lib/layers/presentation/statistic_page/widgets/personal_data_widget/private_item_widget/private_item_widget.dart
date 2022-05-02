@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../common/theme/text_styles.dart';
-import '../../../../domain/entities/personal_data_card.dart';
+import 'package:wot_statistic/common/theme/text_styles.dart';
+import 'package:wot_statistic/layers/domain/entities/personal_data_card.dart';
 
 class PrivateItemWidget extends StatelessWidget {
   const PrivateItemWidget({Key? key, required this.card}) : super(key: key);
@@ -22,8 +22,16 @@ class PrivateItemWidget extends StatelessWidget {
             width: 80,
             fit: BoxFit.cover,
           ),
-          Text(card.title, style: onCard(context),),
-          Text(card.value, style: onCard(context),),
+          Text(
+            card.title,
+            style: onCard(context),
+            textAlign: TextAlign.center,
+          ),
+          Text(
+            card.value,
+            style: onCard(context),
+            textAlign: TextAlign.center,
+          ),
         ],
       ),
     );

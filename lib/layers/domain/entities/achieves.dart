@@ -1,4 +1,4 @@
-import '../../data/models/remote/achievements_data/achievement_data.dart';
+import 'package:wot_statistic/layers/data/models/remote/achievements_data/achievement_data.dart';
 
 class Achieve {
   final String name;
@@ -22,24 +22,24 @@ class Achieve {
   });
 
   factory Achieve.fromApiAndData(
-          Map<String, int> achievesId, AchievementData achievesByIdFromDb) =>
-      Achieve(
-        imageBig: achievesByIdFromDb.options == null
-            ? achievesByIdFromDb.imageBig!
-            : achievesByIdFromDb
-                .options![achievesId[achievesByIdFromDb.name]!-1].imageBig!,
-        image: achievesByIdFromDb.options == null
-            ? achievesByIdFromDb.image!
-            : achievesByIdFromDb
-                .options![achievesId[achievesByIdFromDb.name]!-1].image!,
-        condition: achievesByIdFromDb.condition,
-        description: achievesByIdFromDb.description,
-        section: achievesByIdFromDb.section,
-        sectionOrder: achievesByIdFromDb.sectionOrder,
-        name: achievesByIdFromDb.options == null
-            ? achievesByIdFromDb.nameI18n!
-            : achievesByIdFromDb
-                .options![achievesId[achievesByIdFromDb.name]!-1].nameI18n,
-        count: achievesId[achievesByIdFromDb.name]!,
-      );
+      Map<String, int> achievesId, AchievementData achievesByIdFromDb) {
+    int optionsKey = achievesId[achievesByIdFromDb.name]! - 1;
+    return Achieve(
+      imageBig: achievesByIdFromDb.options == null
+          ? achievesByIdFromDb.imageBig!
+          : achievesByIdFromDb.options![optionsKey].imageBig!,
+      image: achievesByIdFromDb.options == null
+          ? achievesByIdFromDb.image!
+          : achievesByIdFromDb.options![optionsKey].image!,
+      condition: achievesByIdFromDb.condition,
+      description: achievesByIdFromDb.description ??
+          achievesByIdFromDb.options![optionsKey].description,
+      section: achievesByIdFromDb.section,
+      sectionOrder: achievesByIdFromDb.sectionOrder,
+      name: achievesByIdFromDb.options == null
+          ? achievesByIdFromDb.nameI18n!
+          : achievesByIdFromDb.options![optionsKey].nameI18n,
+      count: achievesId[achievesByIdFromDb.name]!,
+    );
+  }
 }

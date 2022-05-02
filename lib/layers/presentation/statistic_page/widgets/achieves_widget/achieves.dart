@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:wot_statistic/layers/presentation/sing_in_page/sign_in_page.dart';
 import 'package:wot_statistic/layers/presentation/statistic_page/widgets/achieves_widget/bloc/achieves_data_cubit.dart';
 
 import '../../../../../common/theme/text_styles.dart';
-import '../../../../domain/entities/achieves.dart';
 import 'bloc/achieves_state.dart';
 
 class AchievesWidget extends StatelessWidget {
@@ -17,6 +17,14 @@ class AchievesWidget extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Achieves', style: appBarTitle(context)),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.of(context).pushReplacementNamed(SignInPage.id);
+            },
+            icon: const Icon(Icons.logout),
+          ),
+        ],
       ),
       body: BlocConsumer<AchievesDataCubit, AchievesState>(
         listener: (context, currentState) {
@@ -42,21 +50,6 @@ class AchievesWidget extends StatelessWidget {
                 children: state.achievesData,
               ),
             );
-
-            /*GridView.builder(
-              itemCount: state.achievesData.length,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3),
-              itemBuilder: (ctx, index) {
-                if(index == 0) {
-                  return Container(
-                  width: MediaQuery.of(context).size.width,
-                  child: Text('Bunner'),
-                );
-                }
-                return AchieveItemWidget(card: state.achievesData[index]);
-              },
-            );*/
           }
           return RefreshIndicator(
             onRefresh: () => cubit.refreshList(),
@@ -65,42 +58,6 @@ class AchievesWidget extends StatelessWidget {
             ),
           );
         },
-      ),
-    );
-  }
-}
-
-class AchieveItemWidget extends StatelessWidget {
-  const AchieveItemWidget({Key? key, required this.card}) : super(key: key);
-  final Achieve card;
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      color: Theme.of(context).colorScheme.primary,
-      // margin: const EdgeInsets.all(15),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          Align(
-            alignment: Alignment.topLeft,
-            child: Text(
-              card.count.toString(),
-              style: onCard(context),
-            ),
-          ),
-          Image.network(
-            card.image, //todo images
-            height: 50,
-            width: 50,
-            fit: BoxFit.cover,
-          ),
-          Text(
-            card.name,
-            style: onCard(context).copyWith(fontSize: 10),
-          ),
-        ],
       ),
     );
   }
