@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:wot_statistic/common/details_widget.dart';
+import 'package:wot_statistic/common/hero_dialog_route.dart';
 import 'package:wot_statistic/common/theme/text_styles.dart';
 import 'package:wot_statistic/layers/domain/entities/vehicles_data.dart';
 
@@ -13,84 +15,105 @@ class VehicleItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
 
-    return Container(
-      decoration: BoxDecoration(
-          color: _colorPicker(context,vehicle),
-          borderRadius: const BorderRadius.all(Radius.circular(5))),
-      margin: const EdgeInsets.all(10),
-      height: width / 3,
-      width: width,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            width: width / 3,
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Stack(
-                  alignment: Alignment.topCenter,
+    return GestureDetector(
+      onTap: () {
+        Navigator.of(context).push(HeroDialogRoute(
+          builder: (BuildContext context) => DetailsWidget(
+            heroTag: vehicle.name,
+            description: vehicle.description,
+            bigImage: vehicle.image,
+          ),
+        ));
+      },
+      child: Hero(
+        tag: vehicle.name,
+        child: Card(
+          color: _colorPicker(context, vehicle),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            // crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                width: width / 3,
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Image.network(
-                      vehicle.image,
-                      height: width / 3,
-                      width: width / 3,
-                      fit: BoxFit.cover,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    Stack(
+                      alignment: Alignment.topCenter,
                       children: [
-                        Image.asset(nations[vehicle.nation]!),
-                        Image.asset(
-                          type[vehicle.type]!,
-                          scale: 15,
+                        Image.network(
+                          vehicle.image,
+                          height: width / 3,
+                          width: width / 3,
+                          fit: BoxFit.cover,
                         ),
-                        Text(tier[vehicle.tier]!,style: onSurfaceSubtitle(context),)
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Image.asset(nations[vehicle.nation]!,),
+                            Image.asset(
+                              type[vehicle.type]!,
+                              // scale: 15,
+                              cacheHeight: 30,
+                              cacheWidth: 30,
+                            ),
+                            Text(
+                              tier[vehicle.tier]!,
+                              style: onSurfaceSubtitle(context),
+                            )
+                          ],
+                        )
                       ],
                     )
                   ],
-                )
-              ],
-            ),
-          ),
-          SizedBox(
-            width: width / 4,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                vehicle.markOfMastery != 0
-                    ? Image.asset(markOfMastery[vehicle.markOfMastery]!)
-                    : Container(),
-                Text('Battles:\n${(vehicle.battles.toString())}'),
-              ],
-            ),
-          ),
-          SizedBox(
-            width: width / 3,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Text(
-                  vehicle.name,
-                  softWrap: true,
-                  maxLines: 3,
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.center,
                 ),
-                Text(
-                  _calculateWins(vehicle.battles, vehicle.wins),
-                  softWrap: true,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
+              ),
+              SizedBox(
+                height: width / 3,
+                // width: width / 3,
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    vehicle.markOfMastery != 0
+                        ? Image.asset(markOfMastery[vehicle.markOfMastery]!)
+                        : Container(),
+                    Text(
+                      'Battles:\n${(vehicle.battles.toString())}',
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+              SizedBox(
+                width: width / 3,
+                height: width / 3,
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Text(
+                      vehicle.name,
+                      softWrap: true,
+                      maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.center,
+                    ),
+                    Text(
+                      _calculateWins(vehicle.battles, vehicle.wins),
+                      softWrap: true,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
@@ -100,9 +123,9 @@ class VehicleItemWidget extends StatelessWidget {
     return 'Wins: \n$result%';
   }
 
-  Color _colorPicker(BuildContext context, Vehicle vehicle){
-    if(vehicle.isGift) return const Color(0x8D827D27);
-    if(vehicle.isPremium) return Colors.orangeAccent;
+  Color _colorPicker(BuildContext context, Vehicle vehicle) {
+    if (vehicle.isGift) return const Color(0x8D827D27);
+    if (vehicle.isPremium) return Colors.orangeAccent;
     return Theme.of(context).colorScheme.primary;
   }
 }

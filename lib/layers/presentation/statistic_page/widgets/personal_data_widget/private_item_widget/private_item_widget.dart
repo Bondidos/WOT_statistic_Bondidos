@@ -20,6 +20,8 @@ class PrivateItemWidget extends StatelessWidget {
             card.image,
             height: 80,
             width: 80,
+            cacheHeight: 120,
+            cacheWidth: 120,
             fit: BoxFit.cover,
           ),
           Text(

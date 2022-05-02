@@ -48,7 +48,7 @@ class PersonalDataWidget extends StatelessWidget {
       PersonalData data, BuildContext context, LoadedDataState state) {
     return CustomScrollView(
       slivers: [
-        sliverAppBar(data, context, state),
+        _sliverAppBar(data, context, state),
         (state.personalData.private != null)
             ? SliverGrid(
                 delegate: SliverChildBuilderDelegate(
@@ -74,7 +74,7 @@ class PersonalDataWidget extends StatelessWidget {
     );
   }
 
-  SliverAppBar sliverAppBar(
+  SliverAppBar _sliverAppBar(
       PersonalData data, BuildContext context, LoadedDataState state) {
     return SliverAppBar(
       expandedHeight: 220,
@@ -126,8 +126,8 @@ class PersonalDataWidget extends StatelessWidget {
         children: [
           Image.asset(
             GLOBAL_RATING_LOGO,
-            height: 140,
-            width: 140,
+            height: 120,
+            width: 120,
             fit: BoxFit.cover,
           ),
           Text(
@@ -139,17 +139,18 @@ class PersonalDataWidget extends StatelessWidget {
     );
   }
 
-  Container _clanLogo(LoadedDataState state, BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.only(bottom: 25),
+  SizedBox _clanLogo(LoadedDataState state, BuildContext context) {
+    return SizedBox(
       width: MediaQuery.of(context).size.width / 2,
       child: Column(
         children: [
           state.personalData.clanLogo != null
               ? Image.network(
                   state.personalData.clanLogo!,
-                  height: 130,
-                  width: 130,
+                  height: 120,
+                  width: 120,
+                  cacheWidth: 120,
+                  cacheHeight: 120,
                   fit: BoxFit.cover,
                 )
               : Expanded(

@@ -42,7 +42,11 @@ class StatisticPage extends StatelessWidget {
                 ),
                 BottomNavigationBarItem(
                   label: "Vehicles",
-                  icon: ImageIcon(AssetImage(TANK_ICON)),
+                  icon: ImageIcon(ResizeImage(
+                    AssetImage(TANK_ICON),
+                    height: 36,
+                    width: 36,
+                  )),
                 ),
               ],
               currentIndex: index,

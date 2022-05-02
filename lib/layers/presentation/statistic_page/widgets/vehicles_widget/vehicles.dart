@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:wot_statistic/layers/presentation/common_widget/common_widgets.dart';
 import 'package:wot_statistic/layers/presentation/statistic_page/widgets/vehicles_widget/bloc/vehicles_data_cubit.dart';
 import 'package:wot_statistic/layers/presentation/statistic_page/widgets/vehicles_widget/bloc/vehicles_state.dart';
 import 'package:wot_statistic/layers/presentation/statistic_page/widgets/vehicles_widget/vehicle_item_widget.dart';
 
-import 'package:wot_statistic/common/theme/text_styles.dart';
+import 'package:wot_statistic/layers/presentation/sing_in_page/sign_in_page.dart';
 
 class VehiclesWidget extends StatelessWidget {
   const VehiclesWidget({Key? key}) : super(key: key);
@@ -31,20 +32,18 @@ class VehiclesWidget extends StatelessWidget {
             itemBuilder: (ctx) =>
                 _createFilterItems(onTap: cubit.filterByNation),
           ),
+          IconButton(
+            onPressed: () {
+              Navigator.of(context).pushReplacementNamed(SignInPage.id);
+            },
+            icon: const Icon(Icons.logout),
+          ),
         ],
       ),
       body: BlocConsumer<VehiclesDataCubit, VehiclesDataState>(
           listener: (context, currentState) {
             if (currentState is ErrorState) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(
-                    currentState.message,
-                    style: onSecondarySubtitle(context),
-                  ),
-                  duration: const Duration(seconds: 2),
-                ),
-              );
+              createSnackBar(context, currentState.message);
             }
           },
           buildWhen: (prevState, currentState) =>

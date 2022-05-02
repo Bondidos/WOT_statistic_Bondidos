@@ -35,10 +35,14 @@ class DetailsWidget extends StatelessWidget {
                       fit: BoxFit.cover,
                     ),
                   ),
-                  Text(
-                    description,
-                    maxLines: 3,
-                    textAlign: TextAlign.center,
+                  Flexible(
+                    child: SingleChildScrollView(
+                      child: Text(
+                        description,
+                        // maxLines: 3,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
                   ),
                 ],
               ),
