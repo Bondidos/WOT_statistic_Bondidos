@@ -121,7 +121,7 @@ class SingInCubit extends Cubit<SignInState> {
     if (_currentUser == null) {
       error("No user to delete");
     } else {
-      await removeUserUseCase.execute(_currentUser!, _currentRealm);
+      await removeUserUseCase.execute(_currentUser!);
       _fetchPrevUsers(_currentRealm);
     }
   }
@@ -138,7 +138,7 @@ class SingInCubit extends Cubit<SignInState> {
       return false;
     }
     // todo token extension
-    await signIn.execute(_currentUser!, _currentRealm);
+    await signIn.execute(_currentUser!);
     emit(SignInStateLoaded(realm: _currentRealm, prevUsers: _prevUsers));
     return true;
   }

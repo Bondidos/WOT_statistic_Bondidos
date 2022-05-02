@@ -52,7 +52,7 @@ Future<void> init() async {
   inj.registerFactory(() => PersonalDataCubit(loadData: inj()));
   inj.registerFactory(() => VehiclesDataCubit(loadVehicles: inj()));
   inj.registerFactory(() => AchievesDataCubit(loadAchieves: inj()));
-  inj.registerFactory(() => SearchUserCubit(searchUser: inj()));
+  inj.registerFactory(() => SearchUserCubit(searchUser: inj(),signIn: inj()));
 
   inj.registerFactory(() => SearchUserUseCase(repository: inj()));
   inj.registerFactory(() => LoadAchievesData(repository: inj()));

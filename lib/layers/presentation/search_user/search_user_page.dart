@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wot_statistic/layers/presentation/search_user/bloc/search_user_cubit.dart';
+import 'package:wot_statistic/layers/presentation/statistic_page/statistic_page.dart';
 
 import '../../../common/theme/text_styles.dart';
 import 'bloc/search_user_state.dart';
+import 'package:wot_statistic/injection_container.dart' as di;
 
 class SearchUserPage extends StatelessWidget {
   const SearchUserPage({Key? key, required this.heroTag}) : super(key: key);
@@ -24,47 +26,54 @@ class SearchUserPage extends StatelessWidget {
             color: Theme.of(context).colorScheme.primary,
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: BlocConsumer<SearchUserCubit, SearchUserState>(
-                listener: (ctx, state) {
-                  if (state is SearchError) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(
-                          state.message,
-                          style: onSecondarySubtitle(context),
+              child: BlocProvider<SearchUserCubit>(
+                create: (context) => di.inj<SearchUserCubit>(),
+                child: BlocConsumer<SearchUserCubit, SearchUserState>(
+                  listener: (context, state) {
+                    if (state is SearchError) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            state.message,
+                            style: onSecondarySubtitle(context),
+                          ),
+                          duration: const Duration(seconds: 2),
                         ),
-                        duration: const Duration(seconds: 2),
-                      ),
+                      );
+                    }
+                  },
+                  builder: (ctx, state) {
+                    return Column(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        TextField(
+                          onChanged: (search) => ctx
+                              .read<SearchUserCubit>()
+                              .onTextChange(search),
+                          decoration: const InputDecoration(
+                              hintText: 'Enter player name'),
+                        ),
+                        Expanded(
+                          child: state.foundList.isNotEmpty
+                              ? ListView.builder(
+                                  itemCount: state.foundList.length,
+                                  itemBuilder: (ctx, index) => ListTile(
+                                    onTap: () async {
+                                      await ctx
+                                          .read<SearchUserCubit>()
+                                          .viewUser(index);
+                                      Navigator.of(context)
+                                          .pushReplacementNamed(StatisticPage.id);
+                                    },
+                                    title: Text(state.foundList[index].name),
+                                  ),
+                                )
+                              : Container(),
+                        )
+                      ],
                     );
-                  }
-                },
-                builder: (ctx, state) {
-                  return Column(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      TextField(
-                        onChanged: (search) => context
-                            .read<SearchUserCubit>()
-                            .onTextChange(search),
-                        decoration: const InputDecoration(
-                            hintText: 'Enter player name'),
-                      ),
-                      Expanded(
-                        child: state.foundList.isNotEmpty
-                            ? ListView.builder(
-                                itemCount: state.foundList.length,
-                                itemBuilder: (ctx, index) => ListTile(
-                                  onTap: () => context
-                                      .read<SearchUserCubit>()
-                                      .viewUser(index),
-                                  title: Text(state.foundList[index].name),
-                                ),
-                              )
-                            : Container(),
-                      )
-                    ],
-                  );
-                },
+                  },
+                ),
               ),
             ),
           ),

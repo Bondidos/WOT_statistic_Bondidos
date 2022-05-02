@@ -12,9 +12,9 @@ abstract class Repository {
 
   void setTheme(String theme);
 
-  Future<void> removeUser(User user, String realm);
+  Future<void> removeUser(User user);
 
-  Future<void> setSingedUser(User user, String realm);
+  Future<void> setSingedUser(User user);
 
   Stream<String> get subscribeTheme;
 

@@ -6,15 +6,12 @@ import 'package:wot_statistic/layers/presentation/sing_in_page/bloc/sign_in_cubi
 import 'package:wot_statistic/layers/presentation/sing_in_page/widgets/animated_background.dart';
 import 'package:wot_statistic/layers/presentation/sing_in_page/widgets/floating_button_search.dart';
 import 'package:wot_statistic/layers/presentation/sing_in_page/widgets/region_picker.dart';
-import 'package:wot_statistic/layers/presentation/search_user/search_user_page.dart';
 import 'package:wot_statistic/layers/presentation/sing_in_page/widgets/themed_button.dart';
 import 'package:wot_statistic/layers/presentation/sing_in_page/widgets/user_picker.dart';
 
 import 'package:wot_statistic/common/theme/text_styles.dart';
 import 'package:wot_statistic/layers/presentation/sign_up_user/sign_up_user_page.dart';
 import 'package:wot_statistic/layers/presentation/statistic_page/statistic_page.dart';
-
-import 'hero_dialog_route.dart';
 
 class SignInPage extends StatelessWidget {
   const SignInPage({Key? key}) : super(key: key);
@@ -107,7 +104,6 @@ class SignInPage extends StatelessWidget {
                                 title: "Sign Up",
                                 onTap: () async {
                                   String realm = state.realm;
-
                                   User? user = await Navigator.of(context)
                                       .pushNamed(SignUpPage.id,
                                           arguments: realm) as User?;

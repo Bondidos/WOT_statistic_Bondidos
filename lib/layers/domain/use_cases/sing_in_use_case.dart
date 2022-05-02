@@ -6,6 +6,5 @@ class SingInUseCase {
 
   SingInUseCase({required this.repository});
 
-  Future<void> execute(User user, String realm) =>
-      repository.setSingedUser(user, realm);
+  Future<void> execute(User user) => repository.setSingedUser(user);
 }

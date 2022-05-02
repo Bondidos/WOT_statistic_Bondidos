@@ -59,7 +59,7 @@ class _SignUpPageState extends State<SignUpPage> {
         userAgent: 'random',
         initialUrl: (realm == EU) ? EU_LOGIN_URL : CIS_LOGIN_URL,
         onPageStarted: (url) {
-          if (url.contains(REDIRECT_URL)) {
+          if (url.contains("access_token")) {
             Navigator.of(context).pop(User.fromUrl(url));
           }
           //todo cancel sign in

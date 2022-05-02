@@ -50,8 +50,8 @@ class RepositoryImpl extends Repository {
   }
 
   @override
-  Future<void> setSingedUser(User user, String realm) =>
-      localSource.setSingedUser(UserData.fromUserAndRealm(user, realm));
+  Future<void> setSingedUser(User user) =>
+      localSource.setSingedUser(UserData.fromUserAndRealm(user, localSource.getCurrentRealm()));
 
   @override
   Stream<String> get subscribeRealm => localSource.subscribeRealm();
@@ -76,8 +76,8 @@ class RepositoryImpl extends Repository {
   }
 
   @override
-  Future<void> removeUser(User user, String realm) =>
-      localSource.removeUser(UserData.fromUserAndRealm(user, realm));
+  Future<void> removeUser(User user) =>
+      localSource.removeUser(UserData.fromUserAndRealm(user, localSource.getCurrentRealm()));
 
   @override
   Future<List<List<Achieve>>> fetchAchieves() async {
