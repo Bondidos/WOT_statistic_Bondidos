@@ -6,7 +6,7 @@ class Achieve {
   final String imageBig;
   final String image;
   final String? condition;
-  final String? description;
+  final String description;
   final String section;
   final int sectionOrder;
 
@@ -33,13 +33,14 @@ class Achieve {
           : achievesByIdFromDb.options![optionsKey].image!,
       condition: achievesByIdFromDb.condition,
       description: achievesByIdFromDb.description ??
-          achievesByIdFromDb.options![optionsKey].description,
+          achievesByIdFromDb.options?[optionsKey].description
+          ?? 'NoDescription',
       section: achievesByIdFromDb.section,
       sectionOrder: achievesByIdFromDb.sectionOrder,
       name: achievesByIdFromDb.options == null
-          ? achievesByIdFromDb.nameI18n!
+          ? achievesByIdFromDb.nameI18n ?? achievesByIdFromDb.name
           : achievesByIdFromDb.options![optionsKey].nameI18n,
-      count: achievesId[achievesByIdFromDb.name]!,
+      count: achievesId[achievesByIdFromDb.name] ?? 1,
     );
   }
 }
