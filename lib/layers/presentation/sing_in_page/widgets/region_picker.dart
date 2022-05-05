@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:wot_statistic/generated/l10n.dart';
 import 'package:wot_statistic/layers/presentation/sing_in_page/bloc/sign_in_cubit.dart';
 
-import '../../../../common/constants/constants.dart';
-import '../../../../common/theme/text_styles.dart';
+import 'package:wot_statistic/common/constants/constants.dart';
+import 'package:wot_statistic/common/theme/text_styles.dart';
 
 class RegionPicker extends StatelessWidget {
   const RegionPicker({Key? key}) : super(key: key);
@@ -43,7 +44,7 @@ class RegionPicker extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.only(left: 8.0),
                           child: Text(
-                            "Europe",
+                            S.of(context).Europe,
                             style: onSurfaceSubtitle(context),
                           ),
                         ),
@@ -63,7 +64,7 @@ class RegionPicker extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.only(left: 8.0),
                           child: Text(
-                            "CIS",
+                            S.of(context).CIS,
                             style: onSurfaceSubtitle(context),
                           ),
                         ),

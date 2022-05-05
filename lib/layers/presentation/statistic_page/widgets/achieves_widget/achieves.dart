@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:wot_statistic/generated/l10n.dart';
 import 'package:wot_statistic/layers/presentation/common_widget/common_widgets.dart';
 import 'package:wot_statistic/layers/presentation/sing_in_page/sign_in_page.dart';
 import 'package:wot_statistic/layers/presentation/statistic_page/widgets/achieves_widget/bloc/achieves_data_cubit.dart';
@@ -17,7 +18,7 @@ class AchievesWidget extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Achieves', style: appBarTitle(context)),
+        title: Text(S.of(context).Achieves, style: appBarTitle(context)),
         actions: [
           IconButton(
             onPressed: () {

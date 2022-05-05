@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:wot_statistic/generated/l10n.dart';
 import 'package:wot_statistic/layers/presentation/settings_page/widgets/language_picker.dart';
 
-import '../../../common/theme/text_styles.dart';
+import 'package:wot_statistic/common/theme/text_styles.dart';
 import 'bloc/settings_cubit.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -23,7 +24,7 @@ class _SettingsPageState extends State<SettingsPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          SettingsPage.id,
+          S.of(context).Settings,
           style: appBarTitle(context),
         ),
       ),
@@ -33,7 +34,7 @@ class _SettingsPageState extends State<SettingsPage> {
             const SizedBox(height: 25),
             Center(
                 child: Text(
-              "Theme Settings",
+                  S.of(context).ThemeSettings,
               style: onPrimarySubtitle(context),
             )),
             Divider(
@@ -47,7 +48,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     child: Padding(
                       padding: const EdgeInsets.only(left: 10.0),
                       child: Text(
-                        "Enable Dark Theme",
+                        S.of(context).EnableDarkTheme,
                         style: onSecondarySubtitle(context),
                       ),
                     )),
@@ -79,7 +80,7 @@ class _SettingsPageState extends State<SettingsPage> {
             const SizedBox(height: 25),
             Center(
                 child: Text(
-              "Localization Settings",
+                  S.of(context).LocalizationSettings,
               style: onPrimarySubtitle(context),
             )),
             Divider(
@@ -95,7 +96,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     child: Padding(
                       padding: const EdgeInsets.only(left: 10.0),
                       child: Text(
-                        "Language",
+                        S.of(context).Language,
                         style: onSecondarySubtitle(context),
                       ),
                     ),
@@ -111,7 +112,7 @@ class _SettingsPageState extends State<SettingsPage> {
             const SizedBox(height: 25),
             Center(
                 child: Text(
-              "About App",
+                  S.of(context).AboutApp,
               style: onPrimarySubtitle(context),
             )),
             Divider(

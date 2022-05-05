@@ -47,8 +47,11 @@ dependencies:
   #rxdart:
   rxdart: 0.27.1
 
-  #date_format:
+  #date_format + l18n
   intl: 0.17.0
+
+  flutter_localizations:
+    sdk: flutter
 
   #staggered_grid_view_flutter:
   flutter_staggered_grid_view: 0.6.1
@@ -88,3 +91,7 @@ flutter:
     - family: Krona One
       fonts:
         - asset: fonts/KronaOne-Regular.ttf
+
+flutter_intl:
+  main_locale: en_US
+  enabled: true

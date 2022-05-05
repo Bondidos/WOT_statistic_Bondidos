@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:wot_statistic/generated/l10n.dart';
 import 'package:wot_statistic/layers/domain/entities/personal_data.dart';
 import 'package:wot_statistic/layers/domain/entities/personal_data_card.dart';
 import 'package:wot_statistic/layers/presentation/common_widget/common_widgets.dart';
@@ -65,9 +66,9 @@ class PersonalDataWidget extends StatelessWidget {
                   crossAxisCount: 2,
                 ),
               )
-            : const SliverFillRemaining(
+            : SliverFillRemaining(
                 child: Center(
-                  child: Text('To view personal data, sign in first'),
+                  child: Text(S.of(context).InviteToSignIn),
                 ),
               )
       ],
@@ -156,7 +157,7 @@ class PersonalDataWidget extends StatelessWidget {
               : Expanded(
                   child: Center(
                     child: Text(
-                      "User have no clan",
+                      S.of(context).NoClanMessage,
                       style: onCard(context),
                     ),
                   ),

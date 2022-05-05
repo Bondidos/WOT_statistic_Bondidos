@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:wot_statistic/generated/l10n.dart';
 import 'package:wot_statistic/layers/presentation/search_user/bloc/search_user_cubit.dart';
 import 'package:wot_statistic/layers/presentation/statistic_page/statistic_page.dart';
 
-import '../../../common/theme/text_styles.dart';
+import 'package:wot_statistic/common/theme/text_styles.dart';
 import 'bloc/search_user_state.dart';
 import 'package:wot_statistic/injection_container.dart' as di;
 
@@ -50,8 +51,8 @@ class SearchUserPage extends StatelessWidget {
                           onChanged: (search) => ctx
                               .read<SearchUserCubit>()
                               .onTextChange(search),
-                          decoration: const InputDecoration(
-                              hintText: 'Enter player name'),
+                          decoration: InputDecoration(
+                              hintText: S.of(context).EnterPlayerName),
                         ),
                         Expanded(
                           child: state.foundList.isNotEmpty

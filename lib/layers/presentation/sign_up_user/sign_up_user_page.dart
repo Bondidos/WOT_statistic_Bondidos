@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:wot_statistic/generated/l10n.dart';
 
 import '../../../common/constants/constants.dart';
 import '../../../common/constants/network_const.dart';
@@ -35,7 +36,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(SignUpPage.id, style: appBarTitle(context)),
+        title: Text(S.of(context).OpenIdSignUp, style: appBarTitle(context)),
         actions: [
           IconButton(
             onPressed: () {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:wot_statistic/generated/l10n.dart';
 import 'package:wot_statistic/layers/presentation/common_widget/common_widgets.dart';
 import 'package:wot_statistic/layers/presentation/statistic_page/widgets/vehicles_widget/bloc/vehicles_data_cubit.dart';
 import 'package:wot_statistic/layers/presentation/statistic_page/widgets/vehicles_widget/bloc/vehicles_state.dart';
@@ -16,15 +17,15 @@ class VehiclesWidget extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Vehicles'),
+        title: Text(S.of(context).Vehicles),
         actions: [
           PopupMenuButton(
             icon: const Icon(Icons.sort),
             itemBuilder: (ctx) => <PopupMenuEntry>[
-              _sortMenuItem(onTap: cubit.sortByLvl, name: 'By Level'),
-              _sortMenuItem(onTap: cubit.sortByBattles, name: 'By Battles'),
-              _sortMenuItem(onTap: cubit.sortByMastery, name: 'By Mastery'),
-              _sortMenuItem(onTap: cubit.sortByWins, name: 'By Wins'),
+              _sortMenuItem(onTap: cubit.sortByLvl, name: S.of(context).ByLevel),
+              _sortMenuItem(onTap: cubit.sortByBattles, name: S.of(context).ByBattles),
+              _sortMenuItem(onTap: cubit.sortByMastery, name: S.of(context).ByMastery),
+              _sortMenuItem(onTap: cubit.sortByWins, name: S.of(context).ByWins),
             ],
           ),
           PopupMenuButton(

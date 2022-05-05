@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wot_statistic/generated/l10n.dart';
 
 import '../../../../common/theme/text_styles.dart';
 
@@ -23,11 +24,11 @@ class _LanguagePickerState extends State<LanguagePicker> {
         //todo font bigger
         (picked == MenuOption.eng)
             ? Text(
-                "English",
+          S.of(context).English,
                 style: onSecondarySubtitle(context),
               )
             : Text(
-                "Russian",
+          S.of(context).Russian,
                 style: onSecondarySubtitle(context),
               ),
         PopupMenuButton(
@@ -42,7 +43,7 @@ class _LanguagePickerState extends State<LanguagePicker> {
                   //todo set lang (ThemeCubit)
                 },
                 child: Text(
-                  "English",
+                  S.of(context).English,
                   style: onSecondarySubtitle(context),
                 ),
               ),
@@ -54,7 +55,7 @@ class _LanguagePickerState extends State<LanguagePicker> {
                   //todo set lang (cubit)
                 },
                 child: Text(
-                  "Russian",
+                  S.of(context).Russian,
                   style: onSecondarySubtitle(context),
                 ),
               ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:wot_statistic/generated/l10n.dart';
 import 'package:wot_statistic/layers/domain/entities/user.dart';
 import 'package:wot_statistic/layers/presentation/common_widget/common_widgets.dart';
 import 'package:wot_statistic/layers/presentation/settings_page/settings_page.dart';
@@ -22,10 +23,9 @@ class SignInPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final SingInCubit cubit = context.read<SingInCubit>();
-
     return Scaffold(
       appBar: AppBar(
-        title: Text(id, style: appBarTitle(context)),
+        title: Text(S.of(context).AppName, style: appBarTitle(context)),
         actions: [
           IconButton(
             onPressed: () {
@@ -64,7 +64,7 @@ class SignInPage extends StatelessWidget {
                           children: [
                             const SizedBox(height: 20),
                             ThemedButton(
-                              title: "Sign In",
+                              title: S.of(context).SignIn,
                               onTap: () async {
                                 if (await cubit.signInAction()) {
                                   Navigator.of(context)
@@ -74,7 +74,7 @@ class SignInPage extends StatelessWidget {
                             ),
                             const SizedBox(height: 10),
                             ThemedButton(
-                              title: "Sign Up",
+                              title: S.of(context).SignUp,
                               onTap: () async {
                                 String realm = state.realm;
                                 User? user = await Navigator.of(context)
@@ -86,7 +86,7 @@ class SignInPage extends StatelessWidget {
                             ),
                             const SizedBox(height: 10),
                             ThemedButton(
-                              title: "Delete",
+                              title: S.of(context).Delete,
                               onTap: () => cubit.removeUser(),
                             ),
                             const SizedBox(height: 20),
@@ -118,7 +118,7 @@ class SignInPage extends StatelessWidget {
             child: Column(
               children: [
                 Text(
-                  "Pick realm",
+                  S.of(context).PickRealm,
                   style: onSurfaceSubtitle(context),
                 ),
                 const RegionPicker(),

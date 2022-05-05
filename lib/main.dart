@@ -4,6 +4,8 @@ import 'package:wot_statistic/layers/presentation/statistic_page/statistic_page.
 import 'injection_container.dart' as di;
 import 'layers/presentation/settings_page/bloc/settings_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:wot_statistic/generated/l10n.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'layers/presentation/sign_up_user/sign_up_user_page.dart';
 import 'layers/presentation/sing_in_page/bloc/sign_in_cubit.dart';
@@ -59,6 +61,13 @@ class MyApp extends StatelessWidget {
             SignUpPage.id: (ctx) => const SignUpPage(),
             StatisticPage.id: (ctx) => const StatisticPage(),
           },
+          localizationsDelegates: const [
+            S.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate, // no need? because of no apple support?
+          ],
+          supportedLocales: S.delegate.supportedLocales,
           home: const SignInPage(),
         );
       },

@@ -12,13 +12,15 @@ class AchieveItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.of(context).push(HeroDialogRoute(
-          builder: (BuildContext context) => DetailsWidget(
-            heroTag: card.name,
-            description: card.description ?? 'No Description',
-            bigImage: card.imageBig,
+        Navigator.of(context).push(
+          HeroDialogRoute(
+            builder: (BuildContext context) => DetailsWidget(
+              heroTag: card.name,
+              description: card.description,
+              bigImage: card.imageBig,
+            ),
           ),
-        ));
+        );
       },
       child: Card(
         color: Theme.of(context).colorScheme.primary,
