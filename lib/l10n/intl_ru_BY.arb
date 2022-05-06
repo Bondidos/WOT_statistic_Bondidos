@@ -25,6 +25,20 @@
   "ByLevel": "Уровень",
   "ByBattles": "Количество боёв",
   "ByMastery": "Мастерство",
-  "ByWins": "Победы"
-
+  "ByWins": "Победы",
+  "Gold": "Золото",
+  "Bonds": "Боны",
+  "FreeExp": "Свободный опыт",
+  "Credits": "Кредиты",
+  "Premium": "Премиум",
+  "Yes": "Да",
+  "No": "Нет",
+  "Expired": "Истёк",
+  "BoundedToPhone": "Привязан к телефону",
+  "BattleLifetime": "Время в бою",
+  "hours": "Часов",
+  "BanTime": "Забанен",
+  "None": "Нет",
+  "ChatBanInfo": "Бан чата",
+  "ExpiresAt": "Истекает"
 }

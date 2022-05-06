@@ -330,7 +330,15 @@ class S {
     );
   }
 
-  // skipped getter for the 'Free Exp' key
+  /// `Free Exp`
+  String get FreeExp {
+    return Intl.message(
+      'Free Exp',
+      name: 'FreeExp',
+      desc: '',
+      args: [],
+    );
+  }
 
   /// `Credits`
   String get Credits {
@@ -382,7 +390,15 @@ class S {
     );
   }
 
-  // skipped getter for the '\'BoundedToPhone' key
+  /// `Bounded to phone`
+  String get BoundedToPhone {
+    return Intl.message(
+      'Bounded to phone',
+      name: 'BoundedToPhone',
+      desc: '',
+      args: [],
+    );
+  }
 
   /// `Battle lifetime`
   String get BattleLifetime {
@@ -429,6 +445,16 @@ class S {
     return Intl.message(
       'Chat ban info',
       name: 'ChatBanInfo',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Expires at`
+  String get ExpiresAt {
+    return Intl.message(
+      'Expires at',
+      name: 'ExpiresAt',
       desc: '',
       args: [],
     );

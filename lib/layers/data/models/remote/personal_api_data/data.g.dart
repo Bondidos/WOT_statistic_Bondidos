@@ -7,9 +7,7 @@ part of 'data.dart';
 // **************************************************************************
 
 Data _$DataFromJson(Map<String, dynamic> json) => Data(
-      private: json['private'] == null
-          ? null
-          : Private.fromJson(json['private'] as Map<String, dynamic>),
+      private: json['private'] as Map<String, dynamic>?,
       clanId: json['clan_id'] as int?,
       globalRating: json['global_rating'] as int,
       nickname: json['nickname'] as String,

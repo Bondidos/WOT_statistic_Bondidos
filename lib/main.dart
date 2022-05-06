@@ -68,6 +68,7 @@ class MyApp extends StatelessWidget {
             GlobalCupertinoLocalizations.delegate, // no need? because of no apple support?
           ],
           supportedLocales: S.delegate.supportedLocales,
+          locale: const Locale("ru","BY"),
           home: const SignInPage(),
         );
       },

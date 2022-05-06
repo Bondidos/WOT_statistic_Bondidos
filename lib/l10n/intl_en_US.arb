@@ -28,17 +28,17 @@
   "ByWins": "By Wins",
   "Gold": "Gold",
   "Bonds": "Bonds",
-  "Free Exp": "Free Exp",
+  "FreeExp": "Free Exp",
   "Credits": "Credits",
   "Premium": "Premium",
   "Yes": "Yes",
   "No": "No",
   "Expired": "Expired",
-  "'BoundedToPhone": "Bounded to phone",
+  "BoundedToPhone": "Bounded to phone",
   "BattleLifetime": "Battle lifetime",
   "hours": "hours",
   "BanTime": "Ban time",
   "None": "None",
-  "ChatBanInfo": "Chat ban info"
-
+  "ChatBanInfo": "Chat ban info",
+  "ExpiresAt": "Expires at"
 }

@@ -47,6 +47,7 @@ class PersonalDataWidget extends StatelessWidget {
 
   CustomScrollView privateDataScrollView(
       PersonalData data, BuildContext context, LoadedDataState state) {
+    List<PersonalDataCard> personalData = state.personalData.toCardList(context);
     return CustomScrollView(
       slivers: [
         _sliverAppBar(data, context, state),
@@ -54,13 +55,11 @@ class PersonalDataWidget extends StatelessWidget {
             ? SliverGrid(
                 delegate: SliverChildBuilderDelegate(
                   (context, index) {
-                    List<PersonalDataCard> personalData =
-                        state.personalData.private ?? [];
                     return PrivateItemWidget(
                       card: personalData[index],
                     );
                   },
-                  childCount: state.personalData.private?.length ?? 0,
+                  childCount: personalData.length,
                 ),
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,

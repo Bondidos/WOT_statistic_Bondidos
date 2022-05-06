@@ -1,12 +1,11 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:wot_statistic/layers/data/models/remote/personal_api_data/private.dart';
 
 part 'data.g.dart';
 
 @JsonSerializable()
 class Data {
   @JsonKey(name: 'private')
-  final Private? private;
+  final Map<String,dynamic>? private;
   @JsonKey(name: 'clan_id')
   final int? clanId;
   @JsonKey(name: 'global_rating')
