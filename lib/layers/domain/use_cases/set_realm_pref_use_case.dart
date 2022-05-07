@@ -1,4 +1,4 @@
-import '../repositories/repository.dart';
+import 'package:wot_statistic/layers/domain/repositories/repository.dart';
 
 class SetRealmUseCase {
   final Repository repository;

@@ -17,7 +17,9 @@ import 'layers/domain/use_cases/load_vehicles_data.dart';
 import 'layers/domain/use_cases/remove_user_use_case.dart';
 import 'layers/domain/use_cases/save_user_use_case.dart';
 import 'layers/domain/use_cases/search_user_use_case.dart';
+import 'layers/domain/use_cases/set_lng_use_case.dart';
 import 'layers/domain/use_cases/set_theme_use_case.dart';
+import 'layers/domain/use_cases/subscribe_lng_use_case.dart';
 import 'layers/domain/use_cases/subscribe_users_use_case.dart';
 import 'layers/domain/use_cases/set_realm_pref_use_case.dart';
 import 'layers/domain/use_cases/subscribe_realm_use_case.dart';
@@ -37,8 +39,12 @@ final inj = GetIt.instance;
 Future<void> init() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  inj.registerFactory(
-      () => SettingsCubit(subscribeTheme: inj(), setTheme: inj()));
+  inj.registerFactory(() => SettingsCubit(
+        subscribeTheme: inj(),
+        setTheme: inj(),
+        subscribeLng: inj(),
+        setLngUseCase: inj(),
+      ));
 
   inj.registerFactory(() => SingInCubit(
         saveUser: inj(),
@@ -52,7 +58,7 @@ Future<void> init() async {
   inj.registerFactory(() => PersonalDataCubit(loadData: inj()));
   inj.registerFactory(() => VehiclesDataCubit(loadVehicles: inj()));
   inj.registerFactory(() => AchievesDataCubit(loadAchieves: inj()));
-  inj.registerFactory(() => SearchUserCubit(searchUser: inj(),signIn: inj()));
+  inj.registerFactory(() => SearchUserCubit(searchUser: inj(), signIn: inj()));
 
   inj.registerFactory(() => SearchUserUseCase(repository: inj()));
   inj.registerFactory(() => LoadAchievesData(repository: inj()));
@@ -66,6 +72,8 @@ Future<void> init() async {
   inj.registerFactory(() => SetThemeUseCase(repository: inj()));
   inj.registerFactory(() => LoadPersonalData(repository: inj()));
   inj.registerFactory(() => SingInUseCase(repository: inj()));
+  inj.registerFactory(() => SubscribeLng(repository: inj()));
+  inj.registerFactory(() => SetLngUseCase(repository: inj()));
 
   inj.registerLazySingleton<Repository>(() => RepositoryImpl(
       localSource: inj(), remoteSource: inj(), baseOptions: inj()));

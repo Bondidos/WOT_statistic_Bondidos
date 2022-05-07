@@ -9,6 +9,9 @@ const EU = "EU";
 const CIS = "CIS";
 const NOT_PICKED = "Not Picked";
 const INITIAL = "initial";
+const ENGLISH = "english";
+const RUSSIAN = "russian";
+
 
 // assets
 const PORTRAIT_BACKGROUND = "assets/background/main_background_portrait.jpg";

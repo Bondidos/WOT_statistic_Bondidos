@@ -1,32 +1,36 @@
 part of 'settings_cubit.dart';
 
-abstract class SettingsState extends Equatable {
-  const SettingsState();
-}
+enum SettingsStatus { init, themeStatusChanged, languageStatusChanged, error }
 
-class ThemeDark extends SettingsState {
-  const ThemeDark();
+class SettingsState extends Equatable {
+  final String themeStatus;
+  final String languageStatus;
+  final SettingsStatus status;
+
+  const SettingsState({
+    required this.languageStatus,
+    required this.themeStatus,
+    required this.status,
+  });
 
   @override
-  List<Object?> get props => [];
-}
+  List<Object?> get props => [languageStatus, themeStatus, status];
 
-class ThemeLight extends SettingsState {
-  const ThemeLight();
-
-  @override
-  List<Object?> get props => [];
-}
-
-class SettingsInit extends SettingsState {
-  @override
-  List<Object?> get props => [];
+  SettingsState copyWith(
+      {String? themeStatus, String? languageStatus, SettingsStatus? status}) {
+    return SettingsState(
+        themeStatus: themeStatus ?? this.themeStatus,
+        status: status ?? this.status,
+        languageStatus: languageStatus ?? this.languageStatus);
+  }
 }
 
 class SettingsError extends SettingsState {
   final String message;
 
-  const SettingsError({required this.message});
+  const SettingsError({required this.message})
+      : super(
+            languageStatus: '', themeStatus: '', status: SettingsStatus.error);
 
   @override
   List<Object?> get props => [message];

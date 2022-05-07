@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:wot_statistic/common/constants/constants.dart';
 import 'package:wot_statistic/layers/presentation/settings_page/settings_page.dart';
 import 'package:wot_statistic/layers/presentation/statistic_page/statistic_page.dart';
+import 'common/constants/shared_pref_keys.dart';
 import 'injection_container.dart' as di;
 import 'layers/presentation/settings_page/bloc/settings_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,6 +12,8 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'layers/presentation/sign_up_user/sign_up_user_page.dart';
 import 'layers/presentation/sing_in_page/bloc/sign_in_cubit.dart';
 import 'layers/presentation/sing_in_page/sign_in_page.dart';
+
+const ruLng = 'ru';
 
 void main() async {
   await di.init();
@@ -27,12 +31,17 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SettingsCubit, SettingsState>(
-      buildWhen: (prevState, currentState) =>
-          (currentState is ThemeDark || currentState is ThemeLight),
+    return BlocConsumer<SettingsCubit, SettingsState>(
+      listener: (ctx,currentState){
+        if(currentState.languageStatus == NOT_PICKED){
+          Locale locale = Localizations.localeOf(context);
+          context.read<SettingsCubit>().setLng(locale.languageCode);
+        }
+      },
+      buildWhen: (prevState, currentState) =>(prevState != currentState),
       builder: (ctx, state) {
         return MaterialApp(
-          theme: (state is ThemeDark)
+          theme: (state.themeStatus == DARK_THEME)
               ? ThemeData(
                   primaryColor: const Color(0xffdbcbcb),
                   colorScheme: const ColorScheme.dark().copyWith(
@@ -65,10 +74,13 @@ class MyApp extends StatelessWidget {
             S.delegate,
             GlobalMaterialLocalizations.delegate,
             GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate, // no need? because of no apple support?
+            GlobalCupertinoLocalizations.delegate,
+            // no need? because of no apple support?
           ],
           supportedLocales: S.delegate.supportedLocales,
-          locale: const Locale("ru","BY"),
+          locale: state.languageStatus == ruLng
+              ? const Locale("ru", "BY")
+              : const Locale("en", "US"),
           home: const SignInPage(),
         );
       },

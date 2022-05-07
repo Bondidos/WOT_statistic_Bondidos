@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wot_statistic/generated/l10n.dart';
+import 'package:wot_statistic/layers/presentation/settings_page/bloc/settings_cubit.dart';
 
 import '../../../../common/theme/text_styles.dart';
 
 enum MenuOption { eng, ru }
 
-//todo lang realm to shared prefs
+const ruLng = 'ruLng';
+
 class LanguagePicker extends StatefulWidget {
   const LanguagePicker({Key? key}) : super(key: key);
 
@@ -14,21 +17,22 @@ class LanguagePicker extends StatefulWidget {
 }
 
 class _LanguagePickerState extends State<LanguagePicker> {
-  // todo sync with native? / set from prefs
-  MenuOption picked = MenuOption.eng;
-
   @override
   Widget build(BuildContext context) {
+    SettingsCubit settingsCubit = context.read<SettingsCubit>();
+    MenuOption picked = settingsCubit.state.languageStatus == ruLng
+        ? MenuOption.ru
+        : MenuOption.eng;
+
     return Row(
       children: [
-        //todo font bigger
         (picked == MenuOption.eng)
             ? Text(
-          S.of(context).English,
+                S.of(context).English,
                 style: onSecondarySubtitle(context),
               )
             : Text(
-          S.of(context).Russian,
+                S.of(context).Russian,
                 style: onSecondarySubtitle(context),
               ),
         PopupMenuButton(
@@ -40,7 +44,7 @@ class _LanguagePickerState extends State<LanguagePicker> {
                   setState(() {
                     picked = MenuOption.eng;
                   });
-                  //todo set lang (ThemeCubit)
+                  settingsCubit.setLng('en');
                 },
                 child: Text(
                   S.of(context).English,
@@ -52,7 +56,7 @@ class _LanguagePickerState extends State<LanguagePicker> {
                   setState(() {
                     picked = MenuOption.ru;
                   });
-                  //todo set lang (cubit)
+                  settingsCubit.setLng('ru');
                 },
                 child: Text(
                   S.of(context).Russian,

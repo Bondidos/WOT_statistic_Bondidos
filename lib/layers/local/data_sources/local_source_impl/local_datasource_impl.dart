@@ -3,11 +3,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wot_statistic/layers/data/models/remote/achievements_data/achievement_data.dart';
 import 'package:wot_statistic/layers/data/models/remote/vehicles_data/vehicles_data_ttc.dart';
 import 'package:wot_statistic/layers/data/sources/local_data_source.dart';
-import '../../../../common/constants/constants.dart';
-import '../../../../common/constants/shared_pref_keys.dart';
-import '../../../data/models/local/user_data.dart';
-import '../../../domain/entities/user.dart';
-import '../sources/drift_database/dao/wot_stat_dao.dart';
+import 'package:wot_statistic/common/constants/constants.dart';
+import 'package:wot_statistic/common/constants/shared_pref_keys.dart';
+import 'package:wot_statistic/layers/data/models/local/user_data.dart';
+import 'package:wot_statistic/layers/domain/entities/user.dart';
+import 'package:wot_statistic/layers/local/data_sources/sources/drift_database/dao/wot_stat_dao.dart';
 
 class LocalDataSourceImpl extends LocalDataSource {
   //todo move SP to separate file?
@@ -19,10 +19,13 @@ class LocalDataSourceImpl extends LocalDataSource {
 
   BehaviorSubject<String> realmStream = BehaviorSubject.seeded(NOT_PICKED);
   BehaviorSubject<String> themeStream = BehaviorSubject.seeded(NOT_PICKED);
+  BehaviorSubject<String> lngStream = BehaviorSubject.seeded(NOT_PICKED);
 
   String get _readRealm => sharedPreferences.getString(REALM_KEY) ?? NOT_PICKED;
 
   String get _readTheme => sharedPreferences.getString(THEME_KEY) ?? NOT_PICKED;
+
+  String get _readLng => sharedPreferences.getString(LNG_KEY) ?? NOT_PICKED;
 
   @override
   Future<void> setSingedUser(UserData user) async => Future.wait([
@@ -45,7 +48,8 @@ class LocalDataSourceImpl extends LocalDataSource {
         nickname == null ||
         accessToken == null ||
         expiresAt == null ||
-        realm == null) return null;
+        realm == null
+    ) return null;
 
     return UserData(
       id: id,
@@ -66,10 +70,20 @@ class LocalDataSourceImpl extends LocalDataSource {
   Stream<String> subscribeTheme() => themeStream..add(_readTheme);
 
   @override
+  Stream<String> subscribeLng() => lngStream..add(_readLng);
+
+  @override
   void saveUser(UserData user) => wotStatDao.saveUser(user);
 
   @override
   Future<void> removeUser(UserData user) => wotStatDao.removeUser(user);
+
+  @override
+  void setLng(String lng) async {
+    final bool result = await sharedPreferences.setString(LNG_KEY, lng);
+    if (!result) return;
+    lngStream.add(lng);
+  }
 
   @override
   void setRealm(String realm) async {

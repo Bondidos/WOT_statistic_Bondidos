@@ -1,12 +1,14 @@
-import '../../domain/entities/user.dart';
-import '../models/local/user_data.dart';
-import '../models/remote/achievements_data/achievement_data.dart';
-import '../models/remote/vehicles_data/vehicles_data_ttc.dart';
+import 'package:wot_statistic/layers/domain/entities/user.dart';
+import 'package:wot_statistic/layers/data/models/local/user_data.dart';
+import 'package:wot_statistic/layers/data/models/remote/achievements_data/achievement_data.dart';
+import 'package:wot_statistic/layers/data/models/remote/vehicles_data/vehicles_data_ttc.dart';
 
 abstract class LocalDataSource {
   void setTheme(String theme);
 
   void setRealm(String realm);
+
+  void setLng(String lng);
 
   void saveUser(UserData user);
 
@@ -38,6 +40,8 @@ abstract class LocalDataSource {
   Stream<List<User>> subscribeUsers();
 
   Stream<String> subscribeRealm();
+
+  Stream<String> subscribeLng();
 
   String getCurrentRealm();
 }

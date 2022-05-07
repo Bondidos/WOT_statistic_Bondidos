@@ -5,9 +5,9 @@ import 'package:wot_statistic/generated/l10n.dart';
 import 'package:wot_statistic/layers/data/models/remote/personal_api_data/personal_data_api.dart';
 import 'package:wot_statistic/layers/domain/entities/personal_data_card.dart';
 
-import '../../data/models/remote/clan_info/clan_data.dart';
-import '../../data/models/remote/clan_info/clan_info.dart';
-import '../../data/models/remote/personal_api_data/data.dart';
+import 'package:wot_statistic/layers/data/models/remote/clan_info/clan_data.dart';
+import 'package:wot_statistic/layers/data/models/remote/clan_info/clan_info.dart';
+import 'package:wot_statistic/layers/data/models/remote/personal_api_data/data.dart';
 
 class PersonalData {
   final Map<String, dynamic>? private;

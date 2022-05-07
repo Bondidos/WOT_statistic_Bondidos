@@ -261,4 +261,10 @@ class RepositoryImpl extends Repository {
     }
     return users.data.map((e) => FoundUser.fromSearchUserData(e)).toList();
   }
+
+  @override
+  void setLng(String lng) => localSource.setLng(lng);
+
+  @override
+  Stream<String> get subscribeLng => localSource.subscribeLng();
 }
