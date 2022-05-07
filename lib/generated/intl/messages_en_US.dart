@@ -37,6 +37,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "ByWins": MessageLookupByLibrary.simpleMessage("By Wins"),
         "CIS": MessageLookupByLibrary.simpleMessage("CIS"),
         "ChatBanInfo": MessageLookupByLibrary.simpleMessage("Chat ban info"),
+        "CheckInternetConnection":
+            MessageLookupByLibrary.simpleMessage("Check internet connection"),
         "Credits": MessageLookupByLibrary.simpleMessage("Credits"),
         "Delete": MessageLookupByLibrary.simpleMessage("Delete"),
         "EnableDarkTheme":
@@ -57,16 +59,24 @@ class MessageLookup extends MessageLookupByLibrary {
         "No": MessageLookupByLibrary.simpleMessage("No"),
         "NoClanMessage":
             MessageLookupByLibrary.simpleMessage("User have no clan"),
+        "NoUserToDelete":
+            MessageLookupByLibrary.simpleMessage("No user to delete"),
         "None": MessageLookupByLibrary.simpleMessage("None"),
         "OpenIdSignUp": MessageLookupByLibrary.simpleMessage("OpenId Sign Up"),
         "PickRealm": MessageLookupByLibrary.simpleMessage("Pick realm"),
+        "PleaseSignUp": MessageLookupByLibrary.simpleMessage("Please, sign up"),
         "Premium": MessageLookupByLibrary.simpleMessage("Premium"),
         "Private": MessageLookupByLibrary.simpleMessage("Private"),
         "Russian": MessageLookupByLibrary.simpleMessage("Russian"),
         "Settings": MessageLookupByLibrary.simpleMessage("Settings"),
         "SignIn": MessageLookupByLibrary.simpleMessage("Sign In"),
         "SignUp": MessageLookupByLibrary.simpleMessage("Sign Up"),
+        "SignedUserIsNotExist":
+            MessageLookupByLibrary.simpleMessage("Signed User is not exist"),
         "ThemeSettings": MessageLookupByLibrary.simpleMessage("Theme Settings"),
+        "TokenExpired": MessageLookupByLibrary.simpleMessage(
+            "Token expired, please sign up"),
+        "UserNotFound": MessageLookupByLibrary.simpleMessage("User not found"),
         "Vehicles": MessageLookupByLibrary.simpleMessage("Vehicles"),
         "Yes": MessageLookupByLibrary.simpleMessage("Yes"),
         "hours": MessageLookupByLibrary.simpleMessage("hours")

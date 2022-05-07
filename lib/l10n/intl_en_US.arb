@@ -40,5 +40,11 @@
   "BanTime": "Ban time",
   "None": "None",
   "ChatBanInfo": "Chat ban info",
-  "ExpiresAt": "Expires at"
+  "ExpiresAt": "Expires at",
+  "SignedUserIsNotExist": "Signed User is not exist",
+  "CheckInternetConnection": "Check internet connection",
+  "UserNotFound": "User not found",
+  "NoUserToDelete": "No user to delete",
+  "PleaseSignUp": "Please, sign up",
+  "TokenExpired": "Token expired, please sign up"
 }

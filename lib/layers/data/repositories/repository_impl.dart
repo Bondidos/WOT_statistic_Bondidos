@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:logger/logger.dart';
 import 'package:wot_statistic/common/constants/constants.dart';
+import 'package:wot_statistic/generated/l10n.dart';
 import 'package:wot_statistic/layers/data/models/remote/achievements_data/achievement_data.dart';
 import 'package:wot_statistic/layers/data/models/remote/search_user/search_user.dart';
 import 'package:wot_statistic/layers/data/models/remote/vehicles_data/vehicles_data_meta.dart';
@@ -45,7 +46,7 @@ class RepositoryImpl extends Repository {
 
   UserData get signedUser {
     final _signedUser = localSource.getSignedUser();
-    if (_signedUser == null) throw Exception('Signed User is not exist');
+    if (_signedUser == null) throw Exception(S.current.SignedUserIsNotExist);
     return _signedUser;
   }
 
@@ -86,7 +87,7 @@ class RepositoryImpl extends Repository {
       achievesApi =
           await remoteSource.fetchAchievesData(accountId: signedUser.id);
     } catch (e) {
-      throw Exception('Check internet connection');
+      throw Exception(S.current.CheckInternetConnection);
     }
     final Map<String, int> achievesId =
         achievesApi.createListOfAchievementsId();
@@ -125,7 +126,7 @@ class RepositoryImpl extends Repository {
           ? await remoteSource.fetchClanInfo(clanId: clanId)
           : null;
     } catch (e) {
-      throw Exception('Check internet connection');
+      throw Exception(S.current.CheckInternetConnection);
     }
     return PersonalData.fromPersonalAndClanInfo(personalDataApi, clanInfo);
   }
@@ -138,7 +139,7 @@ class RepositoryImpl extends Repository {
         accessToken: signedUser.accessToken,
       );
     } catch (e) {
-      throw Exception('Check internet connection');
+      throw Exception(S.current.CheckInternetConnection);
     }
     return personalDataApi;
   }
@@ -181,7 +182,7 @@ class RepositoryImpl extends Repository {
     try {
       achievementsDataBase = await remoteSource.fetchAchievesDataBase();
     } catch (e) {
-      throw Exception('Check internet connection');
+      throw Exception(S.current.CheckInternetConnection);
     }
     if (achievesInDbCount == achievementsDataBase.meta.count) return;
     _createOrSyncAchievesDb(achievementsDataBase);
@@ -204,7 +205,7 @@ class RepositoryImpl extends Repository {
       ))
           .meta;
     } catch (e) {
-      throw Exception('Check internet connection');
+      throw Exception(S.current.CheckInternetConnection);
     }
     final int databaseTtcCount = localSource.getVehiclesTTCCount();
     if (vehiclesDataMeta.total == databaseTtcCount) return;
@@ -238,7 +239,7 @@ class RepositoryImpl extends Repository {
         );
       }
     } catch (e) {
-      throw Exception('Check internet connection');
+      throw Exception(S.current.CheckInternetConnection);
     }
     return vehiclesTTCList;
   }
@@ -257,7 +258,7 @@ class RepositoryImpl extends Repository {
     try {
       users = await remoteSource.searchUser(search);
     } catch(e){
-      throw Exception('Check internet connection');
+      throw Exception(S.current.CheckInternetConnection);
     }
     return users.data.map((e) => FoundUser.fromSearchUserData(e)).toList();
   }

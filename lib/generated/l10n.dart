@@ -459,6 +459,66 @@ class S {
       args: [],
     );
   }
+
+  /// `Signed User is not exist`
+  String get SignedUserIsNotExist {
+    return Intl.message(
+      'Signed User is not exist',
+      name: 'SignedUserIsNotExist',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Check internet connection`
+  String get CheckInternetConnection {
+    return Intl.message(
+      'Check internet connection',
+      name: 'CheckInternetConnection',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `User not found`
+  String get UserNotFound {
+    return Intl.message(
+      'User not found',
+      name: 'UserNotFound',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No user to delete`
+  String get NoUserToDelete {
+    return Intl.message(
+      'No user to delete',
+      name: 'NoUserToDelete',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please, sign up`
+  String get PleaseSignUp {
+    return Intl.message(
+      'Please, sign up',
+      name: 'PleaseSignUp',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Token expired, please sign up`
+  String get TokenExpired {
+    return Intl.message(
+      'Token expired, please sign up',
+      name: 'TokenExpired',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

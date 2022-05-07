@@ -40,5 +40,11 @@
   "BanTime": "Забанен",
   "None": "Нет",
   "ChatBanInfo": "Бан чата",
-  "ExpiresAt": "Истекает"
+  "ExpiresAt": "Истекает",
+  "SignedUserIsNotExist": "Нет пользователя",
+  "CheckInternetConnection": "Проверьте интернет соединение",
+  "UserNotFound": "Пользователь не найден",
+  "NoUserToDelete": "Некого удалять",
+  "PleaseSignUp": "Пожалуйста, авторизуйтесь",
+  "TokenExpired": "Нет доступа, зарегистрируйтесь"
 }

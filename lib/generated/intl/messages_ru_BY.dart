@@ -36,6 +36,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "ByWins": MessageLookupByLibrary.simpleMessage("Победы"),
         "CIS": MessageLookupByLibrary.simpleMessage("СНГ"),
         "ChatBanInfo": MessageLookupByLibrary.simpleMessage("Бан чата"),
+        "CheckInternetConnection": MessageLookupByLibrary.simpleMessage(
+            "Проверьте интернет соединение"),
         "Credits": MessageLookupByLibrary.simpleMessage("Кредиты"),
         "Delete": MessageLookupByLibrary.simpleMessage("Удалить"),
         "EnableDarkTheme":
@@ -55,16 +57,26 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Локализация"),
         "No": MessageLookupByLibrary.simpleMessage("Нет"),
         "NoClanMessage": MessageLookupByLibrary.simpleMessage("Нет Клана"),
+        "NoUserToDelete":
+            MessageLookupByLibrary.simpleMessage("Некого удалять"),
         "None": MessageLookupByLibrary.simpleMessage("Нет"),
         "OpenIdSignUp": MessageLookupByLibrary.simpleMessage("Регистрация"),
         "PickRealm": MessageLookupByLibrary.simpleMessage("Выбор Региона"),
+        "PleaseSignUp":
+            MessageLookupByLibrary.simpleMessage("Пожалуйста, авторизуйтесь"),
         "Premium": MessageLookupByLibrary.simpleMessage("Премиум"),
         "Private": MessageLookupByLibrary.simpleMessage("Личное"),
         "Russian": MessageLookupByLibrary.simpleMessage("Русский"),
         "Settings": MessageLookupByLibrary.simpleMessage("Настройки"),
         "SignIn": MessageLookupByLibrary.simpleMessage("Войти"),
         "SignUp": MessageLookupByLibrary.simpleMessage("Регистрация"),
+        "SignedUserIsNotExist":
+            MessageLookupByLibrary.simpleMessage("Нет пользователя"),
         "ThemeSettings": MessageLookupByLibrary.simpleMessage("Тема"),
+        "TokenExpired": MessageLookupByLibrary.simpleMessage(
+            "Нет доступа, зарегистрируйтесь"),
+        "UserNotFound":
+            MessageLookupByLibrary.simpleMessage("Пользователь не найден"),
         "Vehicles": MessageLookupByLibrary.simpleMessage("Техника"),
         "Yes": MessageLookupByLibrary.simpleMessage("Да"),
         "hours": MessageLookupByLibrary.simpleMessage("Часов")

@@ -7,7 +7,8 @@ import '../../../../common/theme/text_styles.dart';
 
 enum MenuOption { eng, ru }
 
-const ruLng = 'ruLng';
+const ruLng = 'ru';
+const euLng = 'en';
 
 class LanguagePicker extends StatefulWidget {
   const LanguagePicker({Key? key}) : super(key: key);
@@ -44,7 +45,7 @@ class _LanguagePickerState extends State<LanguagePicker> {
                   setState(() {
                     picked = MenuOption.eng;
                   });
-                  settingsCubit.setLng('en');
+                  settingsCubit.setLng(ruLng);
                 },
                 child: Text(
                   S.of(context).English,
@@ -56,7 +57,7 @@ class _LanguagePickerState extends State<LanguagePicker> {
                   setState(() {
                     picked = MenuOption.ru;
                   });
-                  settingsCubit.setLng('ru');
+                  settingsCubit.setLng(euLng);
                 },
                 child: Text(
                   S.of(context).Russian,

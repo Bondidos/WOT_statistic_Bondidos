@@ -3,14 +3,15 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:wot_statistic/common/constants/constants.dart';
-import '../../../../common/theme/text_styles.dart';
-import '../../../domain/entities/user.dart';
-import '../../../domain/use_cases/remove_user_use_case.dart';
-import '../../../domain/use_cases/save_user_use_case.dart';
-import '../../../domain/use_cases/sing_in_use_case.dart';
-import '../../../domain/use_cases/subscribe_users_use_case.dart';
-import '../../../domain/use_cases/set_realm_pref_use_case.dart';
-import '../../../domain/use_cases/subscribe_realm_use_case.dart';
+import 'package:wot_statistic/generated/l10n.dart';
+import 'package:wot_statistic/common/theme/text_styles.dart';
+import 'package:wot_statistic/layers/domain/entities/user.dart';
+import 'package:wot_statistic/layers/domain/use_cases/remove_user_use_case.dart';
+import 'package:wot_statistic/layers/domain/use_cases/save_user_use_case.dart';
+import 'package:wot_statistic/layers/domain/use_cases/sing_in_use_case.dart';
+import 'package:wot_statistic/layers/domain/use_cases/subscribe_users_use_case.dart';
+import 'package:wot_statistic/layers/domain/use_cases/set_realm_pref_use_case.dart';
+import 'package:wot_statistic/layers/domain/use_cases/subscribe_realm_use_case.dart';
 
 part 'sign_in_state.dart';
 
@@ -80,7 +81,7 @@ class SingInCubit extends Cubit<SignInState> {
     try {
       _currentUser = _prevUsers.firstWhere(
           (user) => user.nickname == userNickname,
-          orElse: () => throw Exception('User not found'));
+          orElse: () => throw Exception(S.current.UserNotFound));
       emit(SignInStateLoaded(realm: _currentRealm, prevUsers: _prevUsers));
     } catch (e) {
       error(e.toString());
@@ -119,7 +120,7 @@ class SingInCubit extends Cubit<SignInState> {
   void removeUser() async {
     emit(const SignInStateLoading());
     if (_currentUser == null) {
-      error("No user to delete");
+      error(S.current.NoUserToDelete);
     } else {
       await removeUserUseCase.execute(_currentUser!);
       _fetchPrevUsers(_currentRealm);
@@ -129,12 +130,12 @@ class SingInCubit extends Cubit<SignInState> {
   Future<bool> signInAction() async {
     emit(const SignInStateLoading());
     if (_currentUser == null) {
-      error('Please, sign up');
+      error(S.current.PleaseSignUp);
       return false;
     }
     if (DateTime.now().millisecondsSinceEpoch >
         _currentUser!.expiresAt * 1000) {
-      error('Token expired, please sign up');
+      error(S.current.TokenExpired);
       return false;
     }
     // todo token extension
