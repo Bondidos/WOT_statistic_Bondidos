@@ -2,15 +2,14 @@
 
 World of tanks account statistics #Flutter
 
-## Getting Started
+Uses oficial api developers.wargaming.net
 
-This project is a starting point for a Flutter application.
+Application serves for view player personal data, achieves, vehicles and their details of the World of tanks game.
+The first creen is the Sign in Screen, where we could to sign in , sign up or delete previous user from database.
+We can store several users, and switch between them with any time.
+Also there is realm picker, wich serves for switching between CIS and EU realm.
 
-A few resources to get you started if this is your first Flutter project:
+![image](https://user-images.githubusercontent.com/69970266/167315950-90060315-baad-49e3-a405-e71ce23c85fc.png)
+![image](https://user-images.githubusercontent.com/69970266/167315971-cbae3764-cd60-4e4b-a4dc-94bab2375870.png)
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
