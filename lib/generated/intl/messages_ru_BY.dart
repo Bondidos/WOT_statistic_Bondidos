@@ -24,9 +24,11 @@ class MessageLookup extends MessageLookupByLibrary {
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "AboutApp": MessageLookupByLibrary.simpleMessage("О приложении"),
         "Achieves": MessageLookupByLibrary.simpleMessage("Достижения"),
+        "All": MessageLookupByLibrary.simpleMessage("Все"),
         "AppName": MessageLookupByLibrary.simpleMessage("WOT Статистика"),
         "BanTime": MessageLookupByLibrary.simpleMessage("Забанен"),
         "BattleLifetime": MessageLookupByLibrary.simpleMessage("Время в бою"),
+        "Battles": MessageLookupByLibrary.simpleMessage("Боёв"),
         "Bonds": MessageLookupByLibrary.simpleMessage("Боны"),
         "BoundedToPhone":
             MessageLookupByLibrary.simpleMessage("Привязан к телефону"),
@@ -38,7 +40,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "ChatBanInfo": MessageLookupByLibrary.simpleMessage("Бан чата"),
         "CheckInternetConnection": MessageLookupByLibrary.simpleMessage(
             "Проверьте интернет соединение"),
+        "China": MessageLookupByLibrary.simpleMessage("Китай"),
         "Credits": MessageLookupByLibrary.simpleMessage("Кредиты"),
+        "Czech": MessageLookupByLibrary.simpleMessage("Чехия"),
         "Delete": MessageLookupByLibrary.simpleMessage("Удалить"),
         "EnableDarkTheme":
             MessageLookupByLibrary.simpleMessage("Активировать Тёмную Тему"),
@@ -48,10 +52,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "Europe": MessageLookupByLibrary.simpleMessage("Европа"),
         "Expired": MessageLookupByLibrary.simpleMessage("Истёк"),
         "ExpiresAt": MessageLookupByLibrary.simpleMessage("Истекает"),
+        "France": MessageLookupByLibrary.simpleMessage("Франция"),
         "FreeExp": MessageLookupByLibrary.simpleMessage("Свободный опыт"),
+        "Germany": MessageLookupByLibrary.simpleMessage("Германия"),
         "Gold": MessageLookupByLibrary.simpleMessage("Золото"),
         "InviteToSignIn": MessageLookupByLibrary.simpleMessage(
             "Авторизуйтесь, для просмотра личной информации"),
+        "Italy": MessageLookupByLibrary.simpleMessage("Италия"),
+        "Japan": MessageLookupByLibrary.simpleMessage("Япония"),
         "Language": MessageLookupByLibrary.simpleMessage("Язык"),
         "LocalizationSettings":
             MessageLookupByLibrary.simpleMessage("Локализация"),
@@ -64,6 +72,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "PickRealm": MessageLookupByLibrary.simpleMessage("Выбор Региона"),
         "PleaseSignUp":
             MessageLookupByLibrary.simpleMessage("Пожалуйста, авторизуйтесь"),
+        "Poland": MessageLookupByLibrary.simpleMessage("Польша"),
         "Premium": MessageLookupByLibrary.simpleMessage("Премиум"),
         "Private": MessageLookupByLibrary.simpleMessage("Личное"),
         "Russian": MessageLookupByLibrary.simpleMessage("Русский"),
@@ -72,12 +81,17 @@ class MessageLookup extends MessageLookupByLibrary {
         "SignUp": MessageLookupByLibrary.simpleMessage("Регистрация"),
         "SignedUserIsNotExist":
             MessageLookupByLibrary.simpleMessage("Нет пользователя"),
+        "Sweden": MessageLookupByLibrary.simpleMessage("Швеция"),
         "ThemeSettings": MessageLookupByLibrary.simpleMessage("Тема"),
         "TokenExpired": MessageLookupByLibrary.simpleMessage(
             "Нет доступа, зарегистрируйтесь"),
+        "Uk": MessageLookupByLibrary.simpleMessage("Британия"),
+        "Usa": MessageLookupByLibrary.simpleMessage("США"),
         "UserNotFound":
             MessageLookupByLibrary.simpleMessage("Пользователь не найден"),
+        "Ussr": MessageLookupByLibrary.simpleMessage("СССР"),
         "Vehicles": MessageLookupByLibrary.simpleMessage("Техника"),
+        "Wins": MessageLookupByLibrary.simpleMessage("Победы"),
         "Yes": MessageLookupByLibrary.simpleMessage("Да"),
         "hours": MessageLookupByLibrary.simpleMessage("Часов")
       };

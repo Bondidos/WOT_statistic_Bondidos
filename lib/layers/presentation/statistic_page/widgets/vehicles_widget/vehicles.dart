@@ -22,10 +22,14 @@ class VehiclesWidget extends StatelessWidget {
           PopupMenuButton(
             icon: const Icon(Icons.sort),
             itemBuilder: (ctx) => <PopupMenuEntry>[
-              _sortMenuItem(onTap: cubit.sortByLvl, name: S.of(context).ByLevel),
-              _sortMenuItem(onTap: cubit.sortByBattles, name: S.of(context).ByBattles),
-              _sortMenuItem(onTap: cubit.sortByMastery, name: S.of(context).ByMastery),
-              _sortMenuItem(onTap: cubit.sortByWins, name: S.of(context).ByWins),
+              _sortMenuItem(
+                  onTap: cubit.sortByLvl, name: S.of(context).ByLevel),
+              _sortMenuItem(
+                  onTap: cubit.sortByBattles, name: S.of(context).ByBattles),
+              _sortMenuItem(
+                  onTap: cubit.sortByMastery, name: S.of(context).ByMastery),
+              _sortMenuItem(
+                  onTap: cubit.sortByWins, name: S.of(context).ByWins),
             ],
           ),
           PopupMenuButton(
@@ -88,11 +92,50 @@ class VehiclesWidget extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          Image.asset(asset,width: 28,height: 18,),
-          Text(name),
+          Image.asset(
+            asset,
+            width: 28,
+            height: 18,
+          ),
+          Expanded(
+              child: Text(
+            _translate(name),
+            textAlign: TextAlign.end,
+          )),
         ],
       ),
     );
+  }
+
+  String _translate(String name) {
+    switch (name) {
+      case "All":
+        return S.current.All;
+      case "Ussr":
+        return S.current.Ussr;
+      case "Usa":
+        return S.current.Usa;
+      case "China":
+        return S.current.China;
+      case "Uk":
+        return S.current.Uk;
+      case "Czech":
+        return S.current.Czech;
+      case "Sweden":
+        return S.current.Sweden;
+      case "Poland":
+        return S.current.Poland;
+      case "Italy":
+        return S.current.Italy;
+      case "France":
+        return S.current.France;
+      case "Japan":
+        return S.current.Japan;
+      case "Germany":
+        return S.current.Germany;
+      default:
+        return "";
+    }
   }
 
   List<PopupMenuEntry> _createFilterItems({required Function onTap}) {

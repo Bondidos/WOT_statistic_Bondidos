@@ -46,5 +46,19 @@
   "UserNotFound": "User not found",
   "NoUserToDelete": "No user to delete",
   "PleaseSignUp": "Please, sign up",
-  "TokenExpired": "Token expired, please sign up"
+  "TokenExpired": "Token expired, please sign up",
+  "Wins": "Wins",
+  "Battles": "Battles",
+  "All": "All",
+  "Ussr": "Ussr",
+  "Usa": "Usa",
+  "China": "China",
+  "Uk": "Uk",
+  "Czech": "Czech",
+  "Sweden": "Sweden",
+  "Poland": "Poland",
+  "Italy": "Italy",
+  "France": "France",
+  "Japan": "Japan",
+  "Germany": "Germany"
 }

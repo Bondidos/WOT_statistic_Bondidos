@@ -24,10 +24,12 @@ class MessageLookup extends MessageLookupByLibrary {
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "AboutApp": MessageLookupByLibrary.simpleMessage("About App"),
         "Achieves": MessageLookupByLibrary.simpleMessage("Achieves"),
+        "All": MessageLookupByLibrary.simpleMessage("All"),
         "AppName": MessageLookupByLibrary.simpleMessage("WOT Statistic"),
         "BanTime": MessageLookupByLibrary.simpleMessage("Ban time"),
         "BattleLifetime":
             MessageLookupByLibrary.simpleMessage("Battle lifetime"),
+        "Battles": MessageLookupByLibrary.simpleMessage("Battles"),
         "Bonds": MessageLookupByLibrary.simpleMessage("Bonds"),
         "BoundedToPhone":
             MessageLookupByLibrary.simpleMessage("Bounded to phone"),
@@ -39,7 +41,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "ChatBanInfo": MessageLookupByLibrary.simpleMessage("Chat ban info"),
         "CheckInternetConnection":
             MessageLookupByLibrary.simpleMessage("Check internet connection"),
+        "China": MessageLookupByLibrary.simpleMessage("China"),
         "Credits": MessageLookupByLibrary.simpleMessage("Credits"),
+        "Czech": MessageLookupByLibrary.simpleMessage("Czech"),
         "Delete": MessageLookupByLibrary.simpleMessage("Delete"),
         "EnableDarkTheme":
             MessageLookupByLibrary.simpleMessage("Enable Dark Theme"),
@@ -49,10 +53,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "Europe": MessageLookupByLibrary.simpleMessage("Europe"),
         "Expired": MessageLookupByLibrary.simpleMessage("Expired"),
         "ExpiresAt": MessageLookupByLibrary.simpleMessage("Expires at"),
+        "France": MessageLookupByLibrary.simpleMessage("France"),
         "FreeExp": MessageLookupByLibrary.simpleMessage("Free Exp"),
+        "Germany": MessageLookupByLibrary.simpleMessage("Germany"),
         "Gold": MessageLookupByLibrary.simpleMessage("Gold"),
         "InviteToSignIn": MessageLookupByLibrary.simpleMessage(
             "To view personal data, sign in first"),
+        "Italy": MessageLookupByLibrary.simpleMessage("Italy"),
+        "Japan": MessageLookupByLibrary.simpleMessage("Japan"),
         "Language": MessageLookupByLibrary.simpleMessage("Language"),
         "LocalizationSettings":
             MessageLookupByLibrary.simpleMessage("Localization Settings"),
@@ -65,6 +73,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "OpenIdSignUp": MessageLookupByLibrary.simpleMessage("OpenId Sign Up"),
         "PickRealm": MessageLookupByLibrary.simpleMessage("Pick realm"),
         "PleaseSignUp": MessageLookupByLibrary.simpleMessage("Please, sign up"),
+        "Poland": MessageLookupByLibrary.simpleMessage("Poland"),
         "Premium": MessageLookupByLibrary.simpleMessage("Premium"),
         "Private": MessageLookupByLibrary.simpleMessage("Private"),
         "Russian": MessageLookupByLibrary.simpleMessage("Russian"),
@@ -73,11 +82,16 @@ class MessageLookup extends MessageLookupByLibrary {
         "SignUp": MessageLookupByLibrary.simpleMessage("Sign Up"),
         "SignedUserIsNotExist":
             MessageLookupByLibrary.simpleMessage("Signed User is not exist"),
+        "Sweden": MessageLookupByLibrary.simpleMessage("Sweden"),
         "ThemeSettings": MessageLookupByLibrary.simpleMessage("Theme Settings"),
         "TokenExpired": MessageLookupByLibrary.simpleMessage(
             "Token expired, please sign up"),
+        "Uk": MessageLookupByLibrary.simpleMessage("Uk"),
+        "Usa": MessageLookupByLibrary.simpleMessage("Usa"),
         "UserNotFound": MessageLookupByLibrary.simpleMessage("User not found"),
+        "Ussr": MessageLookupByLibrary.simpleMessage("Ussr"),
         "Vehicles": MessageLookupByLibrary.simpleMessage("Vehicles"),
+        "Wins": MessageLookupByLibrary.simpleMessage("Wins"),
         "Yes": MessageLookupByLibrary.simpleMessage("Yes"),
         "hours": MessageLookupByLibrary.simpleMessage("hours")
       };

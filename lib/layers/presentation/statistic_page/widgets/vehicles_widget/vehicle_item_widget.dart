@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:wot_statistic/common/details_widget.dart';
 import 'package:wot_statistic/common/hero_dialog_route.dart';
 import 'package:wot_statistic/common/theme/text_styles.dart';
+import 'package:wot_statistic/generated/l10n.dart';
 import 'package:wot_statistic/layers/domain/entities/vehicles_data.dart';
 
 class VehicleItemWidget extends StatelessWidget {
@@ -81,7 +82,7 @@ class VehicleItemWidget extends StatelessWidget {
                         ? Image.asset(markOfMastery[vehicle.markOfMastery]!)
                         : Container(),
                     Text(
-                      'Battles:\n${(vehicle.battles.toString())}',
+                      '${S.current.Battles}\n${(vehicle.battles.toString())}',
                       textAlign: TextAlign.center,
                     ),
                   ],
@@ -120,7 +121,7 @@ class VehicleItemWidget extends StatelessWidget {
 
   String _calculateWins(int battlesCount, int winsCount) {
     var result = (100.0 / vehicle.battles * vehicle.wins).toStringAsFixed(2);
-    return 'Wins: \n$result%';
+    return '${S.current.Wins} \n$result%';
   }
 
   Color _colorPicker(BuildContext context, Vehicle vehicle) {

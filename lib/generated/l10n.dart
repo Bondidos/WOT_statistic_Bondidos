@@ -519,6 +519,146 @@ class S {
       args: [],
     );
   }
+
+  /// `Wins`
+  String get Wins {
+    return Intl.message(
+      'Wins',
+      name: 'Wins',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Battles`
+  String get Battles {
+    return Intl.message(
+      'Battles',
+      name: 'Battles',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `All`
+  String get All {
+    return Intl.message(
+      'All',
+      name: 'All',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Ussr`
+  String get Ussr {
+    return Intl.message(
+      'Ussr',
+      name: 'Ussr',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Usa`
+  String get Usa {
+    return Intl.message(
+      'Usa',
+      name: 'Usa',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `China`
+  String get China {
+    return Intl.message(
+      'China',
+      name: 'China',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Uk`
+  String get Uk {
+    return Intl.message(
+      'Uk',
+      name: 'Uk',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Czech`
+  String get Czech {
+    return Intl.message(
+      'Czech',
+      name: 'Czech',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sweden`
+  String get Sweden {
+    return Intl.message(
+      'Sweden',
+      name: 'Sweden',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Poland`
+  String get Poland {
+    return Intl.message(
+      'Poland',
+      name: 'Poland',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Italy`
+  String get Italy {
+    return Intl.message(
+      'Italy',
+      name: 'Italy',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `France`
+  String get France {
+    return Intl.message(
+      'France',
+      name: 'France',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Japan`
+  String get Japan {
+    return Intl.message(
+      'Japan',
+      name: 'Japan',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Germany`
+  String get Germany {
+    return Intl.message(
+      'Germany',
+      name: 'Germany',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
