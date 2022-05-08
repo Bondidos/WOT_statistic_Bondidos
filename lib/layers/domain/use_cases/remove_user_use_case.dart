@@ -1,8 +1,8 @@
 import '../entities/user.dart';
-import '../repositories/repository.dart';
+import '../repositories/sign_in_repo.dart';
 
 class RemoveUserUseCase {
-  final Repository repository;
+  final SignInRepo repository;
 
   RemoveUserUseCase({required this.repository});
 

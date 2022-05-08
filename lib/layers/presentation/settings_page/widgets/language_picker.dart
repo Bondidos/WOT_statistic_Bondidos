@@ -45,7 +45,7 @@ class _LanguagePickerState extends State<LanguagePicker> {
                   setState(() {
                     picked = MenuOption.eng;
                   });
-                  settingsCubit.setLng(ruLng);
+                  settingsCubit.setLng(euLng);
                 },
                 child: Text(
                   S.of(context).English,
@@ -57,7 +57,7 @@ class _LanguagePickerState extends State<LanguagePicker> {
                   setState(() {
                     picked = MenuOption.ru;
                   });
-                  settingsCubit.setLng(euLng);
+                  settingsCubit.setLng(ruLng);
                 },
                 child: Text(
                   S.of(context).Russian,

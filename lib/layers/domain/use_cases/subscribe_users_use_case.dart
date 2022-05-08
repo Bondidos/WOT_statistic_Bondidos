@@ -1,8 +1,8 @@
 import 'package:wot_statistic/layers/domain/entities/user.dart';
-import '../repositories/repository.dart';
+import '../repositories/sign_in_repo.dart';
 
 class SubscribeUsers {
-  final Repository repository;
+  final SignInRepo repository;
 
   SubscribeUsers({required this.repository});
 

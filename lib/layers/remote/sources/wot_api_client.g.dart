@@ -120,9 +120,13 @@ class _WotClient implements WotClient {
   }
 
   @override
-  Future<AchievementsDataBase> fetchAchievesDataBase(applicationId) async {
+  Future<AchievementsDataBase> fetchAchievesDataBase(
+      applicationId, language) async {
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{r'application_id': applicationId};
+    final queryParameters = <String, dynamic>{
+      r'application_id': applicationId,
+      r'language': language
+    };
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(

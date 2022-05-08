@@ -1,7 +1,7 @@
-import 'package:wot_statistic/layers/domain/repositories/repository.dart';
+import '../repositories/sign_in_repo.dart';
 
 class SetRealmUseCase {
-  final Repository repository;
+  final SignInRepo repository;
 
   SetRealmUseCase({required this.repository});
 

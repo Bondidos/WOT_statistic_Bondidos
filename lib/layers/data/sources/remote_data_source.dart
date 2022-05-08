@@ -28,7 +28,9 @@ abstract class RemoteDataSource {
 
   Future<UserAchievesApi> fetchAchievesData({required int accountId});
 
-  Future<AchievementsDataBase> fetchAchievesDataBase();
+  Future<AchievementsDataBase> fetchAchievesDataBase({
+    required String language,
+  });
 
   Future<SearchUser> searchUser(String search);
 }

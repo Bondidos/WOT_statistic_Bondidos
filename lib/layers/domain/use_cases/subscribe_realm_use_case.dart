@@ -1,7 +1,7 @@
-import '../repositories/repository.dart';
+import '../repositories/sign_in_repo.dart';
 
 class SubscribeRealm {
-  final Repository repository;
+  final SignInRepo repository;
 
   SubscribeRealm({required this.repository});
 

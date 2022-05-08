@@ -31,15 +31,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<SettingsCubit, SettingsState>(
-      listener: (ctx,currentState){
-        if(currentState.languageStatus == NOT_PICKED){
-          Locale locale = Localizations.localeOf(context);
-          context.read<SettingsCubit>().setLng(locale.languageCode);
-        }
-      },
-      buildWhen: (prevState, currentState) =>(prevState != currentState),
-      builder: (ctx, state) {
+    return BlocBuilder<SettingsCubit, SettingsState>(
+      buildWhen: (prevState, currentState) => (prevState != currentState),
+      builder: (context, state) {
         return MaterialApp(
           theme: (state.themeStatus == DARK_THEME)
               ? ThemeData(
@@ -81,9 +75,26 @@ class MyApp extends StatelessWidget {
           locale: state.languageStatus == ruLng
               ? const Locale("ru", "BY")
               : const Locale("en", "US"),
-          home: const SignInPage(),
+          home: Builder(builder: (context) {
+            if (state.languageStatus == NOT_PICKED) {
+              Locale locale = Localizations.localeOf(context);
+              context.read<SettingsCubit>().setLng(locale.languageCode);
+            }
+            return const SignInPage();
+          }),
         );
       },
     );
   }
 }
+/*
+BlocListener<SettingsCubit, SettingsState>(
+listenWhen:(prevState,currentState) => currentState.status == SettingsStatus.init,
+listener: (context, currentState) {
+if (currentState.languageStatus == NOT_PICKED) {
+Locale locale = Localizations.localeOf(context);
+context.read<SettingsCubit>().setLng(locale.languageCode);
+}
+},        );
+
+child:*/
