@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:wot_statistic/layers/domain/entities/personal_data.dart';
 import 'package:wot_statistic/layers/domain/repositories/personal_data_repo.dart';
 import 'package:wot_statistic/generated/l10n.dart';
@@ -7,14 +8,24 @@ import 'package:wot_statistic/layers/data/models/remote/personal_api_data/person
 import 'package:wot_statistic/layers/data/sources/local/local_data_source.dart';
 import 'package:wot_statistic/layers/data/sources/remote/remote_data_source.dart';
 
+const eu = "EU";
+const cis = "CIS";
+const baseUrlEu = 'https://api.worldoftanks.eu';
+const baseUrlCis = 'https://api.worldoftanks.ru';
+
 class PersonalDataRepoImpl implements PersonalDataRepo {
   final RemoteDataSource remoteSource;
   final PersonalDataLocalSource localSource;
+  final BaseOptions baseOptions;
 
-  const PersonalDataRepoImpl({
+  PersonalDataRepoImpl({
     required this.remoteSource,
     required this.localSource,
-  });
+    required this.baseOptions,
+  }){
+    baseOptions.baseUrl =
+    localSource.getCurrentRealm() == cis ? baseUrlCis : baseUrlEu;
+  }
 
   UserData get signedUser {
     final _signedUser = localSource.getSignedUser();

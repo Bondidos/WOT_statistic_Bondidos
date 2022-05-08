@@ -7,6 +7,8 @@ const signedUserNickname = 'Singed User nickname';
 const signedUserToken = 'Singed User token';
 const signedUserExpire = 'Singed User EXPIRE';
 const signedUserRealm = 'Singed User realm';
+const notPicked = "Not Picked";
+const realmKey = 'Realm';
 
 class PersonalDataLocalSourceImpl extends PersonalDataLocalSource {
   final SharedPreferences sharedPreferences;
@@ -35,4 +37,8 @@ class PersonalDataLocalSourceImpl extends PersonalDataLocalSource {
       realm: realm,
     );
   }
+
+  @override
+  String getCurrentRealm() =>
+      sharedPreferences.getString(realmKey) ?? notPicked;
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wot_statistic/layers/presentation/settings_page/settings_page.dart';
 import 'package:wot_statistic/layers/presentation/statistic_page/statistic_page.dart';
 import 'injection_container.dart' as di;
@@ -13,6 +14,7 @@ import 'layers/presentation/sing_in_page/sign_in_page.dart';
 
 const ruLng = 'ru';
 const notPicked = "Not Picked";
+const signedUserExpire = 'Singed User EXPIRE';
 
 void main() async {
   await di.init();
@@ -77,6 +79,11 @@ class MyApp extends StatelessWidget {
             if (state.languageStatus == notPicked) {
               Locale locale = Localizations.localeOf(context);
               context.read<SettingsCubit>().setLng(locale.languageCode);
+            }
+            final SharedPreferences sp = di.inj<SharedPreferences>();
+            if ((sp.getInt(signedUserExpire) ?? 0) * 1000 >
+                DateTime.now().millisecondsSinceEpoch) {
+              return const StatisticPage();
             }
             return const SignInPage();
           }),

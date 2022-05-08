@@ -103,6 +103,7 @@ Future<void> init() async {
   inj.registerLazySingleton<PersonalDataRepo>(() => PersonalDataRepoImpl(
         localSource: inj(),
         remoteSource: inj(),
+        baseOptions: inj(),
       ));
 
   inj.registerLazySingleton<SearchUserRepo>(

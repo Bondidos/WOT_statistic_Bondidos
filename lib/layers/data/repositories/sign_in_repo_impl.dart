@@ -20,10 +20,8 @@ class SignInRepoImpl implements SignInRepo {
     required this.remoteSource,
     required this.baseOptions,
   }) {
-    {
       baseOptions.baseUrl =
           signLocalSource.getCurrentRealm() == cis ? baseUrlCis : baseUrlEu;
-    }
   }
 
   @override
