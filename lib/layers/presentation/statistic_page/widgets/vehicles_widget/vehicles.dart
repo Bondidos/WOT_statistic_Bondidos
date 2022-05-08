@@ -5,7 +5,6 @@ import 'package:wot_statistic/layers/presentation/common_widget/common_widgets.d
 import 'package:wot_statistic/layers/presentation/statistic_page/widgets/vehicles_widget/bloc/vehicles_data_cubit.dart';
 import 'package:wot_statistic/layers/presentation/statistic_page/widgets/vehicles_widget/bloc/vehicles_state.dart';
 import 'package:wot_statistic/layers/presentation/statistic_page/widgets/vehicles_widget/vehicle_item_widget.dart';
-
 import 'package:wot_statistic/layers/presentation/sing_in_page/sign_in_page.dart';
 
 class VehiclesWidget extends StatelessWidget {

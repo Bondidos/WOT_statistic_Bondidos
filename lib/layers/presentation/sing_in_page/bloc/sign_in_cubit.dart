@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:wot_statistic/common/constants/constants.dart';
 import 'package:wot_statistic/generated/l10n.dart';
 import 'package:wot_statistic/common/theme/text_styles.dart';
 import 'package:wot_statistic/layers/domain/entities/user.dart';
@@ -14,6 +13,9 @@ import 'package:wot_statistic/layers/domain/use_cases/set_realm_pref_use_case.da
 import 'package:wot_statistic/layers/domain/use_cases/subscribe_realm_use_case.dart';
 
 part 'sign_in_state.dart';
+
+const notPicked = "Not Picked";
+const eu = "EU";
 
 class SingInCubit extends Cubit<SignInState> {
   final SaveUserUseCase saveUser;
@@ -39,15 +41,15 @@ class SingInCubit extends Cubit<SignInState> {
 
   void _initialize() {
     _subscriptionRealm = subscribeRealm.execute().listen((realm) {
-      if (realm == NOT_PICKED) {
-        setNewRealm(EU); // as default EU realm
+      if (realm == notPicked) {
+        setNewRealm(eu); // as default EU realm
         return;
       }
       _fetchPrevUsers(realm);
     });
   }
 
-  String _currentRealm = NOT_PICKED;
+  String _currentRealm = notPicked;
   List<User> _prevUsers = [];
   User? _currentUser;
 

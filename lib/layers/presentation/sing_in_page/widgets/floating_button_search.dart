@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wot_statistic/layers/presentation/search_user/search_user_page.dart';
 
-import 'package:wot_statistic/common/hero_dialog_route.dart';
+import 'package:wot_statistic/common/widget/hero_dialog_route.dart';
 
 class FloatingButtonSearch extends StatelessWidget {
   const FloatingButtonSearch({

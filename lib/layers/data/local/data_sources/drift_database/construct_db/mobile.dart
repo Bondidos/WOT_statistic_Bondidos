@@ -6,7 +6,7 @@ import 'package:drift/drift.dart';
 import 'package:path_provider/path_provider.dart' as paths;
 import 'package:path/path.dart' as p;
 
-import '../database/database.dart';
+import 'package:wot_statistic/layers/data/local/data_sources/drift_database/database/database.dart';
 
 WotStatDatabase constructDb({bool logStatements = false}) {
   if (Platform.isIOS || Platform.isAndroid) {

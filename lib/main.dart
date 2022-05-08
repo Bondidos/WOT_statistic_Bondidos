@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:wot_statistic/common/constants/constants.dart';
 import 'package:wot_statistic/layers/presentation/settings_page/settings_page.dart';
 import 'package:wot_statistic/layers/presentation/statistic_page/statistic_page.dart';
-import 'common/constants/shared_pref_keys.dart';
 import 'injection_container.dart' as di;
 import 'layers/presentation/settings_page/bloc/settings_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,6 +12,7 @@ import 'layers/presentation/sing_in_page/bloc/sign_in_cubit.dart';
 import 'layers/presentation/sing_in_page/sign_in_page.dart';
 
 const ruLng = 'ru';
+const notPicked = "Not Picked";
 
 void main() async {
   await di.init();
@@ -35,7 +34,7 @@ class MyApp extends StatelessWidget {
       buildWhen: (prevState, currentState) => (prevState != currentState),
       builder: (context, state) {
         return MaterialApp(
-          theme: (state.themeStatus == DARK_THEME)
+          theme: (state.themeStatus == darkTheme)
               ? ThemeData(
                   primaryColor: const Color(0xffdbcbcb),
                   colorScheme: const ColorScheme.dark().copyWith(
@@ -69,14 +68,13 @@ class MyApp extends StatelessWidget {
             GlobalMaterialLocalizations.delegate,
             GlobalWidgetsLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,
-            // no need? because of no apple support?
           ],
           supportedLocales: S.delegate.supportedLocales,
           locale: state.languageStatus == ruLng
               ? const Locale("ru", "BY")
               : const Locale("en", "US"),
           home: Builder(builder: (context) {
-            if (state.languageStatus == NOT_PICKED) {
+            if (state.languageStatus == notPicked) {
               Locale locale = Localizations.localeOf(context);
               context.read<SettingsCubit>().setLng(locale.languageCode);
             }
@@ -87,14 +85,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-/*
-BlocListener<SettingsCubit, SettingsState>(
-listenWhen:(prevState,currentState) => currentState.status == SettingsStatus.init,
-listener: (context, currentState) {
-if (currentState.languageStatus == NOT_PICKED) {
-Locale locale = Localizations.localeOf(context);
-context.read<SettingsCubit>().setLng(locale.languageCode);
-}
-},        );
-
-child:*/

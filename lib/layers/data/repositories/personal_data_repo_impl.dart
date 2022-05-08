@@ -1,16 +1,15 @@
 import 'package:wot_statistic/layers/domain/entities/personal_data.dart';
 import 'package:wot_statistic/layers/domain/repositories/personal_data_repo.dart';
-
 import 'package:wot_statistic/generated/l10n.dart';
 import 'package:wot_statistic/layers/data/models/local/user_data.dart';
 import 'package:wot_statistic/layers/data/models/remote/clan_info/clan_info.dart';
 import 'package:wot_statistic/layers/data/models/remote/personal_api_data/personal_data_api.dart';
-import 'package:wot_statistic/layers/data/sources/local_data_source.dart';
-import 'package:wot_statistic/layers/data/sources/remote_data_source.dart';
+import 'package:wot_statistic/layers/data/sources/local/local_data_source.dart';
+import 'package:wot_statistic/layers/data/sources/remote/remote_data_source.dart';
 
 class PersonalDataRepoImpl implements PersonalDataRepo {
   final RemoteDataSource remoteSource;
-  final LocalDataSource localSource;
+  final PersonalDataLocalSource localSource;
 
   const PersonalDataRepoImpl({
     required this.remoteSource,

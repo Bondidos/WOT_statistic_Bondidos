@@ -1,15 +1,16 @@
 import 'dart:convert';
 
 import 'package:drift/drift.dart';
+import 'package:wot_statistic/layers/data/local/data_sources/drift_database/database/database.dart';
+import 'package:wot_statistic/layers/data/local/data_sources/drift_database/tables/achieve_table.dart';
+import 'package:wot_statistic/layers/data/local/data_sources/drift_database/tables/user_table.dart';
+import 'package:wot_statistic/layers/data/local/data_sources/drift_database/tables/vehicle_ttc.dart';
 import 'package:wot_statistic/layers/data/models/local/user_data.dart';
 import 'package:wot_statistic/layers/data/models/remote/achievements_data/achieve_option.dart';
 import 'package:wot_statistic/layers/data/models/remote/achievements_data/achievement_data.dart';
 import 'package:wot_statistic/layers/data/models/remote/vehicles_data/vehicles_data_images.dart';
 import 'package:wot_statistic/layers/data/models/remote/vehicles_data/vehicles_data_ttc.dart';
 import 'package:wot_statistic/layers/domain/entities/user.dart';
-import 'package:wot_statistic/layers/local/data_sources/sources/drift_database/tables/achieve_table.dart';
-import 'package:wot_statistic/layers/local/data_sources/sources/drift_database/tables/vehicle_ttc.dart';
-import 'package:wot_statistic/layers/local/data_sources/sources/drift_database/wot_stat_database.dart';
 
 part 'wot_stat_dao.g.dart';
 

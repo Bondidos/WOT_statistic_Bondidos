@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:wot_statistic/common/theme/text_styles.dart';
 import 'package:wot_statistic/generated/l10n.dart';
 import 'package:wot_statistic/layers/presentation/sing_in_page/bloc/sign_in_cubit.dart';
 
-import 'package:wot_statistic/common/constants/constants.dart';
-import 'package:wot_statistic/common/theme/text_styles.dart';
+const cis = "CIS";
 
 class RegionPicker extends StatelessWidget {
   const RegionPicker({Key? key}) : super(key: key);
@@ -33,8 +33,8 @@ class RegionPicker extends StatelessWidget {
                 return <PopupMenuEntry>[
                   PopupMenuItem(
                     onTap: () {
-                      if (cubit.currentRealm != EU) {
-                        cubit.setNewRealm(EU);
+                      if (cubit.currentRealm != eu) {
+                        cubit.setNewRealm(eu);
                       }
                     },
                     child: Wrap(
@@ -53,8 +53,8 @@ class RegionPicker extends StatelessWidget {
                   ),
                   PopupMenuItem(
                     onTap: () {
-                      if (cubit.currentRealm != CIS) {
-                        cubit.setNewRealm(CIS);
+                      if (cubit.currentRealm != cis) {
+                        cubit.setNewRealm(cis);
                       }
                     },
                     child: Wrap(

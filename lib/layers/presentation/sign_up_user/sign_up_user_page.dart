@@ -1,14 +1,21 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:wot_statistic/common/theme/text_styles.dart';
 import 'package:wot_statistic/generated/l10n.dart';
-
-import '../../../common/constants/constants.dart';
-import '../../../common/constants/network_const.dart';
-import '../../../common/theme/text_styles.dart';
-import '../../domain/entities/user.dart';
+import 'package:wot_statistic/layers/domain/entities/user.dart';
 
 const String status = "status";
+const eu = "EU";
+const cisLoginUrl =
+    "https://api.worldoftanks.ru/wot/auth/login/?status=error&message=AUTH_CANCEL&code=401&application_id=5d489c586717c2b76ade8bea16607167&redirect_uri=https://developers.wargaming.net/reference/all/wot/auth/login/";
+const euLoginUrl =
+    'https://api.worldoftanks.eu/wot/auth/login/?status=error&message=AUTH_CANCEL&code=401&application_id=5d489c586717c2b76ade8bea16607167&redirect_uri=https://developers.wargaming.net/reference/all/wot/auth/login/';
+const redirectUri =
+    'https://developers.wargaming.net/reference/all/wot/auth/login/';
+const baseUrlEu = 'https://api.worldoftanks.eu';
+const baseUrlCis = 'https://api.worldoftanks.ru';
+const httpStatusOk = 'ok';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key}) : super(key: key);
@@ -58,7 +65,7 @@ class _SignUpPageState extends State<SignUpPage> {
           cookieManager.clearCookies();
         },
         userAgent: 'random',
-        initialUrl: (realm == EU) ? EU_LOGIN_URL : CIS_LOGIN_URL,
+        initialUrl: (realm == eu) ? euLoginUrl : cisLoginUrl,
         onPageStarted: (url) {
           if (url.contains("access_token")) {
             Navigator.of(context).pop(User.fromUrl(url));

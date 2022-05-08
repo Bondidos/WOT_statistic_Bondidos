@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../../common/constants/constants.dart';
+const portraitBackGround = "assets/background/main_background_portrait.jpg";
+const landBackGround = "assets/background/main_background_land.jpg";
 
 class AnimatedBackground extends StatefulWidget {
   const AnimatedBackground({Key? key}) : super(key: key);
@@ -32,8 +33,8 @@ class _AnimatedBackgroundState extends State<AnimatedBackground> {
           return ColorFiltered(
             child: Image.asset(
               MediaQuery.of(context).orientation == Orientation.portrait
-                  ? PORTRAIT_BACKGROUND
-                  : LAND_BACKGROUND,
+                  ? portraitBackGround
+                  : landBackGround,
               fit: BoxFit.cover,
               height: screenSize.height,
               width: screenSize.width,

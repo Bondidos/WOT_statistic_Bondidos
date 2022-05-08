@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
-
-import '../../../../../domain/entities/vehicles_data.dart';
+import 'package:wot_statistic/layers/domain/entities/vehicles_data.dart';
 
 abstract class VehiclesDataState extends Equatable{
   const VehiclesDataState();

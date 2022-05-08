@@ -6,10 +6,10 @@ import 'package:wot_statistic/layers/domain/entities/personal_data_card.dart';
 import 'package:wot_statistic/layers/presentation/common_widget/common_widgets.dart';
 import 'package:wot_statistic/layers/presentation/statistic_page/widgets/personal_data_widget/bloc/personal_data_cubit.dart';
 import 'package:wot_statistic/layers/presentation/statistic_page/widgets/personal_data_widget/private_item_widget/private_item_widget.dart';
-
-import 'package:wot_statistic/common/constants/personal_data_images.dart';
 import 'package:wot_statistic/common/theme/text_styles.dart';
 import 'package:wot_statistic/layers/presentation/sing_in_page/sign_in_page.dart';
+
+const globalRatingLogo = "assets/images/rating_img.png";
 
 class PersonalDataWidget extends StatelessWidget {
   const PersonalDataWidget({Key? key}) : super(key: key);
@@ -125,7 +125,7 @@ class PersonalDataWidget extends StatelessWidget {
       child: Column(
         children: [
           Image.asset(
-            GLOBAL_RATING_LOGO,
+            globalRatingLogo,
             height: 120,
             width: 120,
             fit: BoxFit.cover,

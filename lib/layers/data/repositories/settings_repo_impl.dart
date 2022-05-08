@@ -1,23 +1,22 @@
+import 'package:wot_statistic/layers/data/sources/local/settings_data_source.dart';
 import 'package:wot_statistic/layers/domain/repositories/settings_repo.dart';
 
-import '../sources/local_data_source.dart';
-
 class SettingsRepoImpl implements SettingsRepo{
-  final LocalDataSource localSource; //todo make separate source
+  final SettingsDataSource settingsSource;
 
   const SettingsRepoImpl({
-    required this.localSource,
+    required this.settingsSource,
   });
 
   @override
-  void setLng(String lng) => localSource.setLng(lng);
+  void setLng(String lng) => settingsSource.setLng(lng);
 
   @override
-  void setTheme(String theme) => localSource.setTheme(theme);
+  void setTheme(String theme) => settingsSource.setTheme(theme);
 
   @override
-  Stream<String> get subscribeLng => localSource.subscribeLng();
+  Stream<String> get subscribeLng => settingsSource.subscribeLng();
 
   @override
-  Stream<String> get subscribeTheme => localSource.subscribeTheme();
+  Stream<String> get subscribeTheme => settingsSource.subscribeTheme();
 }

@@ -1,8 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:wot_statistic/layers/presentation/statistic_page/widgets/vehicles_widget/bloc/vehicles_state.dart';
-
-import '../../../../../domain/entities/vehicles_data.dart';
-import '../../../../../domain/use_cases/load_vehicles_data.dart';
+import 'package:wot_statistic/layers/domain/entities/vehicles_data.dart';
+import 'package:wot_statistic/layers/domain/use_cases/load_vehicles_data.dart';
 
 const int byWins = 1;
 const int byBattles = 2;

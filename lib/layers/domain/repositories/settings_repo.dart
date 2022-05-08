@@ -1,4 +1,5 @@
 abstract class SettingsRepo {
+
   void setTheme(String theme);
 
   void setLng(String lng);

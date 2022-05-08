@@ -5,22 +5,22 @@ import 'package:wot_statistic/layers/data/models/remote/user_vehicles/user_vehic
 import 'package:wot_statistic/layers/data/models/remote/vehicles_data/vehicles_data.dart';
 import 'package:wot_statistic/layers/data/models/remote/vehicles_data/vehicles_data_meta.dart';
 import 'package:wot_statistic/layers/data/models/remote/vehicles_data/vehicles_data_ttc.dart';
-import 'package:wot_statistic/layers/data/sources/local_data_source.dart';
-import 'package:wot_statistic/layers/data/sources/remote_data_source.dart';
+import 'package:wot_statistic/layers/data/sources/local/vehicles_local_datasource.dart';
+import 'package:wot_statistic/layers/data/sources/remote/remote_data_source.dart';
 import 'package:wot_statistic/layers/domain/entities/vehicles_data.dart';
 import 'package:wot_statistic/layers/domain/repositories/vehicles_repo.dart';
 
 class VehiclesRepoImpl implements VehiclesRepo {
-  final LocalDataSource localSource;
+  final VehiclesLocalDataSource vehiclesLocalSource;
   final RemoteDataSource remoteSource;
 
   const VehiclesRepoImpl({
-    required this.localSource,
+    required this.vehiclesLocalSource,
     required this.remoteSource,
   });
 
   UserData get signedUser {
-    final _signedUser = localSource.getSignedUser();
+    final _signedUser = vehiclesLocalSource.getSignedUser();
     if (_signedUser == null) throw Exception(S.current.SignedUserIsNotExist);
     return _signedUser;
   }
@@ -34,7 +34,7 @@ class VehiclesRepoImpl implements VehiclesRepo {
     );
     final List<int> tankIds = userVehicles.createListOfTankId();
     final List<VehiclesDataTTC> vehiclesByIdFromDb =
-        await localSource.fetchTTCByListOfIDs(tankIds);
+        await vehiclesLocalSource.fetchTTCByListOfIDs(tankIds);
     final List<Vehicle> result = _createVehicleListFrom(
         vehiclesByIdFromDb, userVehicles.vehicles.values.first);
     return result;
@@ -51,9 +51,9 @@ class VehiclesRepoImpl implements VehiclesRepo {
   }
 
   Future<void> _initVehiclesDatabase() async {
-    final String currentLng = localSource.getCurrentLng();
-    final String vehiclesDbLng = localSource.getVehiclesCurrentLng();
-    final int databaseTtcCount = localSource.getVehiclesTTCCount();
+    final String currentLng = vehiclesLocalSource.getCurrentLng();
+    final String vehiclesDbLng = vehiclesLocalSource.getVehiclesCurrentLng();
+    final int databaseTtcCount = vehiclesLocalSource.getVehiclesTTCCount();
     final VehiclesDataMeta vehiclesDataMeta;
     try {
       vehiclesDataMeta = (await remoteSource.fetchVehiclesDatabase(
@@ -67,8 +67,8 @@ class VehiclesRepoImpl implements VehiclesRepo {
     }
     if (vehiclesDataMeta.total == databaseTtcCount &&
         currentLng == vehiclesDbLng) return;
-    localSource.setVehiclesCurrentLng(currentLng);
-    await _createOrSyncVehiclesDb(vehiclesDataMeta, currentLng);
+    vehiclesLocalSource.setVehiclesCurrentLng(currentLng);
+    await _createOrSyncVehiclesDb(vehiclesDataMeta,currentLng);
   }
 
   Future<void> _createOrSyncVehiclesDb(
@@ -77,8 +77,8 @@ class VehiclesRepoImpl implements VehiclesRepo {
         await _fetchAllPages(vehiclesDataMeta, currentLng);
     final List<VehiclesDataTTC> allVehiclesTTC =
         _mergeTTC(allPagesOfVehicleTTC);
-    final int savedTtcCount = await localSource.saveTTCList(allVehiclesTTC);
-    localSource.setVehiclesTtcCount(savedTtcCount);
+    final int savedTtcCount = await vehiclesLocalSource.saveTTCList(allVehiclesTTC);
+    vehiclesLocalSource.setVehiclesTtcCount(savedTtcCount);
   }
 
   Future<List<VehiclesData>> _fetchAllPages(

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wot_statistic/layers/presentation/sing_in_page/bloc/sign_in_cubit.dart';
 
-import '../../../../common/constants/constants.dart';
+const notPicked = "Not Picked";
 
 class UserPicker extends StatelessWidget {
   const UserPicker({Key? key}) : super(key: key);
@@ -18,15 +18,15 @@ class UserPicker extends StatelessWidget {
           (currentState is SignInStateLoaded),
       builder: (ctx, state) {
         final String currentUser = (cubit.currentUser == null)
-            ? NOT_PICKED
+            ? notPicked
             : cubit.currentUser!.nickname;
 
         final String userNameToDisplay =
-            (currentUser == NOT_PICKED && cubit.usersInCache.isNotEmpty)
+            (currentUser == notPicked && cubit.usersInCache.isNotEmpty)
                 ? cubit.usersInCache.first
                 : currentUser;
 
-        return userNameToDisplay != NOT_PICKED
+        return userNameToDisplay != notPicked
             ? DecoratedBox(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),

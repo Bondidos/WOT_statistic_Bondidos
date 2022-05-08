@@ -1,14 +1,10 @@
 import 'dart:async';
-
 import 'package:equatable/equatable.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:wot_statistic/layers/domain/use_cases/set_lng_use_case.dart';
 import 'package:wot_statistic/layers/domain/use_cases/set_theme_use_case.dart';
-
-import 'package:wot_statistic/common/constants/constants.dart';
-import 'package:wot_statistic/common/constants/shared_pref_keys.dart';
 import 'package:wot_statistic/layers/domain/use_cases/subscribe_lng_use_case.dart';
 import 'package:wot_statistic/layers/domain/use_cases/subscribe_theme_use_case.dart';
 
@@ -17,6 +13,11 @@ part 'settings_state.dart';
 const ruLng = 'ru';
 const engLng = 'en';
 const init = 'init';
+const notPicked = "Not Picked";
+const getTheme = 'getTheme';
+const channel = "com.bondidos.wot_statistic/theme";
+const lightTheme = "Light";
+const darkTheme = "Dark";
 
 class SettingsCubit extends Cubit<SettingsState> {
   final SubscribeThemeUseCase subscribeTheme;
@@ -39,11 +40,11 @@ class SettingsCubit extends Cubit<SettingsState> {
     _init();
   }
 
-  bool get isDarkTheme => (state.themeStatus == DARK_THEME) ? true : false;
+  bool get isDarkTheme => (state.themeStatus == darkTheme) ? true : false;
 
   void _init() {
     _subscriptionTheme = subscribeTheme.execute().listen((theme) {
-      if (theme == NOT_PICKED) {
+      if (theme == notPicked) {
         _setDefaultTheme();
         return;
       }
@@ -70,25 +71,25 @@ class SettingsCubit extends Cubit<SettingsState> {
   }
 
   void switchTheme() {
-    if (state.themeStatus == DARK_THEME) {
-      setTheme.execute(LIGHT_THEME);
+    if (state.themeStatus == darkTheme) {
+      setTheme.execute(lightTheme);
     } else {
-      setTheme.execute(DARK_THEME);
+      setTheme.execute(darkTheme);
     }
   }
 
   Future<String> getPlatformOrLiteTheme() async {
     if (defaultTargetPlatform == TargetPlatform.android) {
-      const MethodChannel platform = MethodChannel(CHANNEL);
+      const MethodChannel platform = MethodChannel(channel);
       final String platformTheme;
       try {
-        platformTheme = await platform.invokeMethod(GET_THEME);
+        platformTheme = await platform.invokeMethod(getTheme);
         return platformTheme;
       } on PlatformException catch (_) {
-        return LIGHT_THEME;
+        return lightTheme;
       }
     }
-    return LIGHT_THEME;
+    return lightTheme;
   }
 
   @override

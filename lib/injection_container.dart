@@ -2,20 +2,28 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:wot_statistic/layers/data/local/data_sources/achieves_local_datasource_impl.dart';
+import 'package:wot_statistic/layers/data/local/data_sources/personal_data_local_source.dart';
+import 'package:wot_statistic/layers/data/local/data_sources/settings_data_source_impl.dart';
+import 'package:wot_statistic/layers/data/local/data_sources/vehicles_local_datasource_impl.dart';
 import 'package:wot_statistic/layers/data/repositories/settings_repo_impl.dart';
 import 'package:wot_statistic/layers/data/repositories/sign_in_repo_impl.dart';
-import 'package:wot_statistic/layers/data/sources/remote_data_source.dart';
+import 'package:wot_statistic/layers/data/sources/remote/remote_data_source.dart';
 import 'package:wot_statistic/layers/domain/use_cases/load_achieves_data.dart';
 import 'package:wot_statistic/layers/domain/use_cases/sing_in_use_case.dart';
-import 'package:wot_statistic/layers/local/data_sources/sources/drift_database/construct_db/shared.dart';
-import 'package:wot_statistic/layers/local/data_sources/sources/drift_database/dao/dao.dart';
 import 'package:wot_statistic/layers/presentation/sing_in_page/bloc/sign_in_cubit.dart';
-
+import 'layers/data/local/data_sources/sign_local_datasource_impl.dart';
+import 'layers/data/remote/remote_source_impl/remote_source_impl.dart';
+import 'layers/data/remote/sources/wot_api_client.dart';
 import 'layers/data/repositories/achieves_repo_impl.dart';
 import 'layers/data/repositories/personal_data_repo_impl.dart';
 import 'layers/data/repositories/search_user_repo_impl.dart';
 import 'layers/data/repositories/vehicles_repo_impl.dart';
-import 'layers/data/sources/local_data_source.dart';
+import 'layers/data/sources/local/achieves_local_datasource.dart';
+import 'layers/data/sources/local/local_data_source.dart';
+import 'layers/data/sources/local/settings_data_source.dart';
+import 'layers/data/sources/local/sign_local_datasource.dart';
+import 'layers/data/sources/local/vehicles_local_datasource.dart';
 import 'layers/domain/repositories/achieves_repo.dart';
 import 'layers/domain/repositories/personal_data_repo.dart';
 import 'layers/domain/repositories/search_user_repo.dart';
@@ -34,15 +42,12 @@ import 'layers/domain/use_cases/subscribe_users_use_case.dart';
 import 'layers/domain/use_cases/set_realm_pref_use_case.dart';
 import 'layers/domain/use_cases/subscribe_realm_use_case.dart';
 import 'layers/domain/use_cases/subscribe_theme_use_case.dart';
-import 'layers/local/data_sources/local_source_impl/local_datasource_impl.dart';
-import 'layers/local/data_sources/sources/drift_database/database/database.dart';
 import 'layers/presentation/search_user/bloc/search_user_cubit.dart';
 import 'layers/presentation/settings_page/bloc/settings_cubit.dart';
 import 'layers/presentation/statistic_page/widgets/achieves_widget/bloc/achieves_data_cubit.dart';
 import 'layers/presentation/statistic_page/widgets/personal_data_widget/bloc/personal_data_cubit.dart';
 import 'layers/presentation/statistic_page/widgets/vehicles_widget/bloc/vehicles_data_cubit.dart';
-import 'layers/remote/remote_source_impl/remote_source_impl.dart';
-import 'layers/remote/sources/wot_api_client.dart';
+import 'layers/data/local/data_sources/drift_database/wot_stat_database.dart';
 
 final inj = GetIt.instance;
 
@@ -85,14 +90,15 @@ Future<void> init() async {
   inj.registerFactory(() => SubscribeLng(repository: inj()));
   inj.registerFactory(() => SetLngUseCase(repository: inj()));
 
+  // REPOSITORIES
   inj.registerLazySingleton<SignInRepo>(() => SignInRepoImpl(
         baseOptions: inj(),
-        localSource: inj(),
         remoteSource: inj(),
+        signLocalSource: inj(),
       ));
 
   inj.registerLazySingleton<SettingsRepo>(
-      () => SettingsRepoImpl(localSource: inj()));
+      () => SettingsRepoImpl(settingsSource: inj()));
 
   inj.registerLazySingleton<PersonalDataRepo>(() => PersonalDataRepoImpl(
         localSource: inj(),
@@ -103,28 +109,51 @@ Future<void> init() async {
       () => SearchUserRepoImpl(remoteSource: inj()));
 
   inj.registerLazySingleton<VehiclesRepo>(
-      () => VehiclesRepoImpl(remoteSource: inj(), localSource: inj()));
+      () => VehiclesRepoImpl(remoteSource: inj(), vehiclesLocalSource: inj()));
 
-  inj.registerLazySingleton<AchievesRepo>(
-      () => AchievesRepoImpl(remoteSource: inj(), localSource: inj()));
+  inj.registerLazySingleton<AchievesRepo>(() =>
+      AchievesRepoImpl(remoteSource: inj(), achievesLocalDataSource: inj()));
+
+  // SOURCES
+  inj.registerFactory<SettingsDataSource>(
+      () => SettingsDataSourceImpl(sharedPreferences: inj()));
+
+  inj.registerFactory<AchievesLocalDataSource>(
+      () => AchievesLocalDataSourceImpl(
+            sharedPreferences: inj(),
+            wotStatDao: inj(),
+          ));
 
   inj.registerFactory<RemoteDataSource>(
       () => RemoteSourceImpl(wotClient: inj()));
 
-  inj.registerFactory<LocalDataSource>(() => LocalDataSourceImpl(
+  inj.registerFactory<SignLocalDataSource>(() => SignLocalDataSourceImpl(
         sharedPreferences: inj(),
         wotStatDao: inj(),
       ));
+
+  inj.registerFactory<PersonalDataLocalSource>(
+      () => PersonalDataLocalSourceImpl(
+            sharedPreferences: inj(),
+          ));
+
+  inj.registerFactory<VehiclesLocalDataSource>(
+      () => VehiclesLocalDataSourceImpl(
+            sharedPreferences: inj(),
+            wotStatDao: inj(),
+          ));
 
   inj.registerLazySingleton<WotStatDao>(() => WotStatDao(inj()));
 
   inj.registerLazySingleton<WotClient>(() => WotClient(inj()));
 
-  final SharedPreferences sharedPref = await SharedPreferences.getInstance();
-  final WotStatDatabase driftDatabase = constructDb();
+  inj.registerSingleton<SharedPreferences>(
+      await SharedPreferences.getInstance());
+
   inj.registerSingleton<BaseOptions>(BaseOptions());
+
+  final WotStatDatabase driftDatabase = constructDb();
   final Dio dio = Dio(inj())..interceptors.add(LogInterceptor());
   inj.registerFactory(() => dio);
-  inj.registerFactory(() => sharedPref);
   inj.registerFactory(() => driftDatabase);
 }

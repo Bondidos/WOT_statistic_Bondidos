@@ -1,5 +1,5 @@
-import '../../data/models/remote/user_vehicles/user_vehicle.dart';
-import '../../data/models/remote/vehicles_data/vehicles_data_ttc.dart';
+import 'package:wot_statistic/layers/data/models/remote/user_vehicles/user_vehicle.dart';
+import 'package:wot_statistic/layers/data/models/remote/vehicles_data/vehicles_data_ttc.dart';
 
 class Vehicle {
   final int markOfMastery;
