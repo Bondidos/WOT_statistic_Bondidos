@@ -1,8 +1,8 @@
-import '../entities/achieves.dart';
-import '../repositories/repository.dart';
+import 'package:wot_statistic/layers/domain/entities/achieves.dart';
+import 'package:wot_statistic/layers/domain/repositories/achieves_repo.dart';
 
 class LoadAchievesData {
-  final Repository repository;
+  final AchievesRepo repository;
 
   LoadAchievesData({required this.repository});
 

@@ -1,7 +1,7 @@
-import 'package:wot_statistic/layers/domain/repositories/repository.dart';
+import 'package:wot_statistic/layers/domain/repositories/settings_repo.dart';
 
 class SubscribeLng {
-  final Repository repository;
+  final SettingsRepo repository;
 
   SubscribeLng({required this.repository});
 

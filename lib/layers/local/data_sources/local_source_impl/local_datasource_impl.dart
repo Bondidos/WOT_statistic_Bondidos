@@ -48,8 +48,7 @@ class LocalDataSourceImpl extends LocalDataSource {
         nickname == null ||
         accessToken == null ||
         expiresAt == null ||
-        realm == null
-    ) return null;
+        realm == null) return null;
 
     return UserData(
       id: id,
@@ -123,13 +122,36 @@ class LocalDataSourceImpl extends LocalDataSource {
 
   @override
   Future<List<AchievementData>> fetchAchievementsById(
-          List<String> achievementId,String filter) =>
-      wotStatDao.fetchAchievementsById(achievementId,filter);
+          List<String> achievementId, String filter) =>
+      wotStatDao.fetchAchievementsById(achievementId, filter);
 
   @override
   Future<int> saveAchievementsData(Map<String, AchievementData> achievements) =>
       wotStatDao.saveAchievementsData(achievements);
 
   @override
-  String getCurrentRealm() => sharedPreferences.getString(REALM_KEY) ?? NOT_PICKED;
+  String getCurrentRealm() =>
+      sharedPreferences.getString(REALM_KEY) ?? NOT_PICKED;
+
+  @override
+  String getCurrentLng() => _readLng;
+
+  @override
+  String getVehiclesCurrentLng() =>
+      sharedPreferences.getString(vehiclesLng) ?? NOT_PICKED;
+
+  @override
+  void setVehiclesCurrentLng(String lng) =>
+      sharedPreferences.setString(vehiclesLng, lng);
+
+  @override
+  String getAchievesCurrentLng() =>
+      sharedPreferences.getString(achievesLng) ?? NOT_PICKED;
+
+  @override
+  void setAchievesCurrentLng(String lng) =>
+      sharedPreferences.setString(achievesLng, lng);
 }
+
+const vehiclesLng = 'VehiclesLng';
+const achievesLng = 'AchievesLng';

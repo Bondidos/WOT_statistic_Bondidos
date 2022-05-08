@@ -1,7 +1,7 @@
-import '../repositories/repository.dart';
+import 'package:wot_statistic/layers/domain/repositories/settings_repo.dart';
 
 class SetThemeUseCase {
-  final Repository repository;
+  final SettingsRepo repository;
 
   SetThemeUseCase({required this.repository});
 

@@ -33,7 +33,7 @@ abstract class WotClient {
   Future<UserVehiclesApi> fetchUserVehicles(
     @Query('application_id') String applicationId,
     @Query('account_id') int accountId,
-    @Query('access_token') String accessToken, //todo nulable
+    @Query('access_token') String accessToken,
   );
 
   @GET("/wot/encyclopedia/vehicles/")
@@ -54,6 +54,7 @@ abstract class WotClient {
   @GET("/wot/encyclopedia/achievements/")
   Future<AchievementsDataBase> fetchAchievesDataBase(
       @Query('application_id') String applicationId,
+      @Query('language') String language,
       );
 
   @GET("/wot/account/list/")

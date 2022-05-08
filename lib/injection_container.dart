@@ -2,6 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:wot_statistic/layers/data/repositories/settings_repo_impl.dart';
+import 'package:wot_statistic/layers/data/repositories/sign_in_repo_impl.dart';
 import 'package:wot_statistic/layers/data/sources/remote_data_source.dart';
 import 'package:wot_statistic/layers/domain/use_cases/load_achieves_data.dart';
 import 'package:wot_statistic/layers/domain/use_cases/sing_in_use_case.dart';
@@ -9,9 +11,17 @@ import 'package:wot_statistic/layers/local/data_sources/sources/drift_database/c
 import 'package:wot_statistic/layers/local/data_sources/sources/drift_database/dao/dao.dart';
 import 'package:wot_statistic/layers/presentation/sing_in_page/bloc/sign_in_cubit.dart';
 
-import 'layers/data/repositories/repository_impl.dart';
+import 'layers/data/repositories/achieves_repo_impl.dart';
+import 'layers/data/repositories/personal_data_repo_impl.dart';
+import 'layers/data/repositories/search_user_repo_impl.dart';
+import 'layers/data/repositories/vehicles_repo_impl.dart';
 import 'layers/data/sources/local_data_source.dart';
-import 'layers/domain/repositories/repository.dart';
+import 'layers/domain/repositories/achieves_repo.dart';
+import 'layers/domain/repositories/personal_data_repo.dart';
+import 'layers/domain/repositories/search_user_repo.dart';
+import 'layers/domain/repositories/settings_repo.dart';
+import 'layers/domain/repositories/sign_in_repo.dart';
+import 'layers/domain/repositories/vehicles_repo.dart';
 import 'layers/domain/use_cases/load_personal_data.dart';
 import 'layers/domain/use_cases/load_vehicles_data.dart';
 import 'layers/domain/use_cases/remove_user_use_case.dart';
@@ -75,8 +85,28 @@ Future<void> init() async {
   inj.registerFactory(() => SubscribeLng(repository: inj()));
   inj.registerFactory(() => SetLngUseCase(repository: inj()));
 
-  inj.registerLazySingleton<Repository>(() => RepositoryImpl(
-      localSource: inj(), remoteSource: inj(), baseOptions: inj()));
+  inj.registerLazySingleton<SignInRepo>(() => SignInRepoImpl(
+        baseOptions: inj(),
+        localSource: inj(),
+        remoteSource: inj(),
+      ));
+
+  inj.registerLazySingleton<SettingsRepo>(
+      () => SettingsRepoImpl(localSource: inj()));
+
+  inj.registerLazySingleton<PersonalDataRepo>(() => PersonalDataRepoImpl(
+        localSource: inj(),
+        remoteSource: inj(),
+      ));
+
+  inj.registerLazySingleton<SearchUserRepo>(
+      () => SearchUserRepoImpl(remoteSource: inj()));
+
+  inj.registerLazySingleton<VehiclesRepo>(
+      () => VehiclesRepoImpl(remoteSource: inj(), localSource: inj()));
+
+  inj.registerLazySingleton<AchievesRepo>(
+      () => AchievesRepoImpl(remoteSource: inj(), localSource: inj()));
 
   inj.registerFactory<RemoteDataSource>(
       () => RemoteSourceImpl(wotClient: inj()));
@@ -86,9 +116,10 @@ Future<void> init() async {
         wotStatDao: inj(),
       ));
 
-  inj.registerFactory<WotStatDao>(() => WotStatDao(inj()));
+  inj.registerLazySingleton<WotStatDao>(() => WotStatDao(inj()));
 
-  inj.registerFactory<WotClient>(() => WotClient(inj()));
+  inj.registerLazySingleton<WotClient>(() => WotClient(inj()));
+
   final SharedPreferences sharedPref = await SharedPreferences.getInstance();
   final WotStatDatabase driftDatabase = constructDb();
   inj.registerSingleton<BaseOptions>(BaseOptions());

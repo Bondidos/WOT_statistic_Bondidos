@@ -44,4 +44,14 @@ abstract class LocalDataSource {
   Stream<String> subscribeLng();
 
   String getCurrentRealm();
+
+  String getCurrentLng();
+
+  String getVehiclesCurrentLng();
+
+  void setVehiclesCurrentLng(String lng);
+
+  String getAchievesCurrentLng();
+
+  void setAchievesCurrentLng(String lng);
 }

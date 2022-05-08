@@ -1,7 +1,7 @@
-import 'package:wot_statistic/layers/domain/repositories/repository.dart';
+import '../repositories/settings_repo.dart';
 
 class SubscribeThemeUseCase {
-  final Repository repository;
+  final SettingsRepo repository;
 
   SubscribeThemeUseCase({required this.repository});
 

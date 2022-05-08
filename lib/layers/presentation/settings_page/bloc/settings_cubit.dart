@@ -15,7 +15,7 @@ import 'package:wot_statistic/layers/domain/use_cases/subscribe_theme_use_case.d
 part 'settings_state.dart';
 
 const ruLng = 'ru';
-const engLng = 'eng';
+const engLng = 'en';
 const init = 'init';
 
 class SettingsCubit extends Cubit<SettingsState> {
@@ -57,7 +57,7 @@ class SettingsCubit extends Cubit<SettingsState> {
   }
 
   void _setDefaultTheme() async {
-    String platformTheme = await getPlatformTheme();
+    String platformTheme = await getPlatformOrLiteTheme();
     setTheme.execute(platformTheme);
   }
 
@@ -77,8 +77,7 @@ class SettingsCubit extends Cubit<SettingsState> {
     }
   }
 
-  // LIGHT THEME AS DEFAULT
-  Future<String> getPlatformTheme() async {
+  Future<String> getPlatformOrLiteTheme() async {
     if (defaultTargetPlatform == TargetPlatform.android) {
       const MethodChannel platform = MethodChannel(CHANNEL);
       final String platformTheme;
