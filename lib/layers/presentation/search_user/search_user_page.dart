@@ -44,14 +44,16 @@ class SearchUserPage extends StatelessWidget {
                     }
                   },
                   builder: (ctx, state) {
+                    SearchUserCubit cubit = ctx.read<SearchUserCubit>();
                     return Column(
                       mainAxisSize: MainAxisSize.max,
                       children: [
                         TextField(
-                          onChanged: (search) => ctx
-                              .read<SearchUserCubit>()
-                              .onTextChange(search),
+                          cursorColor: Theme.of(context).colorScheme.onSurface,
+                          onChanged: (search) => cubit.onTextChange(search),
                           decoration: InputDecoration(
+                            filled: true,
+                                fillColor: Theme.of(context).colorScheme.primary,
                               hintText: S.of(context).EnterPlayerName),
                         ),
                         Expanded(
@@ -60,11 +62,10 @@ class SearchUserPage extends StatelessWidget {
                                   itemCount: state.foundList.length,
                                   itemBuilder: (ctx, index) => ListTile(
                                     onTap: () async {
-                                      await ctx
-                                          .read<SearchUserCubit>()
-                                          .viewUser(index);
+                                      await cubit.viewUser(index);
                                       Navigator.of(context)
-                                          .pushReplacementNamed(StatisticPage.id);
+                                          .pushReplacementNamed(
+                                              StatisticPage.id);
                                     },
                                     title: Text(state.foundList[index].name),
                                   ),

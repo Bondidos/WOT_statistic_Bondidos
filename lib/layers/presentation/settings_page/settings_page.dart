@@ -35,7 +35,6 @@ class _SettingsPageState extends State<SettingsPage> {
             _themeSettings(context, _switchState, settingsCubit, state),
             _createTitle(S.of(context).LocalizationSettings),
             _langSettings(context),
-            _createTitle(S.of(context).AboutApp),
           ],
         ),
       ),
