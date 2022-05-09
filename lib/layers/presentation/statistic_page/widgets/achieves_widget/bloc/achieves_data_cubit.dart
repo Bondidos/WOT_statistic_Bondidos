@@ -7,6 +7,15 @@ import 'package:wot_statistic/layers/domain/entities/achieves.dart';
 import 'package:wot_statistic/layers/domain/use_cases/load_achieves_data.dart';
 import 'package:wot_statistic/layers/presentation/statistic_page/widgets/achieves_widget/widgets/achieve_item_widget.dart';
 
+const Map<int, String> achievesBySection = {
+  0: 'Epic',
+  1: 'Action',
+  2: 'Special',
+  3: 'Memorial',
+  4: 'Group',
+  5: 'Class',
+};
+
 class AchievesDataCubit extends Cubit<AchievesState> {
   final LoadAchievesData loadAchieves;
 
@@ -74,12 +83,3 @@ class AchievesDataCubit extends Cubit<AchievesState> {
     return result;
   }
 }
-
-const Map<int, String> achievesBySection = {
-  0: 'Epic',
-  1: 'Action',
-  2: 'Special',
-  3: 'Memorial',
-  4: 'Group',
-  5: 'Class',
-};

@@ -46,8 +46,9 @@ class AchievesRepoImpl implements AchievesRepo {
         await _fetchByIdAndFilter(achievesId.keys.toList());
     List<List<Achieve>> result = [];
     for (var element in achievesByIdFromDb) {
-      var buffer =
-          element.map((e) => Achieve.fromApiAndData(achievesId, e)).toList();
+      var buffer = element
+          .map((e) => _createAchieveFromApiAndData(achievesId, e))
+          .toList();
       result.add(buffer);
     }
     return result;
@@ -61,7 +62,8 @@ class AchievesRepoImpl implements AchievesRepo {
       achievesLocalDataSource.fetchAchievementsById(achievementId, special),
       achievesLocalDataSource.fetchAchievementsById(achievementId, memorial),
       achievesLocalDataSource.fetchAchievementsById(achievementId, group),
-      achievesLocalDataSource.fetchAchievementsById(achievementId, achieveClass),
+      achievesLocalDataSource.fetchAchievementsById(
+          achievementId, achieveClass),
     ]);
   }
 
@@ -84,8 +86,33 @@ class AchievesRepoImpl implements AchievesRepo {
 
   Future<void> _createOrSyncAchievesDb(
       AchievementsDataBase achievementsDataBase) async {
-    int insertedItems =
-        await achievesLocalDataSource.saveAchievementsData(achievementsDataBase.data);
+    int insertedItems = await achievesLocalDataSource
+        .saveAchievementsData(achievementsDataBase.data);
     achievesLocalDataSource.setAchievesCount(insertedItems);
+  }
+
+  Achieve _createAchieveFromApiAndData(
+    Map<String, int> achievesId,
+    AchievementData achievesByIdFromDb,
+  ) {
+    int optionsKey = achievesId[achievesByIdFromDb.name]! - 1;
+    return Achieve(
+      imageBig: achievesByIdFromDb.options == null
+          ? achievesByIdFromDb.imageBig!
+          : achievesByIdFromDb.options![optionsKey].imageBig!,
+      image: achievesByIdFromDb.options == null
+          ? achievesByIdFromDb.image!
+          : achievesByIdFromDb.options![optionsKey].image!,
+      condition: achievesByIdFromDb.condition,
+      description: achievesByIdFromDb.description ??
+          achievesByIdFromDb.options?[optionsKey].description ??
+          'NoDescription',
+      section: achievesByIdFromDb.section,
+      sectionOrder: achievesByIdFromDb.sectionOrder,
+      name: achievesByIdFromDb.options == null
+          ? achievesByIdFromDb.nameI18n ?? achievesByIdFromDb.name
+          : achievesByIdFromDb.options![optionsKey].nameI18n,
+      count: achievesId[achievesByIdFromDb.name] ?? 1,
+    );
   }
 }

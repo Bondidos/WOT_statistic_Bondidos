@@ -1,11 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:wot_statistic/generated/l10n.dart';
-import 'package:wot_statistic/layers/data/models/remote/personal_api_data/personal_data_api.dart';
 import 'package:wot_statistic/layers/domain/entities/personal_data_card.dart';
-import 'package:wot_statistic/layers/data/models/remote/clan_info/clan_data.dart';
-import 'package:wot_statistic/layers/data/models/remote/clan_info/clan_info.dart';
-import 'package:wot_statistic/layers/data/models/remote/personal_api_data/data.dart';
 
 const goldImg = "assets/images/gold_img.png";
 const freeExp = 'assets/images/free_exp_img.png';
@@ -33,20 +29,6 @@ class PersonalData {
     required this.logoutAt,
     required this.clanLogo,
   });
-
-  factory PersonalData.fromPersonalAndClanInfo(
-      PersonalDataApi personal, ClanInfo? clanInfo) {
-    final Data data = personal.data![personal.data!.keys.first]!;
-    final ClanData? clanData = clanInfo?.data?.values.first;
-    return PersonalData(
-      private: data.private,
-      clan: clanData?.name,
-      clanLogo: clanData?.emblems.links.wowp,
-      globalRating: data.globalRating,
-      nickname: data.nickname,
-      logoutAt: data.logoutAt,
-    );
-  }
 
   List<PersonalDataCard> toCardList(BuildContext context) {
     if (private == null) return [];

@@ -5,6 +5,8 @@ import 'package:wot_statistic/generated/l10n.dart';
 import 'package:wot_statistic/layers/presentation/sing_in_page/bloc/sign_in_cubit.dart';
 
 const cis = "CIS";
+const euRealm = "assets/realm/eu.png";
+const cisRealm = "assets/realm/cis.png";
 
 class RegionPicker extends StatelessWidget {
   const RegionPicker({Key? key}) : super(key: key);
@@ -39,8 +41,11 @@ class RegionPicker extends StatelessWidget {
                     },
                     child: Wrap(
                       children: [
-                        Image.asset("assets/realm/eu.png",
-                            height: 20, width: 20),
+                        Image.asset(
+                          euRealm,
+                          height: 20,
+                          width: 20,
+                        ),
                         Padding(
                           padding: const EdgeInsets.only(left: 8.0),
                           child: Text(
@@ -59,8 +64,11 @@ class RegionPicker extends StatelessWidget {
                     },
                     child: Wrap(
                       children: [
-                        Image.asset("assets/realm/cis.png",
-                            height: 20, width: 20),
+                        Image.asset(
+                          cisRealm,
+                          height: 20,
+                          width: 20,
+                        ),
                         Padding(
                           padding: const EdgeInsets.only(left: 8.0),
                           child: Text(

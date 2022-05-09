@@ -1,4 +1,6 @@
 import 'package:dio/dio.dart';
+import 'package:wot_statistic/layers/data/models/remote/clan_info/clan_data.dart';
+import 'package:wot_statistic/layers/data/models/remote/personal_api_data/data.dart';
 import 'package:wot_statistic/layers/data/models/remote/token_extension/token_extension_response.dart';
 import 'package:wot_statistic/layers/domain/entities/personal_data.dart';
 import 'package:wot_statistic/layers/domain/entities/user.dart';
@@ -31,9 +33,16 @@ class PersonalDataRepoImpl implements PersonalDataRepo {
 
   Future<void> _extendUserToken() async {
     final User userWithExtendedToken =
-        await _extendAccessToken(User.fromUserData(signedUser));
+        await _extendAccessToken(_createUserFromUserData(signedUser));
     await _refreshSignedAndSavedUsers(userWithExtendedToken);
   }
+
+  User _createUserFromUserData(UserData userData) => User(
+        id: userData.id,
+        nickname: userData.nickname,
+        accessToken: userData.accessToken,
+        expiresAt: userData.expiresAt,
+      );
 
   UserData get signedUser {
     final _signedUser = localSource.getSignedUser();
@@ -60,7 +69,7 @@ class PersonalDataRepoImpl implements PersonalDataRepo {
     } catch (e) {
       throw Exception(S.current.CheckInternetConnection);
     }
-    return user.copyWith(response);
+    return user.copyWith(response.response);
   }
 
   @override
@@ -78,7 +87,10 @@ class PersonalDataRepoImpl implements PersonalDataRepo {
     } catch (e) {
       throw Exception(S.current.CheckInternetConnection);
     }
-    return PersonalData.fromPersonalAndClanInfo(personalDataApi, clanInfo);
+    return _createPersonalDataFromPersonalAndClanInfo(
+      personalDataApi,
+      clanInfo,
+    );
   }
 
   Future<PersonalDataApi> _fetchPersonalDataApi(UserData signedUser) async {
@@ -92,5 +104,21 @@ class PersonalDataRepoImpl implements PersonalDataRepo {
       throw Exception(S.current.CheckInternetConnection);
     }
     return personalDataApi;
+  }
+
+  PersonalData _createPersonalDataFromPersonalAndClanInfo(
+    PersonalDataApi personal,
+    ClanInfo? clanInfo,
+  ) {
+    final Data data = personal.data![personal.data!.keys.first]!;
+    final ClanData? clanData = clanInfo?.data?.values.first;
+    return PersonalData(
+      private: data.private,
+      clan: clanData?.name,
+      clanLogo: clanData?.emblems.links.wowp,
+      globalRating: data.globalRating,
+      nickname: data.nickname,
+      logoutAt: data.logoutAt,
+    );
   }
 }

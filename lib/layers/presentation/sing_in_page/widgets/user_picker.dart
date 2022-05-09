@@ -10,7 +10,7 @@ class UserPicker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Color _onPrimary = Theme.of(context).colorScheme.onPrimary;
-    final Color _onSecondary = Theme.of(context).colorScheme.onSecondary;
+    final Color _primary = Theme.of(context).colorScheme.primary;
     final SingInCubit cubit = context.read<SingInCubit>();
 
     return BlocBuilder<SingInCubit, SignInState>(
@@ -30,14 +30,14 @@ class UserPicker extends StatelessWidget {
             ? DecoratedBox(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
-                  color: _onSecondary,
+                  color: _primary,
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(5.0),
                   child: Column(
                     children: [
                       DropdownButton<String>(
-                        dropdownColor: _onSecondary,
+                        dropdownColor: _primary,
                         value: userNameToDisplay,
                         icon: Icon(
                           Icons.arrow_drop_down,
@@ -47,7 +47,7 @@ class UserPicker extends StatelessWidget {
                         elevation: 16,
                         underline: Container(
                           height: 2,
-                          color: _onSecondary,
+                          color: _primary,
                         ),
                         onChanged: (userNickname) {
                           cubit.setCurrentUser(userNickname!);

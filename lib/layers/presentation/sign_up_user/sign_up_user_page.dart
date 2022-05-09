@@ -70,7 +70,6 @@ class _SignUpPageState extends State<SignUpPage> {
           if (url.contains("access_token")) {
             Navigator.of(context).pop(User.fromUrl(url));
           }
-          //todo cancel sign in
         },
       ),
     );
