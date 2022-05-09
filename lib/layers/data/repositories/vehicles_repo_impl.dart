@@ -44,11 +44,29 @@ class VehiclesRepoImpl implements VehiclesRepo {
       List<UserVehicle> userVehicles) {
     List<Vehicle> result = [];
     for (var item in vehiclesByIdFromDb) {
-      result.add(Vehicle.fromTtcAndUser(
+      result.add(_createVehicleFromTtcAndUser(
           userVehicles.firstWhere((e) => e.tankId == item.tankId), item));
     }
     return result;
   }
+
+  Vehicle _createVehicleFromTtcAndUser(
+    UserVehicle userVehicle,
+    VehiclesDataTTC vehiclesDataTTC,
+  ) =>
+      Vehicle(
+        markOfMastery: userVehicle.markOfMastery,
+        wins: userVehicle.tankStat.wins,
+        battles: userVehicle.tankStat.battles,
+        description: vehiclesDataTTC.description,
+        image: vehiclesDataTTC.images.bigIcon,
+        isPremium: vehiclesDataTTC.isPremium,
+        isGift: vehiclesDataTTC.isGift,
+        name: vehiclesDataTTC.name,
+        nation: vehiclesDataTTC.nation,
+        type: vehiclesDataTTC.type,
+        tier: vehiclesDataTTC.tier,
+      );
 
   Future<void> _initVehiclesDatabase() async {
     final String currentLng = vehiclesLocalSource.getCurrentLng();
@@ -68,7 +86,7 @@ class VehiclesRepoImpl implements VehiclesRepo {
     if (vehiclesDataMeta.total == databaseTtcCount &&
         currentLng == vehiclesDbLng) return;
     vehiclesLocalSource.setVehiclesCurrentLng(currentLng);
-    await _createOrSyncVehiclesDb(vehiclesDataMeta,currentLng);
+    await _createOrSyncVehiclesDb(vehiclesDataMeta, currentLng);
   }
 
   Future<void> _createOrSyncVehiclesDb(
@@ -77,7 +95,8 @@ class VehiclesRepoImpl implements VehiclesRepo {
         await _fetchAllPages(vehiclesDataMeta, currentLng);
     final List<VehiclesDataTTC> allVehiclesTTC =
         _mergeTTC(allPagesOfVehicleTTC);
-    final int savedTtcCount = await vehiclesLocalSource.saveTTCList(allVehiclesTTC);
+    final int savedTtcCount =
+        await vehiclesLocalSource.saveTTCList(allVehiclesTTC);
     vehiclesLocalSource.setVehiclesTtcCount(savedTtcCount);
   }
 

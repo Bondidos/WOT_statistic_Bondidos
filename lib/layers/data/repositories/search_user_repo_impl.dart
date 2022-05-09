@@ -1,6 +1,7 @@
 import 'package:wot_statistic/generated/l10n.dart';
 import 'package:wot_statistic/layers/data/models/local/user_data.dart';
 import 'package:wot_statistic/layers/data/models/remote/search_user/search_user.dart';
+import 'package:wot_statistic/layers/data/models/remote/search_user/search_user_data.dart';
 import 'package:wot_statistic/layers/data/sources/local/search_user_local_datasource.dart';
 import 'package:wot_statistic/layers/domain/entities/found_user.dart';
 import 'package:wot_statistic/layers/domain/entities/user.dart';
@@ -25,7 +26,9 @@ class SearchUserRepoImpl implements SearchUserRepo {
     } catch (e) {
       throw Exception(S.current.CheckInternetConnection);
     }
-    return users.data.map((e) => FoundUser.fromSearchUserData(e)).toList();
+    return users.data
+        .map((e) => _createFoundUserFromSearchUserData(e))
+        .toList();
   }
 
   @override
@@ -37,4 +40,7 @@ class SearchUserRepoImpl implements SearchUserRepo {
       ),
     );
   }
+
+  FoundUser _createFoundUserFromSearchUserData(SearchUserData userData) =>
+      FoundUser(name: userData.nickname, id: userData.accountId);
 }
