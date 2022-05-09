@@ -2,6 +2,7 @@ import 'package:wot_statistic/layers/data/models/remote/search_user/search_user.
 import 'package:wot_statistic/layers/data/models/remote/achievements_data/achievements_database.dart';
 import 'package:wot_statistic/layers/data/models/remote/clan_info/clan_info.dart';
 import 'package:wot_statistic/layers/data/models/remote/personal_api_data/personal_data_api.dart';
+import 'package:wot_statistic/layers/data/models/remote/token_extension/token_extension_response.dart';
 import 'package:wot_statistic/layers/data/models/remote/user_achieves/user_achieves_api_data.dart';
 import 'package:wot_statistic/layers/data/models/remote/user_vehicles/user_vehicles_api.dart';
 import 'package:wot_statistic/layers/data/models/remote/vehicles_data/vehicles_data.dart';
@@ -56,4 +57,8 @@ class RemoteSourceImpl extends RemoteDataSource {
   @override
   Future<SearchUser> searchUser(String search) =>
       wotClient.searchUsers(applicationId, search, searchUsersLimit);
+
+  @override
+  Future<TokenExtResponse> tokenExtension(String token) =>
+      wotClient.tokenExtension(applicationId, "access_token=$token");
 }

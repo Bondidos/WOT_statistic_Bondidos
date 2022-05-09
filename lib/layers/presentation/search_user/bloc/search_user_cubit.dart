@@ -4,17 +4,17 @@ import 'package:rxdart/rxdart.dart';
 import 'package:wot_statistic/layers/domain/entities/found_user.dart';
 import 'package:wot_statistic/layers/domain/entities/user.dart';
 import 'package:wot_statistic/layers/domain/use_cases/search_user_use_case.dart';
+import 'package:wot_statistic/layers/domain/use_cases/view_found_user.dart';
 import 'package:wot_statistic/layers/presentation/search_user/bloc/search_user_state.dart';
-import 'package:wot_statistic/layers/domain/use_cases/sing_in_use_case.dart';
 
 class SearchUserCubit extends Cubit<SearchUserState> {
   final PublishSubject<String> searchStream = PublishSubject<String>();
   final SearchUserUseCase searchUser;
-  final SingInUseCase signIn;
+  final ViewFoundUser viewFoundUser;
 
   SearchUserCubit({
     required this.searchUser,
-    required this.signIn,
+    required this.viewFoundUser,
   }) : super(const SearchUserState(
             status: SearchStatus.initial, foundList: [])) {
     init();
@@ -46,6 +46,6 @@ class SearchUserCubit extends Cubit<SearchUserState> {
 
   Future<void> viewUser(int index) async {
     FoundUser user = state.foundList[index];
-    await signIn.execute(User.fromFoundUser(user));
+    await viewFoundUser.execute(User.fromFoundUser(user));
   }
 }

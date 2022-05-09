@@ -1,5 +1,4 @@
 import 'package:json_annotation/json_annotation.dart';
-
 import 'user_achieves_category.dart';
 part 'user_achieves_api_data.g.dart';
 

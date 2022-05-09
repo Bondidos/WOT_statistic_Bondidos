@@ -20,8 +20,8 @@ class SignInRepoImpl implements SignInRepo {
     required this.remoteSource,
     required this.baseOptions,
   }) {
-      baseOptions.baseUrl =
-          signLocalSource.getCurrentRealm() == cis ? baseUrlCis : baseUrlEu;
+    baseOptions.baseUrl =
+        signLocalSource.getCurrentRealm() == cis ? baseUrlCis : baseUrlEu;
   }
 
   @override
@@ -39,8 +39,14 @@ class SignInRepoImpl implements SignInRepo {
   }
 
   @override
-  Future<void> setSingedUser(User user) => signLocalSource.setSingedUser(
-      UserData.fromUserAndRealm(user, signLocalSource.getCurrentRealm()));
+  Future<void> setSingedUser(User user) async {
+    signLocalSource.setSingedUser(
+      UserData.fromUserAndRealm(
+        user,
+        signLocalSource.getCurrentRealm(),
+      ),
+    );
+  }
 
   @override
   Stream<String> get subscribeRealm => signLocalSource.subscribeRealm();

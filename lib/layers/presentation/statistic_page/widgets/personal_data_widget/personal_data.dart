@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wot_statistic/generated/l10n.dart';
 import 'package:wot_statistic/layers/domain/entities/personal_data.dart';
 import 'package:wot_statistic/layers/domain/entities/personal_data_card.dart';
-import 'package:wot_statistic/layers/presentation/common_widget/common_widgets.dart';
+import 'package:wot_statistic/layers/presentation/common_widget/snackbar_widget.dart';
 import 'package:wot_statistic/layers/presentation/statistic_page/widgets/personal_data_widget/bloc/personal_data_cubit.dart';
 import 'package:wot_statistic/layers/presentation/statistic_page/widgets/personal_data_widget/private_item_widget/private_item_widget.dart';
 import 'package:wot_statistic/common/theme/text_styles.dart';

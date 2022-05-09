@@ -7,9 +7,7 @@ import 'layers/presentation/settings_page/bloc/settings_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wot_statistic/generated/l10n.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-
 import 'layers/presentation/sign_up_user/sign_up_user_page.dart';
-import 'layers/presentation/sing_in_page/bloc/sign_in_cubit.dart';
 import 'layers/presentation/sing_in_page/sign_in_page.dart';
 
 const ruLng = 'ru';
@@ -18,11 +16,8 @@ const signedUserExpire = 'Singed User EXPIRE';
 
 void main() async {
   await di.init();
-  runApp(MultiBlocProvider(
-    providers: [
-      BlocProvider<SettingsCubit>(create: (ctx) => di.inj<SettingsCubit>()),
-      BlocProvider<SingInCubit>(create: (ctx) => di.inj<SingInCubit>()),
-    ],
+  runApp(BlocProvider<SettingsCubit>(
+    create: (ctx) => di.inj<SettingsCubit>(),
     child: const MyApp(),
   ));
 }

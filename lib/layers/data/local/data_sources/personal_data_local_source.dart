@@ -2,6 +2,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wot_statistic/layers/data/sources/local/local_data_source.dart';
 import 'package:wot_statistic/layers/data/models/local/user_data.dart';
 
+import 'drift_database/dao/wot_stat_dao.dart';
+
 const signedUserId = 'Singed User id';
 const signedUserNickname = 'Singed User nickname';
 const signedUserToken = 'Singed User token';
@@ -12,8 +14,12 @@ const realmKey = 'Realm';
 
 class PersonalDataLocalSourceImpl extends PersonalDataLocalSource {
   final SharedPreferences sharedPreferences;
+  final WotStatDao wotStatDao;
 
-  PersonalDataLocalSourceImpl({required this.sharedPreferences});
+  PersonalDataLocalSourceImpl({
+    required this.sharedPreferences,
+    required this.wotStatDao,
+  });
 
   @override
   UserData? getSignedUser() {
@@ -41,4 +47,16 @@ class PersonalDataLocalSourceImpl extends PersonalDataLocalSource {
   @override
   String getCurrentRealm() =>
       sharedPreferences.getString(realmKey) ?? notPicked;
+
+  @override
+  void saveUser(UserData user) => wotStatDao.saveUser(user);
+
+  @override
+  Future<void> setSingedUser(UserData user) async => Future.wait([
+        sharedPreferences.setInt(signedUserId, user.id),
+        sharedPreferences.setString(signedUserNickname, user.nickname),
+        sharedPreferences.setString(signedUserToken, user.accessToken),
+        sharedPreferences.setInt(signedUserExpire, user.expiresAt),
+        sharedPreferences.setString(signedUserRealm, user.realm),
+      ]);
 }

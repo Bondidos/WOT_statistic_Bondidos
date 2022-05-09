@@ -12,6 +12,7 @@ import 'package:wot_statistic/layers/data/sources/remote/remote_data_source.dart
 import 'package:wot_statistic/layers/domain/use_cases/load_achieves_data.dart';
 import 'package:wot_statistic/layers/domain/use_cases/sing_in_use_case.dart';
 import 'package:wot_statistic/layers/presentation/sing_in_page/bloc/sign_in_cubit.dart';
+import 'layers/data/local/data_sources/search_user_local_impl.dart';
 import 'layers/data/local/data_sources/sign_local_datasource_impl.dart';
 import 'layers/data/remote/remote_source_impl/remote_source_impl.dart';
 import 'layers/data/remote/sources/wot_api_client.dart';
@@ -21,6 +22,7 @@ import 'layers/data/repositories/search_user_repo_impl.dart';
 import 'layers/data/repositories/vehicles_repo_impl.dart';
 import 'layers/data/sources/local/achieves_local_datasource.dart';
 import 'layers/data/sources/local/local_data_source.dart';
+import 'layers/data/sources/local/search_user_local_datasource.dart';
 import 'layers/data/sources/local/settings_data_source.dart';
 import 'layers/data/sources/local/sign_local_datasource.dart';
 import 'layers/data/sources/local/vehicles_local_datasource.dart';
@@ -42,6 +44,7 @@ import 'layers/domain/use_cases/subscribe_users_use_case.dart';
 import 'layers/domain/use_cases/set_realm_pref_use_case.dart';
 import 'layers/domain/use_cases/subscribe_realm_use_case.dart';
 import 'layers/domain/use_cases/subscribe_theme_use_case.dart';
+import 'layers/domain/use_cases/view_found_user.dart';
 import 'layers/presentation/search_user/bloc/search_user_cubit.dart';
 import 'layers/presentation/settings_page/bloc/settings_cubit.dart';
 import 'layers/presentation/statistic_page/widgets/achieves_widget/bloc/achieves_data_cubit.dart';
@@ -73,8 +76,10 @@ Future<void> init() async {
   inj.registerFactory(() => PersonalDataCubit(loadData: inj()));
   inj.registerFactory(() => VehiclesDataCubit(loadVehicles: inj()));
   inj.registerFactory(() => AchievesDataCubit(loadAchieves: inj()));
-  inj.registerFactory(() => SearchUserCubit(searchUser: inj(), signIn: inj()));
+  inj.registerFactory(
+      () => SearchUserCubit(searchUser: inj(), viewFoundUser: inj()));
 
+  inj.registerFactory(() => ViewFoundUser(repository: inj()));
   inj.registerFactory(() => SearchUserUseCase(repository: inj()));
   inj.registerFactory(() => LoadAchievesData(repository: inj()));
   inj.registerFactory(() => LoadVehiclesData(repository: inj()));
@@ -106,8 +111,8 @@ Future<void> init() async {
         baseOptions: inj(),
       ));
 
-  inj.registerLazySingleton<SearchUserRepo>(
-      () => SearchUserRepoImpl(remoteSource: inj()));
+  inj.registerLazySingleton<SearchUserRepo>(() =>
+      SearchUserRepoImpl(remoteSource: inj(), searchUserLocalSource: inj()));
 
   inj.registerLazySingleton<VehiclesRepo>(
       () => VehiclesRepoImpl(remoteSource: inj(), vehiclesLocalSource: inj()));
@@ -116,6 +121,9 @@ Future<void> init() async {
       AchievesRepoImpl(remoteSource: inj(), achievesLocalDataSource: inj()));
 
   // SOURCES
+  inj.registerFactory<SearchUserLocalSource>(
+      () => SearchUserLocalSourceImpl(sharedPreferences: inj()));
+
   inj.registerFactory<SettingsDataSource>(
       () => SettingsDataSourceImpl(sharedPreferences: inj()));
 
@@ -136,6 +144,7 @@ Future<void> init() async {
   inj.registerFactory<PersonalDataLocalSource>(
       () => PersonalDataLocalSourceImpl(
             sharedPreferences: inj(),
+            wotStatDao: inj(),
           ));
 
   inj.registerFactory<VehiclesLocalDataSource>(

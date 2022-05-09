@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart';
+import 'package:wot_statistic/layers/data/models/remote/token_extension/token_extension_response.dart';
 import 'package:wot_statistic/layers/domain/entities/personal_data.dart';
+import 'package:wot_statistic/layers/domain/entities/user.dart';
 import 'package:wot_statistic/layers/domain/repositories/personal_data_repo.dart';
 import 'package:wot_statistic/generated/l10n.dart';
 import 'package:wot_statistic/layers/data/models/local/user_data.dart';
@@ -22,9 +24,15 @@ class PersonalDataRepoImpl implements PersonalDataRepo {
     required this.remoteSource,
     required this.localSource,
     required this.baseOptions,
-  }){
+  }) {
     baseOptions.baseUrl =
-    localSource.getCurrentRealm() == cis ? baseUrlCis : baseUrlEu;
+        localSource.getCurrentRealm() == cis ? baseUrlCis : baseUrlEu;
+  }
+
+  Future<void> _extendUserToken() async {
+    final User userWithExtendedToken =
+        await _extendAccessToken(User.fromUserData(signedUser));
+    await _refreshSignedAndSavedUsers(userWithExtendedToken);
   }
 
   UserData get signedUser {
@@ -33,8 +41,31 @@ class PersonalDataRepoImpl implements PersonalDataRepo {
     return _signedUser;
   }
 
+  Future<void> _refreshSignedAndSavedUsers(User userWithExtendedToken) async {
+    String realm = localSource.getCurrentRealm();
+    localSource
+        .saveUser(UserData.fromUserAndRealm(userWithExtendedToken, realm));
+    await localSource.setSingedUser(
+      UserData.fromUserAndRealm(
+        userWithExtendedToken,
+        localSource.getCurrentRealm(),
+      ),
+    );
+  }
+
+  Future<User> _extendAccessToken(User user) async {
+    final TokenExtResponse response;
+    try {
+      response = await remoteSource.tokenExtension(user.accessToken);
+    } catch (e) {
+      throw Exception(S.current.CheckInternetConnection);
+    }
+    return user.copyWith(response);
+  }
+
   @override
   Future<PersonalData> fetchPersonalData() async {
+    await _extendUserToken();
     final PersonalDataApi personalDataApi;
     final ClanInfo? clanInfo;
     try {

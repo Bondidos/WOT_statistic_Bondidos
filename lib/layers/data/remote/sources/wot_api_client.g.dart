@@ -159,6 +159,22 @@ class _WotClient implements WotClient {
     return value;
   }
 
+  @override
+  Future<TokenExtResponse> tokenExtension(applicationId, accessToken) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'application_id': applicationId};
+    final _headers = <String, dynamic>{};
+    final _data = accessToken;
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<TokenExtResponse>(
+            Options(method: 'POST', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/wot/auth/prolongate/',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = TokenExtResponse.fromJson(_result.data!);
+    return value;
+  }
+
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {
     if (T != dynamic &&
         !(requestOptions.responseType == ResponseType.bytes ||

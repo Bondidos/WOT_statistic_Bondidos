@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:retrofit/http.dart';
 import 'package:wot_statistic/layers/data/models/remote/achievements_data/achievements_database.dart';
 import 'package:wot_statistic/layers/data/models/remote/search_user/search_user.dart';
+import 'package:wot_statistic/layers/data/models/remote/token_extension/token_extension_response.dart';
 import 'package:wot_statistic/layers/data/models/remote/user_achieves/user_achieves_api_data.dart';
 import 'package:wot_statistic/layers/data/models/remote/user_vehicles/user_vehicles_api.dart';
 
@@ -53,14 +54,20 @@ abstract class WotClient {
 
   @GET("/wot/encyclopedia/achievements/")
   Future<AchievementsDataBase> fetchAchievesDataBase(
-      @Query('application_id') String applicationId,
-      @Query('language') String language,
-      );
+    @Query('application_id') String applicationId,
+    @Query('language') String language,
+  );
 
   @GET("/wot/account/list/")
-   Future<SearchUser> searchUsers(
-      @Query('application_id') String applicationId,
-      @Query('search') String search,
-      @Query('limit') int limit,
-      );
+  Future<SearchUser> searchUsers(
+    @Query('application_id') String applicationId,
+    @Query('search') String search,
+    @Query('limit') int limit,
+  );
+
+  @POST("/wot/auth/prolongate/")
+  Future<TokenExtResponse> tokenExtension(
+    @Query('application_id') String applicationId,
+    @Body() String accessToken,
+  );
 }

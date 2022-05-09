@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wot_statistic/generated/l10n.dart';
 import 'package:wot_statistic/layers/domain/entities/user.dart';
-import 'package:wot_statistic/layers/presentation/common_widget/common_widgets.dart';
+import 'package:wot_statistic/layers/presentation/common_widget/snackbar_widget.dart';
 import 'package:wot_statistic/layers/presentation/settings_page/settings_page.dart';
 import 'package:wot_statistic/layers/presentation/sing_in_page/bloc/sign_in_cubit.dart';
 import 'package:wot_statistic/layers/presentation/sing_in_page/widgets/animated_background.dart';
@@ -10,7 +10,7 @@ import 'package:wot_statistic/layers/presentation/sing_in_page/widgets/floating_
 import 'package:wot_statistic/layers/presentation/sing_in_page/widgets/region_picker.dart';
 import 'package:wot_statistic/layers/presentation/sing_in_page/widgets/themed_button.dart';
 import 'package:wot_statistic/layers/presentation/sing_in_page/widgets/user_picker.dart';
-
+import 'package:wot_statistic/injection_container.dart' as di;
 import 'package:wot_statistic/common/theme/text_styles.dart';
 import 'package:wot_statistic/layers/presentation/sign_up_user/sign_up_user_page.dart';
 import 'package:wot_statistic/layers/presentation/statistic_page/statistic_page.dart';
@@ -22,7 +22,6 @@ class SignInPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final SingInCubit cubit = context.read<SingInCubit>();
     return Scaffold(
       appBar: AppBar(
         title: Text(S.of(context).AppName, style: appBarTitle(context)),
@@ -35,73 +34,77 @@ class SignInPage extends StatelessWidget {
           )
         ],
       ),
-      body: BlocConsumer<SingInCubit, SignInState>(
-        listener: (prevState, currentState) {
-          if (currentState is SignInStateError) {
-            createSnackBar(context, currentState.errorMessage);
-          }
-        },
-        buildWhen: (prevState, currentState) =>
-            (currentState is SignInStateLoaded ||
-                currentState is SignInStateInit),
-        builder: (ctx, state) {
-          if (state is SignInStateLoaded) {
-            return Stack(
-              alignment: Alignment.topCenter,
-              children: [
-                const AnimatedBackground(),
-                const FloatingButtonSearch(heroTag: id),
-                SingleChildScrollView(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      pickRealm(context),
-                      const UserPicker(),
-                      IntrinsicWidth(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            const SizedBox(height: 20),
-                            ThemedButton(
-                              title: S.of(context).SignIn,
-                              onTap: () async {
-                                if (await cubit.signInAction()) {
-                                  Navigator.of(context)
-                                      .pushReplacementNamed(StatisticPage.id);
-                                }
-                              },
-                            ),
-                            const SizedBox(height: 10),
-                            ThemedButton(
-                              title: S.of(context).SignUp,
-                              onTap: () async {
-                                String realm = state.realm;
-                                User? user = await Navigator.of(context)
-                                    .pushNamed(SignUpPage.id,
-                                        arguments: realm) as User?;
-                                if (user == null) return;
-                                cubit.saveUserInToDataBase(user);
-                              },
-                            ),
-                            const SizedBox(height: 10),
-                            ThemedButton(
-                              title: S.of(context).Delete,
-                              onTap: () => cubit.removeUser(),
-                            ),
-                            const SizedBox(height: 20),
-                          ],
+      body: BlocProvider<SingInCubit>(
+        create: (context) => di.inj<SingInCubit>(),
+        child: BlocConsumer<SingInCubit, SignInState>(
+          listener: (prevState, currentState) {
+            if (currentState is SignInStateError) {
+              createSnackBar(context, currentState.errorMessage);
+            }
+          },
+          buildWhen: (prevState, currentState) =>
+              (currentState is SignInStateLoaded ||
+                  currentState is SignInStateInit),
+          builder: (context, state) {
+            final SingInCubit cubit = context.read<SingInCubit>();
+            if (state is SignInStateLoaded) {
+              return Stack(
+                alignment: Alignment.topCenter,
+                children: [
+                  const AnimatedBackground(),
+                  const FloatingButtonSearch(heroTag: id),
+                  SingleChildScrollView(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        pickRealm(context),
+                        const UserPicker(),
+                        IntrinsicWidth(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              const SizedBox(height: 20),
+                              ThemedButton(
+                                title: S.of(context).SignIn,
+                                onTap: () async {
+                                  if (await cubit.signInAction()) {
+                                    Navigator.of(context)
+                                        .pushReplacementNamed(StatisticPage.id);
+                                  }
+                                },
+                              ),
+                              const SizedBox(height: 10),
+                              ThemedButton(
+                                title: S.of(context).SignUp,
+                                onTap: () async {
+                                  String realm = state.realm;
+                                  User? user = await Navigator.of(context)
+                                      .pushNamed(SignUpPage.id,
+                                          arguments: realm) as User?;
+                                  if (user == null) return;
+                                  cubit.saveUserInToDataBase(user);
+                                },
+                              ),
+                              const SizedBox(height: 10),
+                              ThemedButton(
+                                title: S.of(context).Delete,
+                                onTap: () => cubit.removeUser(),
+                              ),
+                              const SizedBox(height: 20),
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            );
-          } else {
-            return const CircularProgressIndicator();
-          }
-        },
+                ],
+              );
+            } else {
+              return const CircularProgressIndicator();
+            }
+          },
+        ),
       ),
     );
   }

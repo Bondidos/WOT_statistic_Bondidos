@@ -118,7 +118,6 @@ class SingInCubit extends Cubit<SignInState> {
     );
   }
 
-  //todo sign out (api.logOut)
   void removeUser() async {
     emit(const SignInStateLoading());
     if (_currentUser == null) {
@@ -140,8 +139,12 @@ class SingInCubit extends Cubit<SignInState> {
       error(S.current.TokenExpired);
       return false;
     }
-    // todo token extension
-    await signIn.execute(_currentUser!);
+    try{
+      await signIn.execute(_currentUser!);
+    } catch (e){
+      emit(SignInStateError(errorMessage: e.toString()));
+      return false;
+    }
     emit(SignInStateLoaded(realm: _currentRealm, prevUsers: _prevUsers));
     return true;
   }
