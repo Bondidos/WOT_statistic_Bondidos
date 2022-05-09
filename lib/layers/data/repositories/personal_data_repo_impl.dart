@@ -32,6 +32,7 @@ class PersonalDataRepoImpl implements PersonalDataRepo {
   }
 
   Future<void> _extendUserToken() async {
+    if(signedUser.expiresAt == 0) return;
     final User userWithExtendedToken =
         await _extendAccessToken(_createUserFromUserData(signedUser));
     await _refreshSignedAndSavedUsers(userWithExtendedToken);
