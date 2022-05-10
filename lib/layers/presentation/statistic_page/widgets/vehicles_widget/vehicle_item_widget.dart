@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:wot_statistic/layers/presentation/common_widget/details_widget.dart';
 import 'package:wot_statistic/layers/presentation/common_widget/hero_dialog_route.dart';
@@ -32,7 +33,6 @@ class VehicleItemWidget extends StatelessWidget {
           color: _colorPicker(context, vehicle),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            // crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
                 width: width / 3,
@@ -53,11 +53,14 @@ class VehicleItemWidget extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             Image.asset(nations[vehicle.nation]!,),
-                            Image.asset(
-                              type[vehicle.type]!,
-                              // scale: 15,
-                              cacheHeight: 30,
-                              cacheWidth: 30,
+                            SizedBox(
+                              height: 30,
+                              width: 30,
+                              child: Image.asset(
+                                type[vehicle.type]!,
+                                cacheHeight: 30,
+                                cacheWidth: 30,
+                              ),
                             ),
                             Text(
                               tier[vehicle.tier]!,

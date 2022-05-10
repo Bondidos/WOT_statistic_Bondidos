@@ -20,7 +20,7 @@ class VehiclesDataCubit extends Cubit<VehiclesDataState> {
   List<Vehicle> get vehicleList => _vehicleList;
   List<Vehicle> sorted = [];
 
-  void fetchVehiclesData() async {
+  Future<void> fetchVehiclesData() async {
     try {
       _vehicleList = await loadVehicles.execute();
       sorted = vehicleList;
@@ -30,10 +30,7 @@ class VehiclesDataCubit extends Cubit<VehiclesDataState> {
     }
   }
 
-  Future<void> refreshList() {
-    fetchVehiclesData();
-    return Future.delayed(const Duration(seconds: 2));
-  }
+  Future<void> refreshList() => fetchVehiclesData();
 
   void sortByLvl() => _sortBy(sort: byLvl);
 

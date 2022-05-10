@@ -38,18 +38,20 @@ class AchievesWidget extends StatelessWidget {
             (currentState is LoadingState || currentState is LoadedDataState),
         builder: (ctx, state) {
           if (state is LoadedDataState) {
-            return SingleChildScrollView(
-              child: StaggeredGrid.count(
-                crossAxisCount: 3,
-                children: state.achievesData,
+            return RefreshIndicator(
+              onRefresh: () => cubit.refreshList(),
+              child: Scrollbar(
+                child: SingleChildScrollView(
+                  child: StaggeredGrid.count(
+                    crossAxisCount: 3,
+                    children: state.achievesData,
+                  ),
+                ),
               ),
             );
           }
-          return RefreshIndicator(
-            onRefresh: () => cubit.refreshList(),
-            child: const Center(
-              child: CircularProgressIndicator(),
-            ),
+          return const Center(
+            child: CircularProgressIndicator(),
           );
         },
       ),

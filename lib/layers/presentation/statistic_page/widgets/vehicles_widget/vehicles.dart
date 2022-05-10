@@ -45,29 +45,33 @@ class VehiclesWidget extends StatelessWidget {
         ],
       ),
       body: BlocConsumer<VehiclesDataCubit, VehiclesDataState>(
-          listener: (context, currentState) {
-            if (currentState is ErrorState) {
-              createSnackBar(context, currentState.message);
-            }
-          },
-          buildWhen: (prevState, currentState) =>
-              (currentState is LoadingState || currentState is LoadedDataState),
-          builder: (ctx, state) {
-            if (state is LoadedDataState) {
-              return ListView.builder(
+        listener: (context, currentState) {
+          if (currentState is ErrorState) {
+            createSnackBar(context, currentState.message);
+          }
+        },
+        buildWhen: (prevState, currentState) =>
+            (currentState is LoadingState || currentState is LoadedDataState),
+        builder: (ctx, state) {
+          if (state is LoadedDataState) {
+            return RefreshIndicator(
+              onRefresh: () => cubit.refreshList(),
+              child: Scrollbar(
+                child: ListView.builder(
                   itemCount: state.vehiclesData.length,
                   itemBuilder: (ctx, index) {
                     return VehicleItemWidget(
                         vehicle: state.vehiclesData[index]);
-                  });
-            }
-            return RefreshIndicator(
-              onRefresh: () => cubit.refreshList(),
-              child: const Center(
-                child: CircularProgressIndicator(),
+                  },
+                ),
               ),
             );
-          }),
+          }
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        },
+      ),
     );
   }
 

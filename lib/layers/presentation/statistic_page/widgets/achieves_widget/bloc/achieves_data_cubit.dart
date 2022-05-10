@@ -24,7 +24,7 @@ class AchievesDataCubit extends Cubit<AchievesState> {
     fetchAchievesData();
   }
 
-  void fetchAchievesData() async {
+  Future<void> fetchAchievesData() async {
     try {
       final List<List<Achieve>> sortedListsBySections =
           await loadAchieves.execute();
@@ -36,10 +36,7 @@ class AchievesDataCubit extends Cubit<AchievesState> {
     }
   }
 
-  Future<void> refreshList() {
-    fetchAchievesData();
-    return Future.delayed(const Duration(seconds: 2));
-  }
+  Future<void> refreshList() => fetchAchievesData();
 
   List<StaggeredGridTile> _createListToDisplay(
       List<List<Achieve>> sortedListsBySections) {

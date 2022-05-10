@@ -6,7 +6,6 @@ import 'package:wot_statistic/layers/data/sources/local/search_user_local_dataso
 import 'package:wot_statistic/layers/domain/entities/found_user.dart';
 import 'package:wot_statistic/layers/domain/entities/user.dart';
 import 'package:wot_statistic/layers/domain/repositories/search_user_repo.dart';
-
 import 'package:wot_statistic/layers/data/sources/remote/remote_data_source.dart';
 
 class SearchUserRepoImpl implements SearchUserRepo {
