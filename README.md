@@ -23,6 +23,6 @@ Also we can use russian language (check settings)
 
 Todos:
 - Cirilic font
-- App budge
+- App icon
 - refresh list (Achieves, vehicles)
 - web
