@@ -17,25 +17,14 @@ class AchievesWidget extends StatelessWidget {
     final AchievesDataCubit cubit = context.read<AchievesDataCubit>();
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(S.of(context).Achieves, style: appBarTitle(context)),
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.of(context).pushReplacementNamed(SignInPage.id);
-            },
-            icon: const Icon(Icons.logout),
-          ),
-        ],
-      ),
+      appBar: buildAppBar(context),
       body: BlocConsumer<AchievesDataCubit, AchievesState>(
         listener: (context, currentState) {
           if (currentState is ErrorState) {
             createSnackBar(context, currentState.message);
           }
         },
-        buildWhen: (prevState, currentState) =>
-            (currentState is LoadingState || currentState is LoadedDataState),
+        buildWhen: (prevState, currentState) => prevState != currentState,
         builder: (ctx, state) {
           if (state is LoadedDataState) {
             return RefreshIndicator(
@@ -50,10 +39,40 @@ class AchievesWidget extends StatelessWidget {
               ),
             );
           }
+          if (state is ErrorState) {
+            return refreshButton(cubit);
+          }
           return const Center(
             child: CircularProgressIndicator(),
           );
         },
+      ),
+    );
+  }
+
+  AppBar buildAppBar(BuildContext context) {
+    return AppBar(
+      title: Text(S.of(context).Achieves, style: appBarTitle(context)),
+      actions: [
+        IconButton(
+          onPressed: () {
+            Navigator.of(context).pushReplacementNamed(SignInPage.id);
+          },
+          icon: const Icon(Icons.logout),
+        ),
+      ],
+    );
+  }
+
+  Center refreshButton(AchievesDataCubit cubit) {
+    return Center(
+      child: IconButton(
+        iconSize: 50,
+        onPressed: () => cubit.refreshList(),
+        icon: const Icon(
+          Icons.refresh,
+          size: 50,
+        ),
       ),
     );
   }

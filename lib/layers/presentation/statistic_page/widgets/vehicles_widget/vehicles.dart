@@ -15,43 +15,14 @@ class VehiclesWidget extends StatelessWidget {
     final VehiclesDataCubit cubit = context.read<VehiclesDataCubit>();
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(S.of(context).Vehicles),
-        actions: [
-          PopupMenuButton(
-            icon: const Icon(Icons.sort),
-            itemBuilder: (ctx) => <PopupMenuEntry>[
-              _sortMenuItem(
-                  onTap: cubit.sortByLvl, name: S.of(context).ByLevel),
-              _sortMenuItem(
-                  onTap: cubit.sortByBattles, name: S.of(context).ByBattles),
-              _sortMenuItem(
-                  onTap: cubit.sortByMastery, name: S.of(context).ByMastery),
-              _sortMenuItem(
-                  onTap: cubit.sortByWins, name: S.of(context).ByWins),
-            ],
-          ),
-          PopupMenuButton(
-            icon: const Icon(Icons.filter_alt),
-            itemBuilder: (ctx) =>
-                _createFilterItems(onTap: cubit.filterByNation),
-          ),
-          IconButton(
-            onPressed: () {
-              Navigator.of(context).pushReplacementNamed(SignInPage.id);
-            },
-            icon: const Icon(Icons.logout),
-          ),
-        ],
-      ),
+      appBar: buildAppBar(context, cubit),
       body: BlocConsumer<VehiclesDataCubit, VehiclesDataState>(
         listener: (context, currentState) {
           if (currentState is ErrorState) {
             createSnackBar(context, currentState.message);
           }
         },
-        buildWhen: (prevState, currentState) =>
-            (currentState is LoadingState || currentState is LoadedDataState),
+        buildWhen: (prevState, currentState) => (prevState != currentState),
         builder: (ctx, state) {
           if (state is LoadedDataState) {
             return RefreshIndicator(
@@ -67,10 +38,58 @@ class VehiclesWidget extends StatelessWidget {
               ),
             );
           }
+          if (state is ErrorState) {
+            return refreshButton(cubit);
+          }
           return const Center(
             child: CircularProgressIndicator(),
           );
         },
+      ),
+    );
+  }
+
+  AppBar buildAppBar(BuildContext context, VehiclesDataCubit cubit) {
+    return AppBar(
+      title: Text(S.of(context).Vehicles),
+      actions: [
+        PopupMenuButton(
+          icon: const Icon(Icons.sort),
+          itemBuilder: (ctx) => <PopupMenuEntry>[
+            _sortMenuItem(
+                onTap: cubit.sortByLvl, name: S.of(context).ByLevel),
+            _sortMenuItem(
+                onTap: cubit.sortByBattles, name: S.of(context).ByBattles),
+            _sortMenuItem(
+                onTap: cubit.sortByMastery, name: S.of(context).ByMastery),
+            _sortMenuItem(
+                onTap: cubit.sortByWins, name: S.of(context).ByWins),
+          ],
+        ),
+        PopupMenuButton(
+          icon: const Icon(Icons.filter_alt),
+          itemBuilder: (ctx) =>
+              _createFilterItems(onTap: cubit.filterByNation),
+        ),
+        IconButton(
+          onPressed: () {
+            Navigator.of(context).pushReplacementNamed(SignInPage.id);
+          },
+          icon: const Icon(Icons.logout),
+        ),
+      ],
+    );
+  }
+
+  Center refreshButton(VehiclesDataCubit cubit) {
+    return Center(
+      child: IconButton(
+        iconSize: 50,
+        onPressed: () => cubit.refreshList(),
+        icon: const Icon(
+          Icons.refresh,
+          size: 50,
+        ),
       ),
     );
   }

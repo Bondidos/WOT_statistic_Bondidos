@@ -22,6 +22,7 @@ class VehiclesDataCubit extends Cubit<VehiclesDataState> {
 
   Future<void> fetchVehiclesData() async {
     try {
+      if (state is! LoadingState) emit(const LoadingState());
       _vehicleList = await loadVehicles.execute();
       sorted = vehicleList;
       emit(LoadedDataState(vehiclesData: _vehicleList));

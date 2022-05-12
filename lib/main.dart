@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wot_statistic/layers/presentation/settings_page/settings_page.dart';
 import 'package:wot_statistic/layers/presentation/statistic_page/statistic_page.dart';
@@ -16,6 +17,8 @@ const signedUserExpire = 'Singed User EXPIRE';
 
 void main() async {
   await di.init();
+  WidgetsFlutterBinding.ensureInitialized();
+  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   runApp(BlocProvider<SettingsCubit>(
     create: (ctx) => di.inj<SettingsCubit>(),
     child: const MyApp(),

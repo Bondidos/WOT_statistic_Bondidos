@@ -26,8 +26,7 @@ class PersonalDataWidget extends StatelessWidget {
               createSnackBar(context, currentState.message);
             }
           },
-          buildWhen: (prevState, currentState) =>
-              (currentState is LoadingState || currentState is LoadedDataState),
+          buildWhen: (prevState, currentState) => prevState != currentState,
           builder: (ctx, state) {
             if (state is LoadedDataState) {
               var data = state.personalData;
@@ -36,8 +35,17 @@ class PersonalDataWidget extends StatelessWidget {
                 child: privateDataScrollView(data, context, state),
               );
             }
-            return const Center(
-              child: CircularProgressIndicator(),
+            if (state is ErrorState) {
+              return Scaffold(
+                appBar: buildAppBar(context),
+                body: refreshButton(cubit),
+              );
+            }
+            return Scaffold(
+              appBar: buildAppBar(context),
+              body: const Center(
+                child: CircularProgressIndicator(),
+              ),
             );
           },
         ),
@@ -45,9 +53,37 @@ class PersonalDataWidget extends StatelessWidget {
     );
   }
 
+  AppBar buildAppBar(BuildContext context) {
+    return AppBar(
+      title: Text(S.of(context).Private, style: appBarTitle(context)),
+      actions: [
+        IconButton(
+          onPressed: () {
+            Navigator.of(context).pushReplacementNamed(SignInPage.id);
+          },
+          icon: const Icon(Icons.logout),
+        ),
+      ],
+    );
+  }
+
+  Center refreshButton(PersonalDataCubit cubit) {
+    return Center(
+      child: IconButton(
+        iconSize: 50,
+        onPressed: () => cubit.refreshList(),
+        icon: const Icon(
+          Icons.refresh,
+          size: 50,
+        ),
+      ),
+    );
+  }
+
   CustomScrollView privateDataScrollView(
       PersonalData data, BuildContext context, LoadedDataState state) {
-    List<PersonalDataCard> personalData = state.personalData.toCardList(context);
+    List<PersonalDataCard> personalData =
+        state.personalData.toCardList(context);
     return CustomScrollView(
       slivers: [
         _sliverAppBar(data, context, state),
