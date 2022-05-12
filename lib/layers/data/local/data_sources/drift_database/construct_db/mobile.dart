@@ -1,30 +1,49 @@
 import 'dart:io';
+import 'dart:isolate';
 
 import 'package:drift/native.dart';
 import 'package:drift/drift.dart';
-
-import 'package:path_provider/path_provider.dart' as paths;
+import 'package:drift/isolate.dart';
 import 'package:path/path.dart' as p;
+import 'package:path_provider/path_provider.dart';
 
 import 'package:wot_statistic/layers/data/local/data_sources/drift_database/database/database.dart';
 
 WotStatDatabase constructDb({bool logStatements = false}) {
-  if (Platform.isIOS || Platform.isAndroid) {
-    final executor = LazyDatabase(() async {
-      final dataDir = await paths.getApplicationDocumentsDirectory();
-      final dbFile = File(p.join(dataDir.path, 'db.sqlite'));
-      return NativeDatabase(dbFile, logStatements: logStatements);
-    });
-    return WotStatDatabase(executor);
+  Future<DriftIsolate> _createDriftIsolate() async {
+    final dir = await getApplicationDocumentsDirectory();
+    final path = p.join(dir.path, 'db.sqlite');
+    final receivePort = ReceivePort();
+
+    await Isolate.spawn(
+      _startBackground,
+      _IsolateStartRequest(receivePort.sendPort, path),
+    );
+
+    return await receivePort.first as DriftIsolate;
   }
-  if (Platform.isMacOS || Platform.isLinux) {
-    final file = File('db.sqlite');
-    return WotStatDatabase(NativeDatabase(file, logStatements: logStatements));
+
+  DatabaseConnection _createDriftIsolateAndConnect() {
+    return DatabaseConnection.delayed(() async {
+      final isolate = await _createDriftIsolate();
+      return await isolate.connect();
+    }());
   }
-  //todo windows
-  // if (Platform.isWindows) {
-  //   final file = File('db.sqlite');
-  //   return Database(NativeDatabase(file, logStatements: logStatements));
-  // }
-  return WotStatDatabase(NativeDatabase.memory(logStatements: logStatements));
+
+  return WotStatDatabase.connect(_createDriftIsolateAndConnect());
+}
+
+void _startBackground(_IsolateStartRequest request) {
+  final executor = NativeDatabase(File(request.targetPath));
+  final driftIsolate = DriftIsolate.inCurrent(
+    () => DatabaseConnection.fromExecutor(executor),
+  );
+  request.sendDriftIsolate.send(driftIsolate);
+}
+
+class _IsolateStartRequest {
+  final SendPort sendDriftIsolate;
+  final String targetPath;
+
+  _IsolateStartRequest(this.sendDriftIsolate, this.targetPath);
 }

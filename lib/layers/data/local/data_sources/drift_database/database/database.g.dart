@@ -1190,6 +1190,7 @@ class $AchievementsTableTable extends AchievementsTable
 
 abstract class _$WotStatDatabase extends GeneratedDatabase {
   _$WotStatDatabase(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
+  _$WotStatDatabase.connect(DatabaseConnection c) : super.connect(c);
   late final $UserTableTable userTable = $UserTableTable(this);
   late final $VehicleTTCTableTable vehicleTTCTable =
       $VehicleTTCTableTable(this);
