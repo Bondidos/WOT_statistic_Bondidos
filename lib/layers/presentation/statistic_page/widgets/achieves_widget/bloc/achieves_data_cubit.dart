@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:wot_statistic/layers/presentation/statistic_page/widgets/achieves_widget/bloc/achieves_state.dart';
@@ -55,7 +56,7 @@ class AchievesDataCubit extends Cubit<AchievesState> {
 
   StaggeredGridTile _fromSectionName({required String sectionName}) {
     return StaggeredGridTile.count(
-      crossAxisCellCount: 3,
+      crossAxisCellCount: (kIsWeb) ? 4 : 3,
       mainAxisCellCount: 1,
       child: Center(
         child: Text(sectionName, textScaleFactor: 2),

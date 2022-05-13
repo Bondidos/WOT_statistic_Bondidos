@@ -23,6 +23,7 @@ class AchieveItemWidget extends StatelessWidget {
         );
       },
       child: Card(
+        elevation: 24,
         color: Theme.of(context).colorScheme.primary,
         child: Stack(
           alignment: Alignment.center,
@@ -37,23 +38,34 @@ class AchieveItemWidget extends StatelessWidget {
                 ),
               ),
             ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Image.network(
-                  card.image,
-                  height: 60,
-                  width: 60,
-                  fit: BoxFit.cover,
-                ),
-                Text(
-                  card.name,
-                  style: onCard(context).copyWith(fontSize: 8),
-                  maxLines: 2,
-                  textAlign: TextAlign.center,
-                ),
-              ],
+            SizedBox(
+              width: double.infinity,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Flexible(
+                    flex: 3,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Image.network(
+                        card.imageBig,
+                        width: double.infinity,
+                        fit: BoxFit.fitHeight,
+                      ),
+                    ),
+                  ),
+                  Flexible(
+                    flex: 1,
+                    child: Text(
+                      card.name,
+                      style: onCard(context).copyWith(fontSize: 8),
+                      maxLines: 2,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ],
         ),

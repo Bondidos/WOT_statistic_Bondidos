@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -32,7 +33,7 @@ class AchievesWidget extends StatelessWidget {
               child: Scrollbar(
                 child: SingleChildScrollView(
                   child: StaggeredGrid.count(
-                    crossAxisCount: 3,
+                    crossAxisCount: (kIsWeb) ? 4 : 3,
                     children: state.achievesData,
                   ),
                 ),

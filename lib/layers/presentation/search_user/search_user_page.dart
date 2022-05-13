@@ -49,12 +49,23 @@ class SearchUserPage extends StatelessWidget {
                       mainAxisSize: MainAxisSize.max,
                       children: [
                         TextField(
-                          cursorColor: Theme.of(context).colorScheme.onSurface,
-                          onChanged: (search) => cubit.onTextChange(search),
+                          cursorColor: Colors.black,
                           decoration: InputDecoration(
+                            fillColor: Colors.white24,
+                            border: const OutlineInputBorder(
+                              borderSide: BorderSide(
+                                width: 2,
+                                style: BorderStyle.none,
+                              ),
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(10.0),
+                              ),
+                            ),
                             filled: true,
-                                fillColor: Theme.of(context).colorScheme.primary,
-                              hintText: S.of(context).EnterPlayerName),
+                            hintStyle: const TextStyle(color: Colors.white30),
+                            hintText: S.of(context).EnterPlayerName,
+                          ),
+                          onChanged: (search) => cubit.onTextChange(search),
                         ),
                         Expanded(
                           child: state.foundList.isNotEmpty

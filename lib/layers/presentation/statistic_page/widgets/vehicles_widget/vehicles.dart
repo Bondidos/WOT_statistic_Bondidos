@@ -1,5 +1,7 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:wot_statistic/common/screen_size.dart';
 import 'package:wot_statistic/generated/l10n.dart';
 import 'package:wot_statistic/layers/presentation/common_widget/snackbar_widget.dart';
 import 'package:wot_statistic/layers/presentation/statistic_page/widgets/vehicles_widget/bloc/vehicles_data_cubit.dart';
@@ -13,6 +15,7 @@ class VehiclesWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final VehiclesDataCubit cubit = context.read<VehiclesDataCubit>();
+    ScreenSize screenSize = getSize(context);
 
     return Scaffold(
       appBar: buildAppBar(context, cubit),
@@ -28,13 +31,9 @@ class VehiclesWidget extends StatelessWidget {
             return RefreshIndicator(
               onRefresh: () => cubit.refreshList(),
               child: Scrollbar(
-                child: ListView.builder(
-                  itemCount: state.vehiclesData.length,
-                  itemBuilder: (ctx, index) {
-                    return VehicleItemWidget(
-                        vehicle: state.vehiclesData[index]);
-                  },
-                ),
+                child: (screenSize == ScreenSize.phone)
+                    ? buildListView(state, screenSize)
+                    : buildGridView(state, screenSize),
               ),
             );
           }
@@ -49,6 +48,29 @@ class VehiclesWidget extends StatelessWidget {
     );
   }
 
+  GridView buildGridView(LoadedDataState state, ScreenSize screenSize) {
+    return GridView.builder(
+      itemBuilder: (context, index) {
+        return VehicleItemWidget(
+          vehicle: state.vehiclesData[index],
+          screenSize: screenSize,
+        );
+      },
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: (kIsWeb) ? 3 : 2,
+      ),
+    );
+  }
+
+  ListView buildListView(LoadedDataState state, ScreenSize screenSize) {
+    return ListView.builder(
+      itemCount: state.vehiclesData.length,
+      itemBuilder: (ctx, index) {
+        return VehicleItemWidget(vehicle: state.vehiclesData[index], screenSize: screenSize,);
+      },
+    );
+  }
+
   AppBar buildAppBar(BuildContext context, VehiclesDataCubit cubit) {
     return AppBar(
       title: Text(S.of(context).Vehicles),
@@ -56,20 +78,17 @@ class VehiclesWidget extends StatelessWidget {
         PopupMenuButton(
           icon: const Icon(Icons.sort),
           itemBuilder: (ctx) => <PopupMenuEntry>[
-            _sortMenuItem(
-                onTap: cubit.sortByLvl, name: S.of(context).ByLevel),
+            _sortMenuItem(onTap: cubit.sortByLvl, name: S.of(context).ByLevel),
             _sortMenuItem(
                 onTap: cubit.sortByBattles, name: S.of(context).ByBattles),
             _sortMenuItem(
                 onTap: cubit.sortByMastery, name: S.of(context).ByMastery),
-            _sortMenuItem(
-                onTap: cubit.sortByWins, name: S.of(context).ByWins),
+            _sortMenuItem(onTap: cubit.sortByWins, name: S.of(context).ByWins),
           ],
         ),
         PopupMenuButton(
           icon: const Icon(Icons.filter_alt),
-          itemBuilder: (ctx) =>
-              _createFilterItems(onTap: cubit.filterByNation),
+          itemBuilder: (ctx) => _createFilterItems(onTap: cubit.filterByNation),
         ),
         IconButton(
           onPressed: () {

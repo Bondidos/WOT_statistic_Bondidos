@@ -1,5 +1,6 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:wot_statistic/common/screen_size.dart';
 import 'package:wot_statistic/layers/presentation/common_widget/details_widget.dart';
 import 'package:wot_statistic/layers/presentation/common_widget/hero_dialog_route.dart';
 import 'package:wot_statistic/common/theme/text_styles.dart';
@@ -10,8 +11,10 @@ class VehicleItemWidget extends StatelessWidget {
   const VehicleItemWidget({
     Key? key,
     required this.vehicle,
+    required this.screenSize,
   }) : super(key: key);
   final Vehicle vehicle;
+  final ScreenSize screenSize;
 
   @override
   Widget build(BuildContext context) {
@@ -19,105 +22,144 @@ class VehicleItemWidget extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
-        Navigator.of(context).push(HeroDialogRoute(
-          builder: (BuildContext context) => DetailsWidget(
-            heroTag: vehicle.name,
-            description: vehicle.description,
-            bigImage: vehicle.image,
+        Navigator.of(context).push(
+          HeroDialogRoute(
+            builder: (BuildContext context) => DetailsWidget(
+              heroTag: vehicle.name,
+              description: vehicle.description,
+              bigImage: vehicle.image,
+            ),
           ),
-        ));
+        );
       },
       child: Hero(
         tag: vehicle.name,
         child: Card(
+          elevation: 24,
           color: _colorPicker(context, vehicle),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              SizedBox(
-                width: width / 3,
-                child: Column(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Stack(
-                      alignment: Alignment.topCenter,
-                      children: [
-                        Image.network(
-                          vehicle.image,
-                          height: width / 3,
-                          width: width / 3,
-                          fit: BoxFit.cover,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Image.asset(nations[vehicle.nation]!,),
-                            SizedBox(
-                              height: 30,
-                              width: 30,
-                              child: Image.asset(
-                                type[vehicle.type]!,
-                                cacheHeight: 30,
-                                cacheWidth: 30,
-                              ),
-                            ),
-                            Text(
-                              tier[vehicle.tier]!,
-                              style: onSurfaceSubtitle(context),
-                            )
-                          ],
-                        )
-                      ],
-                    )
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: width / 3,
-                // width: width / 3,
-                child: Column(
-                  mainAxisSize: MainAxisSize.max,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    vehicle.markOfMastery != 0
-                        ? Image.asset(markOfMastery[vehicle.markOfMastery]!)
-                        : Container(),
-                    Text(
-                      '${S.current.Battles}\n${(vehicle.battles.toString())}',
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(
-                width: width / 3,
-                height: width / 3,
-                child: Column(
-                  mainAxisSize: MainAxisSize.max,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Text(
-                      vehicle.name,
-                      softWrap: true,
-                      maxLines: 3,
-                      overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.center,
-                    ),
-                    Text(
-                      _calculateWins(vehicle.battles, vehicle.wins),
-                      softWrap: true,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
+          child: (screenSize == ScreenSize.phone)
+            ? buildPhoneItem(width, context)
+            : buildTabletOrWebItem(width, context),
         ),
+      ),
+    );
+  }
+
+  Column buildTabletOrWebItem(double width, BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        buildVehicleImage(width, context),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            buildMasteryAndBattles(),
+            buildWinRateAndName(width/2),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Row buildPhoneItem(double width, BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        buildVehicleImage(width, context),
+        buildMasteryAndBattles(),
+        buildWinRateAndName(width),
+      ],
+    );
+  }
+
+  Expanded buildWinRateAndName(double width) {
+    return Expanded(
+      child: Row(
+        mainAxisSize: MainAxisSize.max,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(4),
+            width: width/6,
+            child: Text(
+              vehicle.name,
+              softWrap: true,
+              maxLines: 3,
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.center,
+            ),
+          ),
+          Text(
+            _calculateWins(vehicle.battles, vehicle.wins),
+            softWrap: true,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Expanded buildMasteryAndBattles() {
+    return Expanded(
+      child: Row(
+        mainAxisSize: MainAxisSize.max,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          vehicle.markOfMastery != 0
+              ? Image.asset(markOfMastery[vehicle.markOfMastery]!)
+              : Container(),
+          Text(
+            '${S.current.Battles}\n${(vehicle.battles.toString())}',
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
+  }
+
+  SizedBox buildVehicleImage(double width, BuildContext context) {
+    return SizedBox(
+      width: (kIsWeb) ? width/4 : width / 3,
+      child: Column(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Stack(
+            alignment: Alignment.topCenter,
+            children: [
+              Image.network(
+                vehicle.image,
+                height: (kIsWeb) ? width/4 : width / 3,
+                width: (kIsWeb) ? width/4 : width / 3,
+                fit: BoxFit.cover,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Image.asset(
+                    nations[vehicle.nation]!,
+                  ),
+                  SizedBox(
+                    height: 30,
+                    width: 30,
+                    child: Image.asset(
+                      type[vehicle.type]!,
+                      cacheHeight: 30,
+                      cacheWidth: 30,
+                    ),
+                  ),
+                  Text(
+                    tier[vehicle.tier]!,
+                    style: onSurfaceSubtitle(context),
+                  )
+                ],
+              )
+            ],
+          )
+        ],
       ),
     );
   }
