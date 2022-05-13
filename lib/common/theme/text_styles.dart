@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 TextStyle onPrimarySubtitle(BuildContext context) {
   return TextStyle(
-    fontSize: Theme.of(context).textTheme.headline6?.fontSize,
+    fontSize: Theme.of(context).textTheme.headlineLarge?.fontSize,
     fontStyle: FontStyle.normal,
     color: Theme.of(context).colorScheme.onPrimary,
   );
@@ -10,7 +10,7 @@ TextStyle onPrimarySubtitle(BuildContext context) {
 
 TextStyle onSurfaceSubtitle(BuildContext context) {
   return TextStyle(
-    fontSize: Theme.of(context).textTheme.titleMedium?.fontSize,
+    fontSize: Theme.of(context).textTheme.titleLarge?.fontSize,
     fontStyle: FontStyle.normal,
     color: Theme.of(context).colorScheme.onSurface,
   );
@@ -18,7 +18,7 @@ TextStyle onSurfaceSubtitle(BuildContext context) {
 
 TextStyle onSecondarySubtitle(BuildContext context) {
   return TextStyle(
-    fontSize: Theme.of(context).textTheme.titleMedium?.fontSize,
+    fontSize: Theme.of(context).textTheme.titleLarge?.fontSize,
     fontStyle: FontStyle.normal,
     color: Theme.of(context).colorScheme.onSecondary,
   );
@@ -26,7 +26,7 @@ TextStyle onSecondarySubtitle(BuildContext context) {
 
 TextStyle appBarTitle(BuildContext context) {
   return TextStyle(
-    fontSize: Theme.of(context).textTheme.headline5?.fontSize,
+    fontSize: 30,
     fontStyle: FontStyle.normal,
     color: Theme.of(context).colorScheme.onPrimary,
   );
@@ -42,7 +42,7 @@ TextStyle onPrimaryTitle(BuildContext context) {
 
 TextStyle onCard(BuildContext context) {
   return TextStyle(
-    fontSize: 12,
+    fontSize: 16,
     fontStyle: FontStyle.normal,
     color: Theme.of(context).colorScheme.onPrimary,
   );

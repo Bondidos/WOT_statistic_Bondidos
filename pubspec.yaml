@@ -83,13 +83,9 @@ flutter:
     - assets/type/
 
   fonts:
-    - family: Lobster
+    - family: SourceSansPro
       fonts:
-        - asset: fonts/Lobster-Regular.ttf
-
-    - family: Krona One
-      fonts:
-        - asset: fonts/KronaOne-Regular.ttf
+        - asset: fonts/SourceSansPro-Regular.ttf
 
 flutter_intl:
   main_locale: en_US

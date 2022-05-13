@@ -44,7 +44,7 @@ class MyApp extends StatelessWidget {
                     onSurface: const Color(0xff98c1d9),
                     onSecondary: const Color(0xfffca311),
                   ),
-                  fontFamily: "Krona One",
+                  fontFamily: "SourceSansPro",
                 )
               : ThemeData(
                   primaryColor: const Color(0xffdbcbcb),
@@ -55,7 +55,7 @@ class MyApp extends StatelessWidget {
                     onSurface: const Color(0xfff3dca2),
                     onSecondary: const Color(0xff5ba8cb),
                   ),
-                  fontFamily: "Krona One",
+                  fontFamily: "SourceSansPro",
                 ),
           routes: {
             SignInPage.id: (ctx) => const SignInPage(),

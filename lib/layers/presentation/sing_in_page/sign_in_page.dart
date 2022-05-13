@@ -53,50 +53,48 @@ class SignInPage extends StatelessWidget {
                 children: [
                   const AnimatedBackground(),
                   const FloatingButtonSearch(heroTag: id),
-                  SingleChildScrollView(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        pickRealm(context),
-                        const UserPicker(),
-                        IntrinsicWidth(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              const SizedBox(height: 20),
-                              ThemedButton(
-                                title: S.of(context).SignIn,
-                                onTap: () async {
-                                  if (await cubit.signInAction()) {
-                                    Navigator.of(context)
-                                        .pushReplacementNamed(StatisticPage.id);
-                                  }
-                                },
-                              ),
-                              const SizedBox(height: 10),
-                              ThemedButton(
-                                title: S.of(context).SignUp,
-                                onTap: () async {
-                                  String realm = state.realm;
-                                  User? user = await Navigator.of(context)
-                                      .pushNamed(SignUpPage.id,
-                                          arguments: realm) as User?;
-                                  if (user == null) return;
-                                  cubit.saveUserInToDataBase(user);
-                                },
-                              ),
-                              const SizedBox(height: 10),
-                              ThemedButton(
-                                title: S.of(context).Delete,
-                                onTap: () => cubit.removeUser(),
-                              ),
-                              const SizedBox(height: 20),
-                            ],
-                          ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      pickRealm(context),
+                      const UserPicker(),
+                      IntrinsicWidth(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            const SizedBox(height: 20),
+                            ThemedButton(
+                              title: S.of(context).SignIn,
+                              onTap: () async {
+                                if (await cubit.signInAction()) {
+                                  Navigator.of(context)
+                                      .pushReplacementNamed(StatisticPage.id);
+                                }
+                              },
+                            ),
+                            const SizedBox(height: 10),
+                            ThemedButton(
+                              title: S.of(context).SignUp,
+                              onTap: () async {
+                                String realm = state.realm;
+                                User? user = await Navigator.of(context)
+                                    .pushNamed(SignUpPage.id,
+                                        arguments: realm) as User?;
+                                if (user == null) return;
+                                cubit.saveUserInToDataBase(user);
+                              },
+                            ),
+                            const SizedBox(height: 10),
+                            ThemedButton(
+                              title: S.of(context).Delete,
+                              onTap: () => cubit.removeUser(),
+                            ),
+                            const SizedBox(height: 20),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ],
               );
@@ -109,9 +107,9 @@ class SignInPage extends StatelessWidget {
     );
   }
 
-  SizedBox pickRealm(BuildContext context) {
-    return SizedBox(
-      height: MediaQuery.of(context).size.height / 2.25,
+  Expanded pickRealm(BuildContext context) {
+    return Expanded(
+      // height: MediaQuery.of(context).size.height / 2.25,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.stretch,
