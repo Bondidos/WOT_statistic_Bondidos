@@ -131,7 +131,7 @@ class PersonalDataWidget extends StatelessWidget {
   }
 
   SizedBox _userNickName(PersonalData data, BuildContext context) => SizedBox(
-      height: 20,
+      height: 25,
       child: Text(
         data.nickname,
         style: onSurfaceSubtitle(context),

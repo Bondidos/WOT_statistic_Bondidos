@@ -32,7 +32,7 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   void initState() {
     if (defaultTargetPlatform == TargetPlatform.android) {
-      WebView.platform = AndroidWebView();
+      WebView.platform = SurfaceAndroidWebView();
     }
     super.initState();
   }
@@ -50,6 +50,12 @@ class _SignUpPageState extends State<SignUpPage> {
               _controller.reload();
             },
             icon: const Icon(Icons.refresh),
+          ),
+          IconButton(
+            onPressed: () {
+              _controller.goBack();
+            },
+            icon: const Icon(Icons.arrow_back),
           )
         ],
       ),

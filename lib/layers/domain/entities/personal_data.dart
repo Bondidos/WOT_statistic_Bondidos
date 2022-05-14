@@ -64,9 +64,9 @@ class PersonalData {
       image: premiumAcc,
       value: private!['premium_expires_at'] * 1000 >=
               DateTime.now().microsecondsSinceEpoch
-          ? S.of(context).Expired
-          : dateFormat.format(DateTime.fromMillisecondsSinceEpoch(
-              private!['premium_expires_at'] * 1000)),
+          ? dateFormat.format(DateTime.fromMillisecondsSinceEpoch(
+          private!['premium_expires_at'] * 1000))
+          : S.of(context).Expired,
     ));
     privateCards.add(PersonalDataCard(
       title: S.of(context).BoundedToPhone,
