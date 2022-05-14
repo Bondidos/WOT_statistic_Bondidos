@@ -28,6 +28,7 @@ class VehicleItemWidget extends StatelessWidget {
               heroTag: vehicle.name,
               description: vehicle.description,
               bigImage: vehicle.image,
+              color: _colorPicker(context,vehicle),
             ),
           ),
         );
@@ -172,7 +173,7 @@ class VehicleItemWidget extends StatelessWidget {
   Color _colorPicker(BuildContext context, Vehicle vehicle) {
     if (vehicle.isGift) return const Color(0x8D827D27);
     if (vehicle.isPremium) return Colors.orangeAccent;
-    return Theme.of(context).colorScheme.primary;
+    return Theme.of(context).colorScheme.onSurface;
   }
 }
 

@@ -9,7 +9,8 @@ class PrivateItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Theme.of(context).colorScheme.primary,
+      elevation: 24,
+      color: Theme.of(context).colorScheme.onSurface,
       margin: const EdgeInsets.all(15),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,

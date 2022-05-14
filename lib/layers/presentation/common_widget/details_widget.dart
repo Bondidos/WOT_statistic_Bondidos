@@ -8,10 +8,12 @@ class DetailsWidget extends StatelessWidget {
     required this.heroTag,
     required this.bigImage,
     required this.description,
+    required this.color,
   }) : super(key: key);
   final String heroTag;
   final String bigImage;
   final String description;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +30,9 @@ class DetailsWidget extends StatelessWidget {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
             ),
-            color: Theme.of(context).colorScheme.primary,
+            color: (color != null)
+                ? color
+                : Theme.of(context).colorScheme.onSurface,
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(

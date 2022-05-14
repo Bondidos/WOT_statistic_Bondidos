@@ -18,13 +18,14 @@ class AchieveItemWidget extends StatelessWidget {
               heroTag: card.name,
               description: card.description,
               bigImage: card.imageBig,
+              color: null,
             ),
           ),
         );
       },
       child: Card(
         elevation: 24,
-        color: Theme.of(context).colorScheme.primary,
+        color: Theme.of(context).colorScheme.onSurface,
         child: Stack(
           alignment: Alignment.center,
           children: [
