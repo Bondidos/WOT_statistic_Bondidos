@@ -20,7 +20,7 @@ class SearchUserLocalSourceImpl implements SearchUserLocalSource {
       sharedPreferences.getString(realmKey) ?? notPicked;
 
   @override
-  Future<void> setSingedUser(UserData user) async => Future.wait([
+  Future<void> setSignedUser(UserData user) async => Future.wait([
         sharedPreferences.setInt(signedUserId, user.id),
         sharedPreferences.setString(signedUserNickname, user.nickname),
         sharedPreferences.setString(signedUserToken, user.accessToken),

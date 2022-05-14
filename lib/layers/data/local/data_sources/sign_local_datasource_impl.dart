@@ -42,7 +42,7 @@ class SignLocalDataSourceImpl implements SignLocalDataSource {
   }
 
   @override
-  Future<void> setSingedUser(UserData user) async => Future.wait([
+  Future<void> setSignedUser(UserData user) async => Future.wait([
         sharedPreferences.setInt(signedUserId, user.id),
         sharedPreferences.setString(signedUserNickname, user.nickname),
         sharedPreferences.setString(signedUserToken, user.accessToken),

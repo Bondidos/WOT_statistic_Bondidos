@@ -55,7 +55,7 @@ class PersonalDataRepoImpl implements PersonalDataRepo {
     String realm = localSource.getCurrentRealm();
     localSource
         .saveUser(UserData.fromUserAndRealm(userWithExtendedToken, realm));
-    await localSource.setSingedUser(
+    await localSource.setSignedUser(
       UserData.fromUserAndRealm(
         userWithExtendedToken,
         localSource.getCurrentRealm(),
