@@ -10,7 +10,7 @@ import 'package:wot_statistic/layers/data/repositories/settings_repo_impl.dart';
 import 'package:wot_statistic/layers/data/repositories/sign_in_repo_impl.dart';
 import 'package:wot_statistic/layers/data/sources/remote/remote_data_source.dart';
 import 'package:wot_statistic/layers/domain/use_cases/load_achieves_data.dart';
-import 'package:wot_statistic/layers/domain/use_cases/sing_in_use_case.dart';
+import 'package:wot_statistic/layers/domain/use_cases/sign_in_use_case.dart';
 import 'package:wot_statistic/layers/presentation/sing_in_page/bloc/sign_in_cubit.dart';
 import 'layers/data/local/data_sources/search_user_local_impl.dart';
 import 'layers/data/local/data_sources/sign_local_datasource_impl.dart';
@@ -64,7 +64,7 @@ Future<void> init() async {
         setLngUseCase: inj(),
       ));
 
-  inj.registerFactory(() => SingInCubit(
+  inj.registerFactory(() => SignInCubit(
         saveUser: inj(),
         subscribeUsers: inj(),
         subscribeRealm: inj(),
@@ -91,7 +91,7 @@ Future<void> init() async {
   inj.registerFactory(() => RemoveUserUseCase(repository: inj()));
   inj.registerFactory(() => SetThemeUseCase(repository: inj()));
   inj.registerFactory(() => LoadPersonalData(repository: inj()));
-  inj.registerFactory(() => SingInUseCase(repository: inj()));
+  inj.registerFactory(() => SignInUseCase(repository: inj()));
   inj.registerFactory(() => SubscribeLng(repository: inj()));
   inj.registerFactory(() => SetLngUseCase(repository: inj()));
 

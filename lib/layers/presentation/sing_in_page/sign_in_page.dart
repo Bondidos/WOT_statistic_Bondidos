@@ -34,9 +34,9 @@ class SignInPage extends StatelessWidget {
           )
         ],
       ),
-      body: BlocProvider<SingInCubit>(
-        create: (context) => di.inj<SingInCubit>(),
-        child: BlocConsumer<SingInCubit, SignInState>(
+      body: BlocProvider<SignInCubit>(
+        create: (context) => di.inj<SignInCubit>(),
+        child: BlocConsumer<SignInCubit, SignInState>(
           listener: (prevState, currentState) {
             if (currentState is SignInStateError) {
               createSnackBar(context, currentState.errorMessage);
@@ -46,7 +46,7 @@ class SignInPage extends StatelessWidget {
               (currentState is SignInStateLoaded ||
                   currentState is SignInStateInit),
           builder: (context, state) {
-            final SingInCubit cubit = context.read<SingInCubit>();
+            final SignInCubit cubit = context.read<SignInCubit>();
             if (state is SignInStateLoaded) {
               return Stack(
                 alignment: Alignment.topCenter,

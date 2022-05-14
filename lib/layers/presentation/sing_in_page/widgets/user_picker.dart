@@ -11,9 +11,9 @@ class UserPicker extends StatelessWidget {
   Widget build(BuildContext context) {
     final Color _onPrimary = Theme.of(context).colorScheme.onPrimary;
     final Color _primary = Theme.of(context).colorScheme.primary;
-    final SingInCubit cubit = context.read<SingInCubit>();
+    final SignInCubit cubit = context.read<SignInCubit>();
 
-    return BlocBuilder<SingInCubit, SignInState>(
+    return BlocBuilder<SignInCubit, SignInState>(
       buildWhen: (prevState, currentState) =>
           (currentState is SignInStateLoaded),
       builder: (ctx, state) {

@@ -13,9 +13,9 @@ class RegionPicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final SingInCubit cubit = context.read<SingInCubit>();
+    final SignInCubit cubit = context.read<SignInCubit>();
 
-    return BlocBuilder<SingInCubit, SignInState>(
+    return BlocBuilder<SignInCubit, SignInState>(
       buildWhen: (prevState, currentState) =>
           (currentState is SignInStateLoaded),
       builder: (ctx, state) {

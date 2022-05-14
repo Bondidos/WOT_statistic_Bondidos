@@ -31,8 +31,8 @@ class SearchUserRepoImpl implements SearchUserRepo {
   }
 
   @override
-  Future<void> setSingedUser(User user) async {
-    searchUserLocalSource.setSingedUser(
+  Future<void> setSignedUser(User user) async {
+    searchUserLocalSource.setSignedUser(
       UserData.fromUserAndRealm(
         user,
         searchUserLocalSource.getCurrentRealm(),

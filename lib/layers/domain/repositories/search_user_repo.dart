@@ -3,5 +3,5 @@ import 'package:wot_statistic/layers/domain/entities/user.dart';
 
 abstract class SearchUserRepo{
   Future<List<FoundUser>> searchUser(String search);
-  Future<void> setSingedUser(User user);
+  Future<void> setSignedUser(User user);
 }

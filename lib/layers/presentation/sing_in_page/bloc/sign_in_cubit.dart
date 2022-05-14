@@ -7,7 +7,7 @@ import 'package:wot_statistic/common/theme/text_styles.dart';
 import 'package:wot_statistic/layers/domain/entities/user.dart';
 import 'package:wot_statistic/layers/domain/use_cases/remove_user_use_case.dart';
 import 'package:wot_statistic/layers/domain/use_cases/save_user_use_case.dart';
-import 'package:wot_statistic/layers/domain/use_cases/sing_in_use_case.dart';
+import 'package:wot_statistic/layers/domain/use_cases/sign_in_use_case.dart';
 import 'package:wot_statistic/layers/domain/use_cases/subscribe_users_use_case.dart';
 import 'package:wot_statistic/layers/domain/use_cases/set_realm_pref_use_case.dart';
 import 'package:wot_statistic/layers/domain/use_cases/subscribe_realm_use_case.dart';
@@ -17,18 +17,18 @@ part 'sign_in_state.dart';
 const notPicked = "Not Picked";
 const eu = "EU";
 
-class SingInCubit extends Cubit<SignInState> {
+class SignInCubit extends Cubit<SignInState> {
   final SaveUserUseCase saveUser;
   final SubscribeUsers subscribeUsers;
   final SubscribeRealm subscribeRealm;
   final SetRealmUseCase setRealm;
   final RemoveUserUseCase removeUserUseCase;
-  final SingInUseCase signIn;
+  final SignInUseCase signIn;
 
   StreamSubscription? _subscriptionUsers;
   StreamSubscription? _subscriptionRealm;
 
-  SingInCubit({
+  SignInCubit({
     required this.setRealm,
     required this.saveUser,
     required this.subscribeUsers,

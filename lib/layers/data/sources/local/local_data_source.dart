@@ -4,5 +4,5 @@ abstract class PersonalDataLocalSource {
   UserData? getSignedUser();
   String getCurrentRealm();
   void saveUser(UserData user);
-  Future<void> setSingedUser(UserData user);
+  Future<void> setSignedUser(UserData user);
 }

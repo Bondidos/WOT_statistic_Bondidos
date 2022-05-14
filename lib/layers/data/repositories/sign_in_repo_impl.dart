@@ -40,7 +40,7 @@ class SignInRepoImpl implements SignInRepo {
 
   @override
   Future<void> setSingedUser(User user) async {
-    signLocalSource.setSingedUser(
+    signLocalSource.setSignedUser(
       UserData.fromUserAndRealm(
         user,
         signLocalSource.getCurrentRealm(),

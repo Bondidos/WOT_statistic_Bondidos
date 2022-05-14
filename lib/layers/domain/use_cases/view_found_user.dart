@@ -6,5 +6,5 @@ class ViewFoundUser {
 
   ViewFoundUser({required this.repository});
 
-  Future<void> execute(User user) => repository.setSingedUser(user);
+  Future<void> execute(User user) => repository.setSignedUser(user);
 }

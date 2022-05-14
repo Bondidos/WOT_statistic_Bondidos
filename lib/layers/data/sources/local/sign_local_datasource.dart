@@ -11,7 +11,7 @@ abstract class SignLocalDataSource {
 
   void setRealm(String realm);
 
-  Future<void> setSingedUser(UserData user);
+  Future<void> setSignedUser(UserData user);
 
   Stream<List<User>> subscribeUsers();
 

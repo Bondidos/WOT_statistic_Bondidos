@@ -15,23 +15,29 @@ class PrivateItemWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Image.asset(
-            card.image,
-            height: 80,
-            width: 80,
-            cacheHeight: 120,
-            cacheWidth: 120,
-            fit: BoxFit.cover,
+          Flexible(
+            flex: 2,
+            child: Image.asset(
+              card.image,
+              width: double.infinity,
+              cacheHeight: 120,
+              cacheWidth: 120,
+              fit: BoxFit.fitHeight,
+            ),
           ),
-          Text(
-            card.title,
-            style: onCard(context),
-            textAlign: TextAlign.center,
+          Flexible(
+            child: Text(
+              card.title,
+              style: onCard(context),
+              textAlign: TextAlign.center,
+            ),
           ),
-          Text(
-            card.value,
-            style: onCard(context),
-            textAlign: TextAlign.center,
+          Flexible(
+            child: Text(
+              card.value,
+              style: onCard(context),
+              textAlign: TextAlign.center,
+            ),
           ),
         ],
       ),
