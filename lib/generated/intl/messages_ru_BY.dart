@@ -67,6 +67,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "NoClanMessage": MessageLookupByLibrary.simpleMessage("Нет Клана"),
         "NoUserToDelete":
             MessageLookupByLibrary.simpleMessage("Некого удалять"),
+        "NoVehiclesToShow":
+            MessageLookupByLibrary.simpleMessage("Нет машин для отображения"),
         "None": MessageLookupByLibrary.simpleMessage("Нет"),
         "OpenIdSignUp": MessageLookupByLibrary.simpleMessage("Регистрация"),
         "PickRealm": MessageLookupByLibrary.simpleMessage("Выбор Региона"),

@@ -69,6 +69,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("User have no clan"),
         "NoUserToDelete":
             MessageLookupByLibrary.simpleMessage("No user to delete"),
+        "NoVehiclesToShow":
+            MessageLookupByLibrary.simpleMessage("No vehicles to show"),
         "None": MessageLookupByLibrary.simpleMessage("None"),
         "OpenIdSignUp": MessageLookupByLibrary.simpleMessage("OpenId Sign Up"),
         "PickRealm": MessageLookupByLibrary.simpleMessage("Pick realm"),

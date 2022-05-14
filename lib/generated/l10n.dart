@@ -659,6 +659,16 @@ class S {
       args: [],
     );
   }
+
+  /// `No vehicles to show`
+  String get NoVehiclesToShow {
+    return Intl.message(
+      'No vehicles to show',
+      name: 'NoVehiclesToShow',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

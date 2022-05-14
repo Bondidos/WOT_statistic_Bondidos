@@ -9,14 +9,14 @@
   "CIS": "CIS",
   "Settings": "Settings",
   "ThemeSettings": "Theme Settings",
-  "EnableDarkTheme":"Enable Dark Theme",
-  "LocalizationSettings":"Localization Settings",
-  "Language":"Language",
+  "EnableDarkTheme": "Enable Dark Theme",
+  "LocalizationSettings": "Localization Settings",
+  "Language": "Language",
   "AboutApp": "About App",
-  "English":"English",
+  "English": "English",
   "Russian": "Russian",
   "OpenIdSignUp": "OpenId Sign Up",
-  "EnterPlayerName":"Enter player name",
+  "EnterPlayerName": "Enter player name",
   "Vehicles": "Vehicles",
   "Achieves": "Achieves",
   "Private": "Private",
@@ -60,5 +60,6 @@
   "Italy": "Italy",
   "France": "France",
   "Japan": "Japan",
-  "Germany": "Germany"
+  "Germany": "Germany",
+  "NoVehiclesToShow": "No vehicles to show"
 }
