@@ -21,12 +21,12 @@ class SignInRepoImpl implements SignInRepo {
     required this.baseOptions,
   }) {
     baseOptions.baseUrl =
-        signLocalSource.getCurrentRealm() == cis ? baseUrlCis : baseUrlEu;
+        signLocalSource.currentRealm == cis ? baseUrlCis : baseUrlEu;
   }
 
   @override
   Future<void> removeUser(User user) => signLocalSource.removeUser(
-      UserData.fromUserAndRealm(user, signLocalSource.getCurrentRealm()));
+      UserData.fromUserAndRealm(user, signLocalSource.currentRealm));
 
   @override
   void saveUser(User user, String realm) =>
@@ -43,7 +43,7 @@ class SignInRepoImpl implements SignInRepo {
     signLocalSource.setSignedUser(
       UserData.fromUserAndRealm(
         user,
-        signLocalSource.getCurrentRealm(),
+        signLocalSource.currentRealm,
       ),
     );
   }

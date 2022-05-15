@@ -2,7 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:wot_statistic/layers/data/models/remote/clan_info/clan_data.dart';
 import 'package:wot_statistic/layers/data/models/remote/personal_api_data/data.dart';
 import 'package:wot_statistic/layers/data/models/remote/token_extension/token_extension_response.dart';
-import 'package:wot_statistic/layers/data/sources/local/signed_user_data_source.dart';
 import 'package:wot_statistic/layers/domain/entities/personal_data.dart';
 import 'package:wot_statistic/layers/domain/entities/user.dart';
 import 'package:wot_statistic/layers/domain/repositories/personal_data_repo.dart';
@@ -10,7 +9,7 @@ import 'package:wot_statistic/generated/l10n.dart';
 import 'package:wot_statistic/layers/data/models/local/user_data.dart';
 import 'package:wot_statistic/layers/data/models/remote/clan_info/clan_info.dart';
 import 'package:wot_statistic/layers/data/models/remote/personal_api_data/personal_data_api.dart';
-import 'package:wot_statistic/layers/data/sources/local/local_data_source.dart';
+import 'package:wot_statistic/layers/data/sources/local/personal_data_local_source.dart';
 import 'package:wot_statistic/layers/data/sources/remote/remote_data_source.dart';
 
 const eu = "EU";
@@ -20,18 +19,16 @@ const baseUrlCis = 'https://api.worldoftanks.ru';
 
 class PersonalDataRepoImpl implements PersonalDataRepo {
   final RemoteDataSource remoteSource;
-  final PersonalDataLocalSource localSource;
-  final SignedUserDataSource signedUserDataSource;
+  final PersonalDataLocalSource personalDataLocalSource;
   final BaseOptions baseOptions;
 
   PersonalDataRepoImpl({
     required this.remoteSource,
-    required this.localSource,
+    required this.personalDataLocalSource,
     required this.baseOptions,
-    required this.signedUserDataSource,
   }) {
     baseOptions.baseUrl =
-        localSource.getCurrentRealm() == cis ? baseUrlCis : baseUrlEu;
+        personalDataLocalSource.currentRealm == cis ? baseUrlCis : baseUrlEu;
   }
 
   Future<void> _extendUserToken() async {
@@ -48,16 +45,16 @@ class PersonalDataRepoImpl implements PersonalDataRepo {
         expiresAt: userData.expiresAt,
       );
 
-  UserData get signedUser => signedUserDataSource.signedUser;
+  UserData get signedUser => personalDataLocalSource.signedUser;
 
   Future<void> _refreshSignedAndSavedUsers(User userWithExtendedToken) async {
-    String realm = localSource.getCurrentRealm();
-    localSource
+    String realm = personalDataLocalSource.currentRealm;
+    personalDataLocalSource
         .saveUser(UserData.fromUserAndRealm(userWithExtendedToken, realm));
-    await localSource.setSignedUser(
+    await personalDataLocalSource.setSignedUser(
       UserData.fromUserAndRealm(
         userWithExtendedToken,
-        localSource.getCurrentRealm(),
+        personalDataLocalSource.currentRealm,
       ),
     );
   }

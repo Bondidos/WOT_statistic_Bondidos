@@ -2,18 +2,23 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:wot_statistic/layers/data/local/data_sources/achieves_local_datasource_impl.dart';
-import 'package:wot_statistic/layers/data/local/data_sources/personal_data_local_source.dart';
-import 'package:wot_statistic/layers/data/local/data_sources/settings_data_source_impl.dart';
-import 'package:wot_statistic/layers/data/local/data_sources/vehicles_local_datasource_impl.dart';
+import 'package:wot_statistic/layers/data/local/achieves_local_datasource_impl.dart';
+import 'package:wot_statistic/layers/data/local/personal_data_local_source.dart';
+import 'package:wot_statistic/layers/data/local/settings_data_source_impl.dart';
+import 'package:wot_statistic/layers/data/local/vehicles_local_datasource_impl.dart';
 import 'package:wot_statistic/layers/data/repositories/settings_repo_impl.dart';
 import 'package:wot_statistic/layers/data/repositories/sign_in_repo_impl.dart';
 import 'package:wot_statistic/layers/data/sources/remote/remote_data_source.dart';
 import 'package:wot_statistic/layers/domain/use_cases/load_achieves_data.dart';
 import 'package:wot_statistic/layers/domain/use_cases/sign_in_use_case.dart';
 import 'package:wot_statistic/layers/presentation/sing_in_page/bloc/sign_in_cubit.dart';
-import 'layers/data/local/data_sources/search_user_local_impl.dart';
-import 'layers/data/local/data_sources/sign_local_datasource_impl.dart';
+import 'layers/data/local/data_sources/settings_impl/database_settings_impl.dart';
+import 'layers/data/local/data_sources/settings_impl/language_settings_impl.dart';
+import 'layers/data/local/data_sources/settings_impl/realm_settings_impl.dart';
+import 'layers/data/local/data_sources/settings_impl/theme_settings_impl.dart';
+import 'layers/data/local/data_sources/settings_impl/user_settings_impl.dart';
+import 'layers/data/local/search_user_local_impl.dart';
+import 'layers/data/local/sign_local_datasource_impl.dart';
 import 'layers/data/remote/remote_source_impl/remote_source_impl.dart';
 import 'layers/data/remote/sources/api_client.dart';
 import 'layers/data/repositories/achieves_repo_impl.dart';
@@ -21,12 +26,16 @@ import 'layers/data/repositories/personal_data_repo_impl.dart';
 import 'layers/data/repositories/search_user_repo_impl.dart';
 import 'layers/data/repositories/vehicles_repo_impl.dart';
 import 'layers/data/sources/local/achieves_local_datasource.dart';
-import 'layers/data/sources/local/local_data_source.dart';
+import 'layers/data/sources/local/personal_data_local_source.dart';
 import 'layers/data/sources/local/search_user_local_datasource.dart';
 import 'layers/data/sources/local/settings_data_source.dart';
 import 'layers/data/sources/local/sign_local_datasource.dart';
-import 'layers/data/sources/local/signed_user_data_source.dart';
 import 'layers/data/sources/local/vehicles_local_datasource.dart';
+import 'layers/data/sources/settings/database_settings.dart';
+import 'layers/data/sources/settings/language_settings.dart';
+import 'layers/data/sources/settings/realm_settings.dart';
+import 'layers/data/sources/settings/theme_settings.dart';
+import 'layers/data/sources/settings/user_settings.dart';
 import 'layers/domain/repositories/achieves_repo.dart';
 import 'layers/domain/repositories/personal_data_repo.dart';
 import 'layers/domain/repositories/search_user_repo.dart';
@@ -107,10 +116,9 @@ Future<void> init() async {
       () => SettingsRepoImpl(settingsSource: inj()));
 
   inj.registerLazySingleton<PersonalDataRepo>(() => PersonalDataRepoImpl(
-        localSource: inj(),
+        personalDataLocalSource: inj(),
         remoteSource: inj(),
         baseOptions: inj(),
-        signedUserDataSource: inj(),
       ));
 
   inj.registerLazySingleton<SearchUserRepo>(() =>
@@ -119,50 +127,70 @@ Future<void> init() async {
   inj.registerLazySingleton<VehiclesRepo>(() => VehiclesRepoImpl(
         remoteSource: inj(),
         vehiclesLocalSource: inj(),
-        signedUserDataSource: inj(),
       ));
 
   inj.registerLazySingleton<AchievesRepo>(() => AchievesRepoImpl(
         remoteSource: inj(),
         achievesLocalDataSource: inj(),
-        signedUserDataSource: inj(),
       ));
 
   // SOURCES
-  inj.registerFactory<SearchUserLocalSource>(
-      () => SearchUserLocalSourceImpl(sharedPreferences: inj()));
+  inj.registerFactory<SearchUserLocalSource>(() => SearchUserLocalSourceImpl(
+        userSettings: inj(),
+        realmSettings: inj(),
+      ));
 
-  inj.registerFactory<SettingsDataSource>(
-      () => SettingsDataSourceImpl(sharedPreferences: inj()));
+  inj.registerFactory<SettingsDataSource>(() => SettingsDataSourceImpl(
+        languageSettings: inj(),
+        themeSettings: inj(),
+      ));
 
   inj.registerFactory<AchievesLocalDataSource>(
       () => AchievesLocalDataSourceImpl(
-            sharedPreferences: inj(),
             achievementDao: inj(),
+            userSettings: inj(),
+            languageSettings: inj(),
+            databaseSettings: inj(),
           ));
 
   inj.registerFactory<RemoteDataSource>(
       () => RemoteSourceImpl(apiClient: inj()));
 
   inj.registerFactory<SignLocalDataSource>(() => SignLocalDataSourceImpl(
-        sharedPreferences: inj(),
         userDao: inj(),
+        userSettings: inj(),
+        realmSettings: inj(),
       ));
 
   inj.registerFactory<PersonalDataLocalSource>(
       () => PersonalDataLocalSourceImpl(
-            sharedPreferences: inj(),
             userDao: inj(),
+            userSettings: inj(),
+            realmSettings: inj(),
           ));
 
   inj.registerFactory<VehiclesLocalDataSource>(
       () => VehiclesLocalDataSourceImpl(
-            sharedPreferences: inj(),
             vehicleTtcDao: inj(),
+            userSettings: inj(),
+            databaseSettings: inj(),
+            languageSettings: inj(),
           ));
-
-  inj.registerFactory<SignedUserDataSource>(
-      () => SignedUserDataSource(sharedPreferences: inj()));
+  inj.registerLazySingleton<ThemeSettings>(() => ThemeSettingsImpl(
+        sharedPreferences: inj(),
+      ));
+  inj.registerLazySingleton<UserSettings>(() => UserSettingsImpl(
+        sharedPreferences: inj(),
+      ));
+  inj.registerLazySingleton<RealmSettings>(() => RealmSettingsImpl(
+        sharedPreferences: inj(),
+      ));
+  inj.registerLazySingleton<LanguageSettings>(() => LanguageSettingsImpl(
+        sharedPreferences: inj(),
+      ));
+  inj.registerLazySingleton<DatabaseSettings>(() => DatabaseSettingsImpl(
+        sharedPreferences: inj(),
+      ));
 
   inj.registerLazySingleton<UserDao>(() => UserDao(inj()));
   inj.registerLazySingleton<VehicleTtcDao>(() => VehicleTtcDao(inj()));

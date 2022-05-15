@@ -1,7 +1,7 @@
 abstract class SettingsDataSource {
   void setTheme(String theme);
 
-  void setLng(String lng);
+  void setLanguage(String language);
 
   Stream<String> subscribeLng();
 

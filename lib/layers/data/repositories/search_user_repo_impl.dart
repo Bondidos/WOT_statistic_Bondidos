@@ -35,7 +35,7 @@ class SearchUserRepoImpl implements SearchUserRepo {
     searchUserLocalSource.setSignedUser(
       UserData.fromUserAndRealm(
         user,
-        searchUserLocalSource.getCurrentRealm(),
+        searchUserLocalSource.currentRealm,
       ),
     );
   }

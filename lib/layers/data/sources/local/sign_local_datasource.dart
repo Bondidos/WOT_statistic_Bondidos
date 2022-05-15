@@ -3,7 +3,7 @@ import 'package:wot_statistic/layers/data/models/local/user_data.dart';
 import 'package:wot_statistic/layers/domain/entities/user.dart';
 
 abstract class SignLocalDataSource {
-  String getCurrentRealm();
+  String get currentRealm;
 
   Future<void> removeUser(UserData user);
 

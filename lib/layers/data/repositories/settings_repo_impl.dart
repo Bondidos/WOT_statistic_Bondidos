@@ -9,7 +9,7 @@ class SettingsRepoImpl implements SettingsRepo{
   });
 
   @override
-  void setLng(String lng) => settingsSource.setLng(lng);
+  void setLng(String language) => settingsSource.setLanguage(language);
 
   @override
   void setTheme(String theme) => settingsSource.setTheme(theme);

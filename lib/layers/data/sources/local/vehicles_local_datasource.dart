@@ -2,17 +2,19 @@ import 'package:wot_statistic/layers/data/models/local/user_data.dart';
 import 'package:wot_statistic/layers/data/models/remote/vehicles_data/vehicles_data_ttc.dart';
 
 abstract class VehiclesLocalDataSource {
+  Future<int> saveTTCList(List<VehiclesDataTTC> listTTC);
+
   Future<List<VehiclesDataTTC>> fetchTTCByListOfIDs(List<int> tankIds);
 
-  String getCurrentLng();
+  UserData get signedUser;
 
-  String getVehiclesCurrentLng();
+  String get appLanguage;
 
-  int getVehiclesTTCCount();
+  String get databaseCurrentLanguage;
+
+  int get vehiclesTTCCount;
 
   void setVehiclesTtcCount(int ttcCount);
 
-  Future<int> saveTTCList(List<VehiclesDataTTC> listTTC);
-
-  void setVehiclesCurrentLng(String lng);
+  void setVehiclesCurrentLng(String language);
 }

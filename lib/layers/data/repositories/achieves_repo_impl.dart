@@ -4,7 +4,6 @@ import 'package:wot_statistic/layers/data/models/remote/achievements_data/achiev
 import 'package:wot_statistic/layers/data/models/remote/achievements_data/achievements_database.dart';
 import 'package:wot_statistic/layers/data/models/remote/user_achieves/user_achieves_api_data.dart';
 import 'package:wot_statistic/layers/data/sources/local/achieves_local_datasource.dart';
-import 'package:wot_statistic/layers/data/sources/local/signed_user_data_source.dart';
 import 'package:wot_statistic/layers/data/sources/remote/remote_data_source.dart';
 import 'package:wot_statistic/layers/domain/entities/achieves.dart';
 import 'package:wot_statistic/layers/domain/repositories/achieves_repo.dart';
@@ -19,15 +18,13 @@ const achieveClass = "class";
 class AchievesRepoImpl implements AchievesRepo {
   final AchievesLocalDataSource achievesLocalDataSource;
   final RemoteDataSource remoteSource;
-  final SignedUserDataSource signedUserDataSource;
 
   const AchievesRepoImpl({
     required this.achievesLocalDataSource,
     required this.remoteSource,
-    required this.signedUserDataSource,
   });
 
-  UserData get signedUser => signedUserDataSource.signedUser;
+  UserData get signedUser => achievesLocalDataSource.signedUser;
 
   @override
   Future<List<List<Achieve>>> fetchAchieves() async {
@@ -67,19 +64,20 @@ class AchievesRepoImpl implements AchievesRepo {
   }
 
   Future<void> _initAchievesDatabase() async {
-    final String currentLng = achievesLocalDataSource.getCurrentLng();
-    final String achievesLng = achievesLocalDataSource.getAchievesCurrentLng();
-    final int achievesInDbCount = achievesLocalDataSource.getAchievesCount();
+    final String currentLanguage = achievesLocalDataSource.appLanguage;
+    final String databaseLanguage =
+        achievesLocalDataSource.databaseCurrentLanguage;
+    final int achievesInDbCount = achievesLocalDataSource.achievesCount;
     final AchievementsDataBase achievementsDataBase;
     try {
       achievementsDataBase =
-          await remoteSource.fetchAchievesDataBase(language: currentLng);
+          await remoteSource.fetchAchievesDataBase(language: currentLanguage);
     } catch (e) {
       throw Exception(S.current.CheckInternetConnection);
     }
     if (achievesInDbCount == achievementsDataBase.meta.count &&
-        currentLng == achievesLng) return;
-    achievesLocalDataSource.setAchievesCurrentLng(currentLng);
+        currentLanguage == databaseLanguage) return;
+    achievesLocalDataSource.setAchievesCurrentLng(currentLanguage);
     await _createOrSyncAchievesDb(achievementsDataBase);
   }
 

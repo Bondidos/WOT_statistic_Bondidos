@@ -5,7 +5,6 @@ import 'package:wot_statistic/layers/data/models/remote/user_vehicles/user_vehic
 import 'package:wot_statistic/layers/data/models/remote/vehicles_data/vehicles_data.dart';
 import 'package:wot_statistic/layers/data/models/remote/vehicles_data/vehicles_data_meta.dart';
 import 'package:wot_statistic/layers/data/models/remote/vehicles_data/vehicles_data_ttc.dart';
-import 'package:wot_statistic/layers/data/sources/local/signed_user_data_source.dart';
 import 'package:wot_statistic/layers/data/sources/local/vehicles_local_datasource.dart';
 import 'package:wot_statistic/layers/data/sources/remote/remote_data_source.dart';
 import 'package:wot_statistic/layers/domain/entities/vehicles_data.dart';
@@ -14,15 +13,13 @@ import 'package:wot_statistic/layers/domain/repositories/vehicles_repo.dart';
 class VehiclesRepoImpl implements VehiclesRepo {
   final VehiclesLocalDataSource vehiclesLocalSource;
   final RemoteDataSource remoteSource;
-  final SignedUserDataSource signedUserDataSource;
 
   const VehiclesRepoImpl({
     required this.vehiclesLocalSource,
     required this.remoteSource,
-    required this.signedUserDataSource,
   });
 
-  UserData get signedUser => signedUserDataSource.signedUser;
+  UserData get signedUser => vehiclesLocalSource.signedUser;
 
   @override
   Future<List<Vehicle>> fetchUserVehicles() async {
@@ -68,24 +65,24 @@ class VehiclesRepoImpl implements VehiclesRepo {
       );
 
   Future<void> _initVehiclesDatabase() async {
-    final String currentLng = vehiclesLocalSource.getCurrentLng();
-    final String vehiclesDbLng = vehiclesLocalSource.getVehiclesCurrentLng();
-    final int databaseTtcCount = vehiclesLocalSource.getVehiclesTTCCount();
+    final String currentLanguage = vehiclesLocalSource.appLanguage;
+    final String databaseLanguage = vehiclesLocalSource.databaseCurrentLanguage;
+    final int databaseTtcCount = vehiclesLocalSource.vehiclesTTCCount;
     final VehiclesDataMeta vehiclesDataMeta;
     try {
       vehiclesDataMeta = (await remoteSource.fetchVehiclesDatabase(
         limit: 1,
         pageNumber: 1,
-        language: currentLng,
+        language: currentLanguage,
       ))
           .meta;
     } catch (e) {
       throw Exception(S.current.CheckInternetConnection);
     }
     if (vehiclesDataMeta.total == databaseTtcCount &&
-        currentLng == vehiclesDbLng) return;
-    vehiclesLocalSource.setVehiclesCurrentLng(currentLng);
-    await _createOrSyncVehiclesDb(vehiclesDataMeta, currentLng);
+        currentLanguage == databaseLanguage) return;
+    vehiclesLocalSource.setVehiclesCurrentLng(currentLanguage);
+    await _createOrSyncVehiclesDb(vehiclesDataMeta, currentLanguage);
   }
 
   Future<void> _createOrSyncVehiclesDb(
