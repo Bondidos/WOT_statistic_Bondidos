@@ -2,7 +2,7 @@ import 'package:drift/drift.dart';
 import 'package:wot_statistic/layers/data/local/data_sources/drift_database/dao/achievement_dao/achievement_converting_ext.dart';
 import 'package:wot_statistic/layers/data/local/data_sources/drift_database/database.dart';
 import 'package:wot_statistic/layers/data/local/data_sources/drift_database/tables/achieve_table.dart';
-import 'package:wot_statistic/layers/data/models/remote/achievements_data/achievement_data.dart';
+import 'package:wot_statistic/layers/data/models/remote/achievements_data/achievement_data_api.dart';
 
 part 'achievement_dao.g.dart';
 
@@ -14,7 +14,7 @@ class AchievementDao extends DatabaseAccessor<Database>
   AchievementDao(this.database) : super(database);
 
   Future<int> saveAchievementsData(
-      Map<String, AchievementData> achievements) async {
+      Map<String, AchievementDataApi> achievements) async {
     final List<AchievementsTableCompanion> listAchievementsCompanion =
         achievements.values
             .map((achievement) => achievement.toAchievementsTableCompanion())
@@ -33,7 +33,7 @@ class AchievementDao extends DatabaseAccessor<Database>
     return itemsInserted;
   }
 
-  Future<List<AchievementData>> fetchAchievementsById(
+  Future<List<AchievementDataApi>> fetchAchievementsById(
       List<String> achievementId, String filter) {
     final query = select(achievementsTable)
       ..where((tbl) => tbl.name.isIn(achievementId))

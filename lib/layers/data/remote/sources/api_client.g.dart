@@ -16,7 +16,7 @@ class _ApiClient implements ApiClient {
   String? baseUrl;
 
   @override
-  Future<PersonalDataApi> fetchPersonalData(
+  Future<UserPersonalDataApi> fetchPersonalData(
       applicationId, accountId, accessToken, fields) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
@@ -28,17 +28,17 @@ class _ApiClient implements ApiClient {
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<PersonalDataApi>(
+        _setStreamType<UserPersonalDataApi>(
             Options(method: 'GET', headers: _headers, extra: _extra)
                 .compose(_dio.options, '/wot/account/info/',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = PersonalDataApi.fromJson(_result.data!);
+    final value = UserPersonalDataApi.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<ClanInfo> fetchClanInfo(applicationId, clanId) async {
+  Future<ClanInfoDataApi> fetchClanInfo(applicationId, clanId) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'application_id': applicationId,
@@ -47,17 +47,17 @@ class _ApiClient implements ApiClient {
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<ClanInfo>(
+        _setStreamType<ClanInfoDataApi>(
             Options(method: 'GET', headers: _headers, extra: _extra)
                 .compose(_dio.options, '/wot/clans/info/',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = ClanInfo.fromJson(_result.data!);
+    final value = ClanInfoDataApi.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<UserVehiclesApi> fetchUserVehicles(
+  Future<UserVehiclesDataApi> fetchUserVehicles(
       applicationId, accountId, accessToken) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
@@ -68,17 +68,17 @@ class _ApiClient implements ApiClient {
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<UserVehiclesApi>(
+        _setStreamType<UserVehiclesDataApi>(
             Options(method: 'GET', headers: _headers, extra: _extra)
                 .compose(_dio.options, '/wot/account/tanks/',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = UserVehiclesApi.fromJson(_result.data!);
+    final value = UserVehiclesDataApi.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<VehiclesData> fetchVehiclesDatabase(
+  Future<VehiclesDataApi> fetchVehiclesDatabase(
       applicationId, fields, limit, pageNumber, language) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
@@ -91,17 +91,18 @@ class _ApiClient implements ApiClient {
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<VehiclesData>(
+        _setStreamType<VehiclesDataApi>(
             Options(method: 'GET', headers: _headers, extra: _extra)
                 .compose(_dio.options, '/wot/encyclopedia/vehicles/',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = VehiclesData.fromJson(_result.data!);
+    final value = VehiclesDataApi.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<UserAchievesApi> fetchUserAchieves(applicationId, accountId) async {
+  Future<UserAchievesDataApi> fetchUserAchieves(
+      applicationId, accountId) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'application_id': applicationId,
@@ -110,17 +111,17 @@ class _ApiClient implements ApiClient {
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<UserAchievesApi>(
+        _setStreamType<UserAchievesDataApi>(
             Options(method: 'GET', headers: _headers, extra: _extra)
                 .compose(_dio.options, '/wot/account/achievements/',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = UserAchievesApi.fromJson(_result.data!);
+    final value = UserAchievesDataApi.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<AchievementsDataBase> fetchAchievesDataBase(
+  Future<AchievementsDataApi> fetchAchievesDataBase(
       applicationId, language) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
@@ -130,17 +131,17 @@ class _ApiClient implements ApiClient {
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<AchievementsDataBase>(
+        _setStreamType<AchievementsDataApi>(
             Options(method: 'GET', headers: _headers, extra: _extra)
                 .compose(_dio.options, '/wot/encyclopedia/achievements/',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = AchievementsDataBase.fromJson(_result.data!);
+    final value = AchievementsDataApi.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<SearchUser> searchUsers(applicationId, search, limit) async {
+  Future<SearchUserDataApi> searchUsers(applicationId, search, limit) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'application_id': applicationId,
@@ -150,12 +151,12 @@ class _ApiClient implements ApiClient {
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<SearchUser>(
+        _setStreamType<SearchUserDataApi>(
             Options(method: 'GET', headers: _headers, extra: _extra)
                 .compose(_dio.options, '/wot/account/list/',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = SearchUser.fromJson(_result.data!);
+    final value = SearchUserDataApi.fromJson(_result.data!);
     return value;
   }
 

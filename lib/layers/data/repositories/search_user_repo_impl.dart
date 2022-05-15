@@ -1,7 +1,7 @@
 import 'package:wot_statistic/generated/l10n.dart';
 import 'package:wot_statistic/layers/data/models/local/user_data.dart';
-import 'package:wot_statistic/layers/data/models/remote/search_user/search_user.dart';
-import 'package:wot_statistic/layers/data/models/remote/search_user/search_user_data.dart';
+import 'package:wot_statistic/layers/data/models/remote/search_user/search_user_data_api.dart';
+import 'package:wot_statistic/layers/data/models/remote/search_user/search_user_account_data_api.dart';
 import 'package:wot_statistic/layers/data/sources/local/search_user_local_datasource.dart';
 import 'package:wot_statistic/layers/domain/entities/found_user.dart';
 import 'package:wot_statistic/layers/domain/entities/user.dart';
@@ -19,7 +19,7 @@ class SearchUserRepoImpl implements SearchUserRepo {
 
   @override
   Future<List<FoundUser>> searchUser(String search) async {
-    final SearchUser users;
+    final SearchUserDataApi users;
     try {
       users = await remoteSource.searchUser(search);
     } catch (e) {
@@ -40,6 +40,6 @@ class SearchUserRepoImpl implements SearchUserRepo {
     );
   }
 
-  FoundUser _createFoundUserFromSearchUserData(SearchUserData userData) =>
+  FoundUser _createFoundUserFromSearchUserData(SearchUserAccountDataApi userData) =>
       FoundUser(name: userData.nickname, id: userData.accountId);
 }

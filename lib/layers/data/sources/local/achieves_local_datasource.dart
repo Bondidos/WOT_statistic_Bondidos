@@ -1,5 +1,5 @@
 import 'package:wot_statistic/layers/data/models/local/user_data.dart';
-import 'package:wot_statistic/layers/data/models/remote/achievements_data/achievement_data.dart';
+import 'package:wot_statistic/layers/data/models/remote/achievements_data/achievement_data_api.dart';
 
 abstract class AchievesLocalDataSource {
   UserData get signedUser;
@@ -14,8 +14,8 @@ abstract class AchievesLocalDataSource {
 
   void setAchievesCurrentLng(String lng);
 
-  Future<List<AchievementData>> fetchAchievementsById(
+  Future<List<AchievementDataApi>> fetchAchievementsById(
       List<String> achievementId, String filter);
 
-  Future<int> saveAchievementsData(Map<String, AchievementData> achievements);
+  Future<int> saveAchievementsData(Map<String, AchievementDataApi> achievements);
 }

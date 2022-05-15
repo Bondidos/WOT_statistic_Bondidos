@@ -2,7 +2,7 @@ import 'package:drift/drift.dart';
 import 'package:wot_statistic/layers/data/local/data_sources/drift_database/dao/vehicle_ttc_dao/vehicle_ttc_converting_ext.dart';
 import 'package:wot_statistic/layers/data/local/data_sources/drift_database/database.dart';
 import 'package:wot_statistic/layers/data/local/data_sources/drift_database/tables/vehicle_ttc.dart';
-import 'package:wot_statistic/layers/data/models/remote/vehicles_data/vehicles_data_ttc.dart';
+import 'package:wot_statistic/layers/data/models/remote/vehicles_data/vehicles_data_ttc_api.dart';
 
 part 'vehicle_ttc_dao.g.dart';
 

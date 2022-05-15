@@ -1,7 +1,7 @@
 import 'package:drift/drift.dart';
 import 'package:wot_statistic/layers/data/local/data_sources/drift_database/database.dart';
-import 'package:wot_statistic/layers/data/models/remote/vehicles_data/vehicles_data_images.dart';
-import 'package:wot_statistic/layers/data/models/remote/vehicles_data/vehicles_data_ttc.dart';
+import 'package:wot_statistic/layers/data/models/remote/vehicles_data/vehicles_images_data_api.dart';
+import 'package:wot_statistic/layers/data/models/remote/vehicles_data/vehicles_data_ttc_api.dart';
 
 extension VehiclesTTCConverting on VehiclesDataTTC {
   VehicleTTCTableCompanion toVehicleTTCTableCompanion() =>
@@ -21,7 +21,7 @@ extension VehiclesTTCConverting on VehiclesDataTTC {
 extension VehicleTTCTableDataConverting on VehicleTTCTableData {
   VehiclesDataTTC toVehiclesDataTTC() => VehiclesDataTTC(
         description: description,
-        images: VehiclesDataImages(bigIcon: images),
+        images: VehiclesImagesDataApi(bigIcon: images),
         isPremium: isPremium,
         isGift: isGift,
         nation: nation,

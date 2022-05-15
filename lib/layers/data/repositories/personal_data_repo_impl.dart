@@ -1,14 +1,14 @@
 import 'package:dio/dio.dart';
-import 'package:wot_statistic/layers/data/models/remote/clan_info/clan_data.dart';
-import 'package:wot_statistic/layers/data/models/remote/personal_api_data/data.dart';
+import 'package:wot_statistic/layers/data/models/remote/clan_info_data/clan_data_api.dart';
+import 'package:wot_statistic/layers/data/models/remote/clan_info_data/clan_info_data_api.dart';
+import 'package:wot_statistic/layers/data/models/remote/personal_data_api/user_data_api.dart';
+import 'package:wot_statistic/layers/data/models/remote/personal_data_api/user_personal_data_api.dart';
 import 'package:wot_statistic/layers/data/models/remote/token_extension/token_extension_response.dart';
 import 'package:wot_statistic/layers/domain/entities/personal_data.dart';
 import 'package:wot_statistic/layers/domain/entities/user.dart';
 import 'package:wot_statistic/layers/domain/repositories/personal_data_repo.dart';
 import 'package:wot_statistic/generated/l10n.dart';
 import 'package:wot_statistic/layers/data/models/local/user_data.dart';
-import 'package:wot_statistic/layers/data/models/remote/clan_info/clan_info.dart';
-import 'package:wot_statistic/layers/data/models/remote/personal_api_data/personal_data_api.dart';
 import 'package:wot_statistic/layers/data/sources/local/personal_data_local_source.dart';
 import 'package:wot_statistic/layers/data/sources/remote/remote_data_source.dart';
 
@@ -72,8 +72,8 @@ class PersonalDataRepoImpl implements PersonalDataRepo {
   @override
   Future<PersonalData> fetchPersonalData() async {
     await _extendUserToken();
-    final PersonalDataApi personalDataApi;
-    final ClanInfo? clanInfo;
+    final UserPersonalDataApi personalDataApi;
+    final ClanInfoDataApi? clanInfo;
     try {
       personalDataApi = await _fetchPersonalDataApi(signedUser);
       final int? clanId =
@@ -90,8 +90,8 @@ class PersonalDataRepoImpl implements PersonalDataRepo {
     );
   }
 
-  Future<PersonalDataApi> _fetchPersonalDataApi(UserData signedUser) async {
-    final PersonalDataApi personalDataApi;
+  Future<UserPersonalDataApi> _fetchPersonalDataApi(UserData signedUser) async {
+    final UserPersonalDataApi personalDataApi;
     try {
       personalDataApi = await remoteSource.fetchPersonalData(
         accountId: signedUser.id,
@@ -104,11 +104,11 @@ class PersonalDataRepoImpl implements PersonalDataRepo {
   }
 
   PersonalData _createPersonalDataFromPersonalAndClanInfo(
-    PersonalDataApi personal,
-    ClanInfo? clanInfo,
+    UserPersonalDataApi personal,
+    ClanInfoDataApi? clanInfo,
   ) {
-    final Data data = personal.data![personal.data!.keys.first]!;
-    final ClanData? clanData = clanInfo?.data?.values.first;
+    final UserDataApi data = personal.data![personal.data!.keys.first]!;
+    final ClanDataApi? clanData = clanInfo?.data?.values.first;
     return PersonalData(
       private: data.private,
       clan: clanData?.name,

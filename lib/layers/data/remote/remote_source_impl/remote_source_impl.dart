@@ -1,11 +1,11 @@
-import 'package:wot_statistic/layers/data/models/remote/search_user/search_user.dart';
-import 'package:wot_statistic/layers/data/models/remote/achievements_data/achievements_database.dart';
-import 'package:wot_statistic/layers/data/models/remote/clan_info/clan_info.dart';
-import 'package:wot_statistic/layers/data/models/remote/personal_api_data/personal_data_api.dart';
+import 'package:wot_statistic/layers/data/models/remote/clan_info_data/clan_info_data_api.dart';
+import 'package:wot_statistic/layers/data/models/remote/personal_data_api/user_personal_data_api.dart';
+import 'package:wot_statistic/layers/data/models/remote/search_user/search_user_data_api.dart';
+import 'package:wot_statistic/layers/data/models/remote/achievements_data/achievements_data_api.dart';
 import 'package:wot_statistic/layers/data/models/remote/token_extension/token_extension_response.dart';
-import 'package:wot_statistic/layers/data/models/remote/user_achieves/user_achieves_api_data.dart';
-import 'package:wot_statistic/layers/data/models/remote/user_vehicles/user_vehicles_api.dart';
-import 'package:wot_statistic/layers/data/models/remote/vehicles_data/vehicles_data.dart';
+import 'package:wot_statistic/layers/data/models/remote/user_achieves/user_achieves_data_api.dart';
+import 'package:wot_statistic/layers/data/models/remote/user_vehicles/user_vehicles_data_api.dart';
+import 'package:wot_statistic/layers/data/models/remote/vehicles_data/vehicles_data_api.dart';
 import 'package:wot_statistic/layers/data/remote/sources/api_client.dart';
 import 'package:wot_statistic/layers/data/sources/remote/remote_data_source.dart';
 
@@ -21,22 +21,22 @@ class RemoteSourceImpl extends RemoteDataSource {
   RemoteSourceImpl({required this.apiClient});
 
   @override
-  Future<PersonalDataApi> fetchPersonalData(
+  Future<UserPersonalDataApi> fetchPersonalData(
           {required int accountId, required String accessToken}) =>
       apiClient.fetchPersonalData(
           applicationId, accountId, accessToken, privateDataFields);
 
   @override
-  Future<ClanInfo> fetchClanInfo({required int clanId}) =>
+  Future<ClanInfoDataApi> fetchClanInfo({required int clanId}) =>
       apiClient.fetchClanInfo(applicationId, clanId);
 
   @override
-  Future<UserVehiclesApi> fetchUserVehicles(
+  Future<UserVehiclesDataApi> fetchUserVehicles(
           {required int accountId, required String accessToken}) =>
       apiClient.fetchUserVehicles(applicationId, accountId, accessToken);
 
   @override
-  Future<VehiclesData> fetchVehiclesDatabase({
+  Future<VehiclesDataApi> fetchVehiclesDatabase({
     required int limit,
     required int pageNumber,
     required String language,
@@ -45,17 +45,17 @@ class RemoteSourceImpl extends RemoteDataSource {
           applicationId, vehiclesTtcFields, limit, pageNumber, language);
 
   @override
-  Future<UserAchievesApi> fetchAchievesData({required int accountId}) =>
+  Future<UserAchievesDataApi> fetchAchievesData({required int accountId}) =>
       apiClient.fetchUserAchieves(applicationId, accountId);
 
   @override
-  Future<AchievementsDataBase> fetchAchievesDataBase({
+  Future<AchievementsDataApi> fetchAchievesDataBase({
     required String language,
   }) =>
       apiClient.fetchAchievesDataBase(applicationId, language);
 
   @override
-  Future<SearchUser> searchUser(String search) =>
+  Future<SearchUserDataApi> searchUser(String search) =>
       apiClient.searchUsers(applicationId, search, searchUsersLimit);
 
   @override

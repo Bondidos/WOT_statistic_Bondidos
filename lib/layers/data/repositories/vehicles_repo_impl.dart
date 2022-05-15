@@ -1,10 +1,10 @@
 import 'package:wot_statistic/generated/l10n.dart';
 import 'package:wot_statistic/layers/data/models/local/user_data.dart';
-import 'package:wot_statistic/layers/data/models/remote/user_vehicles/user_vehicle.dart';
-import 'package:wot_statistic/layers/data/models/remote/user_vehicles/user_vehicles_api.dart';
-import 'package:wot_statistic/layers/data/models/remote/vehicles_data/vehicles_data.dart';
-import 'package:wot_statistic/layers/data/models/remote/vehicles_data/vehicles_data_meta.dart';
-import 'package:wot_statistic/layers/data/models/remote/vehicles_data/vehicles_data_ttc.dart';
+import 'package:wot_statistic/layers/data/models/remote/user_vehicles/user_vehicle_data_api.dart';
+import 'package:wot_statistic/layers/data/models/remote/user_vehicles/user_vehicles_data_api.dart';
+import 'package:wot_statistic/layers/data/models/remote/vehicles_data/vehicles_data_api.dart';
+import 'package:wot_statistic/layers/data/models/remote/vehicles_data/vehicles_meta_data_api.dart';
+import 'package:wot_statistic/layers/data/models/remote/vehicles_data/vehicles_data_ttc_api.dart';
 import 'package:wot_statistic/layers/data/sources/local/vehicles_local_datasource.dart';
 import 'package:wot_statistic/layers/data/sources/remote/remote_data_source.dart';
 import 'package:wot_statistic/layers/domain/entities/vehicles_data.dart';
@@ -24,7 +24,7 @@ class VehiclesRepoImpl implements VehiclesRepo {
   @override
   Future<List<Vehicle>> fetchUserVehicles() async {
     await _initVehiclesDatabase();
-    final UserVehiclesApi userVehicles = await remoteSource.fetchUserVehicles(
+    final UserVehiclesDataApi userVehicles = await remoteSource.fetchUserVehicles(
       accountId: signedUser.id,
       accessToken: signedUser.accessToken,
     );
@@ -37,7 +37,7 @@ class VehiclesRepoImpl implements VehiclesRepo {
   }
 
   List<Vehicle> _createVehicleListFrom(List<VehiclesDataTTC> vehiclesByIdFromDb,
-      List<UserVehicle> userVehicles) {
+      List<UserVehicleDataApi> userVehicles) {
     List<Vehicle> result = [];
     for (var item in vehiclesByIdFromDb) {
       result.add(_createVehicleFromTtcAndUser(
@@ -47,7 +47,7 @@ class VehiclesRepoImpl implements VehiclesRepo {
   }
 
   Vehicle _createVehicleFromTtcAndUser(
-    UserVehicle userVehicle,
+    UserVehicleDataApi userVehicle,
     VehiclesDataTTC vehiclesDataTTC,
   ) =>
       Vehicle(
@@ -68,7 +68,7 @@ class VehiclesRepoImpl implements VehiclesRepo {
     final String currentLanguage = vehiclesLocalSource.appLanguage;
     final String databaseLanguage = vehiclesLocalSource.databaseCurrentLanguage;
     final int databaseTtcCount = vehiclesLocalSource.vehiclesTTCCount;
-    final VehiclesDataMeta vehiclesDataMeta;
+    final VehiclesMetaDataApi vehiclesDataMeta;
     try {
       vehiclesDataMeta = (await remoteSource.fetchVehiclesDatabase(
         limit: 1,
@@ -86,8 +86,8 @@ class VehiclesRepoImpl implements VehiclesRepo {
   }
 
   Future<void> _createOrSyncVehiclesDb(
-      VehiclesDataMeta vehiclesDataMeta, String currentLng) async {
-    final List<VehiclesData> allPagesOfVehicleTTC =
+      VehiclesMetaDataApi vehiclesDataMeta, String currentLng) async {
+    final List<VehiclesDataApi> allPagesOfVehicleTTC =
         await _fetchAllPages(vehiclesDataMeta, currentLng);
     final List<VehiclesDataTTC> allVehiclesTTC =
         _mergeTTC(allPagesOfVehicleTTC);
@@ -96,12 +96,12 @@ class VehiclesRepoImpl implements VehiclesRepo {
     vehiclesLocalSource.setVehiclesTtcCount(savedTtcCount);
   }
 
-  Future<List<VehiclesData>> _fetchAllPages(
-      VehiclesDataMeta meta, String language) async {
+  Future<List<VehiclesDataApi>> _fetchAllPages(
+      VehiclesMetaDataApi meta, String language) async {
     final int numberOfPagesToDownload = ((meta.total / 100).ceil().toInt());
     final Iterable<int> pagesCount =
         (Iterable.generate(numberOfPagesToDownload).map((e) => e + 1));
-    List<VehiclesData> vehiclesTTCList = [];
+    List<VehiclesDataApi> vehiclesTTCList = [];
     try {
       for (var i in pagesCount) {
         vehiclesTTCList.add(
@@ -118,7 +118,7 @@ class VehiclesRepoImpl implements VehiclesRepo {
     return vehiclesTTCList;
   }
 
-  List<VehiclesDataTTC> _mergeTTC(List<VehiclesData> vehiclesTTCList) {
+  List<VehiclesDataTTC> _mergeTTC(List<VehiclesDataApi> vehiclesTTCList) {
     List<VehiclesDataTTC> result = [];
     for (var element in vehiclesTTCList) {
       result.addAll(element.data.values);

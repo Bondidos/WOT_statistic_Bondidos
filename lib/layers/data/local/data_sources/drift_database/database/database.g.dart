@@ -1196,6 +1196,9 @@ abstract class _$Database extends GeneratedDatabase {
       $VehicleTTCTableTable(this);
   late final $AchievementsTableTable achievementsTable =
       $AchievementsTableTable(this);
+  late final AchievementDao achievementDao = AchievementDao(this as Database);
+  late final UserDao userDao = UserDao(this as Database);
+  late final VehicleTtcDao vehicleTtcDao = VehicleTtcDao(this as Database);
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override

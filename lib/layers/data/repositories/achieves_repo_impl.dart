@@ -1,8 +1,8 @@
 import 'package:wot_statistic/generated/l10n.dart';
 import 'package:wot_statistic/layers/data/models/local/user_data.dart';
-import 'package:wot_statistic/layers/data/models/remote/achievements_data/achievement_data.dart';
-import 'package:wot_statistic/layers/data/models/remote/achievements_data/achievements_database.dart';
-import 'package:wot_statistic/layers/data/models/remote/user_achieves/user_achieves_api_data.dart';
+import 'package:wot_statistic/layers/data/models/remote/achievements_data/achievement_data_api.dart';
+import 'package:wot_statistic/layers/data/models/remote/achievements_data/achievements_data_api.dart';
+import 'package:wot_statistic/layers/data/models/remote/user_achieves/user_achieves_data_api.dart';
 import 'package:wot_statistic/layers/data/sources/local/achieves_local_datasource.dart';
 import 'package:wot_statistic/layers/data/sources/remote/remote_data_source.dart';
 import 'package:wot_statistic/layers/domain/entities/achieves.dart';
@@ -29,7 +29,7 @@ class AchievesRepoImpl implements AchievesRepo {
   @override
   Future<List<List<Achieve>>> fetchAchieves() async {
     await _initAchievesDatabase();
-    final UserAchievesApi achievesApi;
+    final UserAchievesDataApi achievesApi;
     try {
       achievesApi =
           await remoteSource.fetchAchievesData(accountId: signedUser.id);
@@ -38,7 +38,7 @@ class AchievesRepoImpl implements AchievesRepo {
     }
     final Map<String, int> achievesId =
         achievesApi.createListOfAchievementsId();
-    final List<List<AchievementData>> achievesByIdFromDb =
+    final List<List<AchievementDataApi>> achievesByIdFromDb =
         await _fetchByIdAndFilter(achievesId.keys.toList());
     List<List<Achieve>> result = [];
     for (var element in achievesByIdFromDb) {
@@ -50,7 +50,7 @@ class AchievesRepoImpl implements AchievesRepo {
     return result;
   }
 
-  Future<List<List<AchievementData>>> _fetchByIdAndFilter(
+  Future<List<List<AchievementDataApi>>> _fetchByIdAndFilter(
       List<String> achievementId) {
     return Future.wait([
       achievesLocalDataSource.fetchAchievementsById(achievementId, epic),
@@ -68,7 +68,7 @@ class AchievesRepoImpl implements AchievesRepo {
     final String databaseLanguage =
         achievesLocalDataSource.databaseCurrentLanguage;
     final int achievesInDbCount = achievesLocalDataSource.achievesCount;
-    final AchievementsDataBase achievementsDataBase;
+    final AchievementsDataApi achievementsDataBase;
     try {
       achievementsDataBase =
           await remoteSource.fetchAchievesDataBase(language: currentLanguage);
@@ -82,7 +82,7 @@ class AchievesRepoImpl implements AchievesRepo {
   }
 
   Future<void> _createOrSyncAchievesDb(
-      AchievementsDataBase achievementsDataBase) async {
+      AchievementsDataApi achievementsDataBase) async {
     int insertedItems = await achievesLocalDataSource
         .saveAchievementsData(achievementsDataBase.data);
     achievesLocalDataSource.setAchievesCount(insertedItems);
@@ -90,7 +90,7 @@ class AchievesRepoImpl implements AchievesRepo {
 
   Achieve _createAchieveFromApiAndData(
     Map<String, int> achievesId,
-    AchievementData achievesByIdFromDb,
+    AchievementDataApi achievesByIdFromDb,
   ) {
     int optionsKey = achievesId[achievesByIdFromDb.name]! - 1;
     return Achieve(

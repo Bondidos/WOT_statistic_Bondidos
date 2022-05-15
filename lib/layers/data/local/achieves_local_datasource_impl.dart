@@ -1,5 +1,5 @@
 import 'package:wot_statistic/layers/data/models/local/user_data.dart';
-import 'package:wot_statistic/layers/data/models/remote/achievements_data/achievement_data.dart';
+import 'package:wot_statistic/layers/data/models/remote/achievements_data/achievement_data_api.dart';
 import 'package:wot_statistic/layers/data/sources/local/achieves_local_datasource.dart';
 import 'package:wot_statistic/layers/data/sources/settings/database_settings.dart';
 import 'package:wot_statistic/layers/data/sources/settings/language_settings.dart';
@@ -27,12 +27,12 @@ class AchievesLocalDataSourceImpl implements AchievesLocalDataSource {
   int get achievesCount => databaseSettings.vehiclesTTCCount;
 
   @override
-  Future<List<AchievementData>> fetchAchievementsById(
+  Future<List<AchievementDataApi>> fetchAchievementsById(
           List<String> achievementId, String filter) =>
       achievementDao.fetchAchievementsById(achievementId, filter);
 
   @override
-  Future<int> saveAchievementsData(Map<String, AchievementData> achievements) =>
+  Future<int> saveAchievementsData(Map<String, AchievementDataApi> achievements) =>
       achievementDao.saveAchievementsData(achievements);
 
   @override
