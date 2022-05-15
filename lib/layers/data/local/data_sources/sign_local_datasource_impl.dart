@@ -1,11 +1,12 @@
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:wot_statistic/layers/data/local/data_sources/drift_database/dao/wot_stat_dao.dart';
 import 'package:wot_statistic/layers/data/models/local/user_data.dart';
 import 'package:wot_statistic/layers/data/sources/local/sign_local_datasource.dart';
 import 'package:wot_statistic/layers/domain/entities/user.dart';
 
-const realmKey = 'Realm';
+import 'drift_database/dao/dao.dart';
+
+const realmSP = 'Realm';
 const signedUserId = 'Singed User id';
 const signedUserNickname = 'Singed User nickname';
 const signedUserToken = 'Singed User token';
@@ -15,28 +16,27 @@ const notPicked = "Not Picked";
 
 class SignLocalDataSourceImpl implements SignLocalDataSource {
   final SharedPreferences sharedPreferences;
-  final WotStatDao wotStatDao;
+  final UserDao userDao;
 
   SignLocalDataSourceImpl(
-      {required this.sharedPreferences, required this.wotStatDao});
+      {required this.sharedPreferences, required this.userDao});
 
   BehaviorSubject<String> realmStream = BehaviorSubject.seeded(notPicked);
 
-  String get _readRealm => sharedPreferences.getString(realmKey) ?? notPicked;
+  String get _readRealm => sharedPreferences.getString(realmSP) ?? notPicked;
 
   @override
-  String getCurrentRealm() =>
-      sharedPreferences.getString(realmKey) ?? notPicked;
+  String getCurrentRealm() => sharedPreferences.getString(realmSP) ?? notPicked;
 
   @override
-  Future<void> removeUser(UserData user) => wotStatDao.removeUser(user);
+  Future<void> removeUser(UserData user) => userDao.removeUser(user);
 
   @override
-  void saveUser(UserData user) => wotStatDao.saveUser(user);
+  void saveUser(UserData user) => userDao.saveUser(user);
 
   @override
   void setRealm(String realm) async {
-    final bool result = await sharedPreferences.setString(realmKey, realm);
+    final bool result = await sharedPreferences.setString(realmSP, realm);
     if (!result) return;
     realmStream.add(realm);
   }
@@ -54,5 +54,5 @@ class SignLocalDataSourceImpl implements SignLocalDataSource {
   Stream<String> subscribeRealm() => realmStream..add(_readRealm);
 
   @override
-  Stream<List<User>> subscribeUsers() => wotStatDao.getUsersByRealm(_readRealm);
+  Stream<List<User>> subscribeUsers() => userDao.getUsersByRealm(_readRealm);
 }

@@ -4,15 +4,15 @@ import 'dart:isolate';
 import 'package:drift/native.dart';
 import 'package:drift/drift.dart';
 import 'package:drift/isolate.dart';
-import 'package:path/path.dart' as p;
+import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'package:wot_statistic/layers/data/local/data_sources/drift_database/database/database.dart';
 
-WotStatDatabase constructDb({bool logStatements = false}) {
+Database constructDb() {
   Future<DriftIsolate> _createDriftIsolate() async {
     final dir = await getApplicationDocumentsDirectory();
-    final path = p.join(dir.path, 'db.sqlite');
+    final path = join(dir.path, 'db.sqlite');
     final receivePort = ReceivePort();
 
     await Isolate.spawn(
@@ -30,7 +30,7 @@ WotStatDatabase constructDb({bool logStatements = false}) {
     }());
   }
 
-  return WotStatDatabase.connect(_createDriftIsolateAndConnect());
+  return Database.connect(_createDriftIsolateAndConnect());
 }
 
 void _startBackground(_IsolateStartRequest request) {

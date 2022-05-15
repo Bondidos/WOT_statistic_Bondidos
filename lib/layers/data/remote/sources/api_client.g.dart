@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'wot_api_client.dart';
+part of 'api_client.dart';
 
 // **************************************************************************
 // RetrofitGenerator
@@ -8,8 +8,8 @@ part of 'wot_api_client.dart';
 
 // ignore_for_file: unnecessary_brace_in_string_interps
 
-class _WotClient implements WotClient {
-  _WotClient(this._dio, {this.baseUrl});
+class _ApiClient implements ApiClient {
+  _ApiClient(this._dio, {this.baseUrl});
 
   final Dio _dio;
 

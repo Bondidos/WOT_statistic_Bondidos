@@ -1188,15 +1188,14 @@ class $AchievementsTableTable extends AchievementsTable
   }
 }
 
-abstract class _$WotStatDatabase extends GeneratedDatabase {
-  _$WotStatDatabase(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
-  _$WotStatDatabase.connect(DatabaseConnection c) : super.connect(c);
+abstract class _$Database extends GeneratedDatabase {
+  _$Database(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
+  _$Database.connect(DatabaseConnection c) : super.connect(c);
   late final $UserTableTable userTable = $UserTableTable(this);
   late final $VehicleTTCTableTable vehicleTTCTable =
       $VehicleTTCTableTable(this);
   late final $AchievementsTableTable achievementsTable =
       $AchievementsTableTable(this);
-  late final WotStatDao wotStatDao = WotStatDao(this as WotStatDatabase);
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override

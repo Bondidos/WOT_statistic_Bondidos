@@ -2,7 +2,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wot_statistic/layers/data/models/local/user_data.dart';
 import 'package:wot_statistic/layers/data/sources/local/search_user_local_datasource.dart';
 
-const realmKey = 'Realm';
+const realm = 'Realm';
 const notPicked = "Not Picked";
 const signedUserId = 'Singed User id';
 const signedUserNickname = 'Singed User nickname';
@@ -17,7 +17,7 @@ class SearchUserLocalSourceImpl implements SearchUserLocalSource {
 
   @override
   String getCurrentRealm() =>
-      sharedPreferences.getString(realmKey) ?? notPicked;
+      sharedPreferences.getString(realm) ?? notPicked;
 
   @override
   Future<void> setSignedUser(UserData user) async => Future.wait([

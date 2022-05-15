@@ -10,11 +10,11 @@ import 'package:wot_statistic/layers/data/models/remote/clan_info/clan_info.dart
 import 'package:wot_statistic/layers/data/models/remote/personal_api_data/personal_data_api.dart';
 import 'package:wot_statistic/layers/data/models/remote/vehicles_data/vehicles_data.dart';
 
-part 'wot_api_client.g.dart';
+part 'api_client.g.dart';
 
 @RestApi()
-abstract class WotClient {
-  factory WotClient(Dio dio, {String baseUrl}) = _WotClient;
+abstract class ApiClient {
+  factory ApiClient(Dio dio, {String baseUrl}) = _ApiClient;
 
   @GET("/wot/account/info/")
   Future<PersonalDataApi> fetchPersonalData(

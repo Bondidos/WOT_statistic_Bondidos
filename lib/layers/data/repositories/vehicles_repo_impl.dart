@@ -5,6 +5,7 @@ import 'package:wot_statistic/layers/data/models/remote/user_vehicles/user_vehic
 import 'package:wot_statistic/layers/data/models/remote/vehicles_data/vehicles_data.dart';
 import 'package:wot_statistic/layers/data/models/remote/vehicles_data/vehicles_data_meta.dart';
 import 'package:wot_statistic/layers/data/models/remote/vehicles_data/vehicles_data_ttc.dart';
+import 'package:wot_statistic/layers/data/sources/local/signed_user_data_source.dart';
 import 'package:wot_statistic/layers/data/sources/local/vehicles_local_datasource.dart';
 import 'package:wot_statistic/layers/data/sources/remote/remote_data_source.dart';
 import 'package:wot_statistic/layers/domain/entities/vehicles_data.dart';
@@ -13,17 +14,15 @@ import 'package:wot_statistic/layers/domain/repositories/vehicles_repo.dart';
 class VehiclesRepoImpl implements VehiclesRepo {
   final VehiclesLocalDataSource vehiclesLocalSource;
   final RemoteDataSource remoteSource;
+  final SignedUserDataSource signedUserDataSource;
 
   const VehiclesRepoImpl({
     required this.vehiclesLocalSource,
     required this.remoteSource,
+    required this.signedUserDataSource,
   });
 
-  UserData get signedUser {
-    final _signedUser = vehiclesLocalSource.getSignedUser();
-    if (_signedUser == null) throw Exception(S.current.SignedUserIsNotExist);
-    return _signedUser;
-  }
+  UserData get signedUser => signedUserDataSource.signedUser;
 
   @override
   Future<List<Vehicle>> fetchUserVehicles() async {

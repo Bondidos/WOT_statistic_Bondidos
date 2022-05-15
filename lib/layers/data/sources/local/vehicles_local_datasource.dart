@@ -2,8 +2,6 @@ import 'package:wot_statistic/layers/data/models/local/user_data.dart';
 import 'package:wot_statistic/layers/data/models/remote/vehicles_data/vehicles_data_ttc.dart';
 
 abstract class VehiclesLocalDataSource {
-  UserData? getSignedUser();
-
   Future<List<VehiclesDataTTC>> fetchTTCByListOfIDs(List<int> tankIds);
 
   String getCurrentLng();

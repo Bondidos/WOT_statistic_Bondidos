@@ -15,7 +15,7 @@ import 'package:wot_statistic/layers/presentation/sing_in_page/bloc/sign_in_cubi
 import 'layers/data/local/data_sources/search_user_local_impl.dart';
 import 'layers/data/local/data_sources/sign_local_datasource_impl.dart';
 import 'layers/data/remote/remote_source_impl/remote_source_impl.dart';
-import 'layers/data/remote/sources/wot_api_client.dart';
+import 'layers/data/remote/sources/api_client.dart';
 import 'layers/data/repositories/achieves_repo_impl.dart';
 import 'layers/data/repositories/personal_data_repo_impl.dart';
 import 'layers/data/repositories/search_user_repo_impl.dart';
@@ -25,6 +25,7 @@ import 'layers/data/sources/local/local_data_source.dart';
 import 'layers/data/sources/local/search_user_local_datasource.dart';
 import 'layers/data/sources/local/settings_data_source.dart';
 import 'layers/data/sources/local/sign_local_datasource.dart';
+import 'layers/data/sources/local/signed_user_data_source.dart';
 import 'layers/data/sources/local/vehicles_local_datasource.dart';
 import 'layers/domain/repositories/achieves_repo.dart';
 import 'layers/domain/repositories/personal_data_repo.dart';
@@ -50,7 +51,7 @@ import 'layers/presentation/settings_page/bloc/settings_cubit.dart';
 import 'layers/presentation/statistic_page/widgets/achieves_widget/bloc/achieves_data_cubit.dart';
 import 'layers/presentation/statistic_page/widgets/personal_data_widget/bloc/personal_data_cubit.dart';
 import 'layers/presentation/statistic_page/widgets/vehicles_widget/bloc/vehicles_data_cubit.dart';
-import 'layers/data/local/data_sources/drift_database/wot_stat_database.dart';
+import 'layers/data/local/data_sources/drift_database/database.dart';
 
 final inj = GetIt.instance;
 
@@ -109,16 +110,23 @@ Future<void> init() async {
         localSource: inj(),
         remoteSource: inj(),
         baseOptions: inj(),
+        signedUserDataSource: inj(),
       ));
 
   inj.registerLazySingleton<SearchUserRepo>(() =>
       SearchUserRepoImpl(remoteSource: inj(), searchUserLocalSource: inj()));
 
-  inj.registerLazySingleton<VehiclesRepo>(
-      () => VehiclesRepoImpl(remoteSource: inj(), vehiclesLocalSource: inj()));
+  inj.registerLazySingleton<VehiclesRepo>(() => VehiclesRepoImpl(
+        remoteSource: inj(),
+        vehiclesLocalSource: inj(),
+        signedUserDataSource: inj(),
+      ));
 
-  inj.registerLazySingleton<AchievesRepo>(() =>
-      AchievesRepoImpl(remoteSource: inj(), achievesLocalDataSource: inj()));
+  inj.registerLazySingleton<AchievesRepo>(() => AchievesRepoImpl(
+        remoteSource: inj(),
+        achievesLocalDataSource: inj(),
+        signedUserDataSource: inj(),
+      ));
 
   // SOURCES
   inj.registerFactory<SearchUserLocalSource>(
@@ -130,39 +138,44 @@ Future<void> init() async {
   inj.registerFactory<AchievesLocalDataSource>(
       () => AchievesLocalDataSourceImpl(
             sharedPreferences: inj(),
-            wotStatDao: inj(),
+            achievementDao: inj(),
           ));
 
   inj.registerFactory<RemoteDataSource>(
-      () => RemoteSourceImpl(wotClient: inj()));
+      () => RemoteSourceImpl(apiClient: inj()));
 
   inj.registerFactory<SignLocalDataSource>(() => SignLocalDataSourceImpl(
         sharedPreferences: inj(),
-        wotStatDao: inj(),
+        userDao: inj(),
       ));
 
   inj.registerFactory<PersonalDataLocalSource>(
       () => PersonalDataLocalSourceImpl(
             sharedPreferences: inj(),
-            wotStatDao: inj(),
+            userDao: inj(),
           ));
 
   inj.registerFactory<VehiclesLocalDataSource>(
       () => VehiclesLocalDataSourceImpl(
             sharedPreferences: inj(),
-            wotStatDao: inj(),
+            vehicleTtcDao: inj(),
           ));
 
-  inj.registerLazySingleton<WotStatDao>(() => WotStatDao(inj()));
+  inj.registerFactory<SignedUserDataSource>(
+      () => SignedUserDataSource(sharedPreferences: inj()));
 
-  inj.registerLazySingleton<WotClient>(() => WotClient(inj()));
+  inj.registerLazySingleton<UserDao>(() => UserDao(inj()));
+  inj.registerLazySingleton<VehicleTtcDao>(() => VehicleTtcDao(inj()));
+  inj.registerLazySingleton<AchievementDao>(() => AchievementDao(inj()));
+
+  inj.registerLazySingleton<ApiClient>(() => ApiClient(inj()));
 
   inj.registerSingleton<SharedPreferences>(
       await SharedPreferences.getInstance());
 
   inj.registerSingleton<BaseOptions>(BaseOptions());
 
-  final WotStatDatabase driftDatabase = constructDb();
+  final Database driftDatabase = constructDb();
   final Dio dio = Dio(inj())..interceptors.add(LogInterceptor());
   inj.registerFactory(() => dio);
   inj.registerFactory(() => driftDatabase);

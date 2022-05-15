@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:wot_statistic/layers/data/models/remote/clan_info/clan_data.dart';
 import 'package:wot_statistic/layers/data/models/remote/personal_api_data/data.dart';
 import 'package:wot_statistic/layers/data/models/remote/token_extension/token_extension_response.dart';
+import 'package:wot_statistic/layers/data/sources/local/signed_user_data_source.dart';
 import 'package:wot_statistic/layers/domain/entities/personal_data.dart';
 import 'package:wot_statistic/layers/domain/entities/user.dart';
 import 'package:wot_statistic/layers/domain/repositories/personal_data_repo.dart';
@@ -20,19 +21,21 @@ const baseUrlCis = 'https://api.worldoftanks.ru';
 class PersonalDataRepoImpl implements PersonalDataRepo {
   final RemoteDataSource remoteSource;
   final PersonalDataLocalSource localSource;
+  final SignedUserDataSource signedUserDataSource;
   final BaseOptions baseOptions;
 
   PersonalDataRepoImpl({
     required this.remoteSource,
     required this.localSource,
     required this.baseOptions,
+    required this.signedUserDataSource,
   }) {
     baseOptions.baseUrl =
         localSource.getCurrentRealm() == cis ? baseUrlCis : baseUrlEu;
   }
 
   Future<void> _extendUserToken() async {
-    if(signedUser.expiresAt == 0) return;
+    if (signedUser.expiresAt == 0) return;
     final User userWithExtendedToken =
         await _extendAccessToken(_createUserFromUserData(signedUser));
     await _refreshSignedAndSavedUsers(userWithExtendedToken);
@@ -45,11 +48,7 @@ class PersonalDataRepoImpl implements PersonalDataRepo {
         expiresAt: userData.expiresAt,
       );
 
-  UserData get signedUser {
-    final _signedUser = localSource.getSignedUser();
-    if (_signedUser == null) throw Exception(S.current.SignedUserIsNotExist);
-    return _signedUser;
-  }
+  UserData get signedUser => signedUserDataSource.signedUser;
 
   Future<void> _refreshSignedAndSavedUsers(User userWithExtendedToken) async {
     String realm = localSource.getCurrentRealm();

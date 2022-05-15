@@ -6,7 +6,7 @@ import 'package:wot_statistic/layers/data/models/remote/token_extension/token_ex
 import 'package:wot_statistic/layers/data/models/remote/user_achieves/user_achieves_api_data.dart';
 import 'package:wot_statistic/layers/data/models/remote/user_vehicles/user_vehicles_api.dart';
 import 'package:wot_statistic/layers/data/models/remote/vehicles_data/vehicles_data.dart';
-import 'package:wot_statistic/layers/data/remote/sources/wot_api_client.dart';
+import 'package:wot_statistic/layers/data/remote/sources/api_client.dart';
 import 'package:wot_statistic/layers/data/sources/remote/remote_data_source.dart';
 
 const searchUsersLimit = 10;
@@ -16,24 +16,24 @@ const applicationId = '5d489c586717c2b76ade8bea16607167';
 const privateDataFields = 'private,global_rating,clan_id,nickname,logout_at';
 
 class RemoteSourceImpl extends RemoteDataSource {
-  final WotClient wotClient;
+  final ApiClient apiClient;
 
-  RemoteSourceImpl({required this.wotClient});
+  RemoteSourceImpl({required this.apiClient});
 
   @override
   Future<PersonalDataApi> fetchPersonalData(
           {required int accountId, required String accessToken}) =>
-      wotClient.fetchPersonalData(
+      apiClient.fetchPersonalData(
           applicationId, accountId, accessToken, privateDataFields);
 
   @override
   Future<ClanInfo> fetchClanInfo({required int clanId}) =>
-      wotClient.fetchClanInfo(applicationId, clanId);
+      apiClient.fetchClanInfo(applicationId, clanId);
 
   @override
   Future<UserVehiclesApi> fetchUserVehicles(
           {required int accountId, required String accessToken}) =>
-      wotClient.fetchUserVehicles(applicationId, accountId, accessToken);
+      apiClient.fetchUserVehicles(applicationId, accountId, accessToken);
 
   @override
   Future<VehiclesData> fetchVehiclesDatabase({
@@ -41,24 +41,24 @@ class RemoteSourceImpl extends RemoteDataSource {
     required int pageNumber,
     required String language,
   }) =>
-      wotClient.fetchVehiclesDatabase(
+      apiClient.fetchVehiclesDatabase(
           applicationId, vehiclesTtcFields, limit, pageNumber, language);
 
   @override
   Future<UserAchievesApi> fetchAchievesData({required int accountId}) =>
-      wotClient.fetchUserAchieves(applicationId, accountId);
+      apiClient.fetchUserAchieves(applicationId, accountId);
 
   @override
   Future<AchievementsDataBase> fetchAchievesDataBase({
     required String language,
   }) =>
-      wotClient.fetchAchievesDataBase(applicationId, language);
+      apiClient.fetchAchievesDataBase(applicationId, language);
 
   @override
   Future<SearchUser> searchUser(String search) =>
-      wotClient.searchUsers(applicationId, search, searchUsersLimit);
+      apiClient.searchUsers(applicationId, search, searchUsersLimit);
 
   @override
   Future<TokenExtResponse> tokenExtension(String token) =>
-      wotClient.tokenExtension(applicationId, "access_token=$token");
+      apiClient.tokenExtension(applicationId, "access_token=$token");
 }

@@ -15,7 +15,9 @@ class MainActivity: FlutterActivity() {
                 call, result ->
             when(call.method){
                 GET_THEME -> {
-                    result.success(if(isDarkThemeOn())  DARK_THEME else LIGHT_THEME)
+                    result.success(
+                        if(isDarkThemeOn())
+                            DARK_THEME else LIGHT_THEME)
                 }
             }
             result.error("UNAVAILABLE", "Platform error", null)
