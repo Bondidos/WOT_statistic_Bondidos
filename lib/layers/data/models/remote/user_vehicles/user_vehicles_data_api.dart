@@ -18,12 +18,4 @@ class UserVehiclesDataApi {
       _$UserVehiclesDataApiFromJson(json);
 
   Map<String, dynamic> toJson() => _$UserVehiclesDataApiToJson(this);
-
-  List<int> createListOfTankId() {
-    String key = vehicles.keys.first;
-    if (vehicles[key] == null) throw NullThrownError();
-    final List<int> vehiclesId =
-        vehicles[key]!.map((tankStat) => tankStat.tankId).toList();
-    return vehiclesId;
-  }
 }

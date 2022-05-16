@@ -61,5 +61,6 @@
   "France": "France",
   "Japan": "Japan",
   "Germany": "Germany",
-  "NoVehiclesToShow": "No vehicles to show"
+  "NoVehiclesToShow": "No vehicles to show",
+  "NoDescription": "No Description"
 }

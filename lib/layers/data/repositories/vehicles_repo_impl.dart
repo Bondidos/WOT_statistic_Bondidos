@@ -10,6 +10,8 @@ import 'package:wot_statistic/layers/data/sources/remote/remote_data_source.dart
 import 'package:wot_statistic/layers/domain/entities/vehicles_data.dart';
 import 'package:wot_statistic/layers/domain/repositories/vehicles_repo.dart';
 
+const limitItemsPerPage = 100;
+
 class VehiclesRepoImpl implements VehiclesRepo {
   final VehiclesLocalDataSource vehiclesLocalSource;
   final RemoteDataSource remoteSource;
@@ -24,26 +26,39 @@ class VehiclesRepoImpl implements VehiclesRepo {
   @override
   Future<List<Vehicle>> fetchUserVehicles() async {
     await _initVehiclesDatabase();
-    final UserVehiclesDataApi userVehicles = await remoteSource.fetchUserVehicles(
+    final UserVehiclesDataApi userVehicles =
+        await remoteSource.fetchUserVehicles(
       accountId: signedUser.id,
       accessToken: signedUser.accessToken,
     );
-    final List<int> tankIds = userVehicles.createListOfTankId();
-    final List<VehiclesDataTTC> vehiclesByIdFromDb =
-        await vehiclesLocalSource.fetchTTCByListOfIDs(tankIds);
-    final List<Vehicle> result = _createVehicleListFrom(
-        vehiclesByIdFromDb, userVehicles.vehicles.values.first);
-    return result;
+    return _createVehicleListFrom(userVehicles);
   }
 
-  List<Vehicle> _createVehicleListFrom(List<VehiclesDataTTC> vehiclesByIdFromDb,
-      List<UserVehicleDataApi> userVehicles) {
-    List<Vehicle> result = [];
-    for (var item in vehiclesByIdFromDb) {
-      result.add(_createVehicleFromTtcAndUser(
-          userVehicles.firstWhere((e) => e.tankId == item.tankId), item));
-    }
-    return result;
+  Future<List<Vehicle>> _createVehicleListFrom(
+    UserVehiclesDataApi userVehicles,
+  ) async {
+    final List<UserVehicleDataApi> userVehiclesList =
+        userVehicles.extractUserVehicleList();
+    final List<VehiclesDataTTC> vehiclesByIdFromDb =
+        await _fetchTanksTtcAccordingWithUserVehicleList(userVehicles);
+    return _mergeUserVehiclesAndTankTtc(userVehiclesList, vehiclesByIdFromDb);
+  }
+
+  Future<List<VehiclesDataTTC>> _fetchTanksTtcAccordingWithUserVehicleList(
+    UserVehiclesDataApi userVehicles,
+  ) async {
+    final List<int> tankIds = userVehicles.createListOfTankId();
+    return vehiclesLocalSource.fetchTTCByListOfIDs(tankIds);
+  }
+
+  List<Vehicle> _mergeUserVehiclesAndTankTtc(
+    List<UserVehicleDataApi> userVehiclesList,
+    List<VehiclesDataTTC> vehiclesByIdFromDb,
+  ) {
+    return vehiclesByIdFromDb
+        .map((ttc) => _createVehicleFromTtcAndUser(
+            userVehiclesList.findById(ttc.tankId), ttc))
+        .toList();
   }
 
   Vehicle _createVehicleFromTtcAndUser(
@@ -68,9 +83,9 @@ class VehiclesRepoImpl implements VehiclesRepo {
     final String currentLanguage = vehiclesLocalSource.appLanguage;
     final String databaseLanguage = vehiclesLocalSource.databaseCurrentLanguage;
     final int databaseTtcCount = vehiclesLocalSource.vehiclesTTCCount;
-    final VehiclesMetaDataApi vehiclesDataMeta;
+    final VehiclesMetaDataApi vehiclesMetaData;
     try {
-      vehiclesDataMeta = (await remoteSource.fetchVehiclesDatabase(
+      vehiclesMetaData = (await remoteSource.fetchVehiclesDatabase(
         limit: 1,
         pageNumber: 1,
         language: currentLanguage,
@@ -79,50 +94,59 @@ class VehiclesRepoImpl implements VehiclesRepo {
     } catch (e) {
       throw Exception(S.current.CheckInternetConnection);
     }
-    if (vehiclesDataMeta.total == databaseTtcCount &&
+    if (vehiclesMetaData.total == databaseTtcCount &&
         currentLanguage == databaseLanguage) return;
     vehiclesLocalSource.setVehiclesCurrentLng(currentLanguage);
-    await _createOrSyncVehiclesDb(vehiclesDataMeta, currentLanguage);
+    await _fetchAndSaveAllPages(vehiclesMetaData, currentLanguage);
   }
 
-  Future<void> _createOrSyncVehiclesDb(
-      VehiclesMetaDataApi vehiclesDataMeta, String currentLng) async {
-    final List<VehiclesDataApi> allPagesOfVehicleTTC =
-        await _fetchAllPages(vehiclesDataMeta, currentLng);
-    final List<VehiclesDataTTC> allVehiclesTTC =
-        _mergeTTC(allPagesOfVehicleTTC);
-    final int savedTtcCount =
-        await vehiclesLocalSource.saveTTCList(allVehiclesTTC);
-    vehiclesLocalSource.setVehiclesTtcCount(savedTtcCount);
-  }
-
-  Future<List<VehiclesDataApi>> _fetchAllPages(
-      VehiclesMetaDataApi meta, String language) async {
-    final int numberOfPagesToDownload = ((meta.total / 100).ceil().toInt());
-    final Iterable<int> pagesCount =
-        (Iterable.generate(numberOfPagesToDownload).map((e) => e + 1));
-    List<VehiclesDataApi> vehiclesTTCList = [];
+  Future<void> _fetchAndSaveAllPages(
+    VehiclesMetaDataApi meta,
+    String language,
+  ) async {
+    Iterable<int> pagesCount = meta.generatePagesCountIterable();
+    int added = 0;
     try {
-      for (var i in pagesCount) {
-        vehiclesTTCList.add(
-          await remoteSource.fetchVehiclesDatabase(
+      Future.forEach<int>(
+        pagesCount,
+        (page) async {
+          VehiclesDataApi buffer = await remoteSource.fetchVehiclesDatabase(
             limit: 100,
-            pageNumber: i,
+            pageNumber: page,
             language: language,
-          ),
-        );
-      }
+          );
+          List<VehiclesDataTTC> bufferListToSafe = buffer.data.values.toList();
+          added += await vehiclesLocalSource.saveTTCList(bufferListToSafe);
+          vehiclesLocalSource.setVehiclesTtcCount(added);
+        },
+      );
     } catch (e) {
       throw Exception(S.current.CheckInternetConnection);
     }
-    return vehiclesTTCList;
   }
+}
 
-  List<VehiclesDataTTC> _mergeTTC(List<VehiclesDataApi> vehiclesTTCList) {
-    List<VehiclesDataTTC> result = [];
-    for (var element in vehiclesTTCList) {
-      result.addAll(element.data.values);
-    }
-    return result;
+extension Extractions on UserVehiclesDataApi {
+  List<UserVehicleDataApi> extractUserVehicleList() => vehicles.values.first;
+
+  List<int> createListOfTankId() {
+    String key = vehicles.keys.first;
+    if (vehicles[key] == null) return [];
+    final List<int> vehiclesId =
+        vehicles[key]!.map((tankStat) => tankStat.tankId).toList();
+    return vehiclesId;
+  }
+}
+
+extension FindItem on List<UserVehicleDataApi> {
+  UserVehicleDataApi findById(int id) =>
+      firstWhere((item) => item.tankId == id);
+}
+
+extension MetaToPagesIterable on VehiclesMetaDataApi {
+  Iterable<int> generatePagesCountIterable() {
+    final int numberOfPagesToDownload =
+        ((total / limitItemsPerPage).ceil().toInt());
+    return (Iterable.generate(numberOfPagesToDownload).map((e) => e + 1));
   }
 }

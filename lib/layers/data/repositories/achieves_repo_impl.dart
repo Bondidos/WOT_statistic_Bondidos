@@ -95,20 +95,21 @@ class AchievesRepoImpl implements AchievesRepo {
     int optionsKey = achievesId[achievesByIdFromDb.name]! - 1;
     return Achieve(
       imageBig: achievesByIdFromDb.options == null
-          ? achievesByIdFromDb.imageBig!
-          : achievesByIdFromDb.options![optionsKey].imageBig!,
+          ? achievesByIdFromDb.imageBig ?? ''
+          : achievesByIdFromDb.options?[optionsKey].imageBig ?? '',
       image: achievesByIdFromDb.options == null
-          ? achievesByIdFromDb.image!
-          : achievesByIdFromDb.options![optionsKey].image!,
+          ? achievesByIdFromDb.image ?? ''
+          : achievesByIdFromDb.options![optionsKey].image ?? '',
       condition: achievesByIdFromDb.condition,
       description: achievesByIdFromDb.description ??
           achievesByIdFromDb.options?[optionsKey].description ??
-          'NoDescription',
+          S.current.NoDescription,
       section: achievesByIdFromDb.section,
       sectionOrder: achievesByIdFromDb.sectionOrder,
       name: achievesByIdFromDb.options == null
           ? achievesByIdFromDb.nameI18n ?? achievesByIdFromDb.name
-          : achievesByIdFromDb.options![optionsKey].nameI18n,
+          : achievesByIdFromDb.options?[optionsKey].nameI18n ??
+              achievesByIdFromDb.name,
       count: achievesId[achievesByIdFromDb.name] ?? 1,
     );
   }

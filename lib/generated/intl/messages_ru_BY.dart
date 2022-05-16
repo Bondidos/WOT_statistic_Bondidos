@@ -65,6 +65,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Локализация"),
         "No": MessageLookupByLibrary.simpleMessage("Нет"),
         "NoClanMessage": MessageLookupByLibrary.simpleMessage("Нет Клана"),
+        "NoDescription": MessageLookupByLibrary.simpleMessage("Нет описания"),
         "NoUserToDelete":
             MessageLookupByLibrary.simpleMessage("Некого удалять"),
         "NoVehiclesToShow":

@@ -19,7 +19,7 @@ abstract class ApiClient {
   Future<UserPersonalDataApi> fetchPersonalData(
     @Query('application_id') String applicationId,
     @Query('account_id') int accountId,
-    @Query('access_token') String accessToken, //todo nulable
+    @Query('access_token') String accessToken,
     @Query('fields') String fields,
   );
 

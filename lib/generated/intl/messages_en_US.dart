@@ -67,6 +67,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "No": MessageLookupByLibrary.simpleMessage("No"),
         "NoClanMessage":
             MessageLookupByLibrary.simpleMessage("User have no clan"),
+        "NoDescription": MessageLookupByLibrary.simpleMessage("No Description"),
         "NoUserToDelete":
             MessageLookupByLibrary.simpleMessage("No user to delete"),
         "NoVehiclesToShow":

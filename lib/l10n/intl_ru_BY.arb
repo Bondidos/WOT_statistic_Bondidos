@@ -61,5 +61,6 @@
   "France": "Франция",
   "Japan": "Япония",
   "Germany": "Германия",
-  "NoVehiclesToShow": "Нет машин для отображения"
+  "NoVehiclesToShow": "Нет машин для отображения",
+  "NoDescription": "Нет описания"
 }
