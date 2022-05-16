@@ -16,15 +16,10 @@ class _ApiClient implements ApiClient {
   String? baseUrl;
 
   @override
-  Future<UserPersonalDataApi> fetchPersonalData(
-      applicationId, accountId, accessToken, fields) async {
+  Future<UserPersonalDataApi> fetchPersonalData(query) async {
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'application_id': applicationId,
-      r'account_id': accountId,
-      r'access_token': accessToken,
-      r'fields': fields
-    };
+    final queryParameters = <String, dynamic>{};
+    queryParameters.addAll(query);
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
@@ -38,12 +33,10 @@ class _ApiClient implements ApiClient {
   }
 
   @override
-  Future<ClanInfoDataApi> fetchClanInfo(applicationId, clanId) async {
+  Future<ClanInfoDataApi> fetchClanInfo(query) async {
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'application_id': applicationId,
-      r'clan_id': clanId
-    };
+    final queryParameters = <String, dynamic>{};
+    queryParameters.addAll(query);
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
@@ -57,14 +50,10 @@ class _ApiClient implements ApiClient {
   }
 
   @override
-  Future<UserVehiclesDataApi> fetchUserVehicles(
-      applicationId, accountId, accessToken) async {
+  Future<UserVehiclesDataApi> fetchUserVehicles(query) async {
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'application_id': applicationId,
-      r'account_id': accountId,
-      r'access_token': accessToken
-    };
+    final queryParameters = <String, dynamic>{};
+    queryParameters.addAll(query);
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
@@ -78,16 +67,10 @@ class _ApiClient implements ApiClient {
   }
 
   @override
-  Future<VehiclesDataApi> fetchVehiclesDatabase(
-      applicationId, fields, limit, pageNumber, language) async {
+  Future<VehiclesDataApi> fetchVehiclesDatabase(query) async {
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'application_id': applicationId,
-      r'fields': fields,
-      r'limit': limit,
-      r'page_no': pageNumber,
-      r'language': language
-    };
+    final queryParameters = <String, dynamic>{};
+    queryParameters.addAll(query);
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
@@ -101,13 +84,10 @@ class _ApiClient implements ApiClient {
   }
 
   @override
-  Future<UserAchievesDataApi> fetchUserAchieves(
-      applicationId, accountId) async {
+  Future<UserAchievesDataApi> fetchUserAchieves(query) async {
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'application_id': applicationId,
-      r'account_id': accountId
-    };
+    final queryParameters = <String, dynamic>{};
+    queryParameters.addAll(query);
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
@@ -121,13 +101,10 @@ class _ApiClient implements ApiClient {
   }
 
   @override
-  Future<AchievementsDataApi> fetchAchievesDataBase(
-      applicationId, language) async {
+  Future<AchievementsDataApi> fetchAchievesDataBase(query) async {
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'application_id': applicationId,
-      r'language': language
-    };
+    final queryParameters = <String, dynamic>{};
+    queryParameters.addAll(query);
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
@@ -141,13 +118,10 @@ class _ApiClient implements ApiClient {
   }
 
   @override
-  Future<SearchUserDataApi> searchUsers(applicationId, search, limit) async {
+  Future<SearchUserDataApi> searchUsers(query) async {
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'application_id': applicationId,
-      r'search': search,
-      r'limit': limit
-    };
+    final queryParameters = <String, dynamic>{};
+    queryParameters.addAll(query);
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
@@ -161,9 +135,10 @@ class _ApiClient implements ApiClient {
   }
 
   @override
-  Future<TokenExtResponse> tokenExtension(applicationId, accessToken) async {
+  Future<TokenExtResponse> tokenExtension(query, accessToken) async {
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{r'application_id': applicationId};
+    final queryParameters = <String, dynamic>{};
+    queryParameters.addAll(query);
     final _headers = <String, dynamic>{};
     final _data = accessToken;
     final _result = await _dio.fetch<Map<String, dynamic>>(

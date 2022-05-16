@@ -19,6 +19,7 @@ import 'layers/data/local/data_sources/settings_impl/theme_settings_impl.dart';
 import 'layers/data/local/data_sources/settings_impl/user_settings_impl.dart';
 import 'layers/data/local/search_user_local_impl.dart';
 import 'layers/data/local/sign_local_datasource_impl.dart';
+import 'layers/data/remote/remote_source_impl/api_constants.dart';
 import 'layers/data/remote/remote_source_impl/remote_source_impl.dart';
 import 'layers/data/remote/sources/api_client.dart';
 import 'layers/data/repositories/achieves_repo_impl.dart';
@@ -152,8 +153,10 @@ Future<void> init() async {
             databaseSettings: inj(),
           ));
 
-  inj.registerFactory<RemoteDataSource>(
-      () => RemoteSourceImpl(apiClient: inj(), userSettings: inj(),));
+  inj.registerFactory<RemoteDataSource>(() => RemoteSourceImpl(
+        apiClient: inj(),
+        apiConstants: inj(),
+      ));
 
   inj.registerFactory<SignLocalDataSource>(() => SignLocalDataSourceImpl(
         userDao: inj(),
@@ -195,6 +198,8 @@ Future<void> init() async {
   inj.registerLazySingleton<AchievementDao>(() => AchievementDao(inj()));
 
   inj.registerLazySingleton<ApiClient>(() => ApiClient(inj()));
+
+  inj.registerFactory<ApiConstants>(() => ApiConstants(userSettings: inj()));
 
   inj.registerSingleton<SharedPreferences>(
       await SharedPreferences.getInstance());

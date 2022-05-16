@@ -17,56 +17,42 @@ abstract class ApiClient {
 
   @GET("/wot/account/info/")
   Future<UserPersonalDataApi> fetchPersonalData(
-    @Query('application_id') String applicationId,
-    @Query('account_id') int accountId,
-    @Query('access_token') String accessToken,
-    @Query('fields') String fields,
+    @Queries() Map<String, dynamic> query,
   );
 
   @GET("/wot/clans/info/")
   Future<ClanInfoDataApi> fetchClanInfo(
-    @Query('application_id') String applicationId,
-    @Query('clan_id') int clanId,
+    @Queries() Map<String, dynamic> query,
   );
 
   @GET("/wot/account/tanks/")
   Future<UserVehiclesDataApi> fetchUserVehicles(
-    @Query('application_id') String applicationId,
-    @Query('account_id') int accountId,
-    @Query('access_token') String accessToken,
+    @Queries() Map<String, dynamic> query,
   );
 
   @GET("/wot/encyclopedia/vehicles/")
   Future<VehiclesDataApi> fetchVehiclesDatabase(
-    @Query('application_id') String applicationId,
-    @Query('fields') String fields,
-    @Query('limit') int limit,
-    @Query('page_no') int pageNumber,
-    @Query('language') String language,
+    @Queries() Map<String, dynamic> query,
   );
 
   @GET("/wot/account/achievements/")
   Future<UserAchievesDataApi> fetchUserAchieves(
-    @Query('application_id') String applicationId,
-    @Query('account_id') int accountId,
+    @Queries() Map<String, dynamic> query,
   );
 
   @GET("/wot/encyclopedia/achievements/")
   Future<AchievementsDataApi> fetchAchievesDataBase(
-    @Query('application_id') String applicationId,
-    @Query('language') String language,
+    @Queries() Map<String, dynamic> query,
   );
 
   @GET("/wot/account/list/")
   Future<SearchUserDataApi> searchUsers(
-    @Query('application_id') String applicationId,
-    @Query('search') String search,
-    @Query('limit') int limit,
+    @Queries() Map<String, dynamic> query,
   );
 
   @POST("/wot/auth/prolongate/")
   Future<TokenExtResponse> tokenExtension(
-    @Query('application_id') String applicationId,
+    @Queries() Map<String, dynamic> query,
     @Body() String accessToken,
   );
 }

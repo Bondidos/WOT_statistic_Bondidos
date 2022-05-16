@@ -8,42 +8,34 @@ import 'package:wot_statistic/layers/data/models/remote/user_vehicles/user_vehic
 import 'package:wot_statistic/layers/data/models/remote/vehicles_data/vehicles_data_api.dart';
 import 'package:wot_statistic/layers/data/remote/sources/api_client.dart';
 import 'package:wot_statistic/layers/data/sources/remote/remote_data_source.dart';
-import 'package:wot_statistic/layers/data/sources/settings/user_settings.dart';
 
-const searchUsersLimit = 10;
-const vehiclesTtcFields =
-    'tank_id,is_premium,images,type,description,name,is_gift,nation,tier';
-const applicationId = '5d489c586717c2b76ade8bea16607167';
-const privateDataFields = 'private,global_rating,clan_id,nickname,logout_at';
+import 'api_constants.dart';
 
 class RemoteSourceImpl extends RemoteDataSource {
   final ApiClient apiClient;
-  final UserSettings userSettings;
+  final ApiConstants apiConstants;
 
   RemoteSourceImpl({
     required this.apiClient,
-    required this.userSettings,
+    required this.apiConstants,
   });
 
   @override
   Future<UserPersonalDataApi> fetchPersonalData() =>
       apiClient.fetchPersonalData(
-        applicationId,
-        userSettings.signedUser.id,
-        userSettings.signedUser.accessToken,
-        privateDataFields,
+        apiConstants.createPersonalDataQuery(),
       );
 
   @override
   Future<ClanInfoDataApi> fetchClanInfo({required int clanId}) =>
-      apiClient.fetchClanInfo(applicationId, clanId);
+      apiClient.fetchClanInfo(
+          apiConstants.createClanInfoQuery(clanId: clanId)
+      );
 
   @override
   Future<UserVehiclesDataApi> fetchUserVehicles() =>
       apiClient.fetchUserVehicles(
-        applicationId,
-        userSettings.signedUser.id,
-        userSettings.signedUser.accessToken,
+          apiConstants.createUserVehiclesQuery()
       );
 
   @override
@@ -53,23 +45,33 @@ class RemoteSourceImpl extends RemoteDataSource {
     required String language,
   }) =>
       apiClient.fetchVehiclesDatabase(
-          applicationId, vehiclesTtcFields, limit, pageNumber, language);
+          apiConstants.createVehiclesDatabaseQuery(
+            limit: limit,
+            pageNumber: pageNumber,
+            language: language,
+          )
+      );
 
   @override
   Future<UserAchievesDataApi> fetchAchievesData() =>
-      apiClient.fetchUserAchieves(applicationId, userSettings.signedUser.id,);
+      apiClient.fetchUserAchieves(apiConstants.createAchievesDataQuery());
 
   @override
   Future<AchievementsDataApi> fetchAchievesDataBase({
     required String language,
   }) =>
-      apiClient.fetchAchievesDataBase(applicationId, language);
+      apiClient.fetchAchievesDataBase(
+          apiConstants.createAchievesDatabaseQuery(language: language)
+      );
 
   @override
   Future<SearchUserDataApi> searchUser(String search) =>
-      apiClient.searchUsers(applicationId, search, searchUsersLimit);
+      apiClient.searchUsers(
+        apiConstants.createSearchUserQuery(search: search)
+      );
 
   @override
   Future<TokenExtResponse> tokenExtension(String token) =>
-      apiClient.tokenExtension(applicationId, "access_token=$token");
+      apiClient.tokenExtension(
+      apiConstants.createTokenExtensionQuery(), "access_token=$token");
 }

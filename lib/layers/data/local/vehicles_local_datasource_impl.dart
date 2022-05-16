@@ -16,11 +16,12 @@ class VehiclesLocalDataSourceImpl implements VehiclesLocalDataSource {
   });
 
   @override
-  String get databaseCurrentLanguage => languageSettings.databaseCurrentLanguage;
+  String get databaseCurrentLanguage =>
+      languageSettings.databaseCurrentLanguage;
 
   @override
-  void setVehiclesCurrentLng(String lng) =>
-      languageSettings.setDatabaseCurrentLanguage(lng);
+  void setVehiclesCurrentLng(String language) =>
+      languageSettings.setDatabaseCurrentLanguage(language);
 
   @override
   Future<List<VehiclesDataTTC>> fetchTTCByListOfIDs(List<int> tankIds) =>
