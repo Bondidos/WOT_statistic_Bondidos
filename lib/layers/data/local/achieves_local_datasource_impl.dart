@@ -24,7 +24,7 @@ class AchievesLocalDataSourceImpl implements AchievesLocalDataSource {
       databaseSettings.setAchievesCount(achievesCount);
 
   @override
-  int get achievesCount => databaseSettings.vehiclesTTCCount;
+  int get achievesCount => databaseSettings.achievesCount;
 
   @override
   Future<List<AchievementDataApi>> fetchAchievementsById(

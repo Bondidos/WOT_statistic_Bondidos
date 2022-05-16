@@ -2,6 +2,7 @@ import 'package:wot_statistic/generated/l10n.dart';
 import 'package:wot_statistic/layers/data/models/local/user_data.dart';
 import 'package:wot_statistic/layers/data/models/remote/achievements_data/achievement_data_api.dart';
 import 'package:wot_statistic/layers/data/models/remote/achievements_data/achievements_data_api.dart';
+import 'package:wot_statistic/layers/data/models/remote/user_achieves/user_achieves_category_data_api.dart';
 import 'package:wot_statistic/layers/data/models/remote/user_achieves/user_achieves_data_api.dart';
 import 'package:wot_statistic/layers/data/sources/local/achieves_local_datasource.dart';
 import 'package:wot_statistic/layers/data/sources/remote/remote_data_source.dart';
@@ -29,25 +30,45 @@ class AchievesRepoImpl implements AchievesRepo {
   @override
   Future<List<List<Achieve>>> fetchAchieves() async {
     await _initAchievesDatabase();
-    final UserAchievesDataApi achievesApi;
-    try {
-      achievesApi =
-          await remoteSource.fetchAchievesData(accountId: signedUser.id);
-    } catch (e) {
-      throw Exception(S.current.CheckInternetConnection);
-    }
-    final Map<String, int> achievesId =
-        achievesApi.createListOfAchievementsId();
-    final List<List<AchievementDataApi>> achievesByIdFromDb =
-        await _fetchByIdAndFilter(achievesId.keys.toList());
+
+    final Map<String, int> achievementsApiNameCountMap =
+        await _fetchUserAchievesDataApi();
+
+    final List<String> achievementsId =
+        achievementsApiNameCountMap.keys.toList();
+
+    final List<List<AchievementDataApi>> achievementsByIdFromDb =
+        await _fetchByIdAndFilter(achievementsId);
+
+    return _createSortedAchievesLists(
+      achievementsByIdFromDb,
+      achievementsApiNameCountMap,
+    );
+  }
+
+  List<List<Achieve>> _createSortedAchievesLists(
+    List<List<AchievementDataApi>> achievementsByIdFromDb,
+    Map<String, int> achievementsNameCountMap,
+  ) {
     List<List<Achieve>> result = [];
-    for (var element in achievesByIdFromDb) {
+
+    for (var element in achievementsByIdFromDb) {
       var buffer = element
-          .map((e) => _createAchieveFromApiAndData(achievesId, e))
+          .map((e) => _createAchieveFromApiAndData(achievementsNameCountMap, e))
           .toList();
       result.add(buffer);
     }
     return result;
+  }
+
+  Future<Map<String, int>> _fetchUserAchievesDataApi() async {
+    try {
+      final buffer =
+          await remoteSource.fetchAchievesData(accountId: signedUser.id);
+      return buffer.createAchievementNameCountMap();
+    } catch (e) {
+      throw Exception(S.current.CheckInternetConnection);
+    }
   }
 
   Future<List<List<AchievementDataApi>>> _fetchByIdAndFilter(
@@ -67,7 +88,7 @@ class AchievesRepoImpl implements AchievesRepo {
     final String currentLanguage = achievesLocalDataSource.appLanguage;
     final String databaseLanguage =
         achievesLocalDataSource.databaseCurrentLanguage;
-    final int achievesInDbCount = achievesLocalDataSource.achievesCount;
+    final int databaseAchievesCount = achievesLocalDataSource.achievesCount;
     final AchievementsDataApi achievementsDataBase;
     try {
       achievementsDataBase =
@@ -75,7 +96,7 @@ class AchievesRepoImpl implements AchievesRepo {
     } catch (e) {
       throw Exception(S.current.CheckInternetConnection);
     }
-    if (achievesInDbCount == achievementsDataBase.meta.count &&
+    if (databaseAchievesCount == achievementsDataBase.meta.count &&
         currentLanguage == databaseLanguage) return;
     achievesLocalDataSource.setAchievesCurrentLng(currentLanguage);
     await _createOrSyncAchievesDb(achievementsDataBase);
@@ -112,5 +133,23 @@ class AchievesRepoImpl implements AchievesRepo {
               achievesByIdFromDb.name,
       count: achievesId[achievesByIdFromDb.name] ?? 1,
     );
+  }
+}
+
+extension Extractions on UserAchievesDataApi {
+  Map<String, int> createAchievementNameCountMap() {
+    if (data == null) return {};
+    return data!.values.first.createAchievesMap();
+  }
+}
+
+extension CreateAchievesMap on UserAchievesCategoryDataApi {
+  Map<String, int> createAchievesMap() {
+    Map<String, int> allAchieves = {};
+    allAchieves.addAll(achievements);
+    allAchieves.addAll(frags);
+    allAchieves.addAll(maxSeries);
+    allAchieves.removeWhere((key, value) => value == 0);
+    return allAchieves;
   }
 }

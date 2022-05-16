@@ -97,7 +97,7 @@ class VehiclesRepoImpl implements VehiclesRepo {
     if (vehiclesMetaData.total == databaseTtcCount &&
         currentLanguage == databaseLanguage) return;
     vehiclesLocalSource.setVehiclesCurrentLng(currentLanguage);
-    await _fetchAndSaveAllPages(vehiclesMetaData, currentLanguage);
+    _fetchAndSaveAllPages(vehiclesMetaData, currentLanguage);
   }
 
   Future<void> _fetchAndSaveAllPages(
@@ -107,7 +107,7 @@ class VehiclesRepoImpl implements VehiclesRepo {
     Iterable<int> pagesCount = meta.generatePagesCountIterable();
     int added = 0;
     try {
-      Future.forEach<int>(
+      await Future.forEach<int>(
         pagesCount,
         (page) async {
           VehiclesDataApi buffer = await remoteSource.fetchVehiclesDatabase(
@@ -117,9 +117,9 @@ class VehiclesRepoImpl implements VehiclesRepo {
           );
           List<VehiclesDataTTC> bufferListToSafe = buffer.data.values.toList();
           added += await vehiclesLocalSource.saveTTCList(bufferListToSafe);
-          vehiclesLocalSource.setVehiclesTtcCount(added);
         },
       );
+      vehiclesLocalSource.setVehiclesTtcCount(added);
     } catch (e) {
       throw Exception(S.current.CheckInternetConnection);
     }

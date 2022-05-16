@@ -23,13 +23,4 @@ class UserAchievesCategoryDataApi {
       _$UserAchievesCategoryDataApiFromJson(json);
 
   Map<String, dynamic> toJson() => _$UserAchievesCategoryDataApiToJson(this);
-
-  Map<String, int> createAchievesMap(){
-    Map<String, int> allAchieves = {};
-    allAchieves.addAll(achievements);
-    allAchieves.addAll(frags);
-    allAchieves.addAll(maxSeries);
-    allAchieves.removeWhere((key, value) => value == 0);
-    return allAchieves;
-  }
 }

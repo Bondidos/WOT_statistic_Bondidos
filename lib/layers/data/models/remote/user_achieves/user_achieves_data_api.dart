@@ -17,9 +17,4 @@ class UserAchievesDataApi {
       _$UserAchievesDataApiFromJson(json);
 
   Map<String, dynamic> toJson() => _$UserAchievesDataApiToJson(this);
-
-  Map<String,int> createListOfAchievementsId(){
-    if(data == null) throw NullThrownError();
-    return data!.values.first.createAchievesMap();
-  }
 }
