@@ -148,13 +148,12 @@ Future<void> init() async {
   inj.registerFactory<AchievesLocalDataSource>(
       () => AchievesLocalDataSourceImpl(
             achievementDao: inj(),
-            userSettings: inj(),
             languageSettings: inj(),
             databaseSettings: inj(),
           ));
 
   inj.registerFactory<RemoteDataSource>(
-      () => RemoteSourceImpl(apiClient: inj()));
+      () => RemoteSourceImpl(apiClient: inj(), userSettings: inj(),));
 
   inj.registerFactory<SignLocalDataSource>(() => SignLocalDataSourceImpl(
         userDao: inj(),
@@ -172,7 +171,6 @@ Future<void> init() async {
   inj.registerFactory<VehiclesLocalDataSource>(
       () => VehiclesLocalDataSourceImpl(
             vehicleTtcDao: inj(),
-            userSettings: inj(),
             databaseSettings: inj(),
             languageSettings: inj(),
           ));

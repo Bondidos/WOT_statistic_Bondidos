@@ -9,17 +9,11 @@ import 'package:wot_statistic/layers/data/models/remote/user_achieves/user_achie
 import 'package:wot_statistic/layers/data/models/remote/vehicles_data/vehicles_data_api.dart';
 
 abstract class RemoteDataSource {
-  Future<UserPersonalDataApi> fetchPersonalData({
-    required int accountId,
-    required String accessToken,
-  });
+  Future<UserPersonalDataApi> fetchPersonalData();
 
   Future<ClanInfoDataApi> fetchClanInfo({required int clanId});
 
-  Future<UserVehiclesDataApi> fetchUserVehicles({
-    required int accountId,
-    required String accessToken,
-  });
+  Future<UserVehiclesDataApi> fetchUserVehicles();
 
   Future<VehiclesDataApi> fetchVehiclesDatabase({
     required int limit,
@@ -27,7 +21,7 @@ abstract class RemoteDataSource {
     required String language,
   });
 
-  Future<UserAchievesDataApi> fetchAchievesData({required int accountId});
+  Future<UserAchievesDataApi> fetchAchievesData();
 
   Future<AchievementsDataApi> fetchAchievesDataBase({
     required String language,

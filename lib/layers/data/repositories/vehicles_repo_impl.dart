@@ -1,5 +1,4 @@
 import 'package:wot_statistic/generated/l10n.dart';
-import 'package:wot_statistic/layers/data/models/local/user_data.dart';
 import 'package:wot_statistic/layers/data/models/remote/user_vehicles/user_vehicle_data_api.dart';
 import 'package:wot_statistic/layers/data/models/remote/user_vehicles/user_vehicles_data_api.dart';
 import 'package:wot_statistic/layers/data/models/remote/vehicles_data/vehicles_data_api.dart';
@@ -21,16 +20,11 @@ class VehiclesRepoImpl implements VehiclesRepo {
     required this.remoteSource,
   });
 
-  UserData get signedUser => vehiclesLocalSource.signedUser;
-
   @override
   Future<List<Vehicle>> fetchUserVehicles() async {
     await _initVehiclesDatabase();
     final UserVehiclesDataApi userVehicles =
-        await remoteSource.fetchUserVehicles(
-      accountId: signedUser.id,
-      accessToken: signedUser.accessToken,
-    );
+        await remoteSource.fetchUserVehicles();
     return _createVehicleListFrom(userVehicles);
   }
 

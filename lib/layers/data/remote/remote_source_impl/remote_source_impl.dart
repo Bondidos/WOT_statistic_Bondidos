@@ -8,6 +8,7 @@ import 'package:wot_statistic/layers/data/models/remote/user_vehicles/user_vehic
 import 'package:wot_statistic/layers/data/models/remote/vehicles_data/vehicles_data_api.dart';
 import 'package:wot_statistic/layers/data/remote/sources/api_client.dart';
 import 'package:wot_statistic/layers/data/sources/remote/remote_data_source.dart';
+import 'package:wot_statistic/layers/data/sources/settings/user_settings.dart';
 
 const searchUsersLimit = 10;
 const vehiclesTtcFields =
@@ -17,23 +18,33 @@ const privateDataFields = 'private,global_rating,clan_id,nickname,logout_at';
 
 class RemoteSourceImpl extends RemoteDataSource {
   final ApiClient apiClient;
+  final UserSettings userSettings;
 
-  RemoteSourceImpl({required this.apiClient});
+  RemoteSourceImpl({
+    required this.apiClient,
+    required this.userSettings,
+  });
 
   @override
-  Future<UserPersonalDataApi> fetchPersonalData(
-          {required int accountId, required String accessToken}) =>
+  Future<UserPersonalDataApi> fetchPersonalData() =>
       apiClient.fetchPersonalData(
-          applicationId, accountId, accessToken, privateDataFields);
+        applicationId,
+        userSettings.signedUser.id,
+        userSettings.signedUser.accessToken,
+        privateDataFields,
+      );
 
   @override
   Future<ClanInfoDataApi> fetchClanInfo({required int clanId}) =>
       apiClient.fetchClanInfo(applicationId, clanId);
 
   @override
-  Future<UserVehiclesDataApi> fetchUserVehicles(
-          {required int accountId, required String accessToken}) =>
-      apiClient.fetchUserVehicles(applicationId, accountId, accessToken);
+  Future<UserVehiclesDataApi> fetchUserVehicles() =>
+      apiClient.fetchUserVehicles(
+        applicationId,
+        userSettings.signedUser.id,
+        userSettings.signedUser.accessToken,
+      );
 
   @override
   Future<VehiclesDataApi> fetchVehiclesDatabase({
@@ -45,8 +56,8 @@ class RemoteSourceImpl extends RemoteDataSource {
           applicationId, vehiclesTtcFields, limit, pageNumber, language);
 
   @override
-  Future<UserAchievesDataApi> fetchAchievesData({required int accountId}) =>
-      apiClient.fetchUserAchieves(applicationId, accountId);
+  Future<UserAchievesDataApi> fetchAchievesData() =>
+      apiClient.fetchUserAchieves(applicationId, userSettings.signedUser.id,);
 
   @override
   Future<AchievementsDataApi> fetchAchievesDataBase({

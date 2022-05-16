@@ -1,5 +1,4 @@
 import 'package:wot_statistic/generated/l10n.dart';
-import 'package:wot_statistic/layers/data/models/local/user_data.dart';
 import 'package:wot_statistic/layers/data/models/remote/achievements_data/achievement_data_api.dart';
 import 'package:wot_statistic/layers/data/models/remote/achievements_data/achievements_data_api.dart';
 import 'package:wot_statistic/layers/data/models/remote/user_achieves/user_achieves_category_data_api.dart';
@@ -24,8 +23,6 @@ class AchievesRepoImpl implements AchievesRepo {
     required this.achievesLocalDataSource,
     required this.remoteSource,
   });
-
-  UserData get signedUser => achievesLocalDataSource.signedUser;
 
   @override
   Future<List<List<Achieve>>> fetchAchieves() async {
@@ -64,7 +61,7 @@ class AchievesRepoImpl implements AchievesRepo {
   Future<Map<String, int>> _fetchUserAchievesDataApi() async {
     try {
       final buffer =
-          await remoteSource.fetchAchievesData(accountId: signedUser.id);
+          await remoteSource.fetchAchievesData();
       return buffer.createAchievementNameCountMap();
     } catch (e) {
       throw Exception(S.current.CheckInternetConnection);

@@ -30,7 +30,7 @@ class PersonalDataRepoImpl implements PersonalDataRepo {
     baseOptions.baseUrl =
         personalDataLocalSource.currentRealm == cis ? baseUrlCis : baseUrlEu;
   }
-
+  //todo remove signedUser verification logic after separating signed and search user
   Future<void> _extendUserToken() async {
     if (signedUser.expiresAt == 0) return;
     final User userWithExtendedToken =
@@ -93,10 +93,7 @@ class PersonalDataRepoImpl implements PersonalDataRepo {
   Future<UserPersonalDataApi> _fetchPersonalDataApi(UserData signedUser) async {
     final UserPersonalDataApi personalDataApi;
     try {
-      personalDataApi = await remoteSource.fetchPersonalData(
-        accountId: signedUser.id,
-        accessToken: signedUser.accessToken,
-      );
+      personalDataApi = await remoteSource.fetchPersonalData();
     } catch (e) {
       throw Exception(S.current.CheckInternetConnection);
     }

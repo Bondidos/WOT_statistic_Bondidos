@@ -1,8 +1,6 @@
-import 'package:wot_statistic/layers/data/models/local/user_data.dart';
 import 'package:wot_statistic/layers/data/models/remote/achievements_data/achievement_data_api.dart';
 
 abstract class AchievesLocalDataSource {
-  UserData get signedUser;
 
   String get appLanguage;
 
