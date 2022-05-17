@@ -31,6 +31,10 @@ class ApiConstants {
 
   String get accessToken => userSettings.signedUser.accessToken;
 
+  int get userNoPrivateId => userSettings.userNoPrivateData.userId;
+
+  bool get isPrivateAllowed => userSettings.isPrivateDataAllowed;
+
   Map<String, dynamic> createPersonalDataQuery() => {
         'application_id': applicationId,
         'account_id': userId,
@@ -51,8 +55,8 @@ class ApiConstants {
 
   Map<String, dynamic> createUserVehiclesQuery() => {
         'application_id': applicationId,
-        'account_id': userId,
-        'access_token': accessToken,
+        'account_id': isPrivateAllowed ? userId : userNoPrivateId,
+        'access_token': isPrivateAllowed ? accessToken : null,
       };
 
   Map<String, dynamic> createVehiclesDatabaseQuery({
@@ -80,7 +84,7 @@ class ApiConstants {
 
   Map<String, dynamic> createAchievesDataQuery() => {
         'application_id': applicationId,
-        'account_id': userId,
+        'account_id': isPrivateAllowed ? userId : userNoPrivateId,
       };
 
   Map<String, dynamic> createAchievesDatabaseQuery({required language}) => {
@@ -97,6 +101,16 @@ class ApiConstants {
   Map<String, dynamic> createTokenExtensionQuery() => {
         'application_id': applicationId,
       };
+
+  Map<String, dynamic> createUserNoPrivateQuery() => {
+    'application_id': applicationId,
+    'account_id' : userNoPrivateId,
+    "fields": [
+      nicknameQueryParameter,
+      clanIdQueryParameter,
+      globalRatingQueryParameter
+    ].unpack(),
+  };
 }
 
 extension UnpackList on List<String> {

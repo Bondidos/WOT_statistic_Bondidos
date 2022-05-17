@@ -11,6 +11,7 @@ import 'package:wot_statistic/injection_container.dart' as di;
 class SearchUserPage extends StatelessWidget {
   const SearchUserPage({Key? key, required this.heroTag}) : super(key: key);
   final String heroTag;
+  final bool isShowPrivateData = false;
 
   @override
   Widget build(BuildContext context) {
@@ -75,8 +76,11 @@ class SearchUserPage extends StatelessWidget {
                                     onTap: () async {
                                       await cubit.viewUser(index);
                                       Navigator.of(context)
-                                          .pushReplacementNamed(
-                                              StatisticPage.id);
+                                          .pushNamedAndRemoveUntil(
+                                        StatisticPage.id,
+                                        ModalRoute.withName(StatisticPage.id),
+                                        arguments: isShowPrivateData,
+                                      );
                                     },
                                     title: Text(state.foundList[index].name),
                                   ),

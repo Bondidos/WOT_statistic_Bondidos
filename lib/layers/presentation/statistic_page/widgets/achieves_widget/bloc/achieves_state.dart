@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:wot_statistic/layers/domain/entities/user_no_private_info.dart';
 
 abstract class AchievesState extends Equatable {
   const AchievesState();
@@ -23,8 +24,14 @@ class LoadingState extends AchievesState {
 
 class LoadedDataState extends AchievesState {
   final List<StaggeredGridTile> achievesData;
+  final bool isPrivateDataAllow;
+  final UserNoPrivateInfo? userNoPrivateInfo;
 
-  const LoadedDataState({required this.achievesData});
+  const LoadedDataState({
+    required this.achievesData,
+    required this.isPrivateDataAllow,
+    this.userNoPrivateInfo,
+  });
 
   @override
   List<Object?> get props => [achievesData];

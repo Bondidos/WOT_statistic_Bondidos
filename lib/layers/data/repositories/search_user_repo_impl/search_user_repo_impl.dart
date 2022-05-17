@@ -1,10 +1,9 @@
 import 'package:wot_statistic/generated/l10n.dart';
-import 'package:wot_statistic/layers/data/models/local/user_data.dart';
+import 'package:wot_statistic/layers/data/models/local/user_no_private_data.dart';
 import 'package:wot_statistic/layers/data/models/remote/search_user/search_user_data_api.dart';
 import 'package:wot_statistic/layers/data/models/remote/search_user/search_user_account_data_api.dart';
 import 'package:wot_statistic/layers/data/sources/local/search_user_local_datasource.dart';
-import 'package:wot_statistic/layers/domain/entities/found_user.dart';
-import 'package:wot_statistic/layers/domain/entities/user.dart';
+import 'package:wot_statistic/layers/domain/entities/user_no_private.dart';
 import 'package:wot_statistic/layers/domain/repositories/search_user_repo.dart';
 import 'package:wot_statistic/layers/data/sources/remote/remote_data_source.dart';
 
@@ -18,7 +17,7 @@ class SearchUserRepoImpl implements SearchUserRepo {
   });
 
   @override
-  Future<List<FoundUser>> searchUser(String search) async {
+  Future<List<UserNoPrivate>> searchUser(String search) async {
     final SearchUserDataApi users;
     try {
       users = await remoteSource.searchUser(search);
@@ -30,16 +29,16 @@ class SearchUserRepoImpl implements SearchUserRepo {
         .toList();
   }
 
-  @override
-  Future<void> setSignedUser(User user) async {
-    searchUserLocalSource.setSignedUser(
-      UserData.fromUserAndRealm(
-        user,
-        searchUserLocalSource.currentRealm,
-      ),
-    );
-  }
+  UserNoPrivate _createFoundUserFromSearchUserData(
+          SearchUserAccountDataApi userData) =>
+      UserNoPrivate(name: userData.nickname, id: userData.accountId);
 
-  FoundUser _createFoundUserFromSearchUserData(SearchUserAccountDataApi userData) =>
-      FoundUser(name: userData.nickname, id: userData.accountId);
+  @override
+  Future<void> setUserToViewNoPrivate(UserNoPrivate userNoPrivate) =>
+      searchUserLocalSource.setUserNoPrivate(
+        UserNoPrivateData(
+            nickname: userNoPrivate.name,
+            userId: userNoPrivate.id,
+        ),
+      );
 }

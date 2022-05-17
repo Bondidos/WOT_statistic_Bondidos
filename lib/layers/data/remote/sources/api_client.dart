@@ -6,6 +6,7 @@ import 'package:wot_statistic/layers/data/models/remote/personal_data_api/user_p
 import 'package:wot_statistic/layers/data/models/remote/search_user/search_user_data_api.dart';
 import 'package:wot_statistic/layers/data/models/remote/token_extension/token_extension_response.dart';
 import 'package:wot_statistic/layers/data/models/remote/user_achieves/user_achieves_data_api.dart';
+import 'package:wot_statistic/layers/data/models/remote/user_no_private/user_no_private_api.dart';
 import 'package:wot_statistic/layers/data/models/remote/user_vehicles/user_vehicles_data_api.dart';
 import 'package:wot_statistic/layers/data/models/remote/vehicles_data/vehicles_data_api.dart';
 
@@ -19,6 +20,11 @@ abstract class ApiClient {
   Future<UserPersonalDataApi> fetchPersonalData(
     @Queries() Map<String, dynamic> query,
   );
+
+  @GET("/wot/account/info/")
+  Future<UserNoPrivateApi> fetchUserNoPrivateData(
+      @Queries() Map<String, dynamic> query,
+      );
 
   @GET("/wot/clans/info/")
   Future<ClanInfoDataApi> fetchClanInfo(

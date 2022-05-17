@@ -2,6 +2,8 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:wot_statistic/layers/domain/entities/user_no_private_info.dart';
+import 'package:wot_statistic/layers/domain/use_cases/load_user_no_private.dart';
 import 'package:wot_statistic/layers/presentation/statistic_page/widgets/achieves_widget/bloc/achieves_state.dart';
 
 import 'package:wot_statistic/layers/domain/entities/achieves.dart';
@@ -19,26 +21,77 @@ const Map<int, String> achievesBySection = {
 
 class AchievesDataCubit extends Cubit<AchievesState> {
   final LoadAchievesData loadAchieves;
+  final LoadUserNoPrivateInfo loadUserNoPrivateInfo;
 
-  AchievesDataCubit({required this.loadAchieves})
-      : super(const LoadingState()) {
-    fetchAchievesData();
+  AchievesDataCubit({
+    required this.loadAchieves,
+    required this.loadUserNoPrivateInfo,
+  }) : super(const LoadingState());
+
+  late bool _isPrivateDataAllow;
+
+  void init(bool isPrivateDataAllow) async {
+    _isPrivateDataAllow = isPrivateDataAllow;
+    (isPrivateDataAllow)
+        ? _fetchAchievesData()
+        : fetchAchievesDataAndClanInfo();
   }
 
-  Future<void> fetchAchievesData() async {
+  Future<void> fetchAchievesDataAndClanInfo() async {
+    if (state is! LoadingState) emit(const LoadingState());
+    final List<StaggeredGridTile> listToDisplay =
+        await _fetchAchievesAndCreateListToDisplay();
+    final UserNoPrivateInfo? userNoPrivateInfo =
+        await _fetchUserNoPrivateInfo();
+    if (userNoPrivateInfo == null) return;
+    emit(
+      LoadedDataState(
+        achievesData: listToDisplay,
+        isPrivateDataAllow: _isPrivateDataAllow,
+        userNoPrivateInfo: userNoPrivateInfo,
+      ),
+    );
+  }
+
+  Future<void> _fetchAchievesData() async {
+    if (state is! LoadingState) emit(const LoadingState());
+
+    final List<StaggeredGridTile> listToDisplay =
+        await _fetchAchievesAndCreateListToDisplay();
+
+    emit(
+      LoadedDataState(
+        achievesData: listToDisplay,
+        isPrivateDataAllow: _isPrivateDataAllow,
+      ),
+    );
+  }
+
+  Future<UserNoPrivateInfo?> _fetchUserNoPrivateInfo() async {
+    final UserNoPrivateInfo userNoPrivateInfo;
     try {
-      if (state is! LoadingState) emit(const LoadingState());
-      final List<List<Achieve>> sortedListsBySections =
-          await loadAchieves.execute();
-      List<StaggeredGridTile> listToDisplay =
-          _createListToDisplay(sortedListsBySections);
-      emit(LoadedDataState(achievesData: listToDisplay));
+      userNoPrivateInfo = await loadUserNoPrivateInfo.execute();
     } catch (e) {
       emit(ErrorState(message: e.toString()));
+      return null;
     }
+    return userNoPrivateInfo;
   }
 
-  Future<void> refreshList() => fetchAchievesData();
+  Future<List<StaggeredGridTile>> _fetchAchievesAndCreateListToDisplay() async {
+    final List<List<Achieve>> sortedListsBySections;
+    try {
+      sortedListsBySections = await loadAchieves.execute();
+    } catch (e) {
+      emit(ErrorState(message: e.toString()));
+      return [];
+    }
+    return _createListToDisplay(sortedListsBySections);
+  }
+
+  Future<void> refreshList() => (_isPrivateDataAllow)
+      ? _fetchAchievesData()
+      : fetchAchievesDataAndClanInfo();
 
   List<StaggeredGridTile> _createListToDisplay(
       List<List<Achieve>> sortedListsBySections) {

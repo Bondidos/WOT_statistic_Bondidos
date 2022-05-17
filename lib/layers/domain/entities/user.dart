@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:wot_statistic/layers/domain/entities/found_user.dart';
 
 class User extends Equatable {
   final int id;
@@ -23,9 +22,6 @@ class User extends Equatable {
       expiresAt: int.parse(response["expires_at"]!),
     );
   }
-
-  factory User.fromFoundUser(FoundUser fUser) =>
-      User(id: fUser.id, nickname: fUser.name, accessToken: '', expiresAt: 0);
 
   User copyWith(Map<String, dynamic> response) {
     return User(

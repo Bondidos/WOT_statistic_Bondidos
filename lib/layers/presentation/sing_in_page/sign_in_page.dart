@@ -68,8 +68,9 @@ class SignInPage extends StatelessWidget {
                               title: S.of(context).SignIn,
                               onTap: () async {
                                 if (await cubit.signInAction()) {
-                                  Navigator.of(context)
-                                      .pushReplacementNamed(StatisticPage.id);
+                                  Navigator.of(context).pushReplacementNamed(
+                                    StatisticPage.id,
+                                  );
                                 }
                               },
                             ),

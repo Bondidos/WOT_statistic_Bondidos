@@ -1,4 +1,4 @@
-import 'package:wot_statistic/layers/domain/entities/found_user.dart';
+import 'package:wot_statistic/layers/domain/entities/user_no_private.dart';
 import 'package:wot_statistic/layers/domain/repositories/search_user_repo.dart';
 
 class SearchUserUseCase {
@@ -6,5 +6,5 @@ class SearchUserUseCase {
 
   SearchUserUseCase({required this.repository});
 
-  Future<List<FoundUser>> execute(String search) => repository.searchUser(search);
+  Future<List<UserNoPrivate>> execute(String search) => repository.searchUser(search);
 }

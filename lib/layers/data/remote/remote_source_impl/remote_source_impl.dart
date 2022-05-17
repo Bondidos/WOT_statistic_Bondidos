@@ -4,6 +4,7 @@ import 'package:wot_statistic/layers/data/models/remote/search_user/search_user_
 import 'package:wot_statistic/layers/data/models/remote/achievements_data/achievements_data_api.dart';
 import 'package:wot_statistic/layers/data/models/remote/token_extension/token_extension_response.dart';
 import 'package:wot_statistic/layers/data/models/remote/user_achieves/user_achieves_data_api.dart';
+import 'package:wot_statistic/layers/data/models/remote/user_no_private/user_no_private_api.dart';
 import 'package:wot_statistic/layers/data/models/remote/user_vehicles/user_vehicles_data_api.dart';
 import 'package:wot_statistic/layers/data/models/remote/vehicles_data/vehicles_data_api.dart';
 import 'package:wot_statistic/layers/data/remote/sources/api_client.dart';
@@ -29,13 +30,13 @@ class RemoteSourceImpl extends RemoteDataSource {
   @override
   Future<ClanInfoDataApi> fetchClanInfo({required int clanId}) =>
       apiClient.fetchClanInfo(
-          apiConstants.createClanInfoQuery(clanId: clanId)
+        apiConstants.createClanInfoQuery(clanId: clanId),
       );
 
   @override
   Future<UserVehiclesDataApi> fetchUserVehicles() =>
       apiClient.fetchUserVehicles(
-          apiConstants.createUserVehiclesQuery()
+        apiConstants.createUserVehiclesQuery(),
       );
 
   @override
@@ -45,33 +46,39 @@ class RemoteSourceImpl extends RemoteDataSource {
     required String language,
   }) =>
       apiClient.fetchVehiclesDatabase(
-          apiConstants.createVehiclesDatabaseQuery(
-            limit: limit,
-            pageNumber: pageNumber,
-            language: language,
-          )
+        apiConstants.createVehiclesDatabaseQuery(
+          limit: limit,
+          pageNumber: pageNumber,
+          language: language,
+        ),
       );
 
   @override
   Future<UserAchievesDataApi> fetchAchievesData() =>
-      apiClient.fetchUserAchieves(apiConstants.createAchievesDataQuery());
+      apiClient.fetchUserAchieves(
+        apiConstants.createAchievesDataQuery(),
+      );
 
   @override
   Future<AchievementsDataApi> fetchAchievesDataBase({
     required String language,
   }) =>
       apiClient.fetchAchievesDataBase(
-          apiConstants.createAchievesDatabaseQuery(language: language)
-      );
+          apiConstants.createAchievesDatabaseQuery(language: language));
 
   @override
-  Future<SearchUserDataApi> searchUser(String search) =>
-      apiClient.searchUsers(
-        apiConstants.createSearchUserQuery(search: search)
+  Future<SearchUserDataApi> searchUser(String search) => apiClient.searchUsers(
+        apiConstants.createSearchUserQuery(search: search),
       );
 
   @override
   Future<TokenExtResponse> tokenExtension(String token) =>
       apiClient.tokenExtension(
-      apiConstants.createTokenExtensionQuery(), "access_token=$token");
+          apiConstants.createTokenExtensionQuery(), "access_token=$token");
+
+  @override
+  Future<UserNoPrivateApi> fetchUserNoPrivateInfo() =>
+      apiClient.fetchUserNoPrivateData(
+        apiConstants.createUserNoPrivateQuery(),
+      );
 }

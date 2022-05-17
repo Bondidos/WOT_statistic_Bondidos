@@ -6,8 +6,8 @@ import 'package:wot_statistic/layers/data/local/achieves_local_datasource_impl.d
 import 'package:wot_statistic/layers/data/local/personal_data_local_source.dart';
 import 'package:wot_statistic/layers/data/local/settings_data_source_impl.dart';
 import 'package:wot_statistic/layers/data/local/vehicles_local_datasource_impl.dart';
-import 'package:wot_statistic/layers/data/repositories/settings_repo_impl.dart';
-import 'package:wot_statistic/layers/data/repositories/sign_in_repo_impl.dart';
+import 'package:wot_statistic/layers/data/repositories/settings_repo_impl/settings_repo_impl.dart';
+import 'package:wot_statistic/layers/data/repositories/sign_in_repo_impl/sign_in_repo_impl.dart';
 import 'package:wot_statistic/layers/data/sources/remote/remote_data_source.dart';
 import 'package:wot_statistic/layers/domain/use_cases/load_achieves_data.dart';
 import 'package:wot_statistic/layers/domain/use_cases/sign_in_use_case.dart';
@@ -22,10 +22,10 @@ import 'layers/data/local/sign_local_datasource_impl.dart';
 import 'layers/data/remote/remote_source_impl/api_constants.dart';
 import 'layers/data/remote/remote_source_impl/remote_source_impl.dart';
 import 'layers/data/remote/sources/api_client.dart';
-import 'layers/data/repositories/achieves_repo_impl.dart';
-import 'layers/data/repositories/personal_data_repo_impl.dart';
-import 'layers/data/repositories/search_user_repo_impl.dart';
-import 'layers/data/repositories/vehicles_repo_impl.dart';
+import 'layers/data/repositories/achieve_repo_impl/achieves_repo_impl.dart';
+import 'layers/data/repositories/personal_data_repo_impl/personal_data_repo_impl.dart';
+import 'layers/data/repositories/search_user_repo_impl/search_user_repo_impl.dart';
+import 'layers/data/repositories/vehicles_repo_impl/vehicles_repo_impl.dart';
 import 'layers/data/sources/local/achieves_local_datasource.dart';
 import 'layers/data/sources/local/personal_data_local_source.dart';
 import 'layers/data/sources/local/search_user_local_datasource.dart';
@@ -44,6 +44,7 @@ import 'layers/domain/repositories/settings_repo.dart';
 import 'layers/domain/repositories/sign_in_repo.dart';
 import 'layers/domain/repositories/vehicles_repo.dart';
 import 'layers/domain/use_cases/load_personal_data.dart';
+import 'layers/domain/use_cases/load_user_no_private.dart';
 import 'layers/domain/use_cases/load_vehicles_data.dart';
 import 'layers/domain/use_cases/remove_user_use_case.dart';
 import 'layers/domain/use_cases/save_user_use_case.dart';
@@ -86,10 +87,14 @@ Future<void> init() async {
 
   inj.registerFactory(() => PersonalDataCubit(loadData: inj()));
   inj.registerFactory(() => VehiclesDataCubit(loadVehicles: inj()));
-  inj.registerFactory(() => AchievesDataCubit(loadAchieves: inj()));
+  inj.registerFactory(() => AchievesDataCubit(
+        loadAchieves: inj(),
+        loadUserNoPrivateInfo: inj(),
+      ));
   inj.registerFactory(
       () => SearchUserCubit(searchUser: inj(), viewFoundUser: inj()));
 
+  inj.registerFactory(() => LoadUserNoPrivateInfo(repository: inj()));
   inj.registerFactory(() => ViewFoundUser(repository: inj()));
   inj.registerFactory(() => SearchUserUseCase(repository: inj()));
   inj.registerFactory(() => LoadAchievesData(repository: inj()));
@@ -138,7 +143,6 @@ Future<void> init() async {
   // SOURCES
   inj.registerFactory<SearchUserLocalSource>(() => SearchUserLocalSourceImpl(
         userSettings: inj(),
-        realmSettings: inj(),
       ));
 
   inj.registerFactory<SettingsDataSource>(() => SettingsDataSourceImpl(

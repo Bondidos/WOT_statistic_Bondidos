@@ -33,6 +33,23 @@ class _ApiClient implements ApiClient {
   }
 
   @override
+  Future<UserNoPrivateApi> fetchUserNoPrivateData(query) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    queryParameters.addAll(query);
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<UserNoPrivateApi>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/wot/account/info/',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = UserNoPrivateApi.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
   Future<ClanInfoDataApi> fetchClanInfo(query) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};

@@ -1,7 +1,6 @@
-import 'package:wot_statistic/layers/domain/entities/found_user.dart';
-import 'package:wot_statistic/layers/domain/entities/user.dart';
+import 'package:wot_statistic/layers/domain/entities/user_no_private.dart';
 
 abstract class SearchUserRepo{
-  Future<List<FoundUser>> searchUser(String search);
-  Future<void> setSignedUser(User user);
+  Future<List<UserNoPrivate>> searchUser(String search);
+  Future<void> setUserToViewNoPrivate(UserNoPrivate userNoPrivate);
 }

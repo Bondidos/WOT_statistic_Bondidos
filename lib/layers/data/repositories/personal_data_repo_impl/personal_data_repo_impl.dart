@@ -4,8 +4,11 @@ import 'package:wot_statistic/layers/data/models/remote/clan_info_data/clan_info
 import 'package:wot_statistic/layers/data/models/remote/personal_data_api/user_data_api.dart';
 import 'package:wot_statistic/layers/data/models/remote/personal_data_api/user_personal_data_api.dart';
 import 'package:wot_statistic/layers/data/models/remote/token_extension/token_extension_response.dart';
+import 'package:wot_statistic/layers/data/models/remote/user_no_private/user_no_private_api.dart';
+import 'package:wot_statistic/layers/data/repositories/personal_data_repo_impl/extensions.dart';
 import 'package:wot_statistic/layers/domain/entities/personal_data.dart';
 import 'package:wot_statistic/layers/domain/entities/user.dart';
+import 'package:wot_statistic/layers/domain/entities/user_no_private_info.dart';
 import 'package:wot_statistic/layers/domain/repositories/personal_data_repo.dart';
 import 'package:wot_statistic/generated/l10n.dart';
 import 'package:wot_statistic/layers/data/models/local/user_data.dart';
@@ -30,9 +33,8 @@ class PersonalDataRepoImpl implements PersonalDataRepo {
     baseOptions.baseUrl =
         personalDataLocalSource.currentRealm == cis ? baseUrlCis : baseUrlEu;
   }
-  //todo remove signedUser verification logic after separating signed and search user
+
   Future<void> _extendUserToken() async {
-    if (signedUser.expiresAt == 0) return;
     final User userWithExtendedToken =
         await _extendAccessToken(_createUserFromUserData(signedUser));
     await _refreshSignedAndSavedUsers(userWithExtendedToken);
@@ -75,9 +77,8 @@ class PersonalDataRepoImpl implements PersonalDataRepo {
     final UserPersonalDataApi personalDataApi;
     final ClanInfoDataApi? clanInfo;
     try {
-      personalDataApi = await _fetchPersonalDataApi(signedUser);
-      final int? clanId =
-          personalDataApi.data?[signedUser.id.toString()]?.clanId;
+      personalDataApi = await _fetchPersonalDataApi();
+      final int? clanId = personalDataApi.data?.values.first.clanId;
       clanInfo = (clanId != null)
           ? await remoteSource.fetchClanInfo(clanId: clanId)
           : null;
@@ -90,7 +91,7 @@ class PersonalDataRepoImpl implements PersonalDataRepo {
     );
   }
 
-  Future<UserPersonalDataApi> _fetchPersonalDataApi(UserData signedUser) async {
+  Future<UserPersonalDataApi> _fetchPersonalDataApi() async {
     final UserPersonalDataApi personalDataApi;
     try {
       personalDataApi = await remoteSource.fetchPersonalData();
@@ -113,6 +114,25 @@ class PersonalDataRepoImpl implements PersonalDataRepo {
       globalRating: data.globalRating,
       nickname: data.nickname,
       logoutAt: data.logoutAt,
+    );
+  }
+
+  @override
+  Future<UserNoPrivateInfo> fetchUserNoPrivateInfo() async {
+    final UserNoPrivateApi userNoPrivateApi;
+    final ClanInfoDataApi? userNoPrivateClanInfo;
+    try {
+      userNoPrivateApi = await remoteSource.fetchUserNoPrivateInfo();
+      int? clanId = userNoPrivateApi.data.values.first.clanId;
+
+      userNoPrivateClanInfo = (clanId != null)
+          ? await remoteSource.fetchClanInfo(clanId: clanId)
+          : null;
+    } catch (e) {
+      throw Exception(S.current.CheckInternetConnection);
+    }
+    return userNoPrivateApi.createUserNoPrivateInfoWithClanInfo(
+      userNoPrivateClanInfo: userNoPrivateClanInfo,
     );
   }
 }
