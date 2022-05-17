@@ -8,6 +8,8 @@ import 'package:wot_statistic/common/theme/text_styles.dart';
 import 'bloc/search_user_state.dart';
 import 'package:wot_statistic/injection_container.dart' as di;
 
+const searchUserPageRatio = 3/4;
+
 class SearchUserPage extends StatelessWidget {
   const SearchUserPage({Key? key, required this.heroTag}) : super(key: key);
   final String heroTag;
@@ -20,8 +22,8 @@ class SearchUserPage extends StatelessWidget {
       tag: heroTag,
       child: Center(
         child: SizedBox(
-          height: 3 * size.height / 4,
-          width: 3 * size.width / 4,
+          height: size.height * searchUserPageRatio,
+          width: size.width * searchUserPageRatio,
           child: Material(
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),

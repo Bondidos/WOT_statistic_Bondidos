@@ -35,8 +35,8 @@ class RegionPicker extends StatelessWidget {
                 return <PopupMenuEntry>[
                   PopupMenuItem(
                     onTap: () {
-                      if (cubit.currentRealm != eu) {
-                        cubit.setNewRealm(eu);
+                      if (cubit.currentRealm != defaultRealm) {
+                        cubit.setNewRealm(defaultRealm);
                       }
                     },
                     child: Wrap(

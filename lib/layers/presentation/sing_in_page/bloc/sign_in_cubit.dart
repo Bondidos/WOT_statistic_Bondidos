@@ -15,7 +15,7 @@ import 'package:wot_statistic/layers/domain/use_cases/subscribe_realm_use_case.d
 part 'sign_in_state.dart';
 
 const notPicked = "Not Picked";
-const eu = "EU";
+const defaultRealm = "EU";
 
 class SignInCubit extends Cubit<SignInState> {
   final SaveUserUseCase saveUser;
@@ -42,7 +42,7 @@ class SignInCubit extends Cubit<SignInState> {
   void _initialize() {
     _subscriptionRealm = subscribeRealm.execute().listen((realm) {
       if (realm == notPicked) {
-        setNewRealm(eu); // as default EU realm
+        setNewRealm(defaultRealm);
         return;
       }
       _fetchPrevUsers(realm);
