@@ -113,7 +113,7 @@ Future<void> init() async {
 
   // REPOSITORIES
   inj.registerLazySingleton<SignInRepo>(() => SignInRepoImpl(
-        baseOptions: inj(),
+        // baseOptions: inj(),
         remoteSource: inj(),
         signLocalSource: inj(),
       ));
@@ -124,7 +124,7 @@ Future<void> init() async {
   inj.registerLazySingleton<PersonalDataRepo>(() => PersonalDataRepoImpl(
         personalDataLocalSource: inj(),
         remoteSource: inj(),
-        baseOptions: inj(),
+        // baseOptions: inj(),
       ));
 
   inj.registerLazySingleton<SearchUserRepo>(() =>
@@ -189,6 +189,7 @@ Future<void> init() async {
       ));
   inj.registerLazySingleton<RealmSettings>(() => RealmSettingsImpl(
         sharedPreferences: inj(),
+        baseOptions: inj(),
       ));
   inj.registerLazySingleton<LanguageSettings>(() => LanguageSettingsImpl(
         sharedPreferences: inj(),

@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:wot_statistic/layers/data/models/remote/clan_info_data/clan_data_api.dart';
 import 'package:wot_statistic/layers/data/models/remote/clan_info_data/clan_info_data_api.dart';
 import 'package:wot_statistic/layers/data/models/remote/personal_data_api/user_data_api.dart';
@@ -15,24 +14,14 @@ import 'package:wot_statistic/layers/data/models/local/user_data.dart';
 import 'package:wot_statistic/layers/data/sources/local/personal_data_local_source.dart';
 import 'package:wot_statistic/layers/data/sources/remote/remote_data_source.dart';
 
-const eu = "EU";
-const cis = "CIS";
-const baseUrlEu = 'https://api.worldoftanks.eu';
-const baseUrlCis = 'https://api.worldoftanks.ru';
-
 class PersonalDataRepoImpl implements PersonalDataRepo {
   final RemoteDataSource remoteSource;
   final PersonalDataLocalSource personalDataLocalSource;
-  final BaseOptions baseOptions;
 
   PersonalDataRepoImpl({
     required this.remoteSource,
     required this.personalDataLocalSource,
-    required this.baseOptions,
-  }) {
-    baseOptions.baseUrl =
-        personalDataLocalSource.currentRealm == cis ? baseUrlCis : baseUrlEu;
-  }
+  });
 
   Future<void> _extendUserToken() async {
     final User userWithExtendedToken =

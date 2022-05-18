@@ -1,29 +1,17 @@
-import 'package:dio/dio.dart';
 import 'package:wot_statistic/layers/data/models/local/user_data.dart';
 import 'package:wot_statistic/layers/data/sources/remote/remote_data_source.dart';
 import 'package:wot_statistic/layers/data/sources/local/sign_local_datasource.dart';
 import 'package:wot_statistic/layers/domain/entities/user.dart';
 import 'package:wot_statistic/layers/domain/repositories/sign_in_repo.dart';
 
-const eu = "EU";
-const cis = "CIS";
-const baseUrlEu = 'https://api.worldoftanks.eu';
-const baseUrlCis = 'https://api.worldoftanks.ru';
-
 class SignInRepoImpl implements SignInRepo {
   final SignLocalDataSource signLocalSource;
   final RemoteDataSource remoteSource;
-  final BaseOptions baseOptions;
 
   SignInRepoImpl({
     required this.signLocalSource,
     required this.remoteSource,
-    required this.baseOptions,
-  }) {
-    baseOptions.baseUrl =
-        signLocalSource.currentRealm == cis ? baseUrlCis : baseUrlEu;
-  }
-
+  }) ;
   @override
   Future<void> removeUser(User user) => signLocalSource.removeUser(
       UserData.fromUserAndRealm(user, signLocalSource.currentRealm));
@@ -33,10 +21,7 @@ class SignInRepoImpl implements SignInRepo {
       signLocalSource.saveUser(UserData.fromUserAndRealm(user, realm));
 
   @override
-  void setRealm(String realm) {
-    signLocalSource.setRealm(realm);
-    baseOptions.baseUrl = (realm == eu) ? baseUrlEu : baseUrlCis;
-  }
+  void setRealm(String realm) => signLocalSource.setRealm(realm);
 
   @override
   Future<void> setSingedUser(User user) async {
