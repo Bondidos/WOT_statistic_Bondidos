@@ -1,11 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:wot_statistic/common/theme/text_styles.dart';
 import 'package:wot_statistic/layers/presentation/sing_in_page/bloc/sign_in_cubit.dart';
 
 const notPicked = "Not Picked";
 
 class UserPicker extends StatelessWidget {
   const UserPicker({Key? key}) : super(key: key);
+
+  List<DropdownMenuItem<String>> _createDropDownItem(
+    BuildContext context,
+    List<String> usersInCache,
+  ) {
+    final List<DropdownMenuItem<String>> result = [];
+    for (int index = 0; index < usersInCache.length; index++) {
+      result.add(_generateDropdownItem(usersInCache[index], context));
+    }
+    return result;
+  }
+
+  DropdownMenuItem<String> _generateDropdownItem(
+      String value, BuildContext context) {
+    return DropdownMenuItem<String>(
+      value: value,
+      child: Text(
+        value,
+        maxLines: 1,
+        style: onPrimaryTitle(context),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +76,10 @@ class UserPicker extends StatelessWidget {
                         onChanged: (userNickname) {
                           cubit.setCurrentUser(userNickname!);
                         },
-                        items: cubit.createDropDownItem(context),
+                        items: _createDropDownItem(
+                          context,
+                          cubit.usersInCache,
+                        ),
                       ),
                     ],
                   ),

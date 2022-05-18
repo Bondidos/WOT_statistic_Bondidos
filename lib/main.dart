@@ -13,7 +13,9 @@ import 'layers/presentation/sing_in_page/sign_in_page.dart';
 
 const ruLng = 'ru';
 const notPicked = "Not Picked";
-const signedUserExpire = 'Singed User EXPIRE';
+const signedUserExpireKey = 'Singed User EXPIRE';
+const realmKey = 'Realm';
+const signedUserRealmKey = 'Singed User realm';
 
 void main() async {
   await di.init();
@@ -78,9 +80,7 @@ class MyApp extends StatelessWidget {
               Locale locale = Localizations.localeOf(context);
               context.read<SettingsCubit>().setLng(locale.languageCode);
             }
-            final SharedPreferences sp = di.inj<SharedPreferences>();
-            if ((sp.getInt(signedUserExpire) ?? 0) * 1000 >
-                DateTime.now().millisecondsSinceEpoch) {
+            if (_isSignedUserAbleToScipSignInScreen()) {
               return const StatisticPage();
             }
             return const SignInPage();
@@ -88,5 +88,15 @@ class MyApp extends StatelessWidget {
         );
       },
     );
+  }
+
+  bool _isSignedUserAbleToScipSignInScreen() {
+    final SharedPreferences sp = di.inj<SharedPreferences>();
+    final int tokenExpInSeconds = (sp.getInt(signedUserExpireKey) ?? 0) * 1000;
+    final String currentRealm = sp.getString(realmKey) ?? notPicked;
+    final String signedUserRealm =
+        sp.getString(signedUserRealmKey) ?? notPicked;
+    return (tokenExpInSeconds > DateTime.now().millisecondsSinceEpoch &&
+        currentRealm == signedUserRealm);
   }
 }

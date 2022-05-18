@@ -1,9 +1,7 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 import 'package:wot_statistic/generated/l10n.dart';
-import 'package:wot_statistic/common/theme/text_styles.dart';
 import 'package:wot_statistic/layers/domain/entities/user.dart';
 import 'package:wot_statistic/layers/domain/use_cases/remove_user_use_case.dart';
 import 'package:wot_statistic/layers/domain/use_cases/save_user_use_case.dart';
@@ -97,26 +95,6 @@ class SignInCubit extends Cubit<SignInState> {
   }
 
   List<String> get usersInCache => _prevUsers.map((e) => e.nickname).toList();
-
-  List<DropdownMenuItem<String>> createDropDownItem(BuildContext context) {
-    final List<DropdownMenuItem<String>> result = [];
-    for (int index = 0; index < usersInCache.length; index++) {
-      result.add(_generateDropdownItem(index, context));
-    }
-    return result;
-  }
-
-  DropdownMenuItem<String> _generateDropdownItem(
-      int index, BuildContext context) {
-    return DropdownMenuItem<String>(
-      value: usersInCache[index],
-      child: Text(
-        usersInCache[index],
-        maxLines: 1,
-        style: onPrimaryTitle(context),
-      ),
-    );
-  }
 
   void removeUser() async {
     emit(const SignInStateLoading());
