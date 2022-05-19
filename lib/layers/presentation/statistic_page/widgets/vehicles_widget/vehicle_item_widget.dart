@@ -28,7 +28,7 @@ class VehicleItemWidget extends StatelessWidget {
               heroTag: vehicle.name,
               description: vehicle.description,
               bigImage: vehicle.image,
-              color: _colorPicker(context,vehicle),
+              color: _colorPicker(context, vehicle),
             ),
           ),
         );
@@ -39,8 +39,8 @@ class VehicleItemWidget extends StatelessWidget {
           elevation: 24,
           color: _colorPicker(context, vehicle),
           child: (screenSize == ScreenSize.phone)
-            ? buildPhoneItem(width, context)
-            : buildTabletOrWebItem(width, context),
+              ? buildPhoneItem(width, context)
+              : buildTabletOrWebItem(width, context),
         ),
       ),
     );
@@ -55,7 +55,7 @@ class VehicleItemWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             buildMasteryAndBattles(),
-            buildWinRateAndName(width/2),
+            buildWinRateAndName(width / 2),
           ],
         ),
       ],
@@ -82,7 +82,7 @@ class VehicleItemWidget extends StatelessWidget {
         children: [
           Container(
             padding: const EdgeInsets.all(4),
-            width: width/6,
+            width: width / 6,
             child: Text(
               vehicle.name,
               softWrap: true,
@@ -123,7 +123,9 @@ class VehicleItemWidget extends StatelessWidget {
 
   SizedBox buildVehicleImage(double width, BuildContext context) {
     return SizedBox(
-      width: (kIsWeb) ? width/4 : width / 3,
+      width: (kIsWeb || screenSize == ScreenSize.tablet)
+          ? double.infinity
+          : width / 3,
       child: Column(
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.start,
@@ -133,9 +135,13 @@ class VehicleItemWidget extends StatelessWidget {
             children: [
               Image.network(
                 vehicle.image,
-                height: (kIsWeb) ? width/4 : width / 3,
-                width: (kIsWeb) ? width/4 : width / 3,
-                fit: BoxFit.cover,
+                loadingBuilder: (ctx,child,progress){
+                  return progress == null
+                      ? child
+                      : const CircularProgressIndicator();
+                },
+                height: (kIsWeb) ? width / 4 : width / 3,
+                fit: BoxFit.fitWidth,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -154,7 +160,8 @@ class VehicleItemWidget extends StatelessWidget {
                   ),
                   Text(
                     tier[vehicle.tier]!,
-                    style: onSurfaceSubtitle(context),
+                    style: onSurfaceSubtitle(context)
+                        .copyWith(color: Colors.black),
                   )
                 ],
               )

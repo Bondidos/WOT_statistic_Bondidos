@@ -14,12 +14,13 @@ class VehicleTtcDao extends DatabaseAccessor<Database>
   VehicleTtcDao(this.database) : super(database);
 
   Future<int> saveTTCList(List<VehiclesDataTTC> listTTC) async {
+    // todo extension
     final List<VehicleTTCTableCompanion> listTTCCompanion =
         listTTC.map((ttc) => ttc.toVehicleTTCTableCompanion()).toList();
-    return await _saveTTCList(listTTCCompanion);
+    return await _saveTTCTableCompanionList(listTTCCompanion);
   }
 
-  Future<int> _saveTTCList(
+  Future<int> _saveTTCTableCompanionList(
       List<VehicleTTCTableCompanion> listTTCCompanion) async {
     int itemsInserted = 0;
     Future.forEach<VehicleTTCTableCompanion>(listTTCCompanion, (element) {

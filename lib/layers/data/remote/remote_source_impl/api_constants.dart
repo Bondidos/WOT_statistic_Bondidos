@@ -24,9 +24,6 @@ class ApiConstants {
   static const nicknameQueryParameter = "nickname";
   static const logoutAtQueryParameter = "logout_at";
 
-  static const privateDataFields =
-      'private,global_rating,clan_id,nickname,logout_at';
-
   int get userId => userSettings.signedUser.id;
 
   String get accessToken => userSettings.signedUser.accessToken;

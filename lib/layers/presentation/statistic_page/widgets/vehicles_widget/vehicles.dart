@@ -9,6 +9,12 @@ import 'package:wot_statistic/layers/presentation/statistic_page/widgets/vehicle
 import 'package:wot_statistic/layers/presentation/statistic_page/widgets/vehicles_widget/vehicle_item_widget.dart';
 import 'package:wot_statistic/layers/presentation/sing_in_page/sign_in_page.dart';
 
+const int byWins = 1;
+const int byBattles = 2;
+const int byMastery = 3;
+const int byLvl = 4;
+const String nationByDefault = "All";
+
 class VehiclesWidget extends StatelessWidget {
   const VehiclesWidget({Key? key}) : super(key: key);
 
@@ -17,34 +23,41 @@ class VehiclesWidget extends StatelessWidget {
     final VehiclesDataCubit cubit = context.read<VehiclesDataCubit>();
     ScreenSize screenSize = getSize(context);
 
-    return Scaffold(
-      appBar: buildAppBar(context, cubit),
-      body: BlocConsumer<VehiclesDataCubit, VehiclesDataState>(
-        listener: (context, currentState) {
-          if (currentState is ErrorState) {
-            createSnackBar(context, currentState.message);
-          }
-        },
-        buildWhen: (prevState, currentState) => (prevState != currentState),
-        builder: (ctx, state) {
-          if (state is LoadedDataState) {
-            return RefreshIndicator(
+    return BlocConsumer<VehiclesDataCubit, VehiclesDataState>(
+      listener: (context, currentState) {
+        if (currentState is ErrorState) {
+          cubit.clearBufferList();
+          createSnackBar(context, currentState.message);
+        }
+      },
+      buildWhen: (prevState, currentState) => (prevState != currentState),
+      builder: (ctx, state) {
+        if (state is LoadedDataState) {
+          return Scaffold(
+            appBar: buildAppBar(context, cubit),
+            body: RefreshIndicator(
               onRefresh: () => cubit.refreshList(),
               child: Scrollbar(
                 child: (screenSize == ScreenSize.phone)
                     ? buildListView(state, screenSize)
                     : buildGridView(state, screenSize),
               ),
-            );
-          }
-          if (state is ErrorState) {
-            return refreshButton(cubit);
-          }
-          return const Center(
-            child: CircularProgressIndicator(),
+            ),
           );
-        },
-      ),
+        }
+        if (state is ErrorState) {
+          return Scaffold(
+            appBar: buildAppBar(context, cubit),
+            body: refreshButton(cubit),
+          );
+        }
+        return Scaffold(
+          appBar: buildAppBar(context, cubit),
+          body: const Center(
+            child: CircularProgressIndicator(),
+          ),
+        );
+      },
     );
   }
 
@@ -66,7 +79,10 @@ class VehiclesWidget extends StatelessWidget {
     return ListView.builder(
       itemCount: state.vehiclesData.length,
       itemBuilder: (ctx, index) {
-        return VehicleItemWidget(vehicle: state.vehiclesData[index], screenSize: screenSize,);
+        return VehicleItemWidget(
+          vehicle: state.vehiclesData[index],
+          screenSize: screenSize,
+        );
       },
     );
   }
@@ -76,19 +92,23 @@ class VehiclesWidget extends StatelessWidget {
       title: Text(S.of(context).Vehicles),
       actions: [
         PopupMenuButton(
-          icon: const Icon(Icons.sort),
-          itemBuilder: (ctx) => <PopupMenuEntry>[
-            _sortMenuItem(onTap: cubit.sortByLvl, name: S.of(context).ByLevel),
-            _sortMenuItem(
-                onTap: cubit.sortByBattles, name: S.of(context).ByBattles),
-            _sortMenuItem(
-                onTap: cubit.sortByMastery, name: S.of(context).ByMastery),
-            _sortMenuItem(onTap: cubit.sortByWins, name: S.of(context).ByWins),
-          ],
+          icon: (cubit.nationFilter == nationByDefault)
+              ? const Icon(Icons.filter_alt)
+              : Image.asset(nations[cubit.nationFilter]!),
+          itemBuilder: (ctx) => _createFilterItems(onTap: cubit.filterByNation),
         ),
         PopupMenuButton(
-          icon: const Icon(Icons.filter_alt),
-          itemBuilder: (ctx) => _createFilterItems(onTap: cubit.filterByNation),
+          icon: const Icon(Icons.sort),
+          itemBuilder: (ctx) => <PopupMenuEntry>[
+            _sortMenuItem(
+                cubit: cubit, name: S.of(context).ByLevel, order: byLvl),
+            _sortMenuItem(
+                cubit: cubit, name: S.of(context).ByBattles, order: byBattles),
+            _sortMenuItem(
+                cubit: cubit, name: S.of(context).ByMastery, order: byMastery),
+            _sortMenuItem(
+                cubit: cubit, name: S.of(context).ByWins, order: byWins),
+          ],
         ),
         IconButton(
           onPressed: () {
@@ -114,12 +134,21 @@ class VehiclesWidget extends StatelessWidget {
   }
 
   PopupMenuItem _sortMenuItem({
-    required Function onTap,
+    required VehiclesDataCubit cubit,
     required String name,
+    required int order,
   }) {
+    int currentSortOrder = cubit.sortOrderCheck;
     return PopupMenuItem(
-      onTap: () => onTap(),
-      child: Text(name),
+      onTap: () => cubit.sortBy(order),
+      child: Row(
+        children: [
+          (currentSortOrder == order)
+              ? const Icon(Icons.radio_button_on)
+              : const Icon(Icons.radio_button_off),
+          Text(name),
+        ],
+      ),
     );
   }
 
@@ -139,10 +168,11 @@ class VehiclesWidget extends StatelessWidget {
             height: 18,
           ),
           Expanded(
-              child: Text(
-            _translate(name),
-            textAlign: TextAlign.end,
-          )),
+            child: Text(
+              _translate(name),
+              textAlign: TextAlign.end,
+            ),
+          ),
         ],
       ),
     );

@@ -19,21 +19,25 @@ class VehiclesDataCubit extends Cubit<VehiclesDataState> {
     fetchVehiclesData();
   }
 
-  List<Vehicle> _vehicleList = [];
+  List<Vehicle> _fetchedVehicleList = [];
 
-  List<Vehicle> get vehicleList => _vehicleList;
-  List<Vehicle> sorted = [];
-  int _sort = byDefault;
+  List<Vehicle> get vehicleList => _fetchedVehicleList;
+  List<Vehicle> sortedAndFilteredVehicleList = [];
+  int _sortingOrder = byDefault;
   String nationFilter = nationByDefault;
+
+  int get sortOrderCheck => _sortingOrder;
+
+  void clearBufferList() => sortedAndFilteredVehicleList.clear();
 
   Future<void> fetchVehiclesData() async {
     try {
       if (state is! LoadingState) emit(const LoadingState());
-      _vehicleList = await loadVehicles.execute();
-      sorted = vehicleList;
+      _fetchedVehicleList = await loadVehicles.execute();
+      sortedAndFilteredVehicleList = vehicleList;
       _sortBy();
       _filterByNation();
-      emit(LoadedDataState(vehiclesData: sorted));
+      emit(LoadedDataState(vehiclesData: sortedAndFilteredVehicleList));
     } catch (e) {
       emit(ErrorState(message: e.toString()));
     }
@@ -41,23 +45,8 @@ class VehiclesDataCubit extends Cubit<VehiclesDataState> {
 
   Future<void> refreshList() => fetchVehiclesData();
 
-  void sortByLvl() {
-    _sort = byLvl;
-    _sortBy();
-  }
-
-  void sortByBattles() {
-    _sort = byBattles;
-    _sortBy();
-  }
-
-  void sortByWins() {
-    _sort = byWins;
-    _sortBy();
-  }
-
-  void sortByMastery() {
-    _sort = byMastery;
+  void sortBy(int sort) {
+    _sortingOrder = sort;
     _sortBy();
   }
 
@@ -69,37 +58,47 @@ class VehiclesDataCubit extends Cubit<VehiclesDataState> {
   void _sortBy() {
     if (vehicleList.isEmpty) {
       emit(ErrorState(message: S.current.NoVehiclesToShow));
+      return;
     }
     emit(const LoadingState());
-    switch (_sort) {
+    switch (_sortingOrder) {
       case byLvl:
-        sorted.sort((a, b) => b.battles.compareTo(a.battles));
-        sorted.sort((a, b) => b.tier.compareTo(a.tier));
+        sortedAndFilteredVehicleList
+            .sort((a, b) => b.battles.compareTo(a.battles));
+        sortedAndFilteredVehicleList.sort((a, b) => b.tier.compareTo(a.tier));
         break;
       case byMastery:
-        sorted.sort((a, b) => b.battles.compareTo(a.battles));
-        sorted.sort((a, b) => b.markOfMastery.compareTo(a.markOfMastery));
+        sortedAndFilteredVehicleList
+            .sort((a, b) => b.battles.compareTo(a.battles));
+        sortedAndFilteredVehicleList
+            .sort((a, b) => b.markOfMastery.compareTo(a.markOfMastery));
         break;
       case byWins:
-        sorted.sort((a, b) => _calcWinPercent(b.battles, b.wins)
-            .compareTo(_calcWinPercent(a.battles, a.wins)));
+        sortedAndFilteredVehicleList.sort((a, b) =>
+            _calcWinPercent(b.battles, b.wins)
+                .compareTo(_calcWinPercent(a.battles, a.wins)));
         break;
       case byBattles:
-        sorted.sort((a, b) => b.battles.compareTo(a.battles));
+        sortedAndFilteredVehicleList
+            .sort((a, b) => b.battles.compareTo(a.battles));
         break;
     }
-    emit(LoadedDataState(vehiclesData: sorted));
+    emit(LoadedDataState(vehiclesData: sortedAndFilteredVehicleList));
   }
 
   void _filterByNation() {
+    if (sortedAndFilteredVehicleList.isEmpty) {
+      emit(ErrorState(message: S.current.NoVehiclesToShow));
+      return;
+    }
     if (nationFilter == nationByDefault) {
-      sorted = vehicleList;
+      sortedAndFilteredVehicleList = vehicleList;
     } else {
-      sorted = vehicleList
+      sortedAndFilteredVehicleList = vehicleList
           .where((vehicle) => vehicle.nation == nationFilter.toLowerCase())
           .toList();
     }
-    emit(LoadedDataState(vehiclesData: sorted));
+    emit(LoadedDataState(vehiclesData: sortedAndFilteredVehicleList));
   }
 
   double _calcWinPercent(int battles, int wins) => 100.0 / battles * wins;

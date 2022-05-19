@@ -14,6 +14,7 @@ class ThemedButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialButton(
+      elevation: 24,
       color: Theme.of(context).colorScheme.primary,
       onPressed: () => onTap(),
       child: Text(

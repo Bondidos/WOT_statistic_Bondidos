@@ -80,7 +80,7 @@ class MyApp extends StatelessWidget {
               Locale locale = Localizations.localeOf(context);
               context.read<SettingsCubit>().setLng(locale.languageCode);
             }
-            if (_isSignedUserAbleToScipSignInScreen()) {
+            if (_isSignedUserAbleToSkipSignInScreen()) {
               return const StatisticPage();
             }
             return const SignInPage();
@@ -90,7 +90,7 @@ class MyApp extends StatelessWidget {
     );
   }
 
-  bool _isSignedUserAbleToScipSignInScreen() {
+  bool _isSignedUserAbleToSkipSignInScreen() {
     final SharedPreferences sp = di.inj<SharedPreferences>();
     final int tokenExpInSeconds = (sp.getInt(signedUserExpireKey) ?? 0) * 1000;
     final String currentRealm = sp.getString(realmKey) ?? notPicked;

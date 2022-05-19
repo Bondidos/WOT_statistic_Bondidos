@@ -35,7 +35,10 @@ class AchieveItemWidget extends StatelessWidget {
                 padding: const EdgeInsets.only(left: 8.0, top: 8.0),
                 child: Text(
                   card.count.toString(),
-                  style: onCard(context).copyWith(fontSize: 8),
+                  style: onCard(context).copyWith(
+                    fontSize: 8,
+                    color: Colors.black,
+                  ),
                 ),
               ),
             ),
@@ -51,6 +54,11 @@ class AchieveItemWidget extends StatelessWidget {
                       padding: const EdgeInsets.all(8.0),
                       child: Image.network(
                         card.imageBig,
+                        loadingBuilder: (ctx,child,progress){
+                          return progress == null
+                              ? child
+                              : const CircularProgressIndicator();
+                        },
                         width: double.infinity,
                         fit: BoxFit.fitHeight,
                       ),
@@ -60,7 +68,10 @@ class AchieveItemWidget extends StatelessWidget {
                     flex: 1,
                     child: Text(
                       card.name,
-                      style: onCard(context).copyWith(fontSize: 8),
+                      style: onCard(context).copyWith(
+                        fontSize: 8,
+                        color: Colors.black,
+                      ),
                       maxLines: 2,
                       textAlign: TextAlign.center,
                     ),
