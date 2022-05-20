@@ -14,22 +14,24 @@ class RegionPicker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final SignInCubit cubit = context.read<SignInCubit>();
-
     return BlocBuilder<SignInCubit, SignInState>(
       buildWhen: (prevState, currentState) =>
           (currentState is SignInStateLoaded),
       builder: (ctx, state) {
         return Row(
           children: [
-            Text(
-              cubit.currentRealm,
-              style: onSurfaceSubtitle(context),
-            ),
             PopupMenuButton(
               color: Theme.of(context).colorScheme.secondary,
-              icon: Icon(
-                Icons.language,
-                color: Theme.of(context).colorScheme.onSurface,
+              child: TextButton.icon(
+                onPressed: null,
+                label: Text(
+                  cubit.currentRealm,
+                  style: onSurfaceSubtitle(context),
+                ),
+                icon: Icon(
+                  Icons.language,
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
               ),
               itemBuilder: (ctx) {
                 return <PopupMenuEntry>[

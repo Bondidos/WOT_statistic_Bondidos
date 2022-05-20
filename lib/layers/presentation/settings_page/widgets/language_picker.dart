@@ -25,9 +25,10 @@ class _LanguagePickerState extends State<LanguagePicker> {
         ? MenuOption.ru
         : MenuOption.eng;
 
-    return Row(
-      children: [
-        (picked == MenuOption.eng)
+    return PopupMenuButton(
+      child: TextButton.icon(
+        onPressed: null,
+        label: (picked == MenuOption.eng)
             ? Text(
                 S.of(context).English,
                 style: onSecondarySubtitle(context),
@@ -36,38 +37,36 @@ class _LanguagePickerState extends State<LanguagePicker> {
                 S.of(context).Russian,
                 style: onSecondarySubtitle(context),
               ),
-        PopupMenuButton(
-          icon: const Icon(Icons.arrow_drop_down_sharp),
-          itemBuilder: (ctx) {
-            return <PopupMenuEntry<MenuOption>>[
-              PopupMenuItem(
-                onTap: () {
-                  setState(() {
-                    picked = MenuOption.eng;
-                  });
-                  settingsCubit.setLng(euLng);
-                },
-                child: Text(
-                  S.of(context).English,
-                  style: onSecondarySubtitle(context),
-                ),
-              ),
-              PopupMenuItem(
-                onTap: () {
-                  setState(() {
-                    picked = MenuOption.ru;
-                  });
-                  settingsCubit.setLng(ruLng);
-                },
-                child: Text(
-                  S.of(context).Russian,
-                  style: onSecondarySubtitle(context),
-                ),
-              ),
-            ];
-          },
-        ),
-      ],
+        icon: const Icon(Icons.arrow_drop_down_sharp),
+      ),
+      itemBuilder: (ctx) {
+        return <PopupMenuEntry<MenuOption>>[
+          PopupMenuItem(
+            onTap: () {
+              setState(() {
+                picked = MenuOption.eng;
+              });
+              settingsCubit.setLng(euLng);
+            },
+            child: Text(
+              S.of(context).English,
+              style: onSecondarySubtitle(context),
+            ),
+          ),
+          PopupMenuItem(
+            onTap: () {
+              setState(() {
+                picked = MenuOption.ru;
+              });
+              settingsCubit.setLng(ruLng);
+            },
+            child: Text(
+              S.of(context).Russian,
+              style: onSecondarySubtitle(context),
+            ),
+          ),
+        ];
+      },
     );
   }
 }

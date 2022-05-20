@@ -3,7 +3,7 @@ abstract class SettingsDataSource {
 
   void setLanguage(String language);
 
-  Stream<String> subscribeLng();
+  Stream<String> subscribeLanguage();
 
   Stream<String> subscribeTheme();
 }

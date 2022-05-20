@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wot_statistic/common/screen_size.dart';
 
 TextStyle onPrimarySubtitle(BuildContext context) {
   return TextStyle(
@@ -42,8 +43,17 @@ TextStyle onPrimaryTitle(BuildContext context) {
 
 TextStyle onCard(BuildContext context) {
   return TextStyle(
-    fontSize: 16,
+    fontSize: getActualFontSize(context),//16,
     fontStyle: FontStyle.normal,
-    color: Theme.of(context).colorScheme.onPrimary,
+    color: Colors.black,
   );
+}
+
+double getActualFontSize(BuildContext context){
+  ScreenSize screenSize = getSize(context);
+  switch(screenSize){
+  case ScreenSize.phone: return 12;
+    case ScreenSize.tablet: return 24;
+    case ScreenSize.desktop: return 28;
+  }
 }

@@ -1,6 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.bondidos.wot_statistic">
+
     <uses-permission android:name="android.permission.INTERNET"/>
+
    <application
         android:label="wot_statistic"
         android:name="${applicationName}"

@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:wot_statistic/common/screen_size.dart';
+import 'package:wot_statistic/common/theme/text_styles.dart';
 
 class DetailsWidget extends StatelessWidget {
   const DetailsWidget({
@@ -19,12 +20,12 @@ class DetailsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     ScreenSize screenSize = getSize(context);
-    return Hero(
-      tag: heroTag,
-      child: Center(
-        child: SizedBox(
-          height: getActualSize(size, screenSize),
-          width: getActualSize(size, screenSize),
+    return Center(
+      child: SizedBox(
+        height: getActualSize(size, screenSize),
+        width: getActualSize(size, screenSize),
+        child: Hero(
+          tag: heroTag,
           child: Material(
             elevation: 24,
             shape: RoundedRectangleBorder(
@@ -50,6 +51,7 @@ class DetailsWidget extends StatelessWidget {
                       child: Text(
                         description,
                         textAlign: TextAlign.center,
+                        style: onCard(context),
                       ),
                     ),
                   ),

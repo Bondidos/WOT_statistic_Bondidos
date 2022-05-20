@@ -35,10 +35,7 @@ class AchieveItemWidget extends StatelessWidget {
                 padding: const EdgeInsets.only(left: 8.0, top: 8.0),
                 child: Text(
                   card.count.toString(),
-                  style: onCard(context).copyWith(
-                    fontSize: 8,
-                    color: Colors.black,
-                  ),
+                  style: onCard(context),
                 ),
               ),
             ),
@@ -68,10 +65,7 @@ class AchieveItemWidget extends StatelessWidget {
                     flex: 1,
                     child: Text(
                       card.name,
-                      style: onCard(context).copyWith(
-                        fontSize: 8,
-                        color: Colors.black,
-                      ),
+                      style: onCard(context),
                       maxLines: 2,
                       textAlign: TextAlign.center,
                     ),

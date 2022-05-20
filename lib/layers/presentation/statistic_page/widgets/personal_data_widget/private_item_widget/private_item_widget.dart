@@ -29,14 +29,14 @@ class PrivateItemWidget extends StatelessWidget {
           Flexible(
             child: Text(
               card.title,
-              style: onCard(context),
+              style: onCard(context).copyWith(color: Colors.black),
               textAlign: TextAlign.center,
             ),
           ),
           Flexible(
             child: Text(
               card.value,
-              style: onCard(context),
+              style: onCard(context).copyWith(color: Colors.black),
               textAlign: TextAlign.center,
             ),
           ),

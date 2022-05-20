@@ -18,7 +18,7 @@ class ThemeSettingsImpl implements ThemeSettings {
 
   @override
   void setTheme(String theme) async {
-    final bool result = await sharedPreferences.setString(theme, theme);
+    final bool result = await sharedPreferences.setString(themeKey, theme);
     if (!result) return;
     themeStream.add(theme);
   }

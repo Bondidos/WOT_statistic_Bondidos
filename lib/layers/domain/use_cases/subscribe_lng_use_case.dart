@@ -5,5 +5,5 @@ class SubscribeLng {
 
   SubscribeLng({required this.repository});
 
-  Stream<String> execute() => repository.subscribeLng;
+  Stream<String> execute() => repository.subscribeLanguage;
 }

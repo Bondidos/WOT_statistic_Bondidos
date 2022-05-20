@@ -87,7 +87,7 @@ class VehiclesDataCubit extends Cubit<VehiclesDataState> {
   }
 
   void _filterByNation() {
-    if (sortedAndFilteredVehicleList.isEmpty) {
+    if (_fetchedVehicleList.isEmpty) {
       emit(ErrorState(message: S.current.NoVehiclesToShow));
       return;
     }

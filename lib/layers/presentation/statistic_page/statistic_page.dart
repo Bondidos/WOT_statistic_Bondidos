@@ -25,8 +25,8 @@ class StatisticPage extends StatelessWidget {
         BlocProvider<VehiclesDataCubit>(
             create: (context) => di.inj<VehiclesDataCubit>()),
         BlocProvider<AchievesDataCubit>(
-            create: (context) => di.inj<AchievesDataCubit>()
-              ..init(isPrivateDataAllow)),
+            create: (context) =>
+                di.inj<AchievesDataCubit>()..init(isPrivateDataAllow)),
         BlocProvider<PersonalDataCubit>(
             create: (context) => di.inj<PersonalDataCubit>()),
       ],
@@ -35,7 +35,8 @@ class StatisticPage extends StatelessWidget {
           StatisticCubit cubit = context.read<StatisticCubit>();
           return Scaffold(
             bottomNavigationBar: BottomNavigationBar(
-              items: _buildPagesAccordingWithPrivate(isPrivateDataAllow),
+              items:
+                  _buildPagesAccordingWithPrivate(isPrivateDataAllow),
               currentIndex: index,
               onTap: (pageIndex) => cubit.navigateTo(pageIndex),
             ),
@@ -55,7 +56,8 @@ class StatisticPage extends StatelessWidget {
       isPrivateDataAllow ? index : ++index;
 
   List<BottomNavigationBarItem> _buildPagesAccordingWithPrivate(
-      bool privateData) {
+    bool privateData,
+  ) {
     return privateData
         ? [
             BottomNavigationBarItem(
@@ -68,11 +70,13 @@ class StatisticPage extends StatelessWidget {
             ),
             BottomNavigationBarItem(
               label: S.current.Vehicles,
-              icon: const ImageIcon(ResizeImage(
-                AssetImage(tankIcon),
-                height: 36,
-                width: 36,
-              )),
+              icon: const ImageIcon(
+                ResizeImage(
+                  AssetImage(tankIcon),
+                  height: 36,
+                  width: 36,
+                ),
+              ),
             ),
           ]
         : [
@@ -82,11 +86,13 @@ class StatisticPage extends StatelessWidget {
             ),
             BottomNavigationBarItem(
               label: S.current.Vehicles,
-              icon: const ImageIcon(ResizeImage(
-                AssetImage(tankIcon),
-                height: 36,
-                width: 36,
-              )),
+              icon: const ImageIcon(
+                ResizeImage(
+                  AssetImage(tankIcon),
+                  height: 36,
+                  width: 36,
+                ),
+              ),
             ),
           ];
   }

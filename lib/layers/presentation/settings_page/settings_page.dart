@@ -64,7 +64,7 @@ class _SettingsPageState extends State<SettingsPage> {
           Flexible(
             flex: 3,
             child: Padding(
-              padding: const EdgeInsets.only(left: 10.0),
+              padding: const EdgeInsets.only(left: 20.0),
               child: Text(
                 S.of(context).Language,
                 style: onSecondarySubtitle(context),
@@ -74,7 +74,7 @@ class _SettingsPageState extends State<SettingsPage> {
           const Flexible(
             flex: 2,
             child: Padding(
-              padding: EdgeInsets.only(right: 8.0),
+              padding: EdgeInsets.only(right: 20.0),
               child: LanguagePicker(),
             ),
           ),
@@ -90,7 +90,7 @@ class _SettingsPageState extends State<SettingsPage> {
         Flexible(
             flex: 5,
             child: Padding(
-              padding: const EdgeInsets.only(left: 10.0),
+              padding: const EdgeInsets.only(left: 20.0),
               child: Text(
                 S.of(context).EnableDarkTheme,
                 style: onSecondarySubtitle(context),
@@ -99,7 +99,7 @@ class _SettingsPageState extends State<SettingsPage> {
         Flexible(
           flex: 2,
           child: Padding(
-            padding: const EdgeInsets.only(right: 10.0),
+            padding: const EdgeInsets.only(right: 20.0),
             child: Switch(
               value: _switchState,
               onChanged: (value) {

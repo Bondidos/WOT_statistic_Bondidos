@@ -5,5 +5,5 @@ class SetLngUseCase {
 
   SetLngUseCase({required this.repository});
 
-  void execute(String lng) => repository.setLng(lng);
+  void execute(String lng) => repository.setLanguage(lng);
 }

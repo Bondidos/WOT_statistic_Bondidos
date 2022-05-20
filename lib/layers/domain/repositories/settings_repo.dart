@@ -2,9 +2,9 @@ abstract class SettingsRepo {
 
   void setTheme(String theme);
 
-  void setLng(String lng);
+  void setLanguage(String language);
 
   Stream<String> get subscribeTheme;
 
-  Stream<String> get subscribeLng;
+  Stream<String> get subscribeLanguage;
 }

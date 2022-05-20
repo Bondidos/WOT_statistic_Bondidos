@@ -54,8 +54,8 @@ class VehicleItemWidget extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            buildMasteryAndBattles(),
-            buildWinRateAndName(width / 2),
+            buildMasteryAndBattles(context),
+            buildWinRateAndName(width / 2, context),
           ],
         ),
       ],
@@ -67,54 +67,65 @@ class VehicleItemWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         buildVehicleImage(width, context),
-        buildMasteryAndBattles(),
-        buildWinRateAndName(width),
+        buildMasteryAndBattles(context),
+        buildWinRateAndName(width,context),
       ],
     );
   }
 
-  Expanded buildWinRateAndName(double width) {
+  Expanded buildWinRateAndName(double width,BuildContext context) {
     return Expanded(
       child: Row(
-        mainAxisSize: MainAxisSize.max,
         crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          Container(
-            padding: const EdgeInsets.all(4),
-            width: width / 6,
-            child: Text(
-              vehicle.name,
-              softWrap: true,
-              maxLines: 3,
-              overflow: TextOverflow.ellipsis,
-              textAlign: TextAlign.center,
+          Flexible(
+            child: Container(
+              padding: const EdgeInsets.all(4),
+              width: width / 6,
+              child: Text(
+                vehicle.name,
+                softWrap: true,
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.center,
+                style: onCard(context),
+              ),
             ),
           ),
-          Text(
-            _calculateWins(vehicle.battles, vehicle.wins),
-            softWrap: true,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
+          Flexible(
+            child: Text(
+              _calculateWins(vehicle.battles, vehicle.wins),
+              softWrap: true,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: onCard(context),
+            ),
           ),
         ],
       ),
     );
   }
 
-  Expanded buildMasteryAndBattles() {
-    return Expanded(
+  Flexible buildMasteryAndBattles(BuildContext context) {
+    return Flexible(
       child: Row(
-        mainAxisSize: MainAxisSize.max,
+        mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           vehicle.markOfMastery != 0
               ? Image.asset(markOfMastery[vehicle.markOfMastery]!)
               : Container(),
-          Text(
-            '${S.current.Battles}\n${(vehicle.battles.toString())}',
-            textAlign: TextAlign.center,
+           Flexible(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 8.0),
+                child: Text(
+                '${S.current.Battles}\n${(vehicle.battles.toString())}',
+                textAlign: TextAlign.center,
+                style: onCard(context),
+              ),
+            ),
           ),
         ],
       ),
@@ -160,8 +171,7 @@ class VehicleItemWidget extends StatelessWidget {
                   ),
                   Text(
                     tier[vehicle.tier]!,
-                    style: onSurfaceSubtitle(context)
-                        .copyWith(color: Colors.black),
+                    style: onCard(context),
                   )
                 ],
               )

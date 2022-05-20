@@ -9,13 +9,13 @@ class SettingsRepoImpl implements SettingsRepo{
   });
 
   @override
-  void setLng(String language) => settingsSource.setLanguage(language);
+  void setLanguage(String language) => settingsSource.setLanguage(language);
 
   @override
   void setTheme(String theme) => settingsSource.setTheme(theme);
 
   @override
-  Stream<String> get subscribeLng => settingsSource.subscribeLng();
+  Stream<String> get subscribeLanguage => settingsSource.subscribeLanguage();
 
   @override
   Stream<String> get subscribeTheme => settingsSource.subscribeTheme();

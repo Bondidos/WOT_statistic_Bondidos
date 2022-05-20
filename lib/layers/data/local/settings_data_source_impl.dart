@@ -18,7 +18,7 @@ class SettingsDataSourceImpl implements SettingsDataSource {
   void setTheme(String theme) => themeSettings.setTheme(theme);
 
   @override
-  Stream<String> subscribeLng() => languageSettings.subscribeAppLanguage();
+  Stream<String> subscribeLanguage() => languageSettings.subscribeAppLanguage();
 
   @override
   Stream<String> subscribeTheme() => themeSettings.subscribeTheme();
