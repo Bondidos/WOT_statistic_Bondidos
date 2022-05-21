@@ -1,9 +1,9 @@
 import 'package:wot_statistic/layers/domain/repositories/settings_repo.dart';
 
-class SubscribeLng {
+class SubscribeLanguageUseCase {
   final SettingsRepo repository;
 
-  SubscribeLng({required this.repository});
+  SubscribeLanguageUseCase({required this.repository});
 
   Stream<String> execute() => repository.subscribeLanguage;
 }

@@ -3,17 +3,15 @@ import 'package:equatable/equatable.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:wot_statistic/layers/domain/use_cases/set_lng_use_case.dart';
+import 'package:wot_statistic/layers/domain/use_cases/set_language_use_case.dart';
 import 'package:wot_statistic/layers/domain/use_cases/set_theme_use_case.dart';
-import 'package:wot_statistic/layers/domain/use_cases/subscribe_lng_use_case.dart';
+import 'package:wot_statistic/layers/domain/use_cases/subscribe_language_use_case.dart';
 import 'package:wot_statistic/layers/domain/use_cases/subscribe_theme_use_case.dart';
+import 'package:wot_statistic/common/constants.dart';
 
 part 'settings_state.dart';
 
-const ruLng = 'ru';
-const engLng = 'en';
 const init = 'init';
-const notPicked = "Not Picked";
 const getTheme = "getTheme";
 const channel = "com.bondidos.wot_statistic/theme";
 const lightTheme = "Light";
@@ -22,16 +20,16 @@ const darkTheme = "Dark";
 class SettingsCubit extends Cubit<SettingsState> {
   final SubscribeThemeUseCase subscribeTheme;
   final SetThemeUseCase setTheme;
-  final SubscribeLng subscribeLng;
-  final SetLngUseCase setLngUseCase;
+  final SubscribeLanguageUseCase subscribeLanguage;
+  final SetLanguageUseCase setLanguageUseCase;
   StreamSubscription? _subscriptionTheme;
-  StreamSubscription? _subscriptionLng;
+  StreamSubscription? _subscriptionLanguage;
 
   SettingsCubit({
     required this.subscribeTheme,
     required this.setTheme,
-    required this.setLngUseCase,
-    required this.subscribeLng,
+    required this.setLanguageUseCase,
+    required this.subscribeLanguage,
   }) : super(const SettingsState(
           languageStatus: init,
           themeStatus: init,
@@ -51,7 +49,7 @@ class SettingsCubit extends Cubit<SettingsState> {
       emit(state.copyWith(
           themeStatus: theme, status: SettingsStatus.themeStatusChanged));
     });
-    _subscriptionLng = subscribeLng.execute().listen((lng) {
+    _subscriptionLanguage = subscribeLanguage.execute().listen((lng) {
       emit(state.copyWith(
           languageStatus: lng, status: SettingsStatus.languageStatusChanged));
     });
@@ -62,11 +60,11 @@ class SettingsCubit extends Cubit<SettingsState> {
     setTheme.execute(platformTheme);
   }
 
-  void setLng(String locale) {
-    if (locale == ruLng) {
-      setLngUseCase.execute(ruLng);
+  void setLanguage(String locale) {
+    if (locale == ruLanguage) {
+      setLanguageUseCase.execute(ruLanguage);
     } else {
-      setLngUseCase.execute(engLng);
+      setLanguageUseCase.execute(engLanguage);
     }
   }
 
@@ -95,7 +93,7 @@ class SettingsCubit extends Cubit<SettingsState> {
   @override
   Future<void> close() {
     _subscriptionTheme?.cancel();
-    _subscriptionLng?.cancel();
+    _subscriptionLanguage?.cancel();
     return super.close();
   }
 }

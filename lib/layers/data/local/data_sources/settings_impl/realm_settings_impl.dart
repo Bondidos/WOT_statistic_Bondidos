@@ -2,11 +2,9 @@ import 'package:dio/dio.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wot_statistic/layers/data/sources/settings/realm_settings.dart';
+import 'package:wot_statistic/common/constants.dart';
 
-const notPicked = "Not Picked";
 const realmKey = 'Realm';
-const eu = "EU";
-const cis = "CIS";
 const baseUrlEu = 'https://api.worldoftanks.eu';
 const baseUrlCis = 'https://api.worldoftanks.ru';
 

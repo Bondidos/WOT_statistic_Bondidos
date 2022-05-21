@@ -13,5 +13,5 @@ abstract class VehiclesLocalDataSource {
 
   void setVehiclesTtcCount(int ttcCount);
 
-  void setVehiclesCurrentLng(String language);
+  void setVehiclesCurrentLanguage(String language);
 }

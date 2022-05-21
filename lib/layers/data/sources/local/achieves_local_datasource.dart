@@ -10,7 +10,7 @@ abstract class AchievesLocalDataSource {
 
   void setAchievesCount(int achievesCount);
 
-  void setAchievesCurrentLng(String lng);
+  void setAchievesCurrentLanguage(String language);
 
   Future<List<AchievementDataApi>> fetchAchievementsById(
       List<String> achievementId, String filter);

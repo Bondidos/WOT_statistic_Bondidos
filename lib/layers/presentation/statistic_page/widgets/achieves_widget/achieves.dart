@@ -6,8 +6,7 @@ import 'package:wot_statistic/generated/l10n.dart';
 import 'package:wot_statistic/layers/presentation/common_widget/snackbar_widget.dart';
 import 'package:wot_statistic/layers/presentation/sing_in_page/sign_in_page.dart';
 import 'package:wot_statistic/layers/presentation/statistic_page/widgets/achieves_widget/bloc/achieves_data_cubit.dart';
-import 'package:wot_statistic/common/theme/text_styles.dart';
-import 'package:wot_statistic/layers/presentation/statistic_page/widgets/comon_appbar/sliver_appBar.dart';
+import 'package:wot_statistic/layers/presentation/statistic_page/widgets/comon_appbar/sliver_app_bar.dart';
 import 'bloc/achieves_state.dart';
 
 class AchievesWidget extends StatelessWidget {
@@ -64,7 +63,9 @@ class AchievesWidget extends StatelessWidget {
   }
 
   CustomScrollView buildForUserNoPrivate(
-      BuildContext context, LoadedDataState state) {
+    BuildContext context,
+    LoadedDataState state,
+  ) {
     return CustomScrollView(
       slivers: [
         UserInfoAppBar(
@@ -87,7 +88,7 @@ class AchievesWidget extends StatelessWidget {
 
   AppBar buildAppBar(BuildContext context) {
     return AppBar(
-      title: Text(S.of(context).Achieves, style: appBarTitle(context)),
+      title: Text(S.of(context).Achieves),
       actions: [
         IconButton(
           onPressed: () {

@@ -3,13 +3,13 @@ import 'package:logger/logger.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:wot_statistic/layers/domain/entities/user_no_private.dart';
 import 'package:wot_statistic/layers/domain/use_cases/search_user_use_case.dart';
-import 'package:wot_statistic/layers/domain/use_cases/view_found_user.dart';
+import 'package:wot_statistic/layers/domain/use_cases/view_found_user_use_case.dart';
 import 'package:wot_statistic/layers/presentation/search_user/bloc/search_user_state.dart';
 
 class SearchUserCubit extends Cubit<SearchUserState> {
   final PublishSubject<String> searchStream = PublishSubject<String>();
   final SearchUserUseCase searchUser;
-  final ViewFoundUser viewFoundUser;
+  final ViewFoundUserUseCase viewFoundUser;
 
   SearchUserCubit({
     required this.searchUser,

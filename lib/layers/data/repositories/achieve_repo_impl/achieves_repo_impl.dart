@@ -95,7 +95,7 @@ class AchievesRepoImpl implements AchievesRepo {
     }
     if (databaseAchievesCount == achievementsDataBase.meta.count &&
         currentLanguage == databaseLanguage) return;
-    achievesLocalDataSource.setAchievesCurrentLng(currentLanguage);
+    achievesLocalDataSource.setAchievesCurrentLanguage(currentLanguage);
     await _createOrSyncAchievesDb(achievementsDataBase);
   }
 

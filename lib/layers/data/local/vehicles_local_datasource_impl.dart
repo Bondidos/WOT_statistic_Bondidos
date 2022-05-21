@@ -20,7 +20,7 @@ class VehiclesLocalDataSourceImpl implements VehiclesLocalDataSource {
       languageSettings.databaseCurrentLanguage;
 
   @override
-  void setVehiclesCurrentLng(String language) =>
+  void setVehiclesCurrentLanguage(String language) =>
       languageSettings.setDatabaseCurrentLanguage(language);
 
   @override

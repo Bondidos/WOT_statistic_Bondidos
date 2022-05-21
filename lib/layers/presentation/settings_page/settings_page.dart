@@ -58,27 +58,28 @@ class _SettingsPageState extends State<SettingsPage> {
 
   Row _langSettings(BuildContext context) {
     return Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Flexible(
-            flex: 3,
-            child: Padding(
-              padding: const EdgeInsets.only(left: 20.0),
-              child: Text(
-                S.of(context).Language,
-                style: onSecondarySubtitle(context),
-              ),
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Flexible(
+          flex: 3,
+          child: Padding(
+            padding: const EdgeInsets.only(left: 20.0),
+            child: Text(
+              S.of(context).Language,
+              style: onSecondarySubtitle(context),
             ),
           ),
-          const Flexible(
-            flex: 2,
-            child: Padding(
-              padding: EdgeInsets.only(right: 20.0),
-              child: LanguagePicker(),
-            ),
+        ),
+        const Flexible(
+          flex: 2,
+          child: Padding(
+            padding: EdgeInsets.only(right: 20.0),
+            child: LanguagePicker(),
           ),
-        ]);
+        ),
+      ],
+    );
   }
 
   Row _themeSettings(BuildContext context, bool _switchState,
@@ -88,14 +89,15 @@ class _SettingsPageState extends State<SettingsPage> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Flexible(
-            flex: 5,
-            child: Padding(
-              padding: const EdgeInsets.only(left: 20.0),
-              child: Text(
-                S.of(context).EnableDarkTheme,
-                style: onSecondarySubtitle(context),
-              ),
-            )),
+          flex: 5,
+          child: Padding(
+            padding: const EdgeInsets.only(left: 20.0),
+            child: Text(
+              S.of(context).EnableDarkTheme,
+              style: onSecondarySubtitle(context),
+            ),
+          ),
+        ),
         Flexible(
           flex: 2,
           child: Padding(

@@ -3,11 +3,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:wot_statistic/layers/domain/entities/user_no_private_info.dart';
-import 'package:wot_statistic/layers/domain/use_cases/load_user_no_private.dart';
+import 'package:wot_statistic/layers/domain/use_cases/load_user_no_private_use_case.dart';
 import 'package:wot_statistic/layers/presentation/statistic_page/widgets/achieves_widget/bloc/achieves_state.dart';
 
 import 'package:wot_statistic/layers/domain/entities/achieves.dart';
-import 'package:wot_statistic/layers/domain/use_cases/load_achieves_data.dart';
+import 'package:wot_statistic/layers/domain/use_cases/load_achieves_data_use_case.dart';
 import 'package:wot_statistic/layers/presentation/statistic_page/widgets/achieves_widget/widgets/achieve_item_widget.dart';
 
 const Map<int, String> achievesBySection = {
@@ -20,8 +20,8 @@ const Map<int, String> achievesBySection = {
 };
 
 class AchievesDataCubit extends Cubit<AchievesState> {
-  final LoadAchievesData loadAchieves;
-  final LoadUserNoPrivateInfo loadUserNoPrivateInfo;
+  final LoadAchievesDataUseCase loadAchieves;
+  final LoadUserNoPrivateInfoUseCase loadUserNoPrivateInfo;
 
   AchievesDataCubit({
     required this.loadAchieves,

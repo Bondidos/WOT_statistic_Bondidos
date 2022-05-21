@@ -43,7 +43,7 @@ TextStyle onPrimaryTitle(BuildContext context) {
 
 TextStyle onCard(BuildContext context) {
   return TextStyle(
-    fontSize: getActualFontSize(context),//16,
+    fontSize: getActualFontSize(context),
     fontStyle: FontStyle.normal,
     color: Colors.black,
   );

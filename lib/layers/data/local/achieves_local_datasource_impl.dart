@@ -35,7 +35,7 @@ class AchievesLocalDataSourceImpl implements AchievesLocalDataSource {
   String get databaseCurrentLanguage => languageSettings.databaseCurrentLanguage;
 
   @override
-  void setAchievesCurrentLng(String lng) =>
+  void setAchievesCurrentLanguage(String lng) =>
       languageSettings.setDatabaseCurrentLanguage(lng);
 
   @override

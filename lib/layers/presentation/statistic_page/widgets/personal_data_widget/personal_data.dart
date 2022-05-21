@@ -4,13 +4,10 @@ import 'package:wot_statistic/generated/l10n.dart';
 import 'package:wot_statistic/layers/domain/entities/personal_data.dart';
 import 'package:wot_statistic/layers/domain/entities/personal_data_card.dart';
 import 'package:wot_statistic/layers/presentation/common_widget/snackbar_widget.dart';
-import 'package:wot_statistic/layers/presentation/statistic_page/widgets/comon_appbar/sliver_appBar.dart';
+import 'package:wot_statistic/layers/presentation/statistic_page/widgets/comon_appbar/sliver_app_bar.dart';
 import 'package:wot_statistic/layers/presentation/statistic_page/widgets/personal_data_widget/bloc/personal_data_cubit.dart';
 import 'package:wot_statistic/layers/presentation/statistic_page/widgets/personal_data_widget/private_item_widget/private_item_widget.dart';
-import 'package:wot_statistic/common/theme/text_styles.dart';
 import 'package:wot_statistic/layers/presentation/sing_in_page/sign_in_page.dart';
-
-const globalRatingLogo = "assets/images/rating_img.png";
 
 class PersonalDataWidget extends StatelessWidget {
   const PersonalDataWidget({Key? key}) : super(key: key);
@@ -56,7 +53,7 @@ class PersonalDataWidget extends StatelessWidget {
 
   AppBar buildAppBar(BuildContext context) {
     return AppBar(
-      title: Text(S.of(context).Private, style: appBarTitle(context)),
+      title: Text(S.of(context).Private),
       actions: [
         IconButton(
           onPressed: () {

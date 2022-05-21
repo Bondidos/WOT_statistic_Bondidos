@@ -63,11 +63,14 @@ class AchieveItemWidget extends StatelessWidget {
                   ),
                   Flexible(
                     flex: 1,
-                    child: Text(
-                      card.name,
-                      style: onCard(context),
-                      maxLines: 2,
-                      textAlign: TextAlign.center,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left:8,right: 8),
+                      child: Text(
+                        card.name,
+                        style: onCard(context),
+                        maxLines: 2,
+                        textAlign: TextAlign.center,
+                      ),
                     ),
                   ),
                 ],

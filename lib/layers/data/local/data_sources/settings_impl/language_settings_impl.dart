@@ -1,10 +1,10 @@
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wot_statistic/layers/data/sources/settings/language_settings.dart';
+import 'package:wot_statistic/common/constants.dart';
 
 const databaseLanguageKey = 'Database Language';
 const appLanguageKey = 'Language';
-const notPicked = "Not Picked";
 
 class LanguageSettingsImpl implements LanguageSettings {
   final SharedPreferences sharedPreferences;
@@ -13,9 +13,9 @@ class LanguageSettingsImpl implements LanguageSettings {
     required this.sharedPreferences,
   });
 
-  BehaviorSubject<String> lngStream = BehaviorSubject.seeded(notPicked);
+  BehaviorSubject<String> languageStream = BehaviorSubject.seeded(notPicked);
 
-  String get _readLng =>
+  String get _readLanguage =>
       sharedPreferences.getString(appLanguageKey) ?? notPicked;
 
   @override
@@ -23,7 +23,7 @@ class LanguageSettingsImpl implements LanguageSettings {
     final bool result =
         await sharedPreferences.setString(appLanguageKey, language);
     if (!result) return;
-    lngStream.add(language);
+    languageStream.add(language);
   }
 
   @override
@@ -39,5 +39,5 @@ class LanguageSettingsImpl implements LanguageSettings {
       sharedPreferences.setString(databaseLanguageKey, language);
 
   @override
-  Stream<String> subscribeAppLanguage() => lngStream..add(_readLng);
+  Stream<String> subscribeAppLanguage() => languageStream..add(_readLanguage);
 }

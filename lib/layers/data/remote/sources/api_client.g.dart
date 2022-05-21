@@ -16,7 +16,7 @@ class _ApiClient implements ApiClient {
   String? baseUrl;
 
   @override
-  Future<UserPersonalDataApi> fetchPersonalData(query) async {
+  Future<UserPersonalDataApi> fetchAccountInfo(query) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     queryParameters.addAll(query);
@@ -29,23 +29,6 @@ class _ApiClient implements ApiClient {
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = UserPersonalDataApi.fromJson(_result.data!);
-    return value;
-  }
-
-  @override
-  Future<UserNoPrivateApi> fetchUserNoPrivateData(query) async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    queryParameters.addAll(query);
-    final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<UserNoPrivateApi>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '/wot/account/info/',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = UserNoPrivateApi.fromJson(_result.data!);
     return value;
   }
 

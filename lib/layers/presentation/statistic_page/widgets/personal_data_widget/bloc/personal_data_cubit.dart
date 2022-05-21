@@ -1,12 +1,12 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:wot_statistic/layers/domain/entities/personal_data.dart';
-import 'package:wot_statistic/layers/domain/use_cases/load_personal_data.dart';
+import 'package:wot_statistic/layers/domain/use_cases/load_personal_data_use_case.dart';
 
 part 'personal_data_state.dart';
 
 class PersonalDataCubit extends Cubit<PersonalDataState> {
-  final LoadPersonalData loadData;
+  final LoadPersonalDataUseCase loadData;
 
   PersonalDataCubit({required this.loadData}) : super(const LoadingState()) {
     _fetchPersonalData();

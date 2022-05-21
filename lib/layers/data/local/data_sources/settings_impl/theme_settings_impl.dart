@@ -1,9 +1,9 @@
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:wot_statistic/common/constants.dart';
 import 'package:wot_statistic/layers/data/sources/settings/theme_settings.dart';
 
 const themeKey = 'ThemeKey';
-const notPicked = "Not Picked";
 
 class ThemeSettingsImpl implements ThemeSettings {
   final SharedPreferences sharedPreferences;

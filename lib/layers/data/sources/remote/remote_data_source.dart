@@ -2,7 +2,6 @@ import 'package:wot_statistic/layers/data/models/remote/clan_info_data/clan_info
 import 'package:wot_statistic/layers/data/models/remote/personal_data_api/user_personal_data_api.dart';
 import 'package:wot_statistic/layers/data/models/remote/search_user/search_user_data_api.dart';
 import 'package:wot_statistic/layers/data/models/remote/token_extension/token_extension_response.dart';
-import 'package:wot_statistic/layers/data/models/remote/user_no_private/user_no_private_api.dart';
 import 'package:wot_statistic/layers/data/models/remote/user_vehicles/user_vehicles_data_api.dart';
 
 import 'package:wot_statistic/layers/data/models/remote/achievements_data/achievements_data_api.dart';
@@ -32,5 +31,5 @@ abstract class RemoteDataSource {
 
   Future<TokenExtResponse> tokenExtension(String token);
 
-  Future<UserNoPrivateApi> fetchUserNoPrivateInfo();
+  Future<UserPersonalDataApi> fetchUserNoPrivateInfo();
 }

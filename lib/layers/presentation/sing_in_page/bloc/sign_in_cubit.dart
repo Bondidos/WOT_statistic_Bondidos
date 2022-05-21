@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:wot_statistic/common/constants.dart';
 import 'package:wot_statistic/generated/l10n.dart';
 import 'package:wot_statistic/layers/domain/entities/user.dart';
 import 'package:wot_statistic/layers/domain/use_cases/remove_user_use_case.dart';
@@ -12,13 +13,12 @@ import 'package:wot_statistic/layers/domain/use_cases/subscribe_realm_use_case.d
 
 part 'sign_in_state.dart';
 
-const notPicked = "Not Picked";
-const defaultRealm = "EU";
+const defaultRealm = "CIS";
 
 class SignInCubit extends Cubit<SignInState> {
   final SaveUserUseCase saveUser;
-  final SubscribeUsers subscribeUsers;
-  final SubscribeRealm subscribeRealm;
+  final SubscribeUsersUseCase subscribeUsers;
+  final SubscribeRealmUseCase subscribeRealm;
   final SetRealmUseCase setRealm;
   final RemoveUserUseCase removeUserUseCase;
   final SignInUseCase signIn;

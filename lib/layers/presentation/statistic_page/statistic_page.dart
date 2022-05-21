@@ -35,6 +35,7 @@ class StatisticPage extends StatelessWidget {
           StatisticCubit cubit = context.read<StatisticCubit>();
           return Scaffold(
             bottomNavigationBar: BottomNavigationBar(
+              selectedItemColor: Theme.of(context).colorScheme.onSecondary,
               items:
                   _buildPagesAccordingWithPrivate(isPrivateDataAllow),
               currentIndex: index,

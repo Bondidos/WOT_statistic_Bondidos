@@ -116,7 +116,7 @@ class VehicleItemWidget extends StatelessWidget {
         children: [
           vehicle.markOfMastery != 0
               ? Image.asset(markOfMastery[vehicle.markOfMastery]!)
-              : Container(),
+              : const SizedBox(height: 52,width: 52,),
            Flexible(
               child: Padding(
                 padding: const EdgeInsets.only(left: 8.0),

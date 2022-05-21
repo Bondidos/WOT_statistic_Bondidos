@@ -90,7 +90,7 @@ class VehiclesRepoImpl implements VehiclesRepo {
     }
     if (vehiclesMetaData.total == databaseTtcCount &&
         currentLanguage == databaseLanguage) return;
-    vehiclesLocalSource.setVehiclesCurrentLng(currentLanguage);
+    vehiclesLocalSource.setVehiclesCurrentLanguage(currentLanguage);
     await _fetchAndSaveAllPages(vehiclesMetaData, currentLanguage);
   }
 

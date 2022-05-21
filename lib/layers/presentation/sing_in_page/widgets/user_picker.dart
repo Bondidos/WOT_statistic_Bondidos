@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:wot_statistic/common/constants.dart';
 import 'package:wot_statistic/common/theme/text_styles.dart';
 import 'package:wot_statistic/layers/presentation/sing_in_page/bloc/sign_in_cubit.dart';
-
-const notPicked = "Not Picked";
 
 class UserPicker extends StatelessWidget {
   const UserPicker({Key? key}) : super(key: key);
