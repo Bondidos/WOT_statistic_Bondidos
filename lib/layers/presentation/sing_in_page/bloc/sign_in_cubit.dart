@@ -7,6 +7,7 @@ import 'package:wot_statistic/layers/domain/entities/user.dart';
 import 'package:wot_statistic/layers/domain/use_cases/remove_user_use_case.dart';
 import 'package:wot_statistic/layers/domain/use_cases/save_user_use_case.dart';
 import 'package:wot_statistic/layers/domain/use_cases/sign_in_use_case.dart';
+import 'package:wot_statistic/layers/domain/use_cases/sign_out_use_case.dart';
 import 'package:wot_statistic/layers/domain/use_cases/subscribe_users_use_case.dart';
 import 'package:wot_statistic/layers/domain/use_cases/set_realm_pref_use_case.dart';
 import 'package:wot_statistic/layers/domain/use_cases/subscribe_realm_use_case.dart';
@@ -20,6 +21,7 @@ class SignInCubit extends Cubit<SignInState> {
   final SetRealmUseCase setRealm;
   final RemoveUserUseCase removeUserUseCase;
   final SignInUseCase signIn;
+  final SignOutUseCase signOut;
 
   StreamSubscription? _subscriptionUsers;
   StreamSubscription? _subscriptionRealm;
@@ -31,6 +33,7 @@ class SignInCubit extends Cubit<SignInState> {
     required this.subscribeRealm,
     required this.removeUserUseCase,
     required this.signIn,
+    required this.signOut,
   }) : super(const SignInStateInit()) {
     _initialize();
   }
@@ -41,6 +44,7 @@ class SignInCubit extends Cubit<SignInState> {
         setNewRealm(setDefaultRealm);
         return;
       }
+      signOut.execute();
       _fetchPrevUsers(realm);
     });
   }
@@ -89,7 +93,7 @@ class SignInCubit extends Cubit<SignInState> {
   void saveUserInToDataBase(User user) {
     emit(const SignInStateLoading());
     _currentUser = user;
-    saveUser.execute(user, _currentRealm);
+    saveUser.execute(user);
   }
 
   List<String> get usersInCache => _prevUsers.map((e) => e.nickname).toList();
@@ -111,19 +115,21 @@ class SignInCubit extends Cubit<SignInState> {
       return false;
     }
     if (DateTime.now().millisecondsSinceEpoch >
-        _currentUser!.expiresAt * 1000) {
+        _convertMillisecondsToSeconds(_currentUser!.expiresAt)) {
       error(S.current.TokenExpired);
       return false;
     }
-    try{
+    try {
       await signIn.execute(_currentUser!);
-    } catch (e){
+    } catch (e) {
       emit(SignInStateError(errorMessage: e.toString()));
       return false;
     }
     emit(SignInStateLoaded(realm: _currentRealm, prevUsers: _prevUsers));
     return true;
   }
+
+  int _convertMillisecondsToSeconds(int milliseconds) => milliseconds * 1000;
 
   @override
   Future<void> close() {

@@ -10,8 +10,9 @@ const byDefault = 0;
 class VehiclesDataCubit extends Cubit<VehiclesDataState> {
   final LoadVehiclesDataUseCase loadVehicles;
 
-  VehiclesDataCubit({required this.loadVehicles})
-      : super(const LoadingState()) {
+  VehiclesDataCubit({
+    required this.loadVehicles,
+  }) : super(const LoadingState()) {
     fetchVehiclesData();
   }
 

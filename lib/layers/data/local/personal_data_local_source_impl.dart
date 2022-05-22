@@ -2,6 +2,7 @@ import 'package:wot_statistic/layers/data/sources/local/personal_data_local_sour
 import 'package:wot_statistic/layers/data/models/local/user_data.dart';
 import 'package:wot_statistic/layers/data/sources/settings/realm_settings.dart';
 import 'package:wot_statistic/layers/data/sources/settings/user_settings.dart';
+import 'package:wot_statistic/layers/domain/entities/user.dart';
 import 'data_sources/drift_database/dao/dao.dart';
 
 class PersonalDataLocalSourceImpl extends PersonalDataLocalSource {
@@ -15,14 +16,19 @@ class PersonalDataLocalSourceImpl extends PersonalDataLocalSource {
     required this.userDao,
   });
 
-  @override
   String get currentRealm => realmSettings.currentRealm;
 
   @override
-  void saveUser(UserData user) => userDao.saveUser(user);
+  void saveUser(User user) =>
+      userDao.saveUser(UserData.fromUserAndRealm(user, currentRealm));
 
   @override
-  Future<void> setSignedUser(UserData user) => userSettings.setSignedUser(user);
+  Future<void> setSignedUser(User user) => userSettings.setSignedUser(
+        UserData.fromUserAndRealm(
+          user,
+          currentRealm,
+        ),
+      );
 
   @override
   UserData get signedUser => userSettings.signedUser;

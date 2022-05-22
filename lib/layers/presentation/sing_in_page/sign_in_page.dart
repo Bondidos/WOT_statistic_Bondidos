@@ -11,7 +11,7 @@ import 'package:wot_statistic/layers/presentation/sing_in_page/widgets/region_pi
 import 'package:wot_statistic/layers/presentation/sing_in_page/widgets/themed_button.dart';
 import 'package:wot_statistic/layers/presentation/sing_in_page/widgets/user_picker.dart';
 import 'package:wot_statistic/injection_container.dart' as di;
-import 'package:wot_statistic/common/theme/text_styles.dart';
+import 'package:wot_statistic/common/text_styles.dart';
 import 'package:wot_statistic/layers/presentation/sign_up_user/sign_up_user_page.dart';
 import 'package:wot_statistic/layers/presentation/statistic_page/statistic_page.dart';
 
@@ -110,7 +110,6 @@ class SignInPage extends StatelessWidget {
 
   Expanded pickRealm(BuildContext context) {
     return Expanded(
-      // height: MediaQuery.of(context).size.height / 2.25,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.stretch,

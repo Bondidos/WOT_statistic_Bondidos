@@ -29,15 +29,8 @@ class PersonalDataRepoImpl implements PersonalDataRepo {
   UserData get signedUser => personalDataLocalSource.signedUser;
 
   Future<void> _refreshSignedAndSavedUsers(User userWithExtendedToken) async {
-    String realm = personalDataLocalSource.currentRealm;
-    personalDataLocalSource
-        .saveUser(UserData.fromUserAndRealm(userWithExtendedToken, realm));
-    await personalDataLocalSource.setSignedUser(
-      UserData.fromUserAndRealm(
-        userWithExtendedToken,
-        personalDataLocalSource.currentRealm,
-      ),
-    );
+    personalDataLocalSource.saveUser(userWithExtendedToken);
+    await personalDataLocalSource.setSignedUser(userWithExtendedToken);
   }
 
   Future<User> _extendAccessToken(User user) async {

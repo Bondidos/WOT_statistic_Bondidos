@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wot_statistic/generated/l10n.dart';
 import 'package:wot_statistic/layers/presentation/settings_page/widgets/language_picker.dart';
-
-import 'package:wot_statistic/common/theme/text_styles.dart';
+import 'package:wot_statistic/common/text_styles.dart';
 import 'bloc/settings_cubit.dart';
 
 class SettingsPage extends StatefulWidget {

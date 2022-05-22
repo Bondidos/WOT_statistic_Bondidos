@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wot_statistic/common/theme/text_styles.dart';
+import 'package:wot_statistic/common/text_styles.dart';
 
 class ThemedButton extends StatelessWidget {
   const ThemedButton({

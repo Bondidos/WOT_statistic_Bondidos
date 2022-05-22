@@ -8,7 +8,9 @@ part 'personal_data_state.dart';
 class PersonalDataCubit extends Cubit<PersonalDataState> {
   final LoadPersonalDataUseCase loadData;
 
-  PersonalDataCubit({required this.loadData}) : super(const LoadingState()) {
+  PersonalDataCubit({
+    required this.loadData,
+  }) : super(const LoadingState()) {
     _fetchPersonalData();
   }
 

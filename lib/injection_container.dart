@@ -51,6 +51,7 @@ import 'layers/domain/use_cases/save_user_use_case.dart';
 import 'layers/domain/use_cases/search_user_use_case.dart';
 import 'layers/domain/use_cases/set_language_use_case.dart';
 import 'layers/domain/use_cases/set_theme_use_case.dart';
+import 'layers/domain/use_cases/sign_out_use_case.dart';
 import 'layers/domain/use_cases/subscribe_language_use_case.dart';
 import 'layers/domain/use_cases/subscribe_users_use_case.dart';
 import 'layers/domain/use_cases/set_realm_pref_use_case.dart';
@@ -83,6 +84,7 @@ Future<void> init() async {
         setRealm: inj(),
         removeUserUseCase: inj(),
         signIn: inj(),
+        signOut: inj(),
       ));
 
   inj.registerFactory(() => PersonalDataCubit(loadData: inj()));
@@ -94,6 +96,7 @@ Future<void> init() async {
   inj.registerFactory(
       () => SearchUserCubit(searchUser: inj(), viewFoundUser: inj()));
 
+  inj.registerFactory(() => SignOutUseCase(repository: inj()));
   inj.registerFactory(() => LoadUserNoPrivateInfoUseCase(repository: inj()));
   inj.registerFactory(() => ViewFoundUserUseCase(repository: inj()));
   inj.registerFactory(() => SearchUserUseCase(repository: inj()));
@@ -113,8 +116,6 @@ Future<void> init() async {
 
   // REPOSITORIES
   inj.registerLazySingleton<SignInRepo>(() => SignInRepoImpl(
-        // baseOptions: inj(),
-        remoteSource: inj(),
         signLocalSource: inj(),
       ));
 

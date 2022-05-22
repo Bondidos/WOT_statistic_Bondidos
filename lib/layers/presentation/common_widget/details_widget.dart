@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:wot_statistic/common/screen_size.dart';
-import 'package:wot_statistic/common/theme/text_styles.dart';
+import 'package:wot_statistic/common/text_styles.dart';
 
 class DetailsWidget extends StatelessWidget {
   const DetailsWidget({
@@ -37,7 +37,7 @@ class DetailsWidget extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Flexible(
                     child: Image.network(

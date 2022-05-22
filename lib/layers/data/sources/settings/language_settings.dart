@@ -5,7 +5,11 @@ abstract class LanguageSettings {
 
   Stream<String> subscribeAppLanguage();
 
-  String get databaseCurrentLanguage;
+  String get vehiclesCurrentLanguage;
 
-  void setDatabaseCurrentLanguage(String language);
+  String get achievesCurrentLanguage;
+
+  void setVehiclesCurrentLanguage(String language);
+
+  void setAchievesCurrentLanguage(String language);
 }

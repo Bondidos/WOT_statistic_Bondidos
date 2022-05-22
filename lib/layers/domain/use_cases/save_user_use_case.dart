@@ -6,5 +6,5 @@ class SaveUserUseCase {
 
   SaveUserUseCase({required this.repository});
 
-  void execute(User user, String realm) => repository.saveUser(user, realm);
+  void execute(User user) => repository.saveUser(user);
 }

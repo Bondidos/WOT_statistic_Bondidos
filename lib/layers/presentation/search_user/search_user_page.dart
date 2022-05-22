@@ -3,12 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wot_statistic/generated/l10n.dart';
 import 'package:wot_statistic/layers/presentation/search_user/bloc/search_user_cubit.dart';
 import 'package:wot_statistic/layers/presentation/statistic_page/statistic_page.dart';
-
-import 'package:wot_statistic/common/theme/text_styles.dart';
+import 'package:wot_statistic/common/text_styles.dart';
 import 'bloc/search_user_state.dart';
 import 'package:wot_statistic/injection_container.dart' as di;
 
-const searchUserPageRatio = 3/4;
+const searchUserPageRatio = 3 / 4;
 
 class SearchUserPage extends StatelessWidget {
   const SearchUserPage({Key? key, required this.heroTag}) : super(key: key);
@@ -23,11 +22,12 @@ class SearchUserPage extends StatelessWidget {
         height: size.height * searchUserPageRatio,
         width: size.width * searchUserPageRatio,
         child: Hero(
-        tag: heroTag,
-        child: Center(
-          child:  Material(
-              shape:
-                  RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          tag: heroTag,
+          child: Center(
+            child: Material(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
               color: Theme.of(context).colorScheme.primary,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -67,7 +67,8 @@ class SearchUserPage extends StatelessWidget {
                                   ),
                                 ),
                                 filled: true,
-                                hintStyle: const TextStyle(color: Colors.white30),
+                                hintStyle:
+                                    const TextStyle(color: Colors.white30),
                                 hintText: S.of(context).EnterPlayerName,
                               ),
                               onChanged: (search) => cubit.onTextChange(search),

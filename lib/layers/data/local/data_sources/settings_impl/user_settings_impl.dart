@@ -1,4 +1,5 @@
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:wot_statistic/common/constants.dart';
 import 'package:wot_statistic/generated/l10n.dart';
 import 'package:wot_statistic/layers/data/models/local/user_data.dart';
 import 'package:wot_statistic/layers/data/models/local/user_no_private_data.dart';
@@ -82,4 +83,15 @@ class UserSettingsImpl implements UserSettings {
 
   Future<void> _setIsPrivateDataAllowed(bool isAllow) =>
       sharedPreferences.setBool(userPrivateDataAllowed, isAllow);
+
+  @override
+  void signOut() => setSignedUser(
+        const UserData(
+          id: 0,
+          nickname: '',
+          accessToken: '',
+          expiresAt: 0,
+          realm: notPicked,
+        ),
+      );
 }

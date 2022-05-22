@@ -8,6 +8,8 @@ abstract class UserSettings {
 
   bool get isPrivateDataAllowed;
 
+  void signOut();
+
   Future<void> setSignedUser(UserData user);
 
   Future<void> setUserNoPrivate(UserNoPrivateData userNoPrivateData);

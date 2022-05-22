@@ -15,27 +15,33 @@ class AchievesLocalDataSourceImpl implements AchievesLocalDataSource {
     required this.languageSettings,
   });
 
+  String get currentAppLanguage => languageSettings.appLanguage;
+
+  int get achievesCount => databaseSettings.achievesCount;
+
+  String get achievesDBLanguage => languageSettings.achievesCurrentLanguage;
+
   @override
   void setAchievesCount(int achievesCount) =>
       databaseSettings.setAchievesCount(achievesCount);
 
   @override
-  int get achievesCount => databaseSettings.achievesCount;
-
-  @override
   Future<List<AchievementDataApi>> fetchAchievementsById(
-          List<String> achievementId, String filter) =>
+      List<String> achievementId,
+      String filter,) =>
       achievementDao.fetchAchievementsById(achievementId, filter);
 
   @override
-  Future<int> saveAchievementsData(Map<String, AchievementDataApi> achievements) =>
+  Future<int> saveAchievementsData(
+      Map<String, AchievementDataApi> achievements,) =>
       achievementDao.saveAchievementsData(achievements);
 
   @override
   void setAchievesCurrentLanguage() =>
-      languageSettings.setDatabaseCurrentLanguage(languageSettings.appLanguage);
+      languageSettings.setAchievesCurrentLanguage(currentAppLanguage);
 
   @override
-  bool get isAchievesDBAndAppLanguagesSame =>
-      languageSettings.databaseCurrentLanguage == languageSettings.appLanguage;
+  bool isAchievesDatabaseActual(int achievesCountApi) =>
+      achievesDBLanguage == currentAppLanguage &&
+          achievesCountApi == achievesCount;
 }

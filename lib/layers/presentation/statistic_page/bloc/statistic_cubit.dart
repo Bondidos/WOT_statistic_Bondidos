@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-
 import 'package:wot_statistic/layers/presentation/statistic_page/widgets/achieves_widget/achieves.dart';
 import 'package:wot_statistic/layers/presentation/statistic_page/widgets/personal_data_widget/personal_data.dart';
 import 'package:wot_statistic/layers/presentation/statistic_page/widgets/vehicles_widget/vehicles.dart';
@@ -18,7 +17,5 @@ class StatisticCubit extends Cubit<int> {
 
   Widget page(int index) => _pages[index];
 
-  void navigateTo(int index) {
-    emit(index);
-  }
+  void navigateTo(int index) => emit(index);
 }

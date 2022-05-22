@@ -1,17 +1,15 @@
-import 'package:wot_statistic/layers/data/models/local/user_data.dart';
-
 import 'package:wot_statistic/layers/domain/entities/user.dart';
 
 abstract class SignLocalDataSource {
-  String get currentRealm;
+  Future<void> removeUser(User user);
 
-  Future<void> removeUser(UserData user);
-
-  void saveUser(UserData user);
+  void saveUser(User user);
 
   void setRealm(String realm);
 
-  Future<void> setSignedUser(UserData user);
+  void signOut();
+
+  Future<void> setSignedUser(User user);
 
   Stream<List<User>> subscribeUsers();
 

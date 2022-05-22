@@ -16,25 +16,41 @@ class SignLocalDataSourceImpl implements SignLocalDataSource {
     required this.userDao,
   });
 
-  @override
   String get currentRealm => realmSettings.currentRealm;
 
   @override
-  Future<void> removeUser(UserData user) => userDao.removeUser(user);
+  Future<void> removeUser(User user) => userDao.removeUser(
+        UserData.fromUserAndRealm(
+          user,
+          currentRealm,
+        ),
+      );
 
   @override
-  void saveUser(UserData user) => userDao.saveUser(user);
+  void saveUser(User user) => userDao.saveUser(
+        UserData.fromUserAndRealm(
+          user,
+          currentRealm,
+        ),
+      );
 
   @override
   void setRealm(String realm) => realmSettings.setRealm(realm);
 
   @override
-  Future<void> setSignedUser(UserData user) => userSettings.setSignedUser(user);
+  Future<void> setSignedUser(User user) => userSettings.setSignedUser(
+        UserData.fromUserAndRealm(
+          user,
+          currentRealm,
+        ),
+      );
 
   @override
   Stream<String> subscribeRealm() => realmSettings.subscribeRealm();
 
   @override
-  Stream<List<User>> subscribeUsers() =>
-      userDao.getUsersByRealm(currentRealm);
+  Stream<List<User>> subscribeUsers() => userDao.getUsersByRealm(currentRealm);
+
+  @override
+  void signOut() => userSettings.signOut();
 }

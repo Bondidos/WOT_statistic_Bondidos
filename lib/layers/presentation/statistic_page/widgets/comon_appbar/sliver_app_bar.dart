@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wot_statistic/common/theme/text_styles.dart';
+import 'package:wot_statistic/common/text_styles.dart';
 import 'package:wot_statistic/generated/l10n.dart';
 import 'package:wot_statistic/layers/presentation/sing_in_page/sign_in_page.dart';
 

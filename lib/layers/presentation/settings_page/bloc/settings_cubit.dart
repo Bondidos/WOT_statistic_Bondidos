@@ -49,9 +49,9 @@ class SettingsCubit extends Cubit<SettingsState> {
       emit(state.copyWith(
           themeStatus: theme, status: SettingsStatus.themeStatusChanged));
     });
-    _subscriptionLanguage = subscribeLanguage.execute().listen((lng) {
+    _subscriptionLanguage = subscribeLanguage.execute().listen((language) {
       emit(state.copyWith(
-          languageStatus: lng, status: SettingsStatus.languageStatusChanged));
+          languageStatus: language, status: SettingsStatus.languageStatusChanged));
     });
   }
 

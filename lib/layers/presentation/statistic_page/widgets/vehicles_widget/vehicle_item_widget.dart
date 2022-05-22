@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:wot_statistic/common/screen_size.dart';
 import 'package:wot_statistic/layers/presentation/common_widget/details_widget.dart';
 import 'package:wot_statistic/layers/presentation/common_widget/hero_dialog_route.dart';
-import 'package:wot_statistic/common/theme/text_styles.dart';
+import 'package:wot_statistic/common/text_styles.dart';
 import 'package:wot_statistic/generated/l10n.dart';
 import 'package:wot_statistic/layers/domain/entities/vehicles_data.dart';
 

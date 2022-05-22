@@ -5,9 +5,7 @@ abstract class VehiclesLocalDataSource {
 
   Future<List<VehiclesDataTTC>> fetchTTCByListOfIDs(List<int> tankIds);
 
-  bool get isVehiclesDBAndAppLanguagesSame;
-
-  int get vehiclesTTCCount;
+  bool isVehiclesDatabaseActual(int ttcCountApi);
 
   void setVehiclesTtcCount(int ttcCount);
 

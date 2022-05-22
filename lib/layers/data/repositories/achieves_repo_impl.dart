@@ -81,18 +81,16 @@ class AchievesRepoImpl implements AchievesRepo {
   }
 
   Future<void> _initAchievesDatabase() async {
-    final bool isAchievesDBAndAppLanguagesSame =
-        achievesLocalDataSource.isAchievesDBAndAppLanguagesSame;
-    final int databaseAchievesCount = achievesLocalDataSource.achievesCount;
     final AchievementsDataApi achievementsDataBase;
     try {
-      achievementsDataBase =
-          await remoteSource.fetchAchievesDataBase();
+      achievementsDataBase = await remoteSource.fetchAchievesDataBase();
     } catch (e) {
       throw Exception(S.current.CheckInternetConnection);
     }
-    if (databaseAchievesCount == achievementsDataBase.meta.count &&
-        isAchievesDBAndAppLanguagesSame) return;
+    final int achievesCountApi = achievementsDataBase.meta.count;
+    if (achievesLocalDataSource.isAchievesDatabaseActual(achievesCountApi)) {
+      return;
+    }
     achievesLocalDataSource.setAchievesCurrentLanguage();
     await _createOrSyncAchievesDb(achievementsDataBase);
   }

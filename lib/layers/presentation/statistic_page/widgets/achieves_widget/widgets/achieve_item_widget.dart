@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wot_statistic/layers/presentation/common_widget/details_widget.dart';
 import 'package:wot_statistic/layers/presentation/common_widget/hero_dialog_route.dart';
-import 'package:wot_statistic/common/theme/text_styles.dart';
+import 'package:wot_statistic/common/text_styles.dart';
 import 'package:wot_statistic/layers/domain/entities/achieves.dart';
 
 class AchieveItemWidget extends StatelessWidget {
@@ -43,15 +43,20 @@ class AchieveItemWidget extends StatelessWidget {
               width: double.infinity,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Flexible(
-                    flex: 3,
+                    flex: 2,
                     child: Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.fromLTRB(
+                        8.0,
+                        6.0,
+                        8.0,
+                        6.0,
+                      ),
                       child: Image.network(
                         card.imageBig,
-                        loadingBuilder: (ctx,child,progress){
+                        loadingBuilder: (ctx, child, progress) {
                           return progress == null
                               ? child
                               : const CircularProgressIndicator();
@@ -64,7 +69,7 @@ class AchieveItemWidget extends StatelessWidget {
                   Flexible(
                     flex: 1,
                     child: Padding(
-                      padding: const EdgeInsets.only(left:8,right: 8),
+                      padding: const EdgeInsets.only(left: 8, right: 8),
                       child: Text(
                         card.name,
                         style: onCard(context),

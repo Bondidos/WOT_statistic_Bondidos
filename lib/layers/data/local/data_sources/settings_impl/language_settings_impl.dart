@@ -3,7 +3,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wot_statistic/layers/data/sources/settings/language_settings.dart';
 import 'package:wot_statistic/common/constants.dart';
 
-const databaseLanguageKey = 'Database Language';
+const vehiclesLanguageKey = 'Vehicles Language';
+const achievesLanguageKey = 'Achieves Language';
 const appLanguageKey = 'Language';
 
 class LanguageSettingsImpl implements LanguageSettings {
@@ -31,12 +32,20 @@ class LanguageSettingsImpl implements LanguageSettings {
       sharedPreferences.getString(appLanguageKey) ?? notPicked;
 
   @override
-  String get databaseCurrentLanguage =>
-      sharedPreferences.getString(databaseLanguageKey) ?? notPicked;
+  String get vehiclesCurrentLanguage =>
+      sharedPreferences.getString(vehiclesLanguageKey) ?? notPicked;
 
   @override
-  void setDatabaseCurrentLanguage(String language) =>
-      sharedPreferences.setString(databaseLanguageKey, language);
+  void setVehiclesCurrentLanguage(String language) =>
+      sharedPreferences.setString(vehiclesLanguageKey, language);
+
+  @override
+  String get achievesCurrentLanguage =>
+      sharedPreferences.getString(achievesLanguageKey) ?? notPicked;
+
+  @override
+  void setAchievesCurrentLanguage(String language) =>
+      sharedPreferences.setString(achievesLanguageKey, language);
 
   @override
   Stream<String> subscribeAppLanguage() => languageStream..add(_readLanguage);

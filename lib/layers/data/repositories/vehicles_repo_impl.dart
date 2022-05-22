@@ -54,9 +54,6 @@ class VehiclesRepoImpl implements VehiclesRepo {
       }).toList();
 
   Future<void> _initVehiclesDatabase() async {
-    final bool isVehiclesDBAndAppLanguagesSame =
-        vehiclesLocalSource.isVehiclesDBAndAppLanguagesSame;
-    final int databaseTtcCount = vehiclesLocalSource.vehiclesTTCCount;
     final VehiclesMetaDataApi vehiclesMetaData;
     try {
       vehiclesMetaData = (await remoteSource.fetchVehiclesDatabase(
@@ -67,8 +64,9 @@ class VehiclesRepoImpl implements VehiclesRepo {
     } catch (e) {
       throw Exception(S.current.CheckInternetConnection);
     }
-    if (vehiclesMetaData.total == databaseTtcCount &&
-        isVehiclesDBAndAppLanguagesSame) return;
+    if (vehiclesLocalSource.isVehiclesDatabaseActual(vehiclesMetaData.total)) {
+      return;
+    }
     vehiclesLocalSource.setVehiclesCurrentLanguage();
     await _fetchAndSaveAllPages(vehiclesMetaData);
   }

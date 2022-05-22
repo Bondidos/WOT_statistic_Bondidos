@@ -5,7 +5,6 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:wot_statistic/layers/domain/entities/user_no_private_info.dart';
 import 'package:wot_statistic/layers/domain/use_cases/load_user_no_private_use_case.dart';
 import 'package:wot_statistic/layers/presentation/statistic_page/widgets/achieves_widget/bloc/achieves_state.dart';
-
 import 'package:wot_statistic/layers/domain/entities/achieves.dart';
 import 'package:wot_statistic/layers/domain/use_cases/load_achieves_data_use_case.dart';
 import 'package:wot_statistic/layers/presentation/statistic_page/widgets/achieves_widget/widgets/achieve_item_widget.dart';

@@ -6,8 +6,10 @@ import 'package:wot_statistic/layers/domain/use_cases/search_user_use_case.dart'
 import 'package:wot_statistic/layers/domain/use_cases/view_found_user_use_case.dart';
 import 'package:wot_statistic/layers/presentation/search_user/bloc/search_user_state.dart';
 
+const minimalSearchCharNumber = 3;
+
 class SearchUserCubit extends Cubit<SearchUserState> {
-  final PublishSubject<String> searchStream = PublishSubject<String>();
+  final PublishSubject<String> _searchStream = PublishSubject<String>();
   final SearchUserUseCase searchUser;
   final ViewFoundUserUseCase viewFoundUser;
 
@@ -20,7 +22,7 @@ class SearchUserCubit extends Cubit<SearchUserState> {
   }
 
   void init() {
-    searchStream
+    _searchStream
         .debounce((event) => TimerStream(true, const Duration(seconds: 1)))
         .listen((search) async {
       try {
@@ -39,12 +41,18 @@ class SearchUserCubit extends Cubit<SearchUserState> {
     });
   }
 
-  void onTextChange(String search) => (search.length < 3)
+  void onTextChange(String search) => (search.length < minimalSearchCharNumber)
       ? emit(state.copyWith(foundList: [], status: SearchStatus.initial))
-      : searchStream.add(search);
+      : _searchStream.add(search);
 
   Future<void> viewUser(int index) async {
     UserNoPrivate userNoPrivate = state.foundList[index];
     await viewFoundUser.execute(userNoPrivate);
+  }
+
+  @override
+  Future<void> close() {
+    _searchStream.close();
+    return super.close();
   }
 }
