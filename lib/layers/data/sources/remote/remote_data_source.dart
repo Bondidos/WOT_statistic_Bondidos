@@ -18,14 +18,11 @@ abstract class RemoteDataSource {
   Future<VehiclesDataApi> fetchVehiclesDatabase({
     required int limit,
     required int pageNumber,
-    required String language,
   });
 
   Future<UserAchievesDataApi> fetchAchievesData();
 
-  Future<AchievementsDataApi> fetchAchievesDataBase({
-    required String language,
-  });
+  Future<AchievementsDataApi> fetchAchievesDataBase();
 
   Future<SearchUserDataApi> searchUser(String search);
 

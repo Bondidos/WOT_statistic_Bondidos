@@ -1,11 +1,14 @@
+import 'package:wot_statistic/layers/data/sources/settings/language_settings.dart';
 import 'package:wot_statistic/layers/data/sources/settings/user_settings.dart';
 import 'api_query_constants.dart' as field;
 import 'api_query_keys_constants.dart' as key;
 
 class ApiConstants {
   final UserSettings userSettings;
+  final LanguageSettings languageSettings;
 
-  const ApiConstants({required this.userSettings});
+  const ApiConstants(
+      {required this.userSettings, required this.languageSettings,});
 
   int get userId => userSettings.signedUser.id;
 
@@ -15,7 +18,10 @@ class ApiConstants {
 
   bool get isPrivateAllowed => userSettings.isPrivateDataAllowed;
 
-  Map<String, dynamic> createPersonalDataQuery() => {
+  String get language => languageSettings.appLanguage;
+
+  Map<String, dynamic> createPersonalDataQuery() =>
+      {
         key.applicationId: field.applicationId,
         key.accountId: userId,
         key.accessToken: accessToken,
@@ -28,12 +34,14 @@ class ApiConstants {
         ].unpack(),
       };
 
-  Map<String, dynamic> createClanInfoQuery({required int clanId}) => {
+  Map<String, dynamic> createClanInfoQuery({required int clanId}) =>
+      {
         key.applicationId: field.applicationId,
         key.clanId: clanId,
       };
 
-  Map<String, dynamic> createUserVehiclesQuery() => {
+  Map<String, dynamic> createUserVehiclesQuery() =>
+      {
         key.applicationId: field.applicationId,
         key.accountId: isPrivateAllowed ? userId : userNoPrivateId,
         key.accessToken: isPrivateAllowed ? accessToken : null,
@@ -42,7 +50,6 @@ class ApiConstants {
   Map<String, dynamic> createVehiclesDatabaseQuery({
     required int limit,
     required int pageNumber,
-    required String language,
   }) =>
       {
         key.applicationId: field.applicationId,
@@ -62,27 +69,32 @@ class ApiConstants {
         ].unpack(),
       };
 
-  Map<String, dynamic> createAchievesDataQuery() => {
+  Map<String, dynamic> createAchievesDataQuery() =>
+      {
         key.applicationId: field.applicationId,
         key.accountId: isPrivateAllowed ? userId : userNoPrivateId,
       };
 
-  Map<String, dynamic> createAchievesDatabaseQuery({required language}) => {
+  Map<String, dynamic> createAchievesDatabaseQuery() =>
+      {
         key.applicationId: field.applicationId,
         key.language: language,
       };
 
-  Map<String, dynamic> createSearchUserQuery({required search}) => {
+  Map<String, dynamic> createSearchUserQuery({required search}) =>
+      {
         key.applicationId: field.applicationId,
         key.search: search,
         key.limit: field.searchUsersLimit,
       };
 
-  Map<String, dynamic> createTokenExtensionQuery() => {
+  Map<String, dynamic> createTokenExtensionQuery() =>
+      {
         key.applicationId: field.applicationId,
       };
 
-  Map<String, dynamic> createUserNoPrivateQuery() => {
+  Map<String, dynamic> createUserNoPrivateQuery() =>
+      {
         key.applicationId: field.applicationId,
         key.accountId: userNoPrivateId,
         key.fields: [

@@ -2,15 +2,13 @@ import 'package:wot_statistic/layers/data/models/remote/achievements_data/achiev
 
 abstract class AchievesLocalDataSource {
 
-  String get appLanguage;
-
-  String get databaseCurrentLanguage;
+  bool get isAchievesDBAndAppLanguagesSame;
 
   int get achievesCount;
 
   void setAchievesCount(int achievesCount);
 
-  void setAchievesCurrentLanguage(String language);
+  void setAchievesCurrentLanguage();
 
   Future<List<AchievementDataApi>> fetchAchievementsById(
       List<String> achievementId, String filter);

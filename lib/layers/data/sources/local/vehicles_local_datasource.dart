@@ -5,13 +5,11 @@ abstract class VehiclesLocalDataSource {
 
   Future<List<VehiclesDataTTC>> fetchTTCByListOfIDs(List<int> tankIds);
 
-  String get appLanguage;
-
-  String get databaseCurrentLanguage;
+  bool get isVehiclesDBAndAppLanguagesSame;
 
   int get vehiclesTTCCount;
 
   void setVehiclesTtcCount(int ttcCount);
 
-  void setVehiclesCurrentLanguage(String language);
+  void setVehiclesCurrentLanguage();
 }

@@ -42,13 +42,11 @@ class RemoteSourceImpl extends RemoteDataSource {
   Future<VehiclesDataApi> fetchVehiclesDatabase({
     required int limit,
     required int pageNumber,
-    required String language,
   }) =>
       apiClient.fetchVehiclesDatabase(
         apiConstants.createVehiclesDatabaseQuery(
           limit: limit,
           pageNumber: pageNumber,
-          language: language,
         ),
       );
 
@@ -59,11 +57,9 @@ class RemoteSourceImpl extends RemoteDataSource {
       );
 
   @override
-  Future<AchievementsDataApi> fetchAchievesDataBase({
-    required String language,
-  }) =>
+  Future<AchievementsDataApi> fetchAchievesDataBase() =>
       apiClient.fetchAchievesDataBase(
-          apiConstants.createAchievesDatabaseQuery(language: language));
+          apiConstants.createAchievesDatabaseQuery());
 
   @override
   Future<SearchUserDataApi> searchUser(String search) => apiClient.searchUsers(

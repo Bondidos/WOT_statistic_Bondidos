@@ -6,8 +6,8 @@ import 'package:wot_statistic/layers/data/local/achieves_local_datasource_impl.d
 import 'package:wot_statistic/layers/data/local/personal_data_local_source_impl.dart';
 import 'package:wot_statistic/layers/data/local/settings_data_source_impl.dart';
 import 'package:wot_statistic/layers/data/local/vehicles_local_datasource_impl.dart';
-import 'package:wot_statistic/layers/data/repositories/settings_repo_impl/settings_repo_impl.dart';
-import 'package:wot_statistic/layers/data/repositories/sign_in_repo_impl/sign_in_repo_impl.dart';
+import 'package:wot_statistic/layers/data/repositories/settings_repo_impl.dart';
+import 'package:wot_statistic/layers/data/repositories/sign_in_repo_impl.dart';
 import 'package:wot_statistic/layers/data/sources/remote/remote_data_source.dart';
 import 'package:wot_statistic/layers/domain/use_cases/load_achieves_data_use_case.dart';
 import 'package:wot_statistic/layers/domain/use_cases/sign_in_use_case.dart';
@@ -22,10 +22,10 @@ import 'layers/data/local/sign_local_datasource_impl.dart';
 import 'layers/data/remote/remote_source_impl/constants/api_constants.dart';
 import 'layers/data/remote/remote_source_impl/remote_source_impl.dart';
 import 'layers/data/remote/sources/api_client.dart';
-import 'layers/data/repositories/achieve_repo_impl/achieves_repo_impl.dart';
-import 'layers/data/repositories/personal_data_repo_impl/personal_data_repo_impl.dart';
-import 'layers/data/repositories/search_user_repo_impl/search_user_repo_impl.dart';
-import 'layers/data/repositories/vehicles_repo_impl/vehicles_repo_impl.dart';
+import 'layers/data/repositories/achieves_repo_impl.dart';
+import 'layers/data/repositories/personal_data_repo_impl.dart';
+import 'layers/data/repositories/search_user_repo_impl.dart';
+import 'layers/data/repositories/vehicles_repo_impl.dart';
 import 'layers/data/sources/local/achieves_local_datasource.dart';
 import 'layers/data/sources/local/personal_data_local_source.dart';
 import 'layers/data/sources/local/search_user_local_datasource.dart';
@@ -204,7 +204,10 @@ Future<void> init() async {
 
   inj.registerLazySingleton<ApiClient>(() => ApiClient(inj()));
 
-  inj.registerFactory<ApiConstants>(() => ApiConstants(userSettings: inj()));
+  inj.registerFactory<ApiConstants>(() => ApiConstants(
+        userSettings: inj(),
+        languageSettings: inj(),
+      ));
 
   inj.registerSingleton<SharedPreferences>(
       await SharedPreferences.getInstance());

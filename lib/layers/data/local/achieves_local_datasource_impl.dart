@@ -32,12 +32,10 @@ class AchievesLocalDataSourceImpl implements AchievesLocalDataSource {
       achievementDao.saveAchievementsData(achievements);
 
   @override
-  String get databaseCurrentLanguage => languageSettings.databaseCurrentLanguage;
+  void setAchievesCurrentLanguage() =>
+      languageSettings.setDatabaseCurrentLanguage(languageSettings.appLanguage);
 
   @override
-  void setAchievesCurrentLanguage(String lng) =>
-      languageSettings.setDatabaseCurrentLanguage(lng);
-
-  @override
-  String get appLanguage => languageSettings.appLanguage;
+  bool get isAchievesDBAndAppLanguagesSame =>
+      languageSettings.databaseCurrentLanguage == languageSettings.appLanguage;
 }

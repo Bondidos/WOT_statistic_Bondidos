@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:wot_statistic/common/constants.dart';
 import 'package:wot_statistic/common/screen_size.dart';
 import 'package:wot_statistic/generated/l10n.dart';
 import 'package:wot_statistic/layers/presentation/common_widget/snackbar_widget.dart';
@@ -8,12 +9,6 @@ import 'package:wot_statistic/layers/presentation/statistic_page/widgets/vehicle
 import 'package:wot_statistic/layers/presentation/statistic_page/widgets/vehicles_widget/bloc/vehicles_state.dart';
 import 'package:wot_statistic/layers/presentation/statistic_page/widgets/vehicles_widget/vehicle_item_widget.dart';
 import 'package:wot_statistic/layers/presentation/sing_in_page/sign_in_page.dart';
-
-const int byWins = 1;
-const int byBattles = 2;
-const int byMastery = 3;
-const int byLvl = 4;
-const String nationByDefault = "All";
 
 class VehiclesWidget extends StatelessWidget {
   const VehiclesWidget({Key? key}) : super(key: key);

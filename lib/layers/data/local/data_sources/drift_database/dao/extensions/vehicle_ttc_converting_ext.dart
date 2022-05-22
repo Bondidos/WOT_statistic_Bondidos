@@ -31,3 +31,8 @@ extension VehicleTTCTableDataConverting on VehicleTTCTableData {
         tier: tier,
       );
 }
+
+extension ListVehiclesDataTTCConverting on List<VehiclesDataTTC> {
+  List<VehicleTTCTableCompanion> toVehicleTTCTableCompanionList() =>
+      map((ttc) => ttc.toVehicleTTCTableCompanion()).toList();
+}

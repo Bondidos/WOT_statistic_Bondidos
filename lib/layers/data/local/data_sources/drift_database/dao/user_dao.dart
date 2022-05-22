@@ -1,8 +1,8 @@
 import 'package:drift/drift.dart';
+import 'package:wot_statistic/layers/data/local/data_sources/drift_database/dao/extensions/user_converting_ext.dart';
 import 'package:wot_statistic/layers/data/local/data_sources/drift_database/database.dart';
 import 'package:wot_statistic/layers/data/models/local/user_data.dart';
 import 'package:wot_statistic/layers/domain/entities/user.dart';
-import 'package:wot_statistic/layers/data/local/data_sources/drift_database/dao/user_dao/user_converting_ext.dart';
 
 part 'user_dao.g.dart';
 

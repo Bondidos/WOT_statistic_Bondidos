@@ -16,12 +16,8 @@ class VehiclesLocalDataSourceImpl implements VehiclesLocalDataSource {
   });
 
   @override
-  String get databaseCurrentLanguage =>
-      languageSettings.databaseCurrentLanguage;
-
-  @override
-  void setVehiclesCurrentLanguage(String language) =>
-      languageSettings.setDatabaseCurrentLanguage(language);
+  void setVehiclesCurrentLanguage() =>
+      languageSettings.setDatabaseCurrentLanguage(languageSettings.appLanguage);
 
   @override
   Future<List<VehiclesDataTTC>> fetchTTCByListOfIDs(List<int> tankIds) =>
@@ -39,5 +35,6 @@ class VehiclesLocalDataSourceImpl implements VehiclesLocalDataSource {
       databaseSettings.setVehiclesTtcCount(ttcCount);
 
   @override
-  String get appLanguage => languageSettings.appLanguage;
+  bool get isVehiclesDBAndAppLanguagesSame =>
+      languageSettings.databaseCurrentLanguage == languageSettings.appLanguage;
 }

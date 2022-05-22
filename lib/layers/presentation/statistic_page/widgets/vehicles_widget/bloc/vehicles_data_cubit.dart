@@ -1,15 +1,11 @@
 import 'package:bloc/bloc.dart';
+import 'package:wot_statistic/common/constants.dart';
 import 'package:wot_statistic/generated/l10n.dart';
 import 'package:wot_statistic/layers/presentation/statistic_page/widgets/vehicles_widget/bloc/vehicles_state.dart';
 import 'package:wot_statistic/layers/domain/entities/vehicles_data.dart';
 import 'package:wot_statistic/layers/domain/use_cases/load_vehicles_data_use_case.dart';
 
-const int byDefault = 0;
-const int byWins = 1;
-const int byBattles = 2;
-const int byMastery = 3;
-const int byLvl = 4;
-const String nationByDefault = "All";
+const byDefault = 0;
 
 class VehiclesDataCubit extends Cubit<VehiclesDataState> {
   final LoadVehiclesDataUseCase loadVehicles;

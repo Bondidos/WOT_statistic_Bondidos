@@ -1,11 +1,10 @@
 import 'package:wot_statistic/generated/l10n.dart';
-import 'package:wot_statistic/layers/data/models/local/user_no_private_data.dart';
 import 'package:wot_statistic/layers/data/models/remote/search_user/search_user_data_api.dart';
-import 'package:wot_statistic/layers/data/models/remote/search_user/search_user_account_data_api.dart';
 import 'package:wot_statistic/layers/data/sources/local/search_user_local_datasource.dart';
 import 'package:wot_statistic/layers/domain/entities/user_no_private.dart';
 import 'package:wot_statistic/layers/domain/repositories/search_user_repo.dart';
 import 'package:wot_statistic/layers/data/sources/remote/remote_data_source.dart';
+import 'extensions/search_user.dart';
 
 class SearchUserRepoImpl implements SearchUserRepo {
   final RemoteDataSource remoteSource;
@@ -25,20 +24,12 @@ class SearchUserRepoImpl implements SearchUserRepo {
       throw Exception(S.current.CheckInternetConnection);
     }
     return users.data
-        .map((e) => _createFoundUserFromSearchUserData(e))
+        .map((e) => e.createFoundUserFromSearchUserData())
         .toList();
   }
 
-  UserNoPrivate _createFoundUserFromSearchUserData(
-          SearchUserAccountDataApi userData) =>
-      UserNoPrivate(name: userData.nickname, id: userData.accountId);
-
   @override
   Future<void> setUserToViewNoPrivate(UserNoPrivate userNoPrivate) =>
-      searchUserLocalSource.setUserNoPrivate(
-        UserNoPrivateData(
-            nickname: userNoPrivate.name,
-            userId: userNoPrivate.id,
-        ),
-      );
+      searchUserLocalSource
+          .setUserNoPrivate(userNoPrivate.toUserNoPrivateData());
 }
