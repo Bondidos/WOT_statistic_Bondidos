@@ -20,9 +20,3 @@ Search and then view user (without personal data, need sign in)
 Also we can use russian language (check settings)
 
 ![image](https://user-images.githubusercontent.com/69970266/167492684-c0396e46-3380-4731-836d-c0ba3b62b6f2.png)
-
-Todos:
-- Cirilic font
-- App icon
-- refresh list (Achieves, vehicles)
-- web
