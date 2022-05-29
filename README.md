@@ -2,7 +2,7 @@
 
 World of tanks account statistics #Flutter
 
-Uses oficial api developers.wargaming.net
+Uses official api developers.wargaming.net
 
 Application serves for view player personal data, achieves, vehicles and their details of the World of tanks game.
 The first creen is the Sign in Screen, where we could to sign in , sign up or delete previous user from database.
